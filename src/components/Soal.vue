@@ -8,11 +8,12 @@
         name="pilihan"
         :key="index + 'i'"
         :value="index"
+        @input="radioInput"
       >
       <label :for="'pilihan' + soalId +'|' + index" :key="index + 'l'" v-text="entry"></label>
       <br :key="index + 'br'">
     </template>
-    <input type="button" :value="teksSubmit">
+    <input type="button" :value="teksSubmit" :disabled="!dapatDiSubmit">
   </form>
 </template>
 
@@ -26,6 +27,16 @@ export default {
       default: "Check Jawaban"
     },
     soalId: Number
+  },
+  data() {
+    return {
+      dapatDiSubmit: false
+    };
+  },
+  methods: {
+    radioInput() {
+      this.dapatDiSubmit = true;
+    }
   }
 };
 </script>
