@@ -13,7 +13,7 @@
       <label :for="'pilihan' + soalId +'|' + index" :key="index + 'l'" v-text="entry"></label>
       <br :key="index + 'br'">
     </template>
-    <input type="button" :value="teksSubmit" :disabled="!dapatDiSubmit">
+    <input type="button" :value="teksSubmit" :disabled="!dapatDiSubmit" @click="buttonClick">
   </form>
 </template>
 
@@ -30,12 +30,17 @@ export default {
   },
   data() {
     return {
-      dapatDiSubmit: false
+      dapatDiSubmit: false,
+      pilihanTerpilih: -1
     };
   },
   methods: {
-    radioInput() {
+    radioInput(ev) {
       this.dapatDiSubmit = true;
+      this.pilihanTerpilih = Number(ev.target.value);
+    },
+    buttonClick() {
+      this.$emit("submit", this);
     }
   }
 };
