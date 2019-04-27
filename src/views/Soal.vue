@@ -1,13 +1,20 @@
 <template>
   <div class="soal-views">
-    <soal v-if="soal" :soal="soal.soal" :pilihan="soal.pilihan" :soalId="soalId"></soal>
+    <soal
+      v-if="soal"
+      :soal="soal.soal"
+      :pilihan="soal.pilihan"
+      :soalId="soalId"
+      @submit="soalSubmit"
+    ></soal>
     <p v-else v-text="errorTerakhir"></p>
+    <p v-if="telahDijawab">Jawaban anda {{ jawabanBenar ? 'benar' : 'salah' }}</p>
   </div>
 </template>
 
 <script>
 import Soal from "../components/Soal.vue";
-import { getSoal } from "../api";
+import { getSoal, checkJawaban } from "../api";
 
 export default {
   components: {
@@ -17,7 +24,9 @@ export default {
   data() {
     return {
       soal: undefined,
-      errorTerakhir: undefined
+      errorTerakhir: undefined,
+      telahDijawab: false,
+      jawabanBenar: false
     };
   },
   computed: {
@@ -35,6 +44,8 @@ export default {
   },
   methods: {
     updateSoal() {
+      this.telahDijawab = false;
+      this.jawabanBenar = false;
       getSoal(this.soalId).then(
         val => {
           let soal = val.data.soal;
@@ -47,6 +58,13 @@ export default {
           this.$set(this, "errorTerakhir", err.toString());
         }
       );
+    },
+    soalSubmit(th) {
+      checkJawaban(this.soalId, th.pilihanTerpilih).then(val => {
+        let data = val.data;
+        this.jawabanBenar = data.benar;
+        this.telahDijawab = true;
+      });
     }
   }
 };
