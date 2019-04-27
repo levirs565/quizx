@@ -13,7 +13,9 @@
       <label :for="'pilihan' + soalId +'|' + index" :key="index + 'l'" v-text="entry"></label>
       <br :key="index + 'br'">
     </template>
+    <br>
     <input type="button" :value="teksSubmit" :disabled="!dapatDiSubmit" @click="buttonClick">
+    <br>
   </form>
 </template>
 

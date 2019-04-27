@@ -1,15 +1,16 @@
 <template>
   <div id="app">
-    <soal :soal="soal.soal" :pilihan="soal.pilihan" :soalId="soal._id"></soal>
-    <button @click="soalLain(-1)">Soal Sebelumnya</button>
-    <button @click="soalLain(1)">Soal Selanjutnya</button>
+    <soal :soal="soal.soal" :pilihan="soal.pilihan" :soalId="soal._id" @submit="soalSubmit"></soal>
+    <br>
+    <button @click="soalLain(-1)" style="float: left;" :disabled="soal._id <= 0">Soal Sebelumnya</button>
+    <button @click="soalLain(1)" style="float: right;">Soal Selanjutnya</button>
   </div>
 </template>
 
 <script>
 import HelloWorld from "./components/HelloWorld.vue";
 import Soal from "./components/Soal.vue";
-import { getSoal } from "./api.js";
+import { getSoal, checkJawaban } from "./api.js";
 
 export default {
   name: "app",
@@ -27,10 +28,6 @@ export default {
     };
   },
   methods: {
-    wedus(th) {
-      console.log(th.pilihanTerpilih);
-      console.log(th.pilihan);
-    },
     gantiSoal(id) {
       getSoal(id).then(
         val => {
@@ -46,6 +43,12 @@ export default {
       if (id >= 0) {
         this.gantiSoal(id);
       }
+    },
+    soalSubmit(th) {
+      checkJawaban(th.soalId, th.pilihanTerpilih).then(val => {
+        let benar = val.data.benar;
+        alert(`Jawaban anda ${benar ? "Benar" : "Salah"}`);
+      });
     }
   },
   mounted() {
