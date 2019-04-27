@@ -3,6 +3,7 @@
     "@types/mongoose": "^5.3.27",
     "cors": "^2.8.5",
     "express": "^4.16.4",
-    "mongoose": "^5.5.4"
+    "mongoose": "^5.5.4",
+    "underscore": "^1.9.1"
   }
 }
