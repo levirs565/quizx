@@ -1,6 +1,7 @@
 const express = require('express');
 const databases = require('./src/database');
 const cors = require("cors");
+const utils = require("./src/utils")
 const app = express();
 
 app.use(cors())
@@ -16,44 +17,23 @@ app.get("/api/test", function (req, res) {
 
 // Api untuk mendapatkan soal
 app.get("/api/soal/:id", function (req, res) {
-  databases.getSoal(req.params.id).then((val) => {
-    let isNull = val == void 0;
-    res.json({
-      err: isNull,
-      msg: isNull ? "Soal tidak ada" : null,
+  utils.handleBaseRequest(databases.getSoal(req.params.id), (val, isNull, req, res) => {
+    return {
       soal: isNull ? null : {
         _id: val._id,
         soal: val.soal,
         pilihan: val.pilihan
       }
-    })
-  }, (err) => {
-    res.json({
-      err: true,
-      msg: err.toString(),
-      soal: null
-    })
-  })
+    }
+  }, "Soal tidak ada", req, res);
 })
 
 app.post('/api/checkJawaban', function (req, res) {
-  let id = req.body.id;
-  let jawaban = req.body.jawaban;
-
-  databases.getSoal(id).then((val) => {
-    let isNull = val == void 0;
-    res.json({
-      benar: isNull ? false : jawaban == val.jawaban,
-      err: isNull,
-      msg: isNull ? "Soal tidak ada" : null
-    })
-  }, (err) => {
-    res.json({
-      err: true,
-      msg: err.toString(),
-      benar: false
-    })
-  })
+  utils.handleBaseRequest(databases.getSoal(req.body.id), (val, isNull, req, res) => {
+    return {
+      benar: isNull ? false : req.body.jawaban == val.jawaban
+    }
+  }, "Soal tidak ada", req, res);
 })
 
 app.listen(3000, () => {
