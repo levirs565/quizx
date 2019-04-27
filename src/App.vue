@@ -1,9 +1,10 @@
 <template>
   <div id="app">
-    <soal :soal="soal.soal" :pilihan="soal.pilihan" :soalId="soal._id" @submit="soalSubmit"></soal>
+    <!-- <soal :soal="soal.soal" :pilihan="soal.pilihan" :soalId="soal._id" @submit="soalSubmit"></soal>
     <br>
     <button @click="soalLain(-1)" style="float: left;" :disabled="soal._id <= 0">Soal Sebelumnya</button>
-    <button @click="soalLain(1)" style="float: right;">Soal Selanjutnya</button>
+    <button @click="soalLain(1)" style="float: right;">Soal Selanjutnya</button>-->
+    <router-view></router-view>
   </div>
 </template>
 
