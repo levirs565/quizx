@@ -1,6 +1,7 @@
 <template>
   <div class="soal-views">
-    <soal :soal="soal.soal" :pilihan="soal.pilihan" :soalId="soalId"></soal>
+    <soal v-if="soal" :soal="soal.soal" :pilihan="soal.pilihan" :soalId="soalId"></soal>
+    <p v-else v-text="errorTerakhir"></p>
   </div>
 </template>
 
@@ -15,10 +16,8 @@ export default {
   props: ["soal_id"],
   data() {
     return {
-      soal: {
-        soal: "",
-        pilihan: []
-      }
+      soal: undefined,
+      errorTerakhir: undefined
     };
   },
   computed: {
@@ -38,7 +37,9 @@ export default {
     updateSoal() {
       getSoal(this.soalId).then(val => {
         let soal = val.data.soal;
+        let error = val.data.err ? val.data.msg : undefined;
         this.$set(this, "soal", soal);
+        this.$set(this, "errorTerakhir", error);
       });
     }
   }
