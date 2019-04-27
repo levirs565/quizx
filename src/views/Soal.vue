@@ -35,12 +35,18 @@ export default {
   },
   methods: {
     updateSoal() {
-      getSoal(this.soalId).then(val => {
-        let soal = val.data.soal;
-        let error = val.data.err ? val.data.msg : undefined;
-        this.$set(this, "soal", soal);
-        this.$set(this, "errorTerakhir", error);
-      });
+      getSoal(this.soalId).then(
+        val => {
+          let soal = val.data.soal;
+          let error = val.data.err ? val.data.msg : undefined;
+          this.$set(this, "soal", soal);
+          this.$set(this, "errorTerakhir", error);
+        },
+        err => {
+          this.$set(this, "soal", undefined);
+          this.$set(this, "errorTerakhir", err.toString());
+        }
+      );
     }
   }
 };
