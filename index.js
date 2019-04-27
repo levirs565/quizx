@@ -1,6 +1,9 @@
 const express = require('express');
-const databases = require('./src/database')
+const databases = require('./src/database');
+const cors = require("cors");
 const app = express();
+
+app.use(cors())
 
 // Api untuk mengetes jika server telah siap
 app.get("/api/test", function (req, res) {
