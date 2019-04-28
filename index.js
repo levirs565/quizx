@@ -41,14 +41,14 @@ app.post('/api/checkJawaban', (req, res) => {
   }), 'Soal tidak ada', req, res);
 });
 
-app.post('/api/mulai', (req, res) => {
+app.post('/api/startPermainan', (req, res) => {
   utils.handleBaseRequest(new Promise((resolve) => {
     sessions.setOnPermainan(req, true);
     resolve(true);
   }), () => ({}), 'Kesalahan aneh', req, res);
 });
 
-app.post('/api/stop', (req, res) => {
+app.post('/api/stopPermainan', (req, res) => {
   utils.handleBaseRequest(new Promise((resolve) => {
     sessions.setOnPermainan(req, false);
     resolve(true);
