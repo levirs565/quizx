@@ -11,3 +11,13 @@ const savedSession = session({
   saveUninitialized: false,
 });
 exports.savedSession = savedSession;
+
+function isOnPermainan(req) {
+  return req.session.onPermainan;
+}
+exports.isOnPermainan = isOnPermainan;
+
+function setOnPermainan(req, state) {
+  req.session.onPermainan = state;
+}
+exports.setOnPermainan = setOnPermainan;
