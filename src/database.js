@@ -1,19 +1,19 @@
-const mongoose = require("mongoose");
-mongoose.connect("mongodb://127.0.0.1:27017/soalku");
+const mongoose = require('mongoose');
 
-var soalScheme = new mongoose.Schema({
+mongoose.connect('mongodb://127.0.0.1:27017/soalku');
+
+const soalScheme = new mongoose.Schema({
   _id: Number,
   soal: String,
   pilihan: Array,
-  jawaban: Number
+  jawaban: Number,
 }, {
-    collection: "soal"
-  }
-)
+  collection: 'soal',
+});
 
-var Soal = mongoose.model('Soal', soalScheme);
+const Soal = mongoose.model('Soal', soalScheme);
 
 function getSoal(id) {
-  return Soal.findById(id)
+  return Soal.findById(id);
 }
-exports.getSoal = getSoal
+exports.getSoal = getSoal;
