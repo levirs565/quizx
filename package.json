@@ -1,8 +1,10 @@
 {
   "dependencies": {
     "@types/mongoose": "^5.3.27",
+    "connect-mongo": "^2.0.3",
     "cors": "^2.8.5",
     "express": "^4.16.4",
+    "express-session": "^1.16.1",
     "mongoose": "^5.5.4",
     "underscore": "^1.9.1"
   },
