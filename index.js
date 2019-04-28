@@ -16,8 +16,8 @@ app.get("/api/test", function (req, res) {
 });
 
 // Api untuk mendapatkan soal
-app.get("/api/soal/:id", function (req, res) {
-  utils.handleBaseRequest(databases.getSoal(req.params.id), (val, isNull, req, res) => {
+app.get("/api/getSoal", function (req, res) {
+  utils.handleBaseRequest(databases.getSoal(req.query.id), (val, isNull, req, res) => {
     return {
       soal: isNull ? null : {
         _id: val._id,
