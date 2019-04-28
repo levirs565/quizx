@@ -44,7 +44,10 @@ app.post('/api/checkJawaban', (req, res) => {
 app.post('/api/startPermainan', (req, res) => {
   utils.handleBaseRequest(new Promise((resolve) => {
     sessions.setOnPermainan(req, true);
-    resolve(true);
+    databases.createRandomSoalCollections(40).then((val) => {
+      sessions.setSoalPermainan(req, val);
+      resolve(true);
+    });
   }), () => ({}), 'Kesalahan aneh', req, res);
 });
 
@@ -53,6 +56,23 @@ app.post('/api/stopPermainan', (req, res) => {
     sessions.setOnPermainan(req, false);
     resolve(true);
   }), () => ({}), 'Kesalahan aneh', req, res);
+});
+
+app.get('/api/getSoalPermainan', (req, res) => {
+  utils.handleBaseRequest(new Promise((resolve, reject) => {
+    if (!sessions.isOnPermainan(req)) {
+      reject(Error('Anda tidak dalam permainan'));
+    } else {
+      resolve(sessions.getSoalPermainan(req)[req.query.id]);
+    }
+  }), (val, isNull, treq) => ({
+    soal: isNull ? null : {
+      _id: treq.query.id,
+      soal: val.soal,
+      pilihan: val.pilihan,
+    },
+  }),
+  'Soal tidak ada', req, res);
 });
 
 app.listen(3000, () => {

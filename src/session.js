@@ -21,3 +21,13 @@ function setOnPermainan(req, state) {
   req.session.onPermainan = state;
 }
 exports.setOnPermainan = setOnPermainan;
+
+function getSoalPermainan(req) {
+  return req.session.soals;
+}
+exports.getSoalPermainan = getSoalPermainan;
+
+function setSoalPermainan(req, soals) {
+  req.session.soals = soals;
+}
+exports.setSoalPermainan = setSoalPermainan;

@@ -17,3 +17,23 @@ function getSoal(id) {
   return Soal.findById(id);
 }
 exports.getSoal = getSoal;
+
+function createRandomSoalCollections(size) {
+  return Soal.find().then((val) => {
+    const soals = val;
+    const count = val.length;
+    const result = [];
+
+    while (result.length < size) {
+      let index = Math.floor(Math.random() * count);
+      if (index === count) {
+        index = count - 1;
+      }
+
+      result.push(soals[index]);
+    }
+
+    return result;
+  });
+}
+exports.createRandomSoalCollections = createRandomSoalCollections;
