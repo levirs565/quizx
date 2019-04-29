@@ -1,8 +1,8 @@
 const express = require('express');
 const cors = require('cors');
-const databases = require('./src/database');
-const sessions = require('./src/session');
-const utils = require('./src/utils');
+const databases = require('./src/helper/database');
+const sessions = require('./src/helper/session');
+const utils = require('./src/helper/utils');
 
 const app = express();
 
