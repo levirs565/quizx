@@ -2,14 +2,17 @@ const mongoose = require('mongoose');
 
 mongoose.connect('mongodb://127.0.0.1:27017/soalku');
 
-const soalScheme = new mongoose.Schema({
-  _id: Number,
-  soal: String,
-  pilihan: Array,
-  jawaban: Number,
-}, {
-  collection: 'soal',
-});
+const soalScheme = new mongoose.Schema(
+  {
+    _id: Number,
+    soal: String,
+    pilihan: Array,
+    jawaban: Number
+  },
+  {
+    collection: 'soal'
+  }
+);
 
 const Soal = mongoose.model('Soal', soalScheme);
 
@@ -19,7 +22,7 @@ function getSoal(id) {
 exports.getSoal = getSoal;
 
 function createRandomSoalCollections(size) {
-  return Soal.find().then((val) => {
+  return Soal.find().then(val => {
     const soals = val;
     const count = val.length;
     const result = [];

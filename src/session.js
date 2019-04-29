@@ -4,11 +4,11 @@ const mongoose = require('mongoose');
 
 const savedSession = session({
   store: new MongoStore({
-    mongooseConnection: mongoose.connection,
+    mongooseConnection: mongoose.connection
   }),
   secret: 'wedus nabrak witk kambil neng sor mahku',
   resave: true,
-  saveUninitialized: false,
+  saveUninitialized: false
 });
 exports.savedSession = savedSession;
 
