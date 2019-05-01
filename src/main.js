@@ -7,3 +7,4 @@ require('./app').listen(3000, () => {
 });
 
 require('./api/base');
+require('./api/permainan');
