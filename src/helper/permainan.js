@@ -1,5 +1,3 @@
-const database = require('./database');
-
 function isOnPermainan(req) {
   return req.session.onPermainan;
 }
@@ -8,31 +6,24 @@ exports.isOnPermainan = isOnPermainan;
 function setOnPermainan(req, state) {
   req.session.onPermainan = state;
 }
+exports.setOnPermainan = setOnPermainan;
 
-function getSoalPermainan(req) {
+function getSoalCollection(req) {
   return req.session.soals;
 }
-exports.getSoalPermainan = getSoalPermainan;
+exports.getSoalCollection = getSoalCollection;
 
-function setSoalPermainan(req, soals) {
+function setSoalCollection(req, soals) {
   req.session.soals = soals;
 }
+exports.setSoalCollection = setSoalCollection;
 
-function startPermainan(req) {
-  return new Promise(resolve => {
-    setOnPermainan(req, true);
-    database.createRandomSoalCollections(40).then(val => {
-      setSoalPermainan(req, val);
-      resolve(true);
-    });
-  });
+function setJawabanCollection(req, jawabans) {
+  req.session.jawabans = jawabans;
 }
-exports.startPermainan = startPermainan;
+exports.setJawabanCollection = setJawabanCollection;
 
-function stopPermainan(req) {
-  return new Promise(resolve => {
-    setOnPermainan(req, false);
-    resolve(true);
-  });
+function getJawabanCollection(req) {
+  return req.session.jawabans;
 }
-exports.stopPermainan = stopPermainan;
+exports.getJawabanCollection = getJawabanCollection;
