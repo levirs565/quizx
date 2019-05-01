@@ -24,3 +24,22 @@ app.post('/api/permainan/start', (req, res) => {
     res
   );
 });
+
+app.post('/api/permainan/stop', (req, res) => {
+  utils.handleRequest(
+    new Promise((resolve, reject) => {
+      if (!helper.isOnPermainan(req)) {
+        reject(consts.MSG_N_ON_PERMAINAN);
+      }
+
+      helper.setOnPermainan(req, undefined);
+      helper.setJawabanCollection(req, undefined);
+      helper.setSoalCollection(req, undefined);
+      resolve(true);
+    }),
+    () => ({}),
+    consts.MSG_KESALAHAN_ANEH,
+    req,
+    res
+  );
+});
