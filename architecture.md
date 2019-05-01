@@ -17,6 +17,7 @@ Soal Helper : Soal getSoal(id)
 Soal Helper : Soal[] createRandomSoalCollection(count)
 Session Helper <--> Permainan Helper
 Session Helper : savedSession 
+Session Helper <--> App
 Result --* Permainan Helper
 Result : int salah
 Result : int benar
