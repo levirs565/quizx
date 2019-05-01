@@ -39,6 +39,7 @@ Soal Helper --> Base Api
 Session Helper --> Base Api
 Base Api : get soal(id)
 Base Api : post jawab()
-Base Api --* App
-Permainan Api --* App
+App --* Main
+Base Api --* Main
+Permainan Api --* Main
 ```
