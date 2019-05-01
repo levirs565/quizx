@@ -14,7 +14,10 @@ function handleRequest(promise, funcRes, nullMsg, req, res) {
       });
     },
     err => {
-      console.log(err);
+      if (typeof err === 'object') {
+        console.log(err);
+      }
+
       res.json({
         err: true,
         msg: err.toString(),
