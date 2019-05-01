@@ -1,7 +1,5 @@
 const mongoose = require('mongoose');
 
-mongoose.connect('mongodb://127.0.0.1:27017/soalku');
-
 const soalScheme = new mongoose.Schema(
   {
     _id: Number,
@@ -21,7 +19,7 @@ function getSoal(id) {
 }
 exports.getSoal = getSoal;
 
-function createRandomSoalCollections(size) {
+function createRandomSoalCollection(size) {
   return Soal.find().then(val => {
     const soals = val;
     const count = val.length;
@@ -39,4 +37,4 @@ function createRandomSoalCollections(size) {
     return result;
   });
 }
-exports.createRandomSoalCollections = createRandomSoalCollections;
+exports.createRandomSoalCollection = createRandomSoalCollection;
