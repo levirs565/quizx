@@ -4,6 +4,12 @@ const consts = require('../consts');
 const helper = require('../helper/permainan');
 const soal = require('../helper/soal');
 
+function checkInPermainan(req, reject) {
+  if (!helper.isOnPermainan(req)) {
+    reject(consts.MSG_N_ON_PERMAINAN);
+  }
+}
+
 app.post('/api/permainan/start', (req, res) => {
   utils.handleRequest(
     new Promise((resolve, reject) => {
@@ -28,9 +34,7 @@ app.post('/api/permainan/start', (req, res) => {
 app.get('/api/permainan/soal/:id', (req, res) => {
   utils.handleRequest(
     new Promise((resolve, reject) => {
-      if (!helper.isOnPermainan(req)) {
-        reject(consts.MSG_N_ON_PERMAINAN);
-      }
+      checkInPermainan(req, reject);
 
       resolve(helper.getSoalCollection(req)[req.params.id]);
     }),
@@ -52,9 +56,7 @@ app.get('/api/permainan/soal/:id', (req, res) => {
 app.post('/api/permainan/stop', (req, res) => {
   utils.handleRequest(
     new Promise((resolve, reject) => {
-      if (!helper.isOnPermainan(req)) {
-        reject(consts.MSG_N_ON_PERMAINAN);
-      }
+      checkInPermainan(req, reject);
 
       helper.setOnPermainan(req, undefined);
       helper.setJawabanCollection(req, undefined);
