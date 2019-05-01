@@ -8,7 +8,7 @@ app.post('/api/permainan/start', (req, res) => {
   utils.handleRequest(
     new Promise((resolve, reject) => {
       if (helper.isOnPermainan(req)) {
-        reject(Error(consts.MSG_ON_PERMAINAN));
+        reject(consts.MSG_ON_PERMAINAN);
       }
 
       helper.setOnPermainan(req, true);
