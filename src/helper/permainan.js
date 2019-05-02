@@ -37,3 +37,13 @@ function getJawabanCollection(req) {
   return req.session.jawabans;
 }
 exports.getJawabanCollection = getJawabanCollection;
+
+function setResults(req, result) {
+  req.session.results = result;
+}
+exports.setResults = setResults;
+
+function getResults(req) {
+  return req.session.results;
+}
+exports.getResults = getResults;
