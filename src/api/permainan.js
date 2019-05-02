@@ -53,6 +53,22 @@ app.get('/api/permainan/soal/:id', (req, res) => {
   );
 });
 
+app.post('/api/permainan/jawab/:id', (req, res) => {
+  utils.handleRequest(
+    new Promise((resolve, reject) => {
+      checkInPermainan(req, reject);
+
+      helper.getSoalCollection(req)[req.params.id] = req.body.jawaban;
+
+      resolve(true);
+    }),
+    () => ({}),
+    consts.MSG_SOAL_NF,
+    req,
+    res
+  );
+});
+
 app.post('/api/permainan/stop', (req, res) => {
   utils.handleRequest(
     new Promise((resolve, reject) => {
