@@ -8,6 +8,16 @@ function setOnPermainan(req, state) {
 }
 exports.setOnPermainan = setOnPermainan;
 
+function isPermainanFinished(req) {
+  return req.session.permainanFinish;
+}
+exports.isPermainanFinished = isPermainanFinished;
+
+function setPermainanFinished(req, state) {
+  req.session.permainanFinish = state;
+}
+exports.setPermainanFinished = setPermainanFinished;
+
 function getSoalCollection(req) {
   return req.session.soals;
 }
