@@ -26,6 +26,8 @@ Result : int skor
 Permainan Helper <--> Permainan Api
 Permainan Helper : bool isOnPermainan()
 Permainan Helper : void setOnPermainan(on)
+Permainan Helper : bool isPermainanFinished()
+Permainan Helper : void setPermainanFinished()
 Permainan Helper : Soal[] getSoalCollection()
 Permainan Helper : void setSoalCollection(col)
 Permainan Helper : int[] getJawabanCollection()
