@@ -58,7 +58,7 @@ app.post('/api/permainan/jawab/:id', (req, res) => {
     new Promise((resolve, reject) => {
       checkInPermainan(req, reject);
 
-      helper.getSoalCollection(req)[req.params.id] = req.body.jawaban;
+      helper.getJawabanCollection(req)[req.params.id] = req.body.jawaban;
 
       resolve(true);
     }),
