@@ -15,6 +15,8 @@ Soal Collection --> Soal Helper
 Soal Helper --> Permainan Api
 Soal Helper : Soal getSoal(id)
 Soal Helper : Soal[] createRandomSoalCollection(count)
+Result --* Soal Helper
+Soal Helper : Result calculateResults(soal, jawaban)
 Session Helper <--> Permainan Helper
 Session Helper : savedSession 
 Session Helper <--> App
