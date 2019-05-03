@@ -41,7 +41,6 @@ function createRandomSoalCollection(size) {
 exports.createRandomSoalCollection = createRandomSoalCollection;
 
 function calculateResults(soals, jawabans) {
-  console.log(jawabans);
   const resuls = {
     benar: [],
     salah: [],
