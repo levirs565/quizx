@@ -18,6 +18,7 @@ app.post('/api/permainan/start', (req, res) => {
       }
 
       helper.setOnPermainan(req, true);
+      helper.setPermainanFinished(req, false);
       helper.setJawabanCollection(req, []);
       soal.createRandomSoalCollection(40).then(val => {
         helper.setSoalCollection(req, val);
@@ -75,12 +76,41 @@ app.post('/api/permainan/stop', (req, res) => {
       checkInPermainan(req, reject);
 
       helper.setOnPermainan(req, undefined);
+      helper.setResults(
+        req,
+        soal.calculateResults(helper.getSoalCollection(req), helper.getJawabanCollection(req))
+      );
+      helper.setPermainanFinished(req, true);
       helper.setJawabanCollection(req, undefined);
       helper.setSoalCollection(req, undefined);
       resolve(true);
     }),
     () => ({}),
     consts.MSG_KESALAHAN_ANEH,
+    req,
+    res
+  );
+});
+
+app.get('/api/permainan/results', (req, res) => {
+  utils.handleRequest(
+    new Promise(resolve => {
+      if (!helper.isPermainanFinished(req)) {
+        resolve(null);
+      }
+
+      resolve(helper.getResults(req));
+    }),
+    (val, isNull) => ({
+      results: isNull
+        ? null
+        : {
+            takDiJawab: val.takDiJawab.length,
+            benar: val.benar.length,
+            salah: val.salah.length
+          }
+    }),
+    consts.MSG_N_FINISHED,
     req,
     res
   );
