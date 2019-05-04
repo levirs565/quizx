@@ -5,8 +5,7 @@ export function getSoal(id) {
 }
 
 export function checkJawaban(id, jawaban) {
-  return axios.post('http://localhost:3000/api/checkJawaban', {
-    id: id,
+  return axios.post(`http://localhost:3000/api/jawab/${id}`, {
     jawaban: jawaban
   });
 }
