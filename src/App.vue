@@ -4,7 +4,7 @@
     <br>
     <button @click="soalLain(-1)" style="float: left;" :disabled="soal._id <= 0">Soal Sebelumnya</button>
     <button @click="soalLain(1)" style="float: right;">Soal Selanjutnya</button>-->
-    <router-view></router-view>
+    <router-view class="router-view"></router-view>
   </div>
 </template>
 
@@ -66,5 +66,24 @@ export default {
   color: #2c3e50;
   margin-top: 60px;
   padding: 0 20%;
+}
+
+button, input[type=button] {
+  background-color: darkgreen;
+  border: none;
+  padding: 10px 50px;
+  font-size: 16px;
+  color: white;
+}
+button:hover, input[type=button]:hover {
+  background-color: green;
+}
+
+button:active, input[type=button]:active {
+  background-color: lightgreen;
+}
+
+button:disabled, input[type=button]:disabled {
+  background-color: olive;
 }
 </style>
