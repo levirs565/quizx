@@ -1,5 +1,6 @@
 <template>
   <div class="permainan">
+    <button>Mulai Permainan</button>
   </div>
 </template>
 
@@ -10,5 +11,7 @@ export default {
 </script>
 
 <style>
-
+.permainan {
+  text-align: center;
+}
 </style>
