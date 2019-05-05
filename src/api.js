@@ -26,6 +26,18 @@ export function getSoalPermainan(id) {
   });
 }
 
+export function postJawabanPermainan(id, jawaban) {
+  return axios.post(
+    `http://localhost:3000/api/permainan/jawab/${id}`,
+    {
+      jawaban: jawaban
+    },
+    {
+      withCredentials: true
+    }
+  );
+}
+
 export function stopPermainan() {
   return axios.post('http://localhost:3000/api/permainan/stop', {}, {
     withCredentials: true
