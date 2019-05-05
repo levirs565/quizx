@@ -56,6 +56,7 @@ export default {
         } else {
           console.log(val.msg);
         }
+        this.currentSoal = undefined;
       });
     },
     goToSoal(id) {
