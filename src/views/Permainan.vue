@@ -14,13 +14,14 @@
       :pilihan="currentSoal.pilihan"
       :soalId="currentSoal.id"
       teksSubmit="Kirim Jawaban"
+      @submit="soalSubmit"
       class="soal"
     ></soal>
   </div>
 </template>
 
 <script>
-import { startPermainan, stopPermainan, getSoalPermainan } from "../api.js";
+import { startPermainan, stopPermainan, getSoalPermainan, postJawabanPermainan } from "../api.js";
 import Soal from "../components/Soal.vue";
 
 export default {
@@ -84,7 +85,14 @@ export default {
       this.lastSelectedElement = target;
 
       this.goToSoal(Number(target.dataset.soalId));
-    }
+    },
+    soalSubmit(co) {
+      let jawaban = co.pilihanTerpilih; 
+      let id = co.soalId;
+      postJawabanPermainan(id, jawaban).then(res => {
+        console.log(res.data);
+      })
+    } 
   }
 };
 </script>
