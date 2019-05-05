@@ -1,12 +1,50 @@
 <template>
   <div class="permainan">
-    <button>Mulai Permainan</button>
+    <button v-if="!onPermainan" @click="start()">Mulai Permainan</button>
+    <button v-else @click="stop()">Hentikan Permainan</button>
+    <br/>
+    <ul v-if="onPermainan" style="list-type: none;">
+      <li style="display: inline;" v-for="index in Array(soalCount).keys()" :key="index">
+        <button class="small">{{ index + 1 }}</button>
+      </li>
+    </ul>
   </div>
 </template>
 
 <script>
-export default {
+import { startPermainan, stopPermainan } from '../api.js'
 
+export default {
+  data() {
+    return {
+      onPermainan: false,
+      soalCount: 40,
+    }
+  },
+  methods: {
+    start() {
+      startPermainan().then(res => {
+        let val = res.data;
+        console.log(val);
+        if (!val.err) {
+          this.onPermainan = true;
+        } else {
+          console.log(val.msg);
+        }
+      });
+    },
+    stop() {
+      stopPermainan().then(res => {
+        let val = res.data;
+        console.log(val);
+        if (!val.err) {
+          this.onPermainan = false;
+        } else {
+          console.log(val.msg);
+        }
+      });
+    }
+  }
 }
 </script>
 
