@@ -5,7 +5,7 @@
     <br/>
     <ul v-if="onPermainan" style="list-type: none;">
       <li style="display: inline;" v-for="index in Array(soalCount).keys()" :key="index">
-        <button class="small">{{ index + 1 }}</button>
+        <button class="small" @click="jumpSoal" data-soal-id="10">{{ index + 1 }}</button>
       </li>
     </ul>
   </div>
@@ -19,6 +19,7 @@ export default {
     return {
       onPermainan: false,
       soalCount: 40,
+      lastSelectedElement: undefined,
     }
   },
   methods: {
@@ -43,6 +44,19 @@ export default {
           console.log(val.msg);
         }
       });
+    },
+    jumpSoal(e) {
+      let target = e.target; 
+
+      if (target == this.lastSelectedElement) {
+        return;
+      }
+
+      target.classList.add('selected');
+      if (this.lastSelectedElement !== undefined) {
+        this.lastSelectedElement.classList.remove('selected');
+      }
+      this.lastSelectedElement = target;
     }
   }
 }
