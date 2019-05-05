@@ -65,7 +65,7 @@ export default {
   -moz-osx-font-smoothing: grayscale;
   color: #2c3e50;
   margin-top: 60px;
-  padding: 0 20%;
+  padding: 0 0.5rem;
 }
 
 button, input[type=button] {
@@ -85,5 +85,13 @@ button:active, input[type=button]:active {
 
 button:disabled, input[type=button]:disabled {
   background-color: olive;
+}
+
+button.small {
+  padding: 10px 20px;
+}
+
+button.selected {
+  background-color: olivedrab;
 }
 </style>
