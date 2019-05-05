@@ -20,6 +20,12 @@ export function startPermainan() {
   });
 }
 
+export function getSoalPermainan(id) {
+  return axios.get(`http://localhost:3000/api/permainan/soal/${id}`, {
+    withCredentials: true
+  });
+}
+
 export function stopPermainan() {
   return axios.post('http://localhost:3000/api/permainan/stop', {}, {
     withCredentials: true
