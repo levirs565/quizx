@@ -17,6 +17,7 @@
       @submit="soalSubmit"
       class="soal"
     ></soal>
+    <p style="color: red;" v-text="lastErr" v-show="lastErr !== undefined"></p>
   </div>
 </template>
 
@@ -33,29 +34,30 @@ export default {
       onPermainan: false,
       soalCount: 40,
       lastSelectedElement: undefined,
-      currentSoal: undefined
+      currentSoal: undefined,
+      lastErr: undefined
     };
   },
   methods: {
     start() {
       startPermainan().then(res => {
         let val = res.data;
-        console.log(val);
         if (!val.err) {
           this.onPermainan = true;
+          this.lastErr = undefined;
         } else {
-          console.log(val.msg);
+          this.lastErr = val.msg;
         }
       });
     },
     stop() {
       stopPermainan().then(res => {
         let val = res.data;
-        console.log(val);
         if (!val.err) {
           this.onPermainan = false;
+          this.lastErr = undefined;
         } else {
-          console.log(val.msg);
+          this.lastErr = val.msg;
         }
         this.currentSoal = undefined;
       });
@@ -65,9 +67,10 @@ export default {
         let data = res.data;
 
         if (data.err) {
-          console.log(data.msg);
+          this.lastErr = data.msg;
         } else {
           this.currentSoal = data.soal;
+          this.lastErr = undefined;
         }
       });
     },
@@ -90,8 +93,13 @@ export default {
       let jawaban = co.pilihanTerpilih; 
       let id = co.soalId;
       postJawabanPermainan(id, jawaban).then(res => {
-        console.log(res.data);
-      })
+        let data = res.data;
+        if (data.err) {
+          this.lastErr = data.msg;
+        } else {
+          // TO-DO
+        }
+      });
     } 
   }
 };
