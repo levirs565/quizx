@@ -43,7 +43,7 @@ app.get('/api/permainan/soal/:id', (req, res) => {
       soal: isNull
         ? null
         : {
-            id: req.params.id,
+            id: Number(req.params.id),
             soal: val.soal,
             pilihan: val.pilihan
           }
