@@ -108,6 +108,15 @@ export default {
 
       document.querySelector(`button.small[data-soal-id='${id}']`).click();
     } 
+  },
+  watch: {
+    onPermainan() {
+      if (this.onPermainan) {
+        this.$nextTick(function () {
+          this.jumpSoalID(0);
+        });
+      }
+    }
   }
 };
 </script>
