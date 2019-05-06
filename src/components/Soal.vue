@@ -44,6 +44,11 @@ export default {
     buttonClick() {
       this.$emit("submit", this);
     }
+  },
+  watch: {
+    soalId() {
+      this.$emit('change', this);
+    }
   }
 };
 </script>
