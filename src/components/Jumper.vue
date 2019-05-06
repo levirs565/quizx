@@ -6,7 +6,7 @@
       @click="jumpClick(index)"
       :class="{
         'small': true,
-        'selected': value == index
+        'selected': current == index
       }"
     >{{ index }}</button>
   </div>
@@ -14,16 +14,21 @@
 
 <script>
 export default {
-  props: ["total", 'default'],
+  props: ["total", 'value'],
   data() {
     return {
-      value: this.default
+      current: this.value
     };
   },
   methods: {
     jumpClick(id) {
-      this.value = id;
-      this.$emit('input', this.value);
+      this.current = id;
+      this.$emit('input', this.current);
+    }
+  },
+  watch: {
+    value() {
+      this.current = this.value;
     }
   }
 };
