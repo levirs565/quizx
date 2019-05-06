@@ -19,16 +19,20 @@
       class="soal"
     ></soal>
     <p style="color: red;" v-text="lastErr" v-show="lastErr !== undefined"></p>
+    <permainan-result v-if="result !== undefined" :results="result">
+    </permainan-result>
   </div>
 </template>
 
 <script>
-import { startPermainan, stopPermainan, getSoalPermainan, postJawabanPermainan } from "../api.js";
+import { startPermainan, stopPermainan, getSoalPermainan, postJawabanPermainan, getPermainanResults } from "../api.js";
 import Soal from "../components/Soal.vue";
+import PermainanResult from '../components/PermainanResult.vue'
 
 export default {
   components: {
-    Soal
+    Soal,
+    PermainanResult
   },
   data() {
     return {
@@ -36,7 +40,8 @@ export default {
       soalCount: 40,
       lastSelectedElement: undefined,
       currentSoal: undefined,
-      lastErr: undefined
+      lastErr: undefined,
+      result: undefined
     };
   },
   methods: {
@@ -46,6 +51,7 @@ export default {
         if (!val.err) {
           this.onPermainan = true;
           this.lastErr = undefined;
+          this.updateResult();
         } else {
           this.lastErr = val.msg;
         }
@@ -57,6 +63,7 @@ export default {
         if (!val.err) {
           this.onPermainan = false;
           this.lastErr = undefined;
+          this.updateResult();
         } else {
           this.lastErr = val.msg;
         }
@@ -113,6 +120,22 @@ export default {
       this.$nextTick(function () {
         soal.changeJawaban(-1);
       })
+    },
+    updateResult() {
+      if (this.onPermainan) {
+        this.result = undefined;
+      } else {
+        getPermainanResults().then((res) => {
+          let data = res.data;
+          
+          if (data.err) {
+            this.lastErr = data.msg;
+          } else {
+            this.result = data.results;
+            this.lastErr = undefined;
+          }
+        })
+      }
     }
   },
   watch: {
