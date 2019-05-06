@@ -8,9 +8,7 @@
     </jumper>
     <soal
       v-if="currentSoal != undefined"
-      :soal="currentSoal.soal"
-      :pilihan="currentSoal.pilihan"
-      :soalId="currentSoal.id"
+      :soal="currentSoal"
       teksSubmit="Kirim Jawaban"
       @submit="soalSubmit"
       @change="soalChange"
@@ -74,7 +72,7 @@ export default {
     },
     soalSubmit(co) {
       let jawaban = co.pilihanTerpilih; 
-      let id = co.soalId;
+      let id = co.soal.id;
       postJawabanPermainan(id, jawaban).then(res => {
         let data = res.data;
         if (data.err) {
