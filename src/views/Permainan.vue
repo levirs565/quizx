@@ -97,9 +97,16 @@ export default {
         if (data.err) {
           this.lastErr = data.msg;
         } else {
-          // TO-DO
+          this.jumpSoalID(id + 1);
         }
       });
+    },
+    jumpSoalID(id) {
+      if (id > this.soalCount - 1) {
+        return;
+      }
+
+      document.querySelector(`button.small[data-soal-id='${id}']`).click();
     } 
   }
 };
