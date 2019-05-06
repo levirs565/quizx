@@ -1,16 +1,16 @@
 <template>
   <form class="soal">
-    <p v-text="soal"></p>
-    <template v-for="(entry, index) in pilihan">
+    <p v-text="soal.soal"></p>
+    <template v-for="(entry, index) in soal.pilihan">
       <input
         type="radio"
-        :id="'pilihan' + soalId +'|' + index"
+        :id="'pilihan' + soal.id +'|' + index"
         name="pilihan"
         :key="index + 'i'"
         :value="index"
         v-model="pilihanTerpilih"
       >
-      <label :for="'pilihan' + soalId +'|' + index" :key="index + 'l'" v-text="entry"></label>
+      <label :for="'pilihan' + soal.id +'|' + index" :key="index + 'l'" v-text="entry"></label>
       <br :key="index + 'br'">
     </template>
     <br>
@@ -22,13 +22,11 @@
 <script>
 export default {
   props: {
-    soal: String,
-    pilihan: Array,
+    soal: Object,
     teksSubmit: {
       type: String,
       default: "Check Jawaban"
     },
-    soalId: Number
   },
   data() {
     return {
@@ -41,7 +39,7 @@ export default {
     }
   },
   watch: {
-    soalId() {
+    soal() {
       this.$emit('change', this);
     }
   }
