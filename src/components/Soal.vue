@@ -8,7 +8,7 @@
         name="pilihan"
         :key="index + 'i'"
         :value="index"
-        @input="radioInput"
+        v-model="pilihanTerpilih"
       >
       <label :for="'pilihan' + soalId +'|' + index" :key="index + 'l'" v-text="entry"></label>
       <br :key="index + 'br'">
@@ -36,17 +36,8 @@ export default {
     };
   },
   methods: {
-    radioInput(ev) {
-      this.pilihanTerpilih = Number(ev.target.value);
-    },
     buttonClick() {
       this.$emit("submit", this);
-    },
-    changeJawaban(id) {
-      this.$el.querySelectorAll('input[type=radio]').forEach(el => {
-        el.checked = Number(el.value) == id;  
-      })
-      this.pilihanTerpilih = id;
     }
   },
   watch: {
