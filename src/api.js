@@ -43,3 +43,9 @@ export function stopPermainan() {
     withCredentials: true
   });
 }
+
+export function getPermainanResults() {
+  return axios.get('http://localhost:3000/api/permainan/results', {
+    withCredentials: true,
+  });
+}
