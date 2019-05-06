@@ -15,6 +15,7 @@
       :soalId="currentSoal.id"
       teksSubmit="Kirim Jawaban"
       @submit="soalSubmit"
+      @change="soalChange"
       class="soal"
     ></soal>
     <p style="color: red;" v-text="lastErr" v-show="lastErr !== undefined"></p>
@@ -107,7 +108,12 @@ export default {
       }
 
       document.querySelector(`button.small[data-soal-id='${id}']`).click();
-    } 
+    },
+    soalChange(soal) {
+      this.$nextTick(function () {
+        soal.changeJawaban(-1);
+      })
+    }
   },
   watch: {
     onPermainan() {
