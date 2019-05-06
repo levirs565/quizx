@@ -3,11 +3,9 @@
     <button v-if="!onPermainan" @click="start()">Mulai Permainan</button>
     <button v-else @click="stop()">Hentikan Permainan</button>
     <br/>
-    <ul v-if="onPermainan" style="list-type: none;">
-      <li style="display: inline;" v-for="index in Array(soalCount).keys()" :key="index">
-        <button class="small" @click="jumpSoal" :data-soal-id="index">{{ index + 1 }}</button>
-      </li>
-    </ul>
+    <br/>
+    <jumper v-if="onPermainan" :total="soalCount" :value="1" v-model="currentSoalId">
+    </jumper>
     <soal
       v-if="currentSoal != undefined"
       :soal="currentSoal.soal"
@@ -28,18 +26,20 @@
 import { startPermainan, stopPermainan, getSoalPermainan, postJawabanPermainan, getPermainanResults } from "../api.js";
 import Soal from "../components/Soal.vue";
 import PermainanResult from '../components/PermainanResult.vue'
+import Jumper from '../components/Jumper.vue'
 
 export default {
   components: {
     Soal,
-    PermainanResult
+    PermainanResult,
+    Jumper
   },
   data() {
     return {
       onPermainan: false,
       soalCount: 40,
-      lastSelectedElement: undefined,
       currentSoal: undefined,
+      currentSoalId: 0,
       lastErr: undefined,
       result: undefined
     };
@@ -51,6 +51,7 @@ export default {
         if (!val.err) {
           this.onPermainan = true;
           this.lastErr = undefined;
+          this.currentSoalId = 1;
           this.updateResult();
         } else {
           this.lastErr = val.msg;
@@ -70,33 +71,6 @@ export default {
         this.currentSoal = undefined;
       });
     },
-    goToSoal(id) {
-      getSoalPermainan(id).then(res => {
-        let data = res.data;
-
-        if (data.err) {
-          this.lastErr = data.msg;
-        } else {
-          this.currentSoal = data.soal;
-          this.lastErr = undefined;
-        }
-      });
-    },
-    jumpSoal(e) {
-      let target = e.target;
-
-      if (target == this.lastSelectedElement) {
-        return;
-      }
-
-      target.classList.add("selected");
-      if (this.lastSelectedElement !== undefined) {
-        this.lastSelectedElement.classList.remove("selected");
-      }
-      this.lastSelectedElement = target;
-
-      this.goToSoal(Number(target.dataset.soalId));
-    },
     soalSubmit(co) {
       let jawaban = co.pilihanTerpilih; 
       let id = co.soalId;
@@ -105,16 +79,11 @@ export default {
         if (data.err) {
           this.lastErr = data.msg;
         } else {
-          this.jumpSoalID(id + 1);
+          if (this.currentSoalId < 40) {
+            this.currentSoalId++;
+          }
         }
       });
-    },
-    jumpSoalID(id) {
-      if (id > this.soalCount - 1) {
-        return;
-      }
-
-      document.querySelector(`button.small[data-soal-id='${id}']`).click();
     },
     soalChange(soal) {
       this.$nextTick(function () {
@@ -142,9 +111,20 @@ export default {
     onPermainan() {
       if (this.onPermainan) {
         this.$nextTick(function () {
-          this.jumpSoalID(0);
         });
       }
+    },
+    currentSoalId() {
+      getSoalPermainan(this.currentSoalId - 1).then(res => {
+        let data = res.data;
+
+        if (data.err) {
+          this.lastErr = data.msg;
+        } else {
+          this.currentSoal = data.soal;
+          this.lastErr = undefined;
+        }
+      });
     }
   }
 };
