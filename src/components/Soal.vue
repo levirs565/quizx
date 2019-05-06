@@ -14,7 +14,7 @@
       <br :key="index + 'br'">
     </template>
     <br>
-    <input type="button" :value="teksSubmit" :disabled="!dapatDiSubmit" @click="buttonClick">
+    <input type="button" :value="teksSubmit" :disabled="pilihanTerpilih < 0" @click="buttonClick">
     <br>
   </form>
 </template>
@@ -32,17 +32,21 @@ export default {
   },
   data() {
     return {
-      dapatDiSubmit: false,
       pilihanTerpilih: -1
     };
   },
   methods: {
     radioInput(ev) {
-      this.dapatDiSubmit = true;
       this.pilihanTerpilih = Number(ev.target.value);
     },
     buttonClick() {
       this.$emit("submit", this);
+    },
+    changeJawaban(id) {
+      this.$el.querySelectorAll('input[type=radio]').forEach(el => {
+        el.checked = Number(el.value) == id;  
+      })
+      this.pilihanTerpilih = id;
     }
   },
   watch: {
