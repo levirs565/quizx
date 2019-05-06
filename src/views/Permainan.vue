@@ -88,7 +88,7 @@ export default {
     },
     soalChange(soal) {
       this.$nextTick(function () {
-        soal.changeJawaban(-1);
+        soal.pilihanTerpilih = -1;
       })
     },
     updateResult() {
