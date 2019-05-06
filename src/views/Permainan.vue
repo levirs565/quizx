@@ -64,6 +64,7 @@ export default {
         if (!val.err) {
           this.onPermainan = false;
           this.lastErr = undefined;
+          this.currentSoalId = 0;
           this.updateResult();
         } else {
           this.lastErr = val.msg;
@@ -115,16 +116,18 @@ export default {
       }
     },
     currentSoalId() {
-      getSoalPermainan(this.currentSoalId - 1).then(res => {
-        let data = res.data;
+      if (this.onPermainan) {
+        getSoalPermainan(this.currentSoalId - 1).then(res => {
+          let data = res.data;
 
-        if (data.err) {
-          this.lastErr = data.msg;
-        } else {
-          this.currentSoal = data.soal;
-          this.lastErr = undefined;
-        }
-      });
+          if (data.err) {
+            this.lastErr = data.msg;
+          } else {
+            this.currentSoal = data.soal;
+            this.lastErr = undefined;
+          }
+        });
+      }
     }
   }
 };
