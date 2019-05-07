@@ -14,7 +14,13 @@
       <br :key="index + 'br'">
     </template>
     <br>
-    <input class="button is-primary" type="button" :value="teksSubmit" :disabled="pilihanTerpilih < 0" @click="buttonClick">
+    <input
+      class="button is-primary"
+      type="button"
+      :value="teksSubmit"
+      :disabled="pilihanTerpilih < 0"
+      @click="buttonClick"
+    >
     <br>
   </form>
 </template>
@@ -26,7 +32,7 @@ export default {
     teksSubmit: {
       type: String,
       default: "Check Jawaban"
-    },
+    }
   },
   data() {
     return {
@@ -40,7 +46,7 @@ export default {
   },
   watch: {
     soal() {
-      this.$emit('change', this);
+      this.$emit("change", this);
     }
   }
 };

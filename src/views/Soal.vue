@@ -1,10 +1,6 @@
 <template>
   <div class="soal-views">
-    <soal
-      v-if="soal"
-      :soal="soal"
-      @submit="soalSubmit"
-    ></soal>
+    <soal v-if="soal" :soal="soal" @submit="soalSubmit"></soal>
     <p v-else v-text="errorTerakhir"></p>
     <p v-if="telahDijawab">Jawaban anda {{ jawabanBenar ? 'benar' : 'salah' }}</p>
   </div>

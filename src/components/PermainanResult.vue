@@ -9,10 +9,9 @@
 
 <script>
 export default {
-  props: ['results']
-}
+  props: ["results"]
+};
 </script>
 
 <style>
-
 </style>

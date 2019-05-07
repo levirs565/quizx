@@ -14,7 +14,7 @@
 
 <script>
 export default {
-  props: ["total", 'value'],
+  props: ["total", "value"],
   data() {
     return {
       current: this.value
@@ -23,7 +23,7 @@ export default {
   methods: {
     jumpClick(id) {
       this.current = id;
-      this.$emit('input', this.current);
+      this.$emit("input", this.current);
     }
   },
   watch: {

@@ -6,12 +6,12 @@
 
 <script>
 export default {
-  name: "app",
+  name: "app"
 };
 </script>
 
 <style>
-@import '../node_modules/bulma/css/bulma.css';
+@import "../node_modules/bulma/css/bulma.css";
 
 #app {
   font-family: "Avenir", Helvetica, Arial, sans-serif;
