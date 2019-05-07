@@ -2,9 +2,7 @@
   <div class="soal-views">
     <soal
       v-if="soal"
-      :soal="soal.soal"
-      :pilihan="soal.pilihan"
-      :soalId="soalId"
+      :soal="soal"
       @submit="soalSubmit"
     ></soal>
     <p v-else v-text="errorTerakhir"></p>

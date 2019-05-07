@@ -1,10 +1,11 @@
 <template>
   <div class="permainan">
-    <button v-if="!onPermainan" @click="start()">Mulai Permainan</button>
-    <button v-else @click="stop()">Hentikan Permainan</button>
+    <button v-if="!onPermainan" @click="start()" class="button is-primary">Mulai Permainan</button>
+    <button v-else @click="stop()" class="button is-danger">Hentikan Permainan</button>
     <br/>
     <br/>
-    <jumper v-if="onPermainan" :total="soalCount" :value="1" v-model="currentSoalId">
+    <div class="columns">
+    <jumper class="column is-one-third" v-if="onPermainan" :total="soalCount" :value="1" v-model="currentSoalId">
     </jumper>
     <soal
       v-if="currentSoal != undefined"
@@ -12,9 +13,10 @@
       teksSubmit="Kirim Jawaban"
       @submit="soalSubmit"
       @change="soalChange"
-      class="soal"
+      class="column"
     ></soal>
     <p style="color: red;" v-text="lastErr" v-show="lastErr !== undefined"></p>
+    </div>
     <permainan-result v-if="result !== undefined" :results="result">
     </permainan-result>
   </div>
@@ -121,7 +123,7 @@ export default {
 
 .soal {
   text-align: left; 
-  padding: 2.5% 15%;
+  /* padding: 2.5% 15%; */
 }
 
 .soal > input[type=button] {

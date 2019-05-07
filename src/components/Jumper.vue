@@ -1,13 +1,13 @@
 <template>
-  <div class="jumper">
+  <div class="jumper buttons columns">
     <button
       v-for="index in total"
       :key="index"
       @click="jumpClick(index)"
       :class="{
-        'small': true,
-        'selected': current == index
+        'is-info is-selected': current == index
       }"
+      class="button column is-2 is-radiusless is-inline-flex"
     >{{ index }}</button>
   </div>
 </template>
@@ -35,4 +35,7 @@ export default {
 </script>
 
 <style>
+.jumper {
+  text-align: left;
+}
 </style>

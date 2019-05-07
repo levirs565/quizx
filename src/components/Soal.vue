@@ -14,7 +14,7 @@
       <br :key="index + 'br'">
     </template>
     <br>
-    <input type="button" :value="teksSubmit" :disabled="pilihanTerpilih < 0" @click="buttonClick">
+    <input class="button is-primary" type="button" :value="teksSubmit" :disabled="pilihanTerpilih < 0" @click="buttonClick">
     <br>
   </form>
 </template>
