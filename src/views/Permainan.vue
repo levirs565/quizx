@@ -44,44 +44,35 @@ export default {
   },
   methods: {
     start() {
-      startPermainan().then(res => {
-        let val = res.data;
-        if (!val.err) {
-          this.onPermainan = true;
-          this.lastErr = undefined;
-          this.currentSoalId = 1;
-          this.updateResult();
-        } else {
-          this.lastErr = val.msg;
-        }
+      startPermainan().then(() => {
+        this.onPermainan = true;
+        this.lastErr = undefined;
+        this.currentSoalId = 1;
+        this.updateResult();
+      }).catch(err => {
+        this.lastErr = err;
       });
     },
     stop() {
       stopPermainan().then(res => {
-        let val = res.data;
-        if (!val.err) {
-          this.onPermainan = false;
-          this.lastErr = undefined;
-          this.currentSoalId = 0;
-          this.updateResult();
-        } else {
-          this.lastErr = val.msg;
-        }
+        this.onPermainan = false;
+        this.lastErr = undefined;
+        this.currentSoalId = 0;
+        this.updateResult();
         this.currentSoal = undefined;
+      }).catch(err => {
+        this.lastErr = err;
       });
     },
     soalSubmit(co) {
       let jawaban = co.pilihanTerpilih; 
       let id = co.soal.id;
-      postJawabanPermainan(id, jawaban).then(res => {
-        let data = res.data;
-        if (data.err) {
-          this.lastErr = data.msg;
-        } else {
-          if (this.currentSoalId < 40) {
-            this.currentSoalId++;
-          }
+      postJawabanPermainan(id, jawaban).then(() => {
+        if (this.currentSoalId < 40) {
+          this.currentSoalId++;
         }
+      }).catch(err => {
+        this.lastErr = err;
       });
     },
     soalChange(soal) {
@@ -93,15 +84,11 @@ export default {
       if (this.onPermainan) {
         this.result = undefined;
       } else {
-        getPermainanResults().then((res) => {
-          let data = res.data;
-          
-          if (data.err) {
-            this.lastErr = data.msg;
-          } else {
-            this.result = data.results;
-            this.lastErr = undefined;
-          }
+        getPermainanResults().then(data => {
+          this.result = data.results;
+          this.lastErr = undefined;
+        }).catch(err => {
+          this.lastErr = err;
         })
       }
     }
@@ -115,15 +102,11 @@ export default {
     },
     currentSoalId() {
       if (this.onPermainan) {
-        getSoalPermainan(this.currentSoalId - 1).then(res => {
-          let data = res.data;
-
-          if (data.err) {
-            this.lastErr = data.msg;
-          } else {
-            this.currentSoal = data.soal;
-            this.lastErr = undefined;
-          }
+        getSoalPermainan(this.currentSoalId - 1).then(data => {
+          this.currentSoal = data.soal;
+          this.lastErr = undefined;
+        }).catch(err => {
+          this.lastErr = err;
         });
       }
     }

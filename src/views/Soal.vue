@@ -47,11 +47,9 @@ export default {
       this.telahDijawab = false;
       this.jawabanBenar = false;
       getSoal(this.soalId).then(
-        val => {
-          let soal = val.data.soal;
-          let error = val.data.err ? val.data.msg : undefined;
+        data => {
+          let soal = data.soal;
           this.$set(this, "soal", soal);
-          this.$set(this, "errorTerakhir", error);
         },
         err => {
           this.$set(this, "soal", undefined);
@@ -60,8 +58,7 @@ export default {
       );
     },
     soalSubmit(th) {
-      checkJawaban(this.soalId, th.pilihanTerpilih).then(val => {
-        let data = val.data;
+      checkJawaban(this.soalId, th.pilihanTerpilih).then(data => {
         this.jawabanBenar = data.benar;
         this.telahDijawab = true;
       });
