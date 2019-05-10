@@ -1,18 +1,21 @@
 <template>
-  <form class="soal">
-    <p v-text="soal.soal"></p>
-    <template v-for="(entry, index) in soal.pilihan">
-      <input
-        type="radio"
-        :id="'pilihan' + soal.id +'|' + index"
-        name="pilihan"
-        :key="index + 'i'"
-        :value="index"
-        v-model="pilihanTerpilih"
-      >
-      <label :for="'pilihan' + soal.id +'|' + index" :key="index + 'l'" v-text="entry"></label>
-      <br :key="index + 'br'">
-    </template>
+  <form class="soal columns is-multiline">
+    <div class="is-block">
+      <p v-text="soal.soal"></p>
+      <template v-for="(entry, index) in soal.pilihan">
+        <input
+          type="radio"
+          :id="'pilihan' + soal.id +'|' + index"
+          name="pilihan"
+          :key="index + 'i'"
+          :value="index"
+          v-model="pilihanTerpilih"
+        >
+        <label :for="'pilihan' + soal.id +'|' + index" :key="index + 'l'" v-text="entry"></label>
+        <br :key="index + 'br'">
+      </template>
+    </div>
+    <div class="linebreak"></div>
     <br>
     <input
       class="button is-primary"
@@ -53,4 +56,14 @@ export default {
 </script>
 
 <style>
+.linebreak {
+  width: 100%;
+  height: 0;
+  display: block;
+}
+
+input.button {
+  align-self: flex-end;
+  margin-left: auto;
+}
 </style>
