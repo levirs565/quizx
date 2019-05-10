@@ -3,15 +3,10 @@
     <div class="is-block">
       <p v-text="soal.soal"></p>
       <template v-for="(entry, index) in soal.pilihan">
-        <input
-          type="radio"
-          :id="'pilihan' + soal.id +'|' + index"
-          name="pilihan"
-          :key="index + 'i'"
-          :value="index"
-          v-model="pilihanTerpilih"
-        >
-        <label :for="'pilihan' + soal.id +'|' + index" :key="index + 'l'" v-text="entry"></label>
+        <label :key="index" class="radio">
+          <input type="radio" name="pilihan" :value="index" v-model="pilihanTerpilih">
+          {{ entry }}
+        </label>
         <br :key="index + 'br'">
       </template>
     </div>
