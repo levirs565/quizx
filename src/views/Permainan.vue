@@ -1,17 +1,27 @@
 <template>
   <div class="permainan">
     <button v-if="!onPermainan" @click="start()" class="button is-primary">Mulai Permainan</button>
-    <button v-else @click="stop()" class="button is-danger">Hentikan Permainan</button>
     <br>
     <br>
     <div class="columns">
-      <jumper
-        class="column is-one-third"
-        v-if="onPermainan"
-        :total="soalCount"
-        :value="1"
-        v-model="currentSoalId"
-      ></jumper>
+      <div
+        class="column is-one-third columns is-multiline"
+        style="flex-direction: column;padding-bottom: 0"
+      >
+        <button
+          v-if="onPermainan"
+          @click="stop()"
+          class="button is-danger column is-full is-inline-flex"
+          style="align-self: flex-start; margin-left: 0.75rem; margin-right: 0.75rem; width: calc(100% - 1.5rem);"
+        >Hentikan Permainan</button>
+        <jumper
+          class="column is-full is-marginless"
+          v-if="onPermainan"
+          :total="soalCount"
+          :value="1"
+          v-model="currentSoalId"
+        ></jumper>
+      </div>
       <soal
         v-if="currentSoal != undefined"
         :soal="currentSoal"
