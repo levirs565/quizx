@@ -2,11 +2,7 @@
   <div id="app">
     <nav class="navbar is-primary">
       <div class="navbar-brand">
-        <a
-          class="navbar-burger"
-          :class="menuClass"
-          @click="burgerActive = !burgerActive"
-        >
+        <a class="navbar-burger" :class="menuClass" @click="burgerActive = !burgerActive">
           <span aria-hidden="true"></span>
           <span aria-hidden="true"></span>
           <span aria-hidden="true"></span>
@@ -45,8 +41,13 @@ export default {
 @import "../node_modules/bulma/css/bulma.css";
 
 .router-view {
-  padding-top: 1rem;
-  padding-bottom: 1rem;
+  padding: 0.75rem;
+}
+
+@media screen and (min-width: 769px), print {
+  .router-view {
+    padding-top: 1.5rem;
+  }
 }
 
 /* #app {

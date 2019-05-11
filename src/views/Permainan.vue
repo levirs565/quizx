@@ -1,8 +1,6 @@
 <template>
   <div class="permainan">
     <button v-if="!onPermainan" @click="start()" class="button is-primary">Mulai Permainan</button>
-    <br>
-    <br>
     <div class="columns">
       <div
         class="column is-one-third columns is-multiline"
@@ -29,6 +27,7 @@
         @submit="soalSubmit"
         @change="soalChange"
         class="column"
+        style="margin-left: 0; margin-right: 0;"
       ></soal>
       <p style="color: red;" v-text="lastErr" v-show="lastErr !== undefined"></p>
     </div>
