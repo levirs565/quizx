@@ -7,7 +7,7 @@
       :class="{
         'is-info is-selected': current == index
       }"
-      class="button column is-2 is-radiusless is-inline-flex"
+      class="button column is-one-fifth is-marginless is-radiusless is-inline-flex"
     >{{ index }}</button>
   </div>
 </template>
