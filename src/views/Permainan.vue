@@ -1,5 +1,6 @@
 <template>
   <div class="permainan">
+    <permainan-result v-if="result !== undefined" :results="result"></permainan-result>
     <button v-if="!onPermainan" @click="start()" class="button is-primary">Mulai Permainan</button>
     <div class="columns">
       <div
@@ -31,7 +32,6 @@
       ></soal>
       <p style="color: red;" v-text="lastErr" v-show="lastErr !== undefined"></p>
     </div>
-    <permainan-result v-if="result !== undefined" :results="result"></permainan-result>
   </div>
 </template>
 
@@ -156,5 +156,11 @@ export default {
 
 .soal > input[type="button"] {
   float: right;
+}
+
+.permainan-result {
+  max-width: 16em;
+  margin-left: auto !important;
+  margin-right: auto !important;
 }
 </style>
