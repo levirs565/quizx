@@ -51,12 +51,6 @@ export default {
 </script>
 
 <style>
-.linebreak {
-  width: 100%;
-  height: 0;
-  display: block;
-}
-
 input.button {
   align-self: flex-end;
   margin-left: auto;
