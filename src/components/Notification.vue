@@ -1,7 +1,7 @@
 <template>
   <transition name="fade" appear>
     <div class="notification" :class="['is-' + level]" v-show="isShow">
-      <progress max="100" class="progress is-danger" :value="progress"></progress>
+      <progress max="100" class="progress" :value="progress"></progress>
       <button class="delete" @click="close"></button>
       <slot></slot>
     </div>
@@ -17,7 +17,7 @@ export default {
       isShow: false,
       timeout: 0,
       interval: 0,
-      progress: 0
+      progress: 100
     };
   },
   methods: {
@@ -28,13 +28,13 @@ export default {
       this.isShow = true;
       this.interval = setInterval(
         function(that) {
-          that.progress += 1;
-          if (that.progress == 100) {
+          that.progress -= 1;
+          if (that.progress == 0) {
             clearInterval(that.interval);
             that.hide();
           }
         },
-        15,
+        20,
         this
       );
     },
@@ -55,12 +55,18 @@ export default {
 <style>
 .notification > .progress {
   position: absolute;
-  top: 0;
+  bottom: 0;
   left: 0;
   right: 0;
+  margin-bottom: 0 !important;
   border-radius: 4px;
-  border-bottom-right-radius: 0;
-  border-bottom-left-radius: 0;
+  border-top-right-radius: 0;
+  border-top-left-radius: 0;
+  background: transparent;
+}
+
+.notification > .progress::-webkit-progress-bar {
+  background-color: transparent;
 }
 
 .fade-enter-active,
