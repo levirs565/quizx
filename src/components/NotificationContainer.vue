@@ -33,4 +33,10 @@ export default {
 </script>
 
 <style>
+.notification-container {
+  position: fixed;
+  z-index: 999999;
+  right: 0;
+  bottom: 0;
+}
 </style>

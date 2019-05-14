@@ -1,5 +1,6 @@
 <template>
   <div id="app">
+    <notification-container ref="nof"></notification-container>
     <nav class="navbar is-primary" ref="nav">
       <div class="navbar-brand">
         <a class="navbar-burger" :class="menuClass" @click="burgerActive = !burgerActive">
@@ -22,7 +23,12 @@
 </template>
 
 <script>
+import NotificationContainer from "./components/NotificationContainer.vue";
+
 export default {
+  components: {
+    NotificationContainer
+  },
   name: "app",
   data() {
     return {
@@ -51,6 +57,8 @@ export default {
       window.apps.updateHeight();
     });
     this.updateHeight();
+
+    this.notification.container = this.$refs.nof;
   }
 };
 </script>

@@ -8,10 +8,12 @@ import {
   faExclamation
 } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
+import notification from './plugin/notification';
 
 library.add(faCheck, faTimes, faExclamation);
 
 Vue.component('font-awesome', FontAwesomeIcon);
+Vue.use(notification);
 
 Vue.config.productionTip = false;
 
