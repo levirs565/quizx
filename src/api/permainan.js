@@ -115,3 +115,20 @@ app.get('/api/permainan/results', (req, res) => {
     res
   );
 });
+
+app.get('/api/permainan/state', (req, res) => {
+  utils.handleRequest(
+    new Promise(resolve => {
+      resolve({
+        onPermainan: helper.isOnPermainan(req),
+        permaianFinished: helper.isPermainanFinished(req)
+      });
+    }),
+    (val, isNull) => ({
+      state: isNull ? null : val
+    }),
+    consts.MSG_KESALAHAN_ANEH,
+    req,
+    res
+  );
+});
