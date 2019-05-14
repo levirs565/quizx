@@ -76,9 +76,7 @@ export default {
           this.currentSoalId = 1;
           this.updateResult();
         })
-        .catch(err => {
-          this.lastErr = err;
-        });
+        .catch(this.catchError);
     },
     stop() {
       stopPermainan()
@@ -89,9 +87,7 @@ export default {
           this.updateResult();
           this.currentSoal = undefined;
         })
-        .catch(err => {
-          this.lastErr = err;
-        });
+        .catch(this.catchError);
     },
     soalSubmit(co) {
       let jawaban = co.pilihanTerpilih;
@@ -102,9 +98,7 @@ export default {
             this.currentSoalId++;
           }
         })
-        .catch(err => {
-          this.lastErr = err;
-        });
+        .catch(this.catchError);
     },
     soalChange(soal) {
       this.$nextTick(function() {
@@ -120,9 +114,7 @@ export default {
             this.result = data.results;
             this.lastErr = undefined;
           })
-          .catch(err => {
-            this.lastErr = err;
-          });
+          .catch(this.catchError);
       }
     }
   },
@@ -139,9 +131,7 @@ export default {
             this.currentSoal = data.soal;
             this.lastErr = undefined;
           })
-          .catch(err => {
-            this.lastErr = err;
-          });
+          .catch(this.catchError);
       }
     }
   }
