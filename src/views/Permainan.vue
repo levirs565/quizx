@@ -34,6 +34,7 @@
       @change="soalChange"
       class="column"
       style="margin-left: 0; margin-right: 0;"
+      ref="soalView"
     ></soal>
     <p style="color: red;" v-text="lastErr" v-show="lastErr !== undefined"></p>
   </div>
@@ -92,8 +93,10 @@ export default {
     soalSubmit(co) {
       let jawaban = co.pilihanTerpilih;
       let id = co.soal.id;
+      this.setLoading(true);
       postJawabanPermainan(id, jawaban)
         .then(() => {
+          this.setLoading(false);
           if (this.currentSoalId < 40) {
             this.currentSoalId++;
           }
@@ -116,6 +119,9 @@ export default {
           })
           .catch(this.catchError);
       }
+    },
+    setLoading(is) {
+      this.$refs.soalView.isLoading = is;
     }
   },
   watch: {
@@ -148,7 +154,7 @@ export default {
   /* padding: 2.5% 15%; */
 }
 
-.soal > input[type="button"] {
+.soal > .button {
   float: right;
 }
 

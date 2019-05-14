@@ -12,13 +12,16 @@
     </div>
     <div class="linebreak"></div>
     <br>
-    <input
+    <button
       class="button is-primary"
+      :class="{
+        'is-loading': isLoading
+      }"
       type="button"
-      :value="teksSubmit"
+      v-text="teksSubmit"
       :disabled="pilihanTerpilih < 0"
       @click="buttonClick"
-    >
+    ></button>
     <br>
   </form>
 </template>
@@ -34,7 +37,8 @@ export default {
   },
   data() {
     return {
-      pilihanTerpilih: -1
+      pilihanTerpilih: -1,
+      isLoading: false
     };
   },
   methods: {
@@ -50,8 +54,8 @@ export default {
 };
 </script>
 
-<style>
-input.button {
+<style scoped>
+.button {
   align-self: flex-end;
   margin-left: auto;
 }
