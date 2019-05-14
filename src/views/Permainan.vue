@@ -46,7 +46,8 @@ import {
   stopPermainan,
   getSoalPermainan,
   postJawabanPermainan,
-  getPermainanResults
+  getPermainanResults,
+  getPermainanState
 } from "../api.js";
 import Soal from "../components/Soal.vue";
 import PermainanResult from "../components/PermainanResult.vue";
@@ -122,6 +123,16 @@ export default {
     },
     setLoading(is) {
       this.$refs.soalView.isLoading = is;
+    },
+    updateState() {
+      getPermainanState()
+        .then(data => {
+          console.log(data);
+          let state = data.state;
+          this.onPermainan = state.onPermainan;
+          this.currentSoalId = state.lastSoal + 1;
+        })
+        .catch(this.catchError);
     }
   },
   watch: {
@@ -140,6 +151,9 @@ export default {
           .catch(this.catchError);
       }
     }
+  },
+  beforeMount() {
+    this.updateState();
   }
 };
 </script>

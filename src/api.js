@@ -87,3 +87,11 @@ export function getPermainanResults() {
     })
   );
 }
+
+export function getPermainanState() {
+  return pm(
+    axios.get('http://localhost:3000/api/permainan/state', {
+      withCredentials: true
+    })
+  );
+}
