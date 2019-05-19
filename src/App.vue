@@ -1,5 +1,5 @@
 <template>
-  <div id="app">
+  <div id="app" class="flex flex-col h-full absolute w-full">
     <notification-container ref="nof"></notification-container>
     <nav class="navbar is-primary" ref="nav">
       <div class="navbar-brand">
@@ -16,9 +16,7 @@
         </div>
       </div>
     </nav>
-    <div ref="main" class="is-flex">
-      <router-view class="router-view container is-spaced vcenter-margin"></router-view>
-    </div>
+    <router-view class="flex"></router-view>
   </div>
 </template>
 
@@ -41,24 +39,6 @@ export default {
         "is-active": this.burgerActive
       };
     }
-  },
-  methods: {
-    updateHeight() {
-      let navHeight = window.appRefs.nav.getBoundingClientRect().height;
-      let winHeight = window.innerHeight;
-      let minHeight = winHeight - navHeight;
-      window.appRefs.main.style.minHeight = minHeight + "px";
-    }
-  },
-  mounted() {
-    window.appRefs = this.$refs;
-    window.apps = this;
-    window.addEventListener("resize", function(ev) {
-      window.apps.updateHeight();
-    });
-    this.updateHeight();
-
-    this.notification.container = this.$refs.nof;
   }
 };
 </script>
@@ -69,7 +49,7 @@ export default {
 @tailwind components;
 @tailwind utilities;
 
-.router-view {
+/* .router-view {
   padding: 0.75rem;
 }
 
@@ -92,7 +72,7 @@ export default {
 .vcenter-margin {
   margin-top: auto !important;
   margin-bottom: auto !important;
-}
+} */
 
 /* #app {
   font-family: "Avenir", Helvetica, Arial, sans-serif;
