@@ -1,5 +1,5 @@
 <template>
-  <div class="jumper buttons columns">
+  <div class="flex flex-wrap">
     <button
       v-for="index in total"
       :key="index"
@@ -7,7 +7,7 @@
       :class="{
         'is-info is-selected': current == index
       }"
-      class="button column is-one-fifth is-marginless is-radiusless is-inline-flex"
+      class="button w-1/5 rounded-none"
     >{{ index }}</button>
   </div>
 </template>
@@ -35,7 +35,7 @@ export default {
 </script>
 
 <style>
-.jumper {
+/* .jumper {
   text-align: left;
-}
+} */
 </style>
