@@ -1,30 +1,17 @@
 <template>
-  <div class="permainan columns is-multiline is-centered center-margin is-marginless">
+  <div class="flex flex-wrap">
     <template v-if="result !== undefined">
-      <permainan-result :results="result" class="center-margin"></permainan-result>
-      <div class="linebreak"></div>
+      <permainan-result :results="result" class="mx-auto"></permainan-result>
+      <div class="w-full"></div>
     </template>
     <button
       v-if="!onPermainan"
       @click="start()"
-      class="button is-primary"
+      class="button is-primary mx-auto"
     >{{ result ? "Mulai Lagi" : "Mulai Permainan"}}</button>
-    <div
-      class="column is-one-third columns is-multiline"
-      style="flex-direction: column;padding-bottom: 0"
-      v-if="onPermainan"
-    >
-      <button
-        @click="stop()"
-        class="button is-danger column is-full is-inline-flex"
-        style="align-self: flex-start; margin-left: 0.75rem; margin-right: 0.75rem; width: calc(100% - 1.5rem);"
-      >Hentikan Permainan</button>
-      <jumper
-        class="column is-full is-marginless"
-        :total="soalCount"
-        :value="1"
-        v-model="currentSoalId"
-      ></jumper>
+    <div v-if="onPermainan" class="flex flex-col w-1/5">
+      <button @click="stop()" class="button is-danger rounded-none">Hentikan Permainan</button>
+      <jumper :total="soalCount" :value="1" v-model="currentSoalId"></jumper>
     </div>
     <soal
       v-if="currentSoal != undefined"
@@ -32,11 +19,10 @@
       teksSubmit="Kirim Jawaban"
       @submit="soalSubmit"
       @change="soalChange"
-      class="column"
-      style="margin-left: 0; margin-right: 0;"
       ref="soalView"
+      class="w-4/5 pl-4"
     ></soal>
-    <p style="color: red;" v-text="lastErr" v-show="lastErr !== undefined"></p>
+    <p v-text="lastErr" v-show="lastErr !== undefined"></p>
   </div>
 </template>
 
@@ -159,13 +145,13 @@ export default {
 </script>
 
 <style>
-.permainan {
+/* .permainan {
   text-align: center;
 }
 
 .soal {
   text-align: left;
-  /* padding: 2.5% 15%; */
+  padding: 2.5% 15%;
 }
 
 .soal > .button {
@@ -174,5 +160,5 @@ export default {
 
 .permainan-result {
   max-width: 16em;
-}
+} */
 </style>
