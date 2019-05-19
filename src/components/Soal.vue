@@ -1,5 +1,5 @@
 <template>
-  <form class="soal columns is-multiline">
+  <form class="soal columns is-mobile is-multiline">
     <div class="is-block">
       <p v-text="soal.soal"></p>
       <template v-for="(entry, index) in soal.pilihan">

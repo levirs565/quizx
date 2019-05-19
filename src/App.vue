@@ -3,7 +3,7 @@
     <notification-container ref="nof"></notification-container>
     <nav class="navbar is-primary" ref="nav">
       <div class="navbar-brand">
-        <a class="navbar-burger" :class="menuClass" @click="burgerActive = !burgerActive">
+        <a class="navbar-burger" :class="menuClass" @click="burgerClick">
           <span aria-hidden="true"></span>
           <span aria-hidden="true"></span>
           <span aria-hidden="true"></span>
@@ -17,7 +17,7 @@
       </div>
     </nav>
     <div ref="main" class="is-flex">
-      <router-view class="router-view container is-spaced vcenter-margin"></router-view>
+      <router-view class="router-view main" style></router-view>
     </div>
   </div>
 </template>
@@ -43,6 +43,12 @@ export default {
     }
   },
   methods: {
+    burgerClick() {
+      this.burgerActive = !this.burgerActive;
+      this.$nextTick(function() {
+        this.updateHeight();
+      });
+    },
     updateHeight() {
       let navHeight = window.appRefs.nav.getBoundingClientRect().height;
       let winHeight = window.innerHeight;
@@ -91,6 +97,29 @@ export default {
   margin-bottom: auto !important;
 }
 
+.column.button {
+  padding-bottom: calc(0.375em - 1px);
+  padding-left: 0.75em;
+  padding-right: 0.75em;
+  padding-top: calc(0.375em - 1px);
+}
+
+@media screen and (max-width: 769px) {
+  .rows {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .rows > .not-stretch {
+    flex-shrink: unset;
+    flex-grow: unset;
+    flex-basis: unset;
+  }
+}
+
+.main {
+  width: 100%;
+}
 /* #app {
   font-family: "Avenir", Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;

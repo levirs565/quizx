@@ -1,42 +1,45 @@
 <template>
-  <div class="permainan columns is-multiline is-centered center-margin is-marginless">
-    <template v-if="result !== undefined">
-      <permainan-result :results="result" class="center-margin"></permainan-result>
-      <div class="linebreak"></div>
-    </template>
-    <button
-      v-if="!onPermainan"
-      @click="start()"
-      class="button is-primary"
-    >{{ result ? "Mulai Lagi" : "Mulai Permainan"}}</button>
-    <div
-      class="column is-one-third columns is-multiline"
-      style="flex-direction: column;padding-bottom: 0"
-      v-if="onPermainan"
-    >
+  <div class="permainan is-flex container">
+    <div class="vcenter-margin center-margin" v-show="!onPermainan">
+      <template v-if="result !== undefined">
+        <permainan-result :results="result" class="center-margin"></permainan-result>
+        <div class="linebreak"></div>
+      </template>
       <button
-        @click="stop()"
-        class="button is-danger column is-full is-inline-flex"
-        style="align-self: flex-start; margin-left: 0.75rem; margin-right: 0.75rem; width: calc(100% - 1.5rem);"
-      >Hentikan Permainan</button>
-      <jumper
-        class="column is-full is-marginless"
-        :total="soalCount"
-        :value="1"
-        v-model="currentSoalId"
-      ></jumper>
+        v-if="!onPermainan"
+        @click="start()"
+        class="button is-primary"
+      >{{ result ? "Mulai Lagi" : "Mulai Permainan"}}</button>
     </div>
-    <soal
-      v-if="currentSoal != undefined"
-      :soal="currentSoal"
-      teksSubmit="Kirim Jawaban"
-      @submit="soalSubmit"
-      @change="soalChange"
-      class="column"
-      style="margin-left: 0; margin-right: 0;"
-      ref="soalView"
-    ></soal>
-    <p style="color: red;" v-text="lastErr" v-show="lastErr !== undefined"></p>
+    <div class="columns is-multiline center-margin is-marginless rows" v-show="onPermainan">
+      <div
+        class="column is-one-third columns is-multiline not-stretch"
+        style="flex-direction: column;padding-bottom: 0;"
+      >
+        <button
+          @click="stop()"
+          class="button is-danger column is-full"
+          style="align-self: flex-start; margin-left: 0.75rem; margin-right: 0.75rem; width: calc(100% - 1.5rem);"
+        >Hentikan Permainan</button>
+        <div class="linebreak"></div>
+        <jumper
+          class="column is-full is-marginless"
+          :total="soalCount"
+          :value="1"
+          v-model="currentSoalId"
+        ></jumper>
+      </div>
+      <soal
+        v-if="currentSoal != undefined"
+        :soal="currentSoal"
+        teksSubmit="Kirim Jawaban"
+        @submit="soalSubmit"
+        @change="soalChange"
+        class="column"
+        style="margin-left: 0; margin-right: 0;"
+        ref="soalView"
+      ></soal>
+    </div>
   </div>
 </template>
 
