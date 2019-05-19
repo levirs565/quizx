@@ -1,18 +1,24 @@
 <template>
   <div id="app" class="flex flex-col h-full absolute w-full">
     <notification-container ref="nof"></notification-container>
-    <nav class="navbar is-primary" ref="nav">
-      <div class="navbar-brand">
+    <nav class="flex bg-green-500 h-16 px-6 items-center" ref="nav">
+      <!-- <div class="navbar-brand">
         <a class="navbar-burger" :class="menuClass" @click="burgerActive = !burgerActive">
           <span aria-hidden="true"></span>
           <span aria-hidden="true"></span>
           <span aria-hidden="true"></span>
         </a>
-      </div>
-      <div class="navbar-menu" :class="menuClass">
-        <div class="navbar-start">
-          <a class="navbar-item" href="/#/">Home</a>
-          <a class="navbar-item" href="/#/permainan">Permainan</a>
+      </div>-->
+      <div class :class="menuClass">
+        <div class>
+          <a
+            :class="[baseNavClass,  this.$route.path == '/' ? selectedNavClass: normalNavClass]"
+            href="/#/"
+          >Home</a>
+          <a
+            :class="[baseNavClass, this.$route.path.startsWith('/permainan') ? selectedNavClass: normalNavClass]"
+            href="/#/permainan"
+          >Permainan</a>
         </div>
       </div>
     </nav>
@@ -30,7 +36,11 @@ export default {
   name: "app",
   data() {
     return {
-      burgerActive: false
+      burgerActive: false,
+      baseNavClass: "mr-3 inline-block py-1 px-6 rounded",
+      normalNavClass: "text-white hover:text-white hover:bg-green-600",
+      selectedNavClass:
+        "bg-white hover:bg-white text-green-500 hover:text-green-500"
     };
   },
   computed: {
