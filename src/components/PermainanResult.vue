@@ -1,16 +1,12 @@
 <template>
-  <div class="permainan-result columns is-mobile is-multiline is-centered">
-    <p class="column is-full tleft" style="padding-left: 0;">Hasil Permainan</p>
+  <div class="permainan-result flex flex-wrap">
+    <p class="w-full">Hasil Permainan</p>
     <template v-for="(item, index) in items ">
-      <p class="column is-10 tleft is-paddingless" :class="[item.color]" :key="index + 'a'">
+      <p class="w-4/6 text-left" :class="[item.color]" :key="index + 'a'">
         <font-awesome :icon="item.icon"></font-awesome>
         &nbsp;{{ item.prop }}
       </p>
-      <p
-        class="column is-2 tright is-paddingless"
-        :class="[item.color]"
-        :key="index + 'b'"
-      >{{ item.val }}</p>
+      <p class="w-2/6 text-right" :class="[item.color]" :key="index + 'b'">{{ item.val }}</p>
     </template>
   </div>
 </template>

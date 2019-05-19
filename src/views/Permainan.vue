@@ -2,7 +2,7 @@
   <div class="flex flex-wrap">
     <template v-if="result !== undefined">
       <permainan-result :results="result" class="mx-auto"></permainan-result>
-      <div class="w-full"></div>
+      <div class="w-full h-4"></div>
     </template>
     <button
       v-if="!onPermainan"
