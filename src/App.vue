@@ -65,6 +65,9 @@ export default {
 
 <style>
 @import "../node_modules/bulma/css/bulma.css";
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
 .router-view {
   padding: 0.75rem;
