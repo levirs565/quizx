@@ -1,25 +1,25 @@
 <template>
   <div id="app" class="flex flex-col h-full absolute w-full">
     <notification-container ref="nof"></notification-container>
-    <nav class="flex bg-green-500 h-16 px-6 items-center" ref="nav">
-      <!-- <div class="navbar-brand">
-        <a class="navbar-burger" :class="menuClass" @click="burgerActive = !burgerActive">
-          <span aria-hidden="true"></span>
-          <span aria-hidden="true"></span>
-          <span aria-hidden="true"></span>
-        </a>
-      </div>-->
-      <div class :class="menuClass">
-        <div class>
-          <a
-            :class="[baseNavClass,  this.$route.path == '/' ? selectedNavClass: normalNavClass]"
-            href="/#/"
-          >Home</a>
-          <a
-            :class="[baseNavClass, this.$route.path.startsWith('/permainan') ? selectedNavClass: normalNavClass]"
-            href="/#/permainan"
-          >Permainan</a>
-        </div>
+    <nav class="flex bg-green-500 px-6 py-3 items-center flex-wrap" ref="nav">
+      <div class="flex-grow"></div>
+      <div class="lg:hidden">
+        <button
+          class="text-green-200 border border-green-200 py-1 px-3 rounded hover:text-white hover:border-white"
+          @click="burgerActive = !burgerActive"
+        >
+          <font-awesome icon="bars"></font-awesome>
+        </button>
+      </div>
+      <div class="lg:flex flex-col lg:flex-row w-full" :class="[burgerActive ? 'flex' : 'hidden']">
+        <a
+          :class="[baseNavClass,  this.$route.path == '/' ? selectedNavClass: normalNavClass]"
+          href="/#/"
+        >Home</a>
+        <a
+          :class="[baseNavClass, this.$route.path.startsWith('/permainan') ? selectedNavClass: normalNavClass]"
+          href="/#/permainan"
+        >Permainan</a>
       </div>
     </nav>
     <router-view class="flex"></router-view>
@@ -37,10 +37,12 @@ export default {
   data() {
     return {
       burgerActive: false,
-      baseNavClass: "mr-3 inline-block py-1 px-6 rounded",
-      normalNavClass: "text-white hover:text-white hover:bg-green-600",
+      baseNavClass:
+        "w-full lg:w-auto lg:mr-2 mt-2 lg:mt-0 py-1 px-3 block lg:inline-flex rounded",
+      normalNavClass:
+        "text-white hover:text-white hover:bg-green-600 border border-green-500",
       selectedNavClass:
-        "bg-white hover:bg-white text-green-500 hover:text-green-500"
+        "bg-white text-green-500 hover:text-green-500 border border-white"
     };
   },
   computed: {

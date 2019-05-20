@@ -5,12 +5,13 @@ import { library } from '@fortawesome/fontawesome-svg-core';
 import {
   faCheck,
   faTimes,
-  faExclamation
+  faExclamation,
+  faBars
 } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 import notification from './plugin/notification';
 
-library.add(faCheck, faTimes, faExclamation);
+library.add(faCheck, faTimes, faExclamation, faBars);
 
 Vue.component('font-awesome', FontAwesomeIcon);
 Vue.use(notification);
