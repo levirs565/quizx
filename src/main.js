@@ -10,6 +10,7 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 import notification from './plugin/notification';
+import '@/style.css';
 
 library.add(faCheck, faTimes, faExclamation, faBars);
 
