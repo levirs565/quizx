@@ -22,7 +22,9 @@
         >Permainan</a>
       </div>
     </nav>
-    <router-view class="flex"></router-view>
+    <div class="flex flex-grow">
+      <router-view></router-view>
+    </div>
   </div>
 </template>
 
