@@ -7,7 +7,7 @@
     </label>
     <div class="flex-grow"></div>
     <button
-      class="button is-primary self-end"
+      class="button primary self-end"
       :class="{
         'is-loading': isLoading
       }"

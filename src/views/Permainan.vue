@@ -7,10 +7,10 @@
     <button
       v-if="!onPermainan"
       @click="start()"
-      class="button is-primary mx-auto"
+      class="button primary mx-auto"
     >{{ result ? "Mulai Lagi" : "Mulai Permainan"}}</button>
     <div v-if="onPermainan" class="flex flex-col w-1/5">
-      <button @click="stop()" class="button is-danger rounded-none">Hentikan Permainan</button>
+      <button @click="stop()" class="button danger rounded-none">Hentikan Permainan</button>
       <jumper :total="soalCount" :value="1" v-model="currentSoalId"></jumper>
     </div>
     <soal

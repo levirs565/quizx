@@ -5,7 +5,7 @@
       :key="index"
       @click="jumpClick(index)"
       :class="{
-        'is-info is-selected': current == index
+        'info': current == index
       }"
       class="button w-1/5 rounded-none"
     >{{ index }}</button>

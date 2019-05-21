@@ -1,6 +1,6 @@
 <template>
   <div class="app">
-    <button class="button is-primary">Mulai</button>
+    <button class="button primary">Mulai</button>
   </div>
 </template>
 
