@@ -3,3 +3,4 @@
 @tailwind utilities;
 
 @import './styles/button.css';
+@import './styles/nav.css';

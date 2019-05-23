@@ -1,0 +1,58 @@
+nav {
+  @apply flex bg-green-500 px-6 py-3 flex-wrap justify-between;
+}
+
+nav > .logo {
+  @apply flex-grow-0;
+}
+
+/* nav > .burger {
+  @apply flex-grow;
+} */
+
+@screen lg {
+  nav > .burger {
+    @apply hidden;
+  }
+}
+
+nav > .burger > button {
+  @apply text-green-200 border border-green-200 py-1 px-3 rounded;
+}
+
+nav > .burger > button:hover {
+  @apply text-white border-white;
+}
+
+/* lg:flex flex-col lg:flex-row w-full */
+nav > .items {
+  @apply w-full hidden;
+}
+
+nav > .items.active {
+  @apply block;
+}
+
+@screen lg {
+  nav > .items {
+    @apply block w-auto flex-grow;
+  }
+}
+
+nav > .items > a {
+  @apply block px-3 py-1 text-white w-full mt-2 rounded;
+}
+
+@screen lg {
+  nav > .items > a {
+    @apply inline-block w-auto mr-2 mt-0;
+  }
+}
+
+nav > .items > a:hover {
+  @apply bg-green-600;
+}
+
+nav > .items > a.selected {
+  @apply bg-white text-green-500;
+}

@@ -1,23 +1,23 @@
 <template>
   <div id="app" class="flex flex-col h-full absolute w-full">
     <notification-container ref="nof"></notification-container>
-    <nav class="flex bg-green-500 px-6 py-3 items-center flex-wrap" ref="nav">
-      <div class="flex-grow"></div>
-      <div class="lg:hidden">
-        <button
-          class="text-green-200 border border-green-200 py-1 px-3 rounded hover:text-white hover:border-white"
-          @click="burgerActive = !burgerActive"
-        >
+    <nav ref="nav">
+      <div class="logo"></div>
+      <div class="burger">
+        <button @click="burgerActive = !burgerActive">
           <font-awesome icon="bars"></font-awesome>
         </button>
       </div>
-      <div class="lg:flex flex-col lg:flex-row w-full" :class="[burgerActive ? 'flex' : 'hidden']">
+      <div class="items" :class="{
+        'active': burgerActive
+      }">
+        <a href="/#/" :class="{
+          selected: this.$route.path == '/'
+        }">Home</a>
         <a
-          :class="[baseNavClass,  this.$route.path == '/' ? selectedNavClass: normalNavClass]"
-          href="/#/"
-        >Home</a>
-        <a
-          :class="[baseNavClass, this.$route.path.startsWith('/permainan') ? selectedNavClass: normalNavClass]"
+          :class="{
+            selected: this.$route.path.startsWith('/permainan')
+          }"
           href="/#/permainan"
         >Permainan</a>
       </div>
@@ -53,6 +53,9 @@ export default {
         "is-active": this.burgerActive
       };
     }
+  },
+  mounted() {
+    this.notification.container = this.$refs.nof;
   }
 };
 </script>
