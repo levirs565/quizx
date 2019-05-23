@@ -20,19 +20,19 @@ export default {
         {
           prop: "Benar",
           val: this.results.benar,
-          color: "has-text-success",
+          color: "text-green-600",
           icon: "check"
         },
         {
           prop: "Salah",
           val: this.results.salah,
-          color: "has-text-danger",
+          color: "text-red-600",
           icon: "times"
         },
         {
           prop: "Tidak Di Jawab",
           val: this.results.takDiJawab,
-          color: "has-text-warning",
+          color: "text-yellow-600",
           icon: "exclamation"
         }
       ];
