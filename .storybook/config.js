@@ -1,6 +1,7 @@
 import { configure } from '@storybook/vue';
 import Vue from 'vue';
-import '../src/style.css';
+import '@/router';
+import '@/style.css';
 import { library } from '@fortawesome/fontawesome-svg-core';
 import {
   faCheck,
