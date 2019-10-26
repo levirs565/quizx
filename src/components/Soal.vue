@@ -1,13 +1,12 @@
 <template>
-  <form class="flex flex-col items-start">
+  <form>
     <p v-text="soal.soal"></p>
-    <label v-for="(entry, index) in soal.pilihan" :key="index">
+    <label v-for="(entry, index) in soal.pilihan" :key="index" class="block">
       <input type="radio" name="pilihan" :value="index" v-model="pilihanTerpilih">
       {{ entry }}
     </label>
-    <div class="flex-grow"></div>
     <button
-      class="button primary self-end"
+      class="button primary bottom-0 right-0 absolute"
       :class="{
         'is-loading': isLoading
       }"
@@ -49,8 +48,4 @@ export default {
 </script>
 
 <style scoped>
-/* .button {
-  align-self: flex-end;
-  margin-left: auto;
-} */
 </style>
