@@ -1,5 +1,5 @@
 nav {
-  @apply flex bg-green-500 px-6 py-3 flex-wrap justify-between;
+  @apply flex bg-green-500 flex-wrap justify-between;
 }
 
 nav > .logo {
@@ -17,11 +17,11 @@ nav > .logo {
 }
 
 nav > .burger > button {
-  @apply text-green-200 border border-green-200 py-1 px-3 rounded;
+  @apply text-green-200 py-4 px-6;
 }
 
 nav > .burger > button:hover {
-  @apply text-white border-white;
+  @apply text-white bg-green-600;
 }
 
 /* lg:flex flex-col lg:flex-row w-full */
@@ -40,7 +40,7 @@ nav > .items.active {
 }
 
 nav > .items > a {
-  @apply block px-3 py-1 text-white w-full mt-2 rounded;
+  @apply block px-6 py-4 text-white w-full mt-2;
 }
 
 @screen lg {
