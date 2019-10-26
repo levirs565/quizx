@@ -7,7 +7,7 @@
       :class="{
         'info': current == index
       }"
-      class="button w-1/5 rounded-none"
+      class="button w-12"
     >{{ index }}</button>
   </div>
 </template>
@@ -35,7 +35,4 @@ export default {
 </script>
 
 <style>
-/* .jumper {
-  text-align: left;
-} */
 </style>
