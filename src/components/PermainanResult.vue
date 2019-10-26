@@ -1,12 +1,12 @@
 <template>
-  <div class="permainan-result flex flex-wrap">
-    <p class="w-full">Hasil Permainan</p>
+  <div>
+    <p>Hasil Permainan</p>
     <template v-for="(item, index) in items ">
-      <p class="w-4/6 text-left" :class="[item.color]" :key="index + 'a'">
+      <p :class="[item.color]" :key="index">
         <font-awesome :icon="item.icon"></font-awesome>
         &nbsp;{{ item.prop }}
+        <span class="absolute right-0" :class="[item.color]">{{ item.val }}</span>
       </p>
-      <p class="w-2/6 text-right" :class="[item.color]" :key="index + 'b'">{{ item.val }}</p>
     </template>
   </div>
 </template>
