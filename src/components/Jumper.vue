@@ -1,5 +1,5 @@
 <template>
-  <div class="flex flex-wrap">
+  <div class="jumper">
     <button
       v-for="index in total"
       :key="index"
@@ -7,7 +7,7 @@
       :class="{
         'info': current == index
       }"
-      class="button w-12"
+      class="button"
     >{{ index }}</button>
   </div>
 </template>
@@ -34,5 +34,9 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
+.jumper {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(3rem, 1fr));
+}
 </style>

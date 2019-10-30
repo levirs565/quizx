@@ -6,5 +6,5 @@ export const standar = () => ({
   components: {
     Jumper
   },
-  template: '<jumper :total="50" :value="25"></jumper>'
+  template: '<jumper :total="50" :value="25" style="max-width: 300px"></jumper>'
 });
