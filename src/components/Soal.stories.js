@@ -14,5 +14,5 @@ export const standar = () => ({
       }
     };
   },
-  template: '<soal :soal="soal"></soal>'
+  template: '<soal :soal="soal" class="w-full" style="height: 50vh;"></soal>'
 });

@@ -1,5 +1,5 @@
 <template>
-  <form>
+  <form class="relative">
     <p v-text="soal.soal"></p>
     <label v-for="(entry, index) in soal.pilihan" :key="index" class="block">
       <input type="radio" name="pilihan" :value="index" v-model="pilihanTerpilih">
@@ -15,7 +15,6 @@
       :disabled="pilihanTerpilih < 0"
       @click="buttonClick"
     ></button>
-    <br>
   </form>
 </template>
 
