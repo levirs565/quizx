@@ -1,14 +1,14 @@
 <template>
-  <div>
-    <p>Hasil Permainan</p>
+  <ul class="list-none">
+    <li>Hasil Permainan</li>
     <template v-for="(item, index) in items ">
-      <p :class="[item.color]" :key="index">
+      <li :class="[item.color]" :key="index">
         <font-awesome :icon="item.icon"></font-awesome>
         &nbsp;{{ item.prop }}
-        <span class="absolute right-0" :class="[item.color]">{{ item.val }}</span>
-      </p>
+        <span class="float-right" :class="[item.color]">{{ item.val }}</span>
+      </li>
     </template>
-  </div>
+  </ul>
 </template>
 
 <script>
