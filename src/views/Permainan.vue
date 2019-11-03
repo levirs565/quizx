@@ -64,8 +64,7 @@ export default {
           this.onPermainan = true;
           this.currentSoalId = 1;
           this.updateResult();
-        })
-        .catch(this.catchError);
+        });
     },
     stop() {
       stopPermainan()
@@ -74,8 +73,7 @@ export default {
           this.currentSoalId = 0;
           this.updateResult();
           this.currentSoal = undefined;
-        })
-        .catch(this.catchError);
+        });
     },
     soalSubmit(co) {
       let jawaban = co.pilihanTerpilih;
@@ -87,8 +85,7 @@ export default {
           if (this.currentSoalId < 40) {
             this.currentSoalId++;
           }
-        })
-        .catch(this.catchError);
+        });
     },
     soalChange(soal) {
       this.$nextTick(function() {
@@ -102,8 +99,7 @@ export default {
         getPermainanResults()
           .then(data => {
             this.result = data.results;
-          })
-          .catch(this.catchError);
+          });
       }
     },
     setLoading(is) {
@@ -116,8 +112,7 @@ export default {
           let state = data.state;
           this.onPermainan = state.onPermainan;
           this.currentSoalId = state.lastSoal + 1;
-        })
-        .catch(this.catchError);
+        });
     }
   },
   watch: {
@@ -131,8 +126,7 @@ export default {
         getSoalPermainan(this.currentSoalId - 1)
           .then(data => {
             this.currentSoal = data.soal;
-          })
-          .catch(this.catchError);
+          });
       }
     }
   },
