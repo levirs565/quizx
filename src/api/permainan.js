@@ -4,8 +4,18 @@ const consts = require('../consts');
 const helper = require('../helper/permainan');
 const soal = require('../helper/soal');
 
+function preq(req) {
+  let p = req.session.permainan;
+  if (p) {
+    Object.setPrototypeOf(p, helper.Permainan.prototype);
+  }
+
+  return p;
+}
+
 function checkInPermainan(req, reject) {
-  if (!helper.isOnPermainan(req)) {
+  let p = preq(req);
+  if (p == null || p.isFinished) {
     reject(consts.MSG_N_ON_PERMAINAN);
   }
 }
@@ -13,15 +23,13 @@ function checkInPermainan(req, reject) {
 app.post('/api/permainan/start', (req, res) => {
   utils.handleRequest(
     new Promise((resolve, reject) => {
-      if (helper.isOnPermainan(req)) {
+      const p = preq(req);
+      if (p != null && !p.isFinished) {
         reject(consts.MSG_ON_PERMAINAN);
       }
 
-      helper.setOnPermainan(req, true);
-      helper.setPermainanFinished(req, false);
-      helper.setJawabanCollection(req, []);
       soal.createRandomSoalCollection(40).then(val => {
-        helper.setSoalCollection(req, val);
+        req.session.permainan = new helper.Permainan(val);
         resolve(true);
       });
     }),
@@ -35,20 +43,17 @@ app.post('/api/permainan/start', (req, res) => {
 app.get('/api/permainan/soal/:id', (req, res) => {
   utils.handleRequest(
     new Promise((resolve, reject) => {
-      helper.setLastSoal(req, Number(req.params.id));
-
       checkInPermainan(req, reject);
-
-      resolve(helper.getSoalCollection(req)[req.params.id]);
+      resolve(preq(req).getSoal(req.params.id));
     }),
     (val, isNull) => ({
       soal: isNull
         ? null
         : {
-            id: Number(req.params.id),
-            soal: val.soal,
-            pilihan: val.pilihan
-          }
+          id: Number(req.params.id),
+          soal: val.soal,
+          pilihan: val.pilihan
+        }
     }),
     consts.MSG_SOAL_NF,
     req,
@@ -60,9 +65,7 @@ app.post('/api/permainan/jawab/:id', (req, res) => {
   utils.handleRequest(
     new Promise((resolve, reject) => {
       checkInPermainan(req, reject);
-
-      helper.getJawabanCollection(req)[req.params.id] = req.body.jawaban;
-
+      preq(req).setJawaban(req.params.id, req.body.jawaban);
       resolve(true);
     }),
     () => ({}),
@@ -76,15 +79,7 @@ app.post('/api/permainan/stop', (req, res) => {
   utils.handleRequest(
     new Promise((resolve, reject) => {
       checkInPermainan(req, reject);
-
-      helper.setOnPermainan(req, undefined);
-      helper.setResults(
-        req,
-        soal.calculateResults(helper.getSoalCollection(req), helper.getJawabanCollection(req))
-      );
-      helper.setPermainanFinished(req, true);
-      helper.setJawabanCollection(req, undefined);
-      helper.setSoalCollection(req, undefined);
+      preq(req).finish();
       resolve(true);
     }),
     () => ({}),
@@ -97,20 +92,21 @@ app.post('/api/permainan/stop', (req, res) => {
 app.get('/api/permainan/results', (req, res) => {
   utils.handleRequest(
     new Promise(resolve => {
-      if (!helper.isPermainanFinished(req)) {
+      const p = preq(req);
+      if (p == null || !p.isFinished) {
         resolve(null);
       }
 
-      resolve(helper.getResults(req));
+      resolve(p.results);
     }),
     (val, isNull) => ({
       results: isNull
         ? null
         : {
-            takDiJawab: val.takDiJawab.length,
-            benar: val.benar.length,
-            salah: val.salah.length
-          }
+          takDiJawab: val.takDiJawab.length,
+          benar: val.benar.length,
+          salah: val.salah.length
+        }
     }),
     consts.MSG_N_FINISHED,
     req,
@@ -121,11 +117,22 @@ app.get('/api/permainan/results', (req, res) => {
 app.get('/api/permainan/state', (req, res) => {
   utils.handleRequest(
     new Promise(resolve => {
-      resolve({
-        onPermainan: helper.isOnPermainan(req),
-        permaianFinished: helper.isPermainanFinished(req),
-        lastSoal: helper.getLastSoal(req)
-      });
+      const p = preq(req);
+
+      const result = {
+        onPermainan: p != null
+      };
+
+      if (result.onPermainan) {
+        result.permainanFinished = p.isFinished;
+        result.lastSoal = p.lastSoal;
+
+        if (p.isFinished) {
+          result.onPermainan = false;
+        }
+      }
+
+      resolve(result);
     }),
     (val, isNull) => ({
       state: isNull ? null : val

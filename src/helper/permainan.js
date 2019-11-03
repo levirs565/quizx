@@ -1,59 +1,57 @@
-function isOnPermainan(req) {
-  return req.session.onPermainan;
-}
-exports.isOnPermainan = isOnPermainan;
+const _ = require('underscore');
 
-function setOnPermainan(req, state) {
-  req.session.onPermainan = state;
-}
-exports.setOnPermainan = setOnPermainan;
+class Permainan {
+  constructor(soals) {
+    this.soals = soals;
+    this.jawabans = [];
+    this.isFinished = false;
+  }
 
-function isPermainanFinished(req) {
-  return req.session.permainanFinish;
-}
-exports.isPermainanFinished = isPermainanFinished;
+  getSoalCount() {
+    return this.soals.length;
+  }
 
-function setPermainanFinished(req, state) {
-  req.session.permainanFinish = state;
-}
-exports.setPermainanFinished = setPermainanFinished;
+  getSoal(id) {
+    this.lastSoal = id;
+    return this.soals[id];
+  }
 
-function getSoalCollection(req) {
-  return req.session.soals;
-}
-exports.getSoalCollection = getSoalCollection;
+  setJawaban(id, jwb) {
+    this.jawabans[id] = jwb;
+  }
 
-function setSoalCollection(req, soals) {
-  req.session.soals = soals;
-}
-exports.setSoalCollection = setSoalCollection;
+  finish() {
+    this.results = this.calculateResults();
+    this.isFinished = true;
+  }
 
-function setJawabanCollection(req, jawabans) {
-  req.session.jawabans = jawabans;
-}
-exports.setJawabanCollection = setJawabanCollection;
+  calculateResults() {
+    const resuls = {
+      benar: [],
+      salah: [],
+      takDiJawab: []
+    };
 
-function getJawabanCollection(req) {
-  return req.session.jawabans;
-}
-exports.getJawabanCollection = getJawabanCollection;
+    this.soals.forEach((soal, index) => {
+      const jawaban = this.jawabans[index];
+      const takDiJawab = _.isNull(jawaban) || _.isUndefined(jawaban);
 
-function setResults(req, result) {
-  req.session.results = result;
-}
-exports.setResults = setResults;
+      if (takDiJawab) {
+        resuls.takDiJawab.push(index);
+        return;
+      }
 
-function getResults(req) {
-  return req.session.results;
-}
-exports.getResults = getResults;
+      const benar = soal.jawaban === jawaban;
 
-function setLastSoal(req, int) {
-  req.session.lastSoal = int;
-}
-exports.setLastSoal = setLastSoal;
+      if (benar) {
+        resuls.benar.push(index);
+      } else {
+        resuls.salah.push(index);
+      }
+    });
 
-function getLastSoal(req) {
-  return req.session.lastSoal;
+    return resuls;
+  }
 }
-exports.getLastSoal = getLastSoal;
+
+exports.Permainan = Permainan;
