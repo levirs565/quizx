@@ -1,10 +1,8 @@
 <template>
-  <div id="app" class="flex flex-col h-full absolute w-full">
+  <div id="app" class="flex flex-col h-screen">
     <notification-container ref="nof"></notification-container>
     <navigation></navigation>
-    <div class="flex flex-grow">
-      <router-view></router-view>
-    </div>
+    <router-view></router-view>
   </div>
 </template>
 
