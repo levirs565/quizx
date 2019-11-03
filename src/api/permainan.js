@@ -35,6 +35,8 @@ app.post('/api/permainan/start', (req, res) => {
 app.get('/api/permainan/soal/:id', (req, res) => {
   utils.handleRequest(
     new Promise((resolve, reject) => {
+      helper.setLastSoal(req, Number(req.params.id));
+
       checkInPermainan(req, reject);
 
       resolve(helper.getSoalCollection(req)[req.params.id]);
@@ -121,7 +123,8 @@ app.get('/api/permainan/state', (req, res) => {
     new Promise(resolve => {
       resolve({
         onPermainan: helper.isOnPermainan(req),
-        permaianFinished: helper.isPermainanFinished(req)
+        permaianFinished: helper.isPermainanFinished(req),
+        lastSoal: helper.getLastSoal(req)
       });
     }),
     (val, isNull) => ({

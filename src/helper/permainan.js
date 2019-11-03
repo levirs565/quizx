@@ -47,3 +47,13 @@ function getResults(req) {
   return req.session.results;
 }
 exports.getResults = getResults;
+
+function setLastSoal(req, int) {
+  req.session.lastSoal = int;
+}
+exports.setLastSoal = setLastSoal;
+
+function getLastSoal(req) {
+  return req.session.lastSoal;
+}
+exports.getLastSoal = getLastSoal;
