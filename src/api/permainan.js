@@ -22,7 +22,7 @@ function checkInPermainan(req, reject) {
 
 app.post('/api/permainan/start', (req, res) => {
   utils.handleRequest(
-    new Promise((resolve, reject) => {
+    (resolve, reject) => {
       const p = preq(req);
       if (p != null && !p.isFinished) {
         reject(consts.MSG_ON_PERMAINAN);
@@ -32,7 +32,7 @@ app.post('/api/permainan/start', (req, res) => {
         req.session.permainan = new helper.Permainan(val);
         resolve(true);
       });
-    }),
+    },
     () => ({}),
     consts.MSG_KESALAHAN_ANEH,
     req,
@@ -42,10 +42,10 @@ app.post('/api/permainan/start', (req, res) => {
 
 app.get('/api/permainan/soal/:id', (req, res) => {
   utils.handleRequest(
-    new Promise((resolve, reject) => {
+    (resolve, reject) => {
       checkInPermainan(req, reject);
       resolve(preq(req).getSoal(req.params.id));
-    }),
+    },
     (val, isNull) => ({
       soal: isNull
         ? null
@@ -63,11 +63,11 @@ app.get('/api/permainan/soal/:id', (req, res) => {
 
 app.post('/api/permainan/jawab/:id', (req, res) => {
   utils.handleRequest(
-    new Promise((resolve, reject) => {
+    (resolve, reject) => {
       checkInPermainan(req, reject);
       preq(req).setJawaban(req.params.id, req.body.jawaban);
       resolve(true);
-    }),
+    },
     () => ({}),
     consts.MSG_SOAL_NF,
     req,
@@ -77,11 +77,11 @@ app.post('/api/permainan/jawab/:id', (req, res) => {
 
 app.post('/api/permainan/stop', (req, res) => {
   utils.handleRequest(
-    new Promise((resolve, reject) => {
+    (resolve, reject) => {
       checkInPermainan(req, reject);
       preq(req).finish();
       resolve(true);
-    }),
+    },
     () => ({}),
     consts.MSG_KESALAHAN_ANEH,
     req,
@@ -91,14 +91,14 @@ app.post('/api/permainan/stop', (req, res) => {
 
 app.get('/api/permainan/results', (req, res) => {
   utils.handleRequest(
-    new Promise(resolve => {
+    resolve => {
       const p = preq(req);
       if (p == null || !p.isFinished) {
         resolve(null);
       }
 
       resolve(p.results);
-    }),
+    },
     (val, isNull) => ({
       results: isNull
         ? null
@@ -116,7 +116,7 @@ app.get('/api/permainan/results', (req, res) => {
 
 app.get('/api/permainan/state', (req, res) => {
   utils.handleRequest(
-    new Promise(resolve => {
+    resolve => {
       const p = preq(req);
 
       const result = {
@@ -133,7 +133,7 @@ app.get('/api/permainan/state', (req, res) => {
       }
 
       resolve(result);
-    }),
+    },
     (val, isNull) => ({
       state: isNull ? null : val
     }),
