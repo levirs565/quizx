@@ -1,16 +1,20 @@
 <template>
-  <div class="flex flex-wrap">
-    <template v-if="result !== undefined">
-      <permainan-result :results="result" class="mx-auto"></permainan-result>
-      <div class="w-full h-4"></div>
-    </template>
+  <div
+    class="flex m-auto w-full p-4"
+    :class="{
+    'flex-col': !onPermainan,
+    'flex-row': onPermainan
+  }"
+  >
+    <permainan-result :results="result" v-if="result !== undefined"></permainan-result>
     <button
       v-if="!onPermainan"
       @click="start()"
       class="button primary mx-auto"
     >{{ result ? "Mulai Lagi" : "Mulai Permainan"}}</button>
-    <div v-if="onPermainan" class="flex flex-col w-1/5">
-      <button @click="stop()" class="button danger rounded-none">Hentikan Permainan</button>
+
+    <div v-if="onPermainan" class="w-1/5">
+      <button @click="stop()" class="button danger w-full mb-2">Hentikan Permainan</button>
       <jumper :total="soalCount" :value="1" v-model="currentSoalId"></jumper>
     </div>
     <soal
@@ -22,7 +26,6 @@
       ref="soalView"
       class="w-4/5 pl-4"
     ></soal>
-    <p v-text="lastErr" v-show="lastErr !== undefined"></p>
   </div>
 </template>
 
@@ -51,7 +54,6 @@ export default {
       soalCount: 40,
       currentSoal: undefined,
       currentSoalId: 0,
-      lastErr: undefined,
       result: undefined
     };
   },
@@ -60,7 +62,6 @@ export default {
       startPermainan()
         .then(() => {
           this.onPermainan = true;
-          this.lastErr = undefined;
           this.currentSoalId = 1;
           this.updateResult();
         })
@@ -70,7 +71,6 @@ export default {
       stopPermainan()
         .then(res => {
           this.onPermainan = false;
-          this.lastErr = undefined;
           this.currentSoalId = 0;
           this.updateResult();
           this.currentSoal = undefined;
@@ -102,7 +102,6 @@ export default {
         getPermainanResults()
           .then(data => {
             this.result = data.results;
-            this.lastErr = undefined;
           })
           .catch(this.catchError);
       }
@@ -132,7 +131,6 @@ export default {
         getSoalPermainan(this.currentSoalId - 1)
           .then(data => {
             this.currentSoal = data.soal;
-            this.lastErr = undefined;
           })
           .catch(this.catchError);
       }
