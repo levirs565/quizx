@@ -1,13 +1,13 @@
 <template>
-  <div class="jumper buttons columns">
+  <div class="jumper">
     <button
       v-for="index in total"
       :key="index"
       @click="jumpClick(index)"
       :class="{
-        'is-info is-selected': current == index
+        'info': current == index
       }"
-      class="button column is-one-fifth is-marginless is-radiusless is-inline-flex"
+      class="button"
     >{{ index }}</button>
   </div>
 </template>
@@ -34,8 +34,9 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
 .jumper {
-  text-align: left;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(3rem, 1fr));
 }
 </style>

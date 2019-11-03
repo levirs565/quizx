@@ -1,45 +1,31 @@
 <template>
-  <div class="permainan is-flex container">
-    <div class="vcenter-margin center-margin" v-show="!onPermainan">
-      <template v-if="result !== undefined">
-        <permainan-result :results="result" class="center-margin"></permainan-result>
-        <div class="linebreak"></div>
-      </template>
-      <button
-        v-if="!onPermainan"
-        @click="start()"
-        class="button is-primary"
-      >{{ result ? "Mulai Lagi" : "Mulai Permainan"}}</button>
+  <div
+    class="flex m-auto w-full p-4"
+    :class="{
+    'flex-col': !onPermainan,
+    'flex-row': onPermainan
+  }"
+  >
+    <permainan-result :results="result" v-if="result !== undefined"></permainan-result>
+    <button
+      v-if="!onPermainan"
+      @click="start()"
+      class="button primary mx-auto"
+    >{{ result ? "Mulai Lagi" : "Mulai Permainan"}}</button>
+
+    <div v-if="onPermainan" class="w-1/5">
+      <button @click="stop()" class="button danger w-full mb-2">Hentikan Permainan</button>
+      <jumper :total="soalCount" :value="1" v-model="currentSoalId"></jumper>
     </div>
-    <div class="columns is-multiline center-margin is-marginless rows" v-show="onPermainan">
-      <div
-        class="column is-one-third columns is-multiline not-stretch"
-        style="flex-direction: column;padding-bottom: 0;"
-      >
-        <button
-          @click="stop()"
-          class="button is-danger column is-full"
-          style="align-self: flex-start; margin-left: 0.75rem; margin-right: 0.75rem; width: calc(100% - 1.5rem);"
-        >Hentikan Permainan</button>
-        <div class="linebreak"></div>
-        <jumper
-          class="column is-full is-marginless"
-          :total="soalCount"
-          :value="1"
-          v-model="currentSoalId"
-        ></jumper>
-      </div>
-      <soal
-        v-if="currentSoal != undefined"
-        :soal="currentSoal"
-        teksSubmit="Kirim Jawaban"
-        @submit="soalSubmit"
-        @change="soalChange"
-        class="column"
-        style="margin-left: 0; margin-right: 0;"
-        ref="soalView"
-      ></soal>
-    </div>
+    <soal
+      v-if="currentSoal != undefined"
+      :soal="currentSoal"
+      teksSubmit="Kirim Jawaban"
+      @submit="soalSubmit"
+      @change="soalChange"
+      ref="soalView"
+      class="w-4/5 pl-4"
+    ></soal>
   </div>
 </template>
 
@@ -68,44 +54,35 @@ export default {
       soalCount: 40,
       currentSoal: undefined,
       currentSoalId: 0,
-      lastErr: undefined,
       result: undefined
     };
   },
   methods: {
     start() {
-      startPermainan()
-        .then(() => {
-          this.onPermainan = true;
-          this.lastErr = undefined;
-          this.currentSoalId = 1;
-          this.updateResult();
-        })
-        .catch(this.catchError);
+      startPermainan().then(() => {
+        this.onPermainan = true;
+        this.currentSoalId = 1;
+        this.updateResult();
+      });
     },
     stop() {
-      stopPermainan()
-        .then(res => {
-          this.onPermainan = false;
-          this.lastErr = undefined;
-          this.currentSoalId = 0;
-          this.updateResult();
-          this.currentSoal = undefined;
-        })
-        .catch(this.catchError);
+      stopPermainan().then(res => {
+        this.onPermainan = false;
+        this.currentSoalId = 0;
+        this.updateResult();
+        this.currentSoal = undefined;
+      });
     },
     soalSubmit(co) {
       let jawaban = co.pilihanTerpilih;
       let id = co.soal.id;
       this.setLoading(true);
-      postJawabanPermainan(id, jawaban)
-        .then(() => {
-          this.setLoading(false);
-          if (this.currentSoalId < 40) {
-            this.currentSoalId++;
-          }
-        })
-        .catch(this.catchError);
+      postJawabanPermainan(id, jawaban).then(() => {
+        this.setLoading(false);
+        if (this.currentSoalId < 40) {
+          this.currentSoalId++;
+        }
+      });
     },
     soalChange(soal) {
       this.$nextTick(function() {
@@ -116,26 +93,21 @@ export default {
       if (this.onPermainan) {
         this.result = undefined;
       } else {
-        getPermainanResults()
-          .then(data => {
-            this.result = data.results;
-            this.lastErr = undefined;
-          })
-          .catch(this.catchError);
+        getPermainanResults().then(data => {
+          this.result = data.results;
+        });
       }
     },
     setLoading(is) {
       this.$refs.soalView.isLoading = is;
     },
     updateState() {
-      getPermainanState()
-        .then(data => {
-          console.log(data);
-          let state = data.state;
-          this.onPermainan = state.onPermainan;
-          this.currentSoalId = state.lastSoal + 1;
-        })
-        .catch(this.catchError);
+      getPermainanState().then(data => {
+        console.log(data);
+        let state = data.state;
+        this.onPermainan = state.onPermainan;
+        this.currentSoalId = state.lastSoal + 1;
+      });
     }
   },
   watch: {
@@ -146,12 +118,9 @@ export default {
     },
     currentSoalId() {
       if (this.onPermainan) {
-        getSoalPermainan(this.currentSoalId - 1)
-          .then(data => {
-            this.currentSoal = data.soal;
-            this.lastErr = undefined;
-          })
-          .catch(this.catchError);
+        getSoalPermainan(this.currentSoalId - 1).then(data => {
+          this.currentSoal = data.soal;
+        });
       }
     }
   },
@@ -162,13 +131,13 @@ export default {
 </script>
 
 <style>
-.permainan {
+/* .permainan {
   text-align: center;
 }
 
 .soal {
   text-align: left;
-  /* padding: 2.5% 15%; */
+  padding: 2.5% 15%;
 }
 
 .soal > .button {
@@ -177,5 +146,5 @@ export default {
 
 .permainan-result {
   max-width: 16em;
-}
+} */
 </style>

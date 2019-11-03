@@ -1,19 +1,12 @@
 <template>
-  <form class="soal columns is-mobile is-multiline">
-    <div class="is-block">
-      <p v-text="soal.soal"></p>
-      <template v-for="(entry, index) in soal.pilihan">
-        <label :key="index" class="radio">
-          <input type="radio" name="pilihan" :value="index" v-model="pilihanTerpilih">
-          {{ entry }}
-        </label>
-        <br :key="index + 'br'">
-      </template>
-    </div>
-    <div class="linebreak"></div>
-    <br>
+  <form class="relative">
+    <p v-text="soal.soal"></p>
+    <label v-for="(entry, index) in soal.pilihan" :key="index" class="block">
+      <input type="radio" name="pilihan" :value="index" v-model="pilihanTerpilih">
+      {{ entry }}
+    </label>
     <button
-      class="button is-primary"
+      class="button primary bottom-0 right-0 absolute"
       :class="{
         'is-loading': isLoading
       }"
@@ -22,7 +15,6 @@
       :disabled="pilihanTerpilih < 0"
       @click="buttonClick"
     ></button>
-    <br>
   </form>
 </template>
 
@@ -55,8 +47,4 @@ export default {
 </script>
 
 <style scoped>
-.button {
-  align-self: flex-end;
-  margin-left: auto;
-}
 </style>

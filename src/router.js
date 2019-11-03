@@ -11,15 +11,18 @@ const router = new VueRouter({
     {
       path: '/soal/:soal_id',
       props: true,
-      component: Soal
+      component: Soal,
+      alias: 'soal'
     },
     {
       path: '/',
-      component: Home
+      component: Home,
+      alias: 'home'
     },
     {
       path: '/permainan',
-      component: Permainan
+      component: Permainan,
+      alias: 'permainan'
     }
   ]
 });

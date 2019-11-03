@@ -1,18 +1,14 @@
 <template>
-  <div class="permainan-result columns is-mobile is-multiline is-centered">
-    <p class="column is-full tleft" style="padding-left: 0;">Hasil Permainan</p>
+  <ul class="list-none">
+    <li>Hasil Permainan</li>
     <template v-for="(item, index) in items ">
-      <p class="column is-10 tleft is-paddingless" :class="[item.color]" :key="index + 'a'">
+      <li :class="[item.color]" :key="index">
         <font-awesome :icon="item.icon"></font-awesome>
         &nbsp;{{ item.prop }}
-      </p>
-      <p
-        class="column is-2 tright is-paddingless"
-        :class="[item.color]"
-        :key="index + 'b'"
-      >{{ item.val }}</p>
+        <span class="float-right" :class="[item.color]">{{ item.val }}</span>
+      </li>
     </template>
-  </div>
+  </ul>
 </template>
 
 <script>
@@ -24,19 +20,19 @@ export default {
         {
           prop: "Benar",
           val: this.results.benar,
-          color: "has-text-success",
+          color: "text-green-600",
           icon: "check"
         },
         {
           prop: "Salah",
           val: this.results.salah,
-          color: "has-text-danger",
+          color: "text-red-600",
           icon: "times"
         },
         {
           prop: "Tidak Di Jawab",
           val: this.results.takDiJawab,
-          color: "has-text-warning",
+          color: "text-yellow-600",
           icon: "exclamation"
         }
       ];
