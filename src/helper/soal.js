@@ -39,32 +39,3 @@ function createRandomSoalCollection(size) {
   });
 }
 exports.createRandomSoalCollection = createRandomSoalCollection;
-
-function calculateResults(soals, jawabans) {
-  const resuls = {
-    benar: [],
-    salah: [],
-    takDiJawab: []
-  };
-
-  soals.forEach((soal, index) => {
-    const jawaban = jawabans[index];
-    const takDiJawab = _.isNull(jawaban) || _.isUndefined(jawaban);
-
-    if (takDiJawab) {
-      resuls.takDiJawab.push(index);
-      return;
-    }
-
-    const benar = soal.jawaban === jawaban;
-
-    if (benar) {
-      resuls.benar.push(index);
-    } else {
-      resuls.salah.push(index);
-    }
-  });
-
-  return resuls;
-}
-exports.calculateResults = calculateResults;
