@@ -1,19 +1,19 @@
-const mongoose = require('mongoose');
-const _ = require('underscore');
+// const mongoose = require('mongoose');
+// const _ = require('underscore');
 
-const soalScheme = new mongoose.Schema(
-  {
-    _id: Number,
-    soal: String,
-    pilihan: Array,
-    jawaban: Number
-  },
-  {
-    collection: 'soal'
-  }
-);
+// const soalScheme = new mongoose.Schema(
+//   {
+//     _id: Number,
+//     soal: String,
+//     pilihan: Array,
+//     jawaban: Number
+//   },
+//   {
+//     collection: 'soal'
+//   }
+// );
 
-const Soal = mongoose.model('Soal', soalScheme);
+// const Soal = mongoose.model('Soal', soalScheme);
 
 function getSoal(id) {
   return Soal.findById(id);

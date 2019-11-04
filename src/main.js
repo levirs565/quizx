@@ -6,5 +6,5 @@ require('./app').listen(3000, () => {
   console.log(consts.MSG_SERVER_READY);
 });
 
-require('./api/base');
+require('./api/soal');
 require('./api/permainan');
