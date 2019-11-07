@@ -1,8 +1,11 @@
 const consts = require('./consts');
 
-require('mongoose').connect(consts.DB_SOALKU);
+require('dotenv').config();
 
-require('./app').listen(3000, () => {
+require('mongoose').connect(process.env.DB_URI);
+
+const port = process.env.SERVER_PORT;
+require('./app').listen(port, () => {
   console.log(consts.MSG_SERVER_READY);
 });
 

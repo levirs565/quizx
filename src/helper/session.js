@@ -6,7 +6,7 @@ const savedSession = session({
   store: new MongoStore({
     mongooseConnection: mongoose.connection
   }),
-  secret: 'wedus nabrak witk kambil neng sor mahku',
+  secret: process.env.SESSION_SECRET,
   resave: true,
   saveUninitialized: false
 });
