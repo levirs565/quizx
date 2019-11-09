@@ -11,3 +11,4 @@ require('./app').listen(port, () => {
 
 require('./api/soal');
 require('./api/permainan');
+require('./api/user');
