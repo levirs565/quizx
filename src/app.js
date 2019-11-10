@@ -13,12 +13,7 @@ app.use(
 app.use(express.json());
 app.use(session.savedSession);
 
-app.get('/api/test', (req, res) => {
-  res.json({
-    err: null,
-    msg: 'Server sedang berjalan'
-  });
-});
+app.use('/api', require('./apis'));
 
 exports = app;
 module.exports = app;

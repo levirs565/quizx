@@ -8,7 +8,3 @@ const port = process.env.SERVER_PORT;
 require('./app').listen(port, () => {
   console.log(consts.MSG_SERVER_READY);
 });
-
-require('./api/soal');
-require('./api/permainan');
-require('./api/user');
