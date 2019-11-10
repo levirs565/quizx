@@ -1,5 +1,5 @@
 exports.throwNull = msg => val => {
-  if (!val) throw msg;
+  if (val == null) throw msg;
 
   return val;
 };

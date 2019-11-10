@@ -1,6 +1,7 @@
 const app = require('../app');
 const SoalController = require('../controllers/soal');
 
-app.get('/api/soal/:id', SoalController.get);
-
-app.post('/api/jawab/:id', SoalController.jawab);
+app.get('/api/soal/', SoalController.getCollectionList);
+app.get('/api/soal/:id', SoalController.getCollection);
+app.get('/api/soal/:colId/:soalId', SoalController.getSoal);
+app.post('/api/soal/:colId/:soalId', SoalController.jawabSoal);

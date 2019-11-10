@@ -1,35 +1,48 @@
 const mongoose = require('mongoose');
 
-const soalScheme = new mongoose.Schema(
+const soalScheme = new mongoose.Schema({
+  soal: {
+    type: String,
+    required: true
+  },
+  pilihan: {
+    type: Array,
+    required: true
+  },
+  jawaban: {
+    type: Number,
+    required: true
+  }
+});
+
+soalScheme.methods.toShortDetail = function f(id) {
+  return {
+    id,
+    soal: this.soal
+  };
+};
+
+const collectionScheme = new mongoose.Schema(
   {
     _id: Number,
-    soal: String,
-    pilihan: Array,
-    jawaban: Number
+    name: {
+      type: String,
+      required: true
+    },
+    soalList: [soalScheme]
   },
   {
     collection: 'soal'
   }
 );
 
-const Soal = mongoose.model('Soal', soalScheme);
+collectionScheme.methods.toShortDetail = function f() {
+  return {
+    id: this._id,
+    name: this.name
+  };
+};
 
-exports.get = id => Soal.findById(id);
+const Soal = mongoose.model('Soal', collectionScheme);
 
-exports.createRandom = size =>
-  Soal.find().then(val => {
-    const soals = val;
-    const count = val.length;
-    const result = [];
-
-    while (result.length < size) {
-      let index = Math.floor(Math.random() * count);
-      if (index === count) {
-        index = count - 1;
-      }
-
-      result.push(soals[index]);
-    }
-
-    return result;
-  });
+module.exports = Soal;

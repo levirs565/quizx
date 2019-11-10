@@ -2,25 +2,43 @@ const SoalService = require('../services/soal');
 const consts = require('../consts');
 const { throwNull, sendError } = require('../helper/controller');
 
-exports.get = (req, res) => {
+exports.getCollectionList = (req, res) =>
+  SoalService.getCollectionList()
+    .then(list => res.json({ list }))
+    .catch(sendError(res));
+
+exports.getCollection = (req, res) => {
   const { id } = req.params;
 
-  SoalService.get(id)
+  SoalService.getCollection(id)
     .then(throwNull(consts.MSG_SOAL_NF))
     .then(val => {
       res.json({
-        soal: val
+        ...val
       });
     })
     .catch(sendError(res));
 };
 
-exports.jawab = (req, res) => {
-  const { id } = req.params;
+exports.getSoal = (req, res) => {
+  const { colId, soalId } = req.params;
+
+  SoalService.getSoal(colId, soalId)
+    .then(throwNull(consts.MSG_SOAL_NF))
+    .then(val => {
+      res.json({
+        ...val
+      });
+    })
+    .catch(sendError(res));
+};
+
+exports.jawabSoal = (req, res) => {
+  const { colId, soalId } = req.params;
   const { jawaban } = req.body;
 
-  SoalService.jawab(id, jawaban)
-    .then(throwNull)
+  SoalService.jawabSoal(colId, soalId, jawaban)
+    .then(throwNull(consts.MSG_SOAL_NF))
     .then(val => {
       res.json({
         benar: val
