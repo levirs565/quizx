@@ -56,22 +56,13 @@ exports.login = (id, password, session) => {
 };
 
 exports.logout = session =>
-  new Promise((resolve, reject) => {
-    if (!loggedAs(session)) {
-      reject(Error('Please login first'));
-      return;
-    }
-
+  this.validateUserLoggedIn(session).then(() => {
     loginAs(undefined, session);
-    resolve(undefined);
   });
 
-exports.status = session =>
-  new Promise(resolve => {
-    const user = loggedAs(session);
+exports.validateUserLoggedIn = session => {
+  const user = loggedAs(session);
+  return user ? Promise.resolve(user) : Promise.reject(Error('Please login first'))
+};
 
-    resolve({
-      loggedIn: user != null,
-      user
-    });
-  });
+exports.getLoggedInAs = loggedAs;
