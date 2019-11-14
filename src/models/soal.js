@@ -44,5 +44,6 @@ collectionScheme.methods.toShortDetail = function f() {
 };
 
 const Soal = mongoose.model('Soal', collectionScheme);
+Soal.soalScheme = soalScheme;
 
 module.exports = Soal;
