@@ -1,5 +1,5 @@
 const UserService = require('../services/user');
-const { sendError } = require('../helper/controller');
+const { sendError } = require('../utils/error');
 
 exports.signup = (req, res) => {
   const { id, name, password } = req.body;

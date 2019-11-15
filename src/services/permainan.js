@@ -1,6 +1,7 @@
 const Permainan = require('../models/permainan');
 const UserService = require('./user');
 const SoalService = require('./soal');
+const { ClientError } = require('../utils/error');
 
 const getUserPermainan = session =>
   UserService.validateUserLoggedIn(session).then(user => {
@@ -10,13 +11,13 @@ const getUserPermainan = session =>
 const validatePermainanStarted = session =>
   getUserPermainan(session).then(([user, permainan]) => {
     if (permainan) return permainan;
-    throw Error('Permainan is not started');
+    throw new ClientError('Permainan is not started');
   });
 
 exports.startPermainan = (session, soalColId) =>
   getUserPermainan(session)
     .then(([user, permainan]) => {
-      if (permainan) throw Error('Anda belum menyelesaikan permainan');
+      if (permainan) throw new ClientError('Your permainan is not finished');
 
       const soalCollectionPromise = SoalService.getCollectionFull(soalColId);
       const permainanPromise = Promise.resolve({
@@ -27,8 +28,6 @@ exports.startPermainan = (session, soalColId) =>
       return Promise.all([permainanPromise, soalCollectionPromise]);
     })
     .then(([permainan, soalCollection]) => {
-      if (!soalCollection) throw Error('Koleksi soal tidak ada');
-
       const { soalList } = soalCollection;
       const mdPermainan = new Permainan({
         ...permainan,
@@ -43,19 +42,19 @@ exports.getSoal = (session, index) =>
   validatePermainanStarted(session).then(permainan => {
     const soal = permainan.soalList[index];
 
-    return soal
-      ? {
-          ...soal.toShortDetail(index),
-          pilihan: soal.pilihan
-        }
-      : null;
+    if (!soal) throw new ClientError('Soal not found');
+
+    return {
+      ...soal.toShortDetail(index),
+      pilihan: soal.pilihan
+    };
   });
 
 exports.putJawaban = (session, index, jawaban) =>
   validatePermainanStarted(session).then(per => {
     const soalCount = per.soalList.length;
 
-    if (index < 0 || index >= soalCount) return null;
+    if (index < 0 || index >= soalCount) throw new ClientError('Soal not found');
 
     const permainan = per;
     permainan.jawabanList.set(index, jawaban);

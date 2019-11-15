@@ -1,6 +1,5 @@
 const PermainanService = require('../services/permainan');
-const consts = require('../consts');
-const { throwNull, sendError } = require('../helper/controller');
+const { sendError } = require('../utils/error');
 
 exports.startPermainan = (req, res) => {
   const { soalId } = req.body;
@@ -14,7 +13,6 @@ exports.getSoal = (req, res) => {
   const { id } = req.params;
 
   PermainanService.getSoal(req.session, id)
-    .then(throwNull(consts.MSG_SOAL_NF))
     .then(soal => res.json(soal))
     .catch(sendError(res));
 };
@@ -24,7 +22,6 @@ exports.putJawaban = (req, res) => {
   const { jawaban } = req.body;
 
   PermainanService.putJawaban(req.session, id, jawaban)
-    .then(throwNull(consts.MSG_SOAL_NF))
     .then(permainan => res.json({ msg: 'jawaban is saved' }))
     .catch(sendError(res));
 };

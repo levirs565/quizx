@@ -1,5 +1,6 @@
 const bcrypt = require('bcrypt');
 const User = require('../models/user');
+const { ClientError } = require('../utils/error');
 
 const saltRounds = 10;
 
@@ -13,9 +14,7 @@ const loggedAs = session => session.user;
 exports.signup = (id, name, password) =>
   User.findOne({ id })
     .then(user => {
-      if (user) {
-        throw Error('Account already registered');
-      }
+      if (user) throw new ClientError('Account already registered');
 
       return bcrypt.genSalt(saltRounds);
     })
@@ -34,13 +33,13 @@ exports.signup = (id, name, password) =>
 
 exports.login = (id, password, session) => {
   if (loggedAs(session)) {
-    return Promise.reject(Error('Please logout first'));
+    return Promise.reject(new ClientError('Please logout first'));
   }
 
   return User.findOne({ id })
     .then(user => {
       if (!user) {
-        throw Error('Account not registered');
+        throw new ClientError('Account not registered');
       }
 
       const userPromise = Promise.resolve(user);
@@ -49,7 +48,7 @@ exports.login = (id, password, session) => {
       return Promise.all([userPromise, comparePromise]);
     })
     .then(([user, matched]) => {
-      if (!matched) throw Error('Password not match');
+      if (!matched) throw new ClientError('Password not match');
 
       loginAs(user.id, session);
     });
@@ -62,7 +61,7 @@ exports.logout = session =>
 
 exports.validateUserLoggedIn = session => {
   const user = loggedAs(session);
-  return user ? Promise.resolve(user) : Promise.reject(Error('Please login first'))
+  return user ? Promise.resolve(user) : Promise.reject(new ClientError('Please login first'));
 };
 
 exports.getLoggedInAs = loggedAs;
