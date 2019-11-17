@@ -9,21 +9,18 @@
     <div class="items" :class="{
         'active': burgerActive
       }">
-      <a href="/#/" :class="{
-          selected: rId == 'home'
-        }">Home</a>
-      <a
-        href="/#/soal"
+      <router-link to="/" :class="{
+          selected: path == '/'
+        }">Home</router-link>
+      <router-link to="/soal" :class="{
+          selected: path == '/soal'
+        }">Koleksi Soal</router-link>
+      <router-link
         :class="{
-          selected: rId == 'soal_collection_list'
-        }"
-      >Koleksi Soal</a>
-      <a
-        :class="{
-            selected: rId == 'permainan'
+            selected: path == '/permainan'
           }"
-        href="/#/permainan"
-      >Permainan</a>
+        to="/permainan"
+      >Permainan</router-link>
     </div>
   </nav>
 </template>
@@ -36,8 +33,8 @@ export default {
     };
   },
   computed: {
-    rId() {
-      return this.$route.alias;
+    path() {
+      return this.$route.path;
     }
   }
 };

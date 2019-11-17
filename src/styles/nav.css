@@ -54,5 +54,5 @@ nav > .items > a:hover {
 }
 
 nav > .items > a.selected {
-  @apply bg-white text-green-500;
+  @apply bg-green-400;
 }
