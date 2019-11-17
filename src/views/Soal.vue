@@ -1,14 +1,24 @@
 <template>
-  <div class="soal-views">
-    <soal v-if="soal" :soal="soal" @submit="soalSubmit"></soal>
-    <p v-else v-text="errorTerakhir"></p>
-    <p v-if="telahDijawab">Jawaban anda {{ jawabanBenar ? 'benar' : 'salah' }}</p>
+  <div>
+    <soal ref="soalView" class="h-full" v-if="soal" :soal="soal" @submit="soalSubmit"></soal>
+    <div
+      class="py-2 px-4 mt-4"
+      :class="{
+        'bg-green-500': telahDijawab && jawabanBenar,
+        'bg-red-500': telahDijawab && !jawabanBenar
+      }"
+    >
+      <p class="text-white" v-show="telahDijawab">
+        <font-awesome :icon="jawabanBenar ? 'check' : 'times'"></font-awesome>
+        Jawaban anda {{ jawabanBenar ? 'benar' : 'salah' }}
+      </p>
+    </div>
   </div>
 </template>
 
 <script>
 import Soal from "../components/Soal.vue";
-import { getSoal, checkJawaban } from "../api";
+import { Soal as SoalApi } from "../api.js";
 
 export default {
   components: {
@@ -18,21 +28,15 @@ export default {
   data() {
     return {
       soal: undefined,
-      errorTerakhir: undefined,
       telahDijawab: false,
       jawabanBenar: false
     };
-  },
-  computed: {
-    soalId() {
-      return Number(this.soal_id);
-    }
   },
   mounted() {
     this.updateSoal();
   },
   watch: {
-    soalId() {
+    soal_id() {
       this.updateSoal();
     }
   },
@@ -40,20 +44,18 @@ export default {
     updateSoal() {
       this.telahDijawab = false;
       this.jawabanBenar = false;
-      getSoal(this.soalId).then(
-        data => {
-          let soal = data.soal;
-          this.$set(this, "soal", soal);
-        },
-        err => {
-          this.$set(this, "soal", undefined);
-          this.$set(this, "errorTerakhir", err.toString());
-        }
-      );
+      if (this.$refs.soalView) this.$refs.soalView.pilihanTerpilih = -1;
+      SoalApi.getSoal(this.$attrs.col_id, this.soal_id).then(val => {
+        this.soal = val;
+      });
     },
     soalSubmit(th) {
-      checkJawaban(this.soalId, th.pilihanTerpilih).then(data => {
-        this.jawabanBenar = data.benar;
+      SoalApi.postJawaban(
+        this.$attrs.col_id,
+        this.soal_id,
+        th.pilihanTerpilih
+      ).then(val => {
+        this.jawabanBenar = val.benar;
         this.telahDijawab = true;
       });
     }

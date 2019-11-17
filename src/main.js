@@ -6,12 +6,13 @@ import {
   faCheck,
   faTimes,
   faExclamation,
-  faBars
+  faBars,
+  faPlay
 } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 import '@/style.css';
 
-library.add(faCheck, faTimes, faExclamation, faBars);
+library.add(faCheck, faTimes, faExclamation, faBars, faPlay);
 
 Vue.component('font-awesome', FontAwesomeIcon);
 

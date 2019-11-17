@@ -13,6 +13,12 @@
           selected: rId == 'home'
         }">Home</a>
       <a
+        href="/#/soal"
+        :class="{
+          selected: rId == 'soal_collection_list'
+        }"
+      >Koleksi Soal</a>
+      <a
         :class="{
             selected: rId == 'permainan'
           }"
@@ -26,8 +32,8 @@
 export default {
   data() {
     return {
-      burgerActive: false,
-    }
+      burgerActive: false
+    };
   },
   computed: {
     rId() {
