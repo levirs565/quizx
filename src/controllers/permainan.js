@@ -1,5 +1,5 @@
 const PermainanService = require('../services/permainan');
-const { sendError } = require('../utils/error');
+const { sendError } = require('../error');
 
 exports.startPermainan = (req, res) => {
   const { soalId } = req.body;

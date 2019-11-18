@@ -1,5 +1,5 @@
 const SoalModel = require('../models/soal');
-const { ClientError } = require('../utils/error');
+const { EError, E } = require('../error');
 
 exports.getCollectionList = () =>
   SoalModel.find().then(list =>
@@ -8,7 +8,7 @@ exports.getCollectionList = () =>
 
 exports.getCollectionFull = id =>
   SoalModel.findById(id).then(val => {
-    if (!val) throw new ClientError('Soal collection not found');
+    if (!val) throw new EError(...E.E201_SOAL_COLLECTION_NOT_FOUND);
 
     return val;
   });
@@ -25,7 +25,7 @@ exports.getSoalFull = (colId, soalId) =>
   this.getCollectionFull(colId)
     .then(collection => collection.soalList[soalId])
     .then(item => {
-      if (!item) throw new ClientError('Soal not found');
+      if (!item) throw new EError(...E.E202_SOAL_NOT_FOUND);
       return item;
     });
 

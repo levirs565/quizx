@@ -1,5 +1,5 @@
 const SoalService = require('../services/soal');
-const { sendError } = require('../utils/error');
+const { sendError } = require('../error');
 
 exports.getCollectionList = (req, res) =>
   SoalService.getCollectionList()

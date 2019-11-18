@@ -1,7 +1,7 @@
 const Permainan = require('../models/permainan');
 const UserService = require('./user');
 const SoalService = require('./soal');
-const { ClientError } = require('../utils/error');
+const { EError, E } = require('../error');
 
 const getUserPermainan = session =>
   UserService.validateUserLoggedIn(session).then(user => {
@@ -11,13 +11,13 @@ const getUserPermainan = session =>
 const validatePermainanStarted = session =>
   getUserPermainan(session).then(([user, permainan]) => {
     if (permainan) return permainan;
-    throw new ClientError('Permainan is not started');
+    throw new EError(...E.E401_PERMAINAN_NOT_STARTED);
   });
 
 exports.startPermainan = (session, soalColId) =>
   getUserPermainan(session)
     .then(([user, permainan]) => {
-      if (permainan) throw new ClientError('Your permainan is not finished');
+      if (permainan) throw new EError(...E.E402_PERMAINAN_NOT_FINISHED);
 
       const soalCollectionPromise = SoalService.getCollectionFull(soalColId);
       const permainanPromise = Promise.resolve({
@@ -42,7 +42,7 @@ exports.getSoal = (session, index) =>
   validatePermainanStarted(session).then(permainan => {
     const soal = permainan.soalList[index];
 
-    if (!soal) throw new ClientError('Soal not found');
+    if (!soal) throw new EError(...E.E403_PERMAINAN_SOAL_NOT_FOUND);
 
     return {
       ...soal.toShortDetail(index),
@@ -54,7 +54,9 @@ exports.putJawaban = (session, index, jawaban) =>
   validatePermainanStarted(session).then(per => {
     const soalCount = per.soalList.length;
 
-    if (index < 0 || index >= soalCount) throw new ClientError('Soal not found');
+    if (index < 0 || index >= soalCount) {
+      throw new EError(...E.E403_PERMAINAN_SOAL_NOT_FOUND);
+    }
 
     const permainan = per;
     permainan.jawabanList.set(index, jawaban);
