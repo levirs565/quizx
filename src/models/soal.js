@@ -22,7 +22,7 @@ soalScheme.methods.toShortDetail = function f(id) {
   };
 };
 
-const collectionScheme = new mongoose.Schema(
+const paketScheme = new mongoose.Schema(
   {
     _id: Number,
     name: {
@@ -36,14 +36,14 @@ const collectionScheme = new mongoose.Schema(
   }
 );
 
-collectionScheme.methods.toShortDetail = function f() {
+paketScheme.methods.toShortDetail = function f() {
   return {
     id: this._id,
     name: this.name
   };
 };
 
-const Soal = mongoose.model('Soal', collectionScheme);
+const Soal = mongoose.model('Soal', paketScheme);
 Soal.soalScheme = soalScheme;
 
 module.exports = Soal;

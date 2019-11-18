@@ -30,7 +30,7 @@ exports.sendError = res => err => {
 };
 
 exports.E = {
-  E201_SOAL_COLLECTION_NOT_FOUND: [201, 'Collection not found'],
+  E201_SOAL_PAKET_NOT_FOUND: [201, 'Paket not found'],
   E202_SOAL_NOT_FOUND: [202, 'Soal not found'],
   E301_USER_ALREADY_REGISTERED: [301, 'User already registered'],
   E302_USER_NOT_REGISTERED: [302, 'User not registered'],

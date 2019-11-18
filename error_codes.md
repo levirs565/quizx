@@ -25,15 +25,15 @@ exports.E = {
 
 ## Error
 
-| Code | Lokasi Terjadi    | Nama                      | Message                 |
-| ---- | ----------------- | ------------------------- | ----------------------- |
-| 201  | Layanan Soal      | SOAL COLLECTION NOT FOUND | Collection not found    |
-| 202  | Layanan Soal      | SOAL NOT FOUND            | Soal not found          |
-| 301  | Layanan User      | USER ALREADY REGISTERED   | User already registered |
-| 302  | Layanan User      | USER NOT REGISTERED       | User not registered     |
-| 303  | Layanan User      | USER LOGGED IN            | User Logged in          |
-| 304  | Layanan User      | USER NOT LOGGED IN        | User not logged in      |
-| 305  | Layanan User      | USER PASSWORD NOT MATCH   | Password not match      |
-| 401  | Layanan Permainan | PERMAINAN NOT STARTED     | Permainan not started   |
-| 402  | Layanan Permainan | PERMAINAN NOT FINISHED    | Permainan not finished  |
-| 403  | Layanan Permainan | PERMAINAN SOAL NOT FOUND  | Soal not found          |
+| Code | Lokasi Terjadi    | Nama                     | Message                 |
+| ---- | ----------------- | ------------------------ | ----------------------- |
+| 201  | Layanan Soal      | SOAL PAKET NOT FOUND     | Paket not found         |
+| 202  | Layanan Soal      | SOAL NOT FOUND           | Soal not found          |
+| 301  | Layanan User      | USER ALREADY REGISTERED  | User already registered |
+| 302  | Layanan User      | USER NOT REGISTERED      | User not registered     |
+| 303  | Layanan User      | USER LOGGED IN           | User Logged in          |
+| 304  | Layanan User      | USER NOT LOGGED IN       | User not logged in      |
+| 305  | Layanan User      | USER PASSWORD NOT MATCH  | Password not match      |
+| 401  | Layanan Permainan | PERMAINAN NOT STARTED    | Permainan not started   |
+| 402  | Layanan Permainan | PERMAINAN NOT FINISHED   | Permainan not finished  |
+| 403  | Layanan Permainan | PERMAINAN SOAL NOT FOUND | Soal not found          |

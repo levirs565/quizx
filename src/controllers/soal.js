@@ -1,15 +1,15 @@
 const SoalService = require('../services/soal');
 const { sendError } = require('../error');
 
-exports.getCollectionList = (req, res) =>
-  SoalService.getCollectionList()
+exports.getPaketList = (req, res) =>
+  SoalService.getPaketList()
     .then(list => res.json({ list }))
     .catch(sendError(res));
 
-exports.getCollection = (req, res) => {
+exports.getPaket = (req, res) => {
   const { id } = req.params;
 
-  SoalService.getCollection(id)
+  SoalService.getPaket(id)
     .then(val => {
       res.json({
         ...val

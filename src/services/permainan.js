@@ -14,21 +14,21 @@ const validatePermainanStarted = session =>
     throw new EError(...E.E401_PERMAINAN_NOT_STARTED);
   });
 
-exports.startPermainan = (session, soalColId) =>
+exports.startPermainan = (session, soalPaketID) =>
   getUserPermainan(session)
     .then(([user, permainan]) => {
       if (permainan) throw new EError(...E.E402_PERMAINAN_NOT_FINISHED);
 
-      const soalCollectionPromise = SoalService.getCollectionFull(soalColId);
+      const soalPaketPromise = SoalService.getPaketFull(soalPaketID);
       const permainanPromise = Promise.resolve({
         user,
-        soalColId
+        soalPaketID
       });
 
-      return Promise.all([permainanPromise, soalCollectionPromise]);
+      return Promise.all([permainanPromise, soalPaketPromise]);
     })
-    .then(([permainan, soalCollection]) => {
-      const { soalList } = soalCollection;
+    .then(([permainan, soalPaket]) => {
+      const { soalList } = soalPaket;
       const mdPermainan = new Permainan({
         ...permainan,
         soalList,

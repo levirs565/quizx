@@ -8,7 +8,7 @@ const permainanScheme = new mongoose.Schema(
       required: true,
       unique: true
     },
-    soalColId: {
+    soalPaketID: {
       type: Number,
       rquired: true
     },
