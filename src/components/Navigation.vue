@@ -14,7 +14,7 @@
         }">Home</router-link>
       <router-link to="/soal" :class="{
           selected: path == '/soal'
-        }">Koleksi Soal</router-link>
+        }">Paket Soal</router-link>
       <router-link
         :class="{
             selected: path == '/permainan'

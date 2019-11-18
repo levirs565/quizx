@@ -2,8 +2,8 @@ import Vue from 'vue';
 import VueRouter from 'vue-router';
 import Home from './views/Home.vue';
 import Permainan from './views/Permainan.vue';
-import SoalCollectionList from './views/SoalCollectionList.vue';
-import SoalCollection from './views/SoalCollection.vue';
+import PaketSoalList from './views/PaketSoalList.vue';
+import PaketSoal from './views/PaketSoal.vue';
 import Soal from './views/Soal.vue';
 
 Vue.use(VueRouter);
@@ -12,13 +12,13 @@ const router = new VueRouter({
   routes: [
     {
       path: '/soal/',
-      component: SoalCollectionList,
-      alias: 'soal_collection_list'
+      component: PaketSoalList,
+      alias: 'paket_soal_list'
     },
     {
-      path: '/soal/:col_id',
+      path: '/soal/:paket_id',
       props: true,
-      component: SoalCollection,
+      component: PaketSoal,
       children: [
         {
           path: ':soal_id',

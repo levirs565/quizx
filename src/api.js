@@ -16,11 +16,11 @@ const instance = axios.create({
 });
 
 class SoalImpl {
-  getCollectionList() {
+  getPaketList() {
     return instance.get('/soal').then(throwError);
   }
 
-  getCollection(id) {
+  getPaket(id) {
     return instance.get(`/soal/${id}`).then(throwError);
   }
 

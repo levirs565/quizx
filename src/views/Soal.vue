@@ -45,13 +45,13 @@ export default {
       this.telahDijawab = false;
       this.jawabanBenar = false;
       if (this.$refs.soalView) this.$refs.soalView.pilihanTerpilih = -1;
-      SoalApi.getSoal(this.$attrs.col_id, this.soal_id).then(val => {
+      SoalApi.getSoal(this.$attrs.paket_id, this.soal_id).then(val => {
         this.soal = val;
       });
     },
     soalSubmit(th) {
       SoalApi.postJawaban(
-        this.$attrs.col_id,
+        this.$attrs.paket_id,
         this.soal_id,
         th.pilihanTerpilih
       ).then(val => {

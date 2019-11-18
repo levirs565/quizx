@@ -4,13 +4,13 @@
     <hr class="border-solid border-b border-gray-500">
     <ul>
       <li
-        v-for="collection in collectionList"
-        :key="collection.id"
+        v-for="paket in paketList"
+        :key="paket.id"
         class="px-4 py-2 border-solid border-b border-gray-300 hover:bg-gray-300"
       >
-        <router-link :to="'/soal/' + collection.id">
-          <p class="text-lg" v-text="collection.name"></p>
-          <p class="text-gray-700">{{ collection.soalCount }} Soal</p>
+        <router-link :to="'/soal/' + paket.id">
+          <p class="text-lg" v-text="paket.name"></p>
+          <p class="text-gray-700">{{ paket.soalCount }} Soal</p>
         </router-link>
       </li>
     </ul>
@@ -23,13 +23,13 @@ import { Soal } from "../api.js";
 export default {
   data() {
     return {
-      collectionList: []
+      paketList: []
     };
   },
 
   mounted() {
-    Soal.getCollectionList().then(val => {
-      this.collectionList = val.list;
+    Soal.getPaketList().then(val => {
+      this.paketList = val.list;
     });
   }
 };

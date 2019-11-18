@@ -1,7 +1,7 @@
 <template>
   <div class="container mx-auto py-4">
-    <h1 class="text-2xl font-medium" v-text="collection.name"></h1>
-    <p class="text-gray-700 text-lg">{{ collection.soalList.length }} Soal</p>
+    <h1 class="text-2xl font-medium" v-text="paket.name"></h1>
+    <p class="text-gray-700 text-lg">{{ paket.soalList.length }} Soal</p>
     <hr class="border-solid border-b border-gray-500">
 
     <button class="button primary">
@@ -13,11 +13,11 @@
     <div class="flex h-full">
       <ul class="w-1/2 pr-4">
         <li
-          v-for="soal in collection.soalList"
+          v-for="soal in paket.soalList"
           :key="soal.id"
           class="px-4 py-2 border-solid border-b border-gray-300 hover:bg-gray-300"
         >
-          <router-link :to="`/soal/${col_id}/${soal.id}`">
+          <router-link :to="`/soal/${paket_id}/${soal.id}`">
             <p class="text-lg truncate" v-text="`${soal.id + 1}. ${soal.soal}`"></p>
           </router-link>
         </li>
@@ -32,28 +32,28 @@ import { Soal } from "../api.js";
 
 export default {
   props: {
-    col_id: String
+    paket_id: String
   },
   data() {
     return {
-      collection: {
+      paket: {
         name: "undefined",
         soalList: []
       }
     };
   },
   mounted() {
-    this.updateCollection();
+    this.updatePaket();
   },
   watch: {
-    col_id() {
-      this.updateCollection();
+    paket_id() {
+      this.updatePaket();
     }
   },
   methods: {
-    updateCollection() {
-      Soal.getCollection(this.col_id).then(val => {
-        this.collection = val;
+    updatePaket() {
+      Soal.getPaket(this.paket_id).then(val => {
+        this.paket = val;
       });
     }
   }
