@@ -12,6 +12,9 @@ export default {
   components: {
     Navigation
   },
+  mounted() {
+    this.$store.dispatch("updateLogin");
+  },
   name: "app"
 };
 </script>

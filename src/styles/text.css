@@ -1,0 +1,7 @@
+.title {
+  @apply text-xl font-medium;
+}
+
+.hr {
+  @apply border-solid border-b border-gray-500 mb-8;
+}

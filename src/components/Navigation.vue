@@ -21,20 +21,60 @@
           }"
         to="/permainan"
       >Permainan</router-link>
+      <router-link
+        :class="{
+          selected: path == '/login'
+        }"
+        to="/login"
+        v-show="!username"
+      >Login</router-link>
+    </div>
+
+    <div class="user" v-show="username" @click="toggleUserBox">
+      <font-awesome icon="user" size="lg"></font-awesome>
+
+      <div ref="userbox" class="box" v-show="showUserBox" v-click-outside="hideUserBox">
+        <font-awesome icon="user" size="6x" class="w-full"></font-awesome>
+        <p v-text="username" class="font-semibold text-center w-full mb-4"></p>
+
+        <button class="button w-full" @click="userLogout">Logout</button>
+      </div>
     </div>
   </nav>
 </template>
 
 <script>
+import { User } from "../api";
+
 export default {
   data() {
     return {
-      burgerActive: false
+      burgerActive: false,
+      showUserBox: false
     };
+  },
+  methods: {
+    toggleUserBox(e) {
+      e.stopPropagation();
+      if (this.$refs.userbox.contains(e.target)) return;
+      this.showUserBox = !this.showUserBox;
+    },
+    hideUserBox() {
+      this.showUserBox = false;
+    },
+    userLogout() {
+      this.hideUserBox();
+      User.logout().then(() => {
+        this.$store.dispatch("updateLogin");
+      });
+    }
   },
   computed: {
     path() {
       return this.$route.path;
+    },
+    username() {
+      return this.$store.state.loggedIn;
     }
   }
 };

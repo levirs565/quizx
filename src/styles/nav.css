@@ -1,5 +1,5 @@
 nav {
-  @apply flex bg-green-500 flex-wrap justify-between;
+  @apply flex bg-green-500 flex-wrap justify-between px-4;
 }
 
 nav > .logo {
@@ -55,4 +55,16 @@ nav > .items > a:hover {
 
 nav > .items > a.selected {
   @apply bg-green-400;
+}
+
+nav > .user {
+  @apply rounded-full bg-gray-200 self-center w-12 h-12 flex;
+}
+
+nav > .user > svg {
+  @apply align-middle text-center inline-block m-auto;
+}
+
+nav > .user > .box {
+  @apply absolute right-0 mt-16 mr-4  w-48;
 }

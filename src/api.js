@@ -36,3 +36,20 @@ class SoalImpl {
 }
 
 export const Soal = new SoalImpl();
+
+export const User = {
+  signup(id, name, password) {
+    return instance
+      .post('/user/signup', { id, name, password })
+      .then(throwError);
+  },
+  login(id, password) {
+    return instance.post('/user/login', { id, password }).then(throwError);
+  },
+  logout() {
+    return instance.post('/user/logout').then(throwError);
+  },
+  state() {
+    return instance.get('/user/state').then(throwError);
+  }
+};

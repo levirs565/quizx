@@ -5,6 +5,8 @@ import Permainan from './views/Permainan.vue';
 import PaketSoalList from './views/PaketSoalList.vue';
 import PaketSoal from './views/PaketSoal.vue';
 import Soal from './views/Soal.vue';
+import Login from './views/Login.vue';
+import Register from './views/Register.vue';
 
 Vue.use(VueRouter);
 
@@ -31,6 +33,15 @@ const router = new VueRouter({
       path: '/',
       component: Home,
       alias: 'home'
+    },
+    {
+      path: '/login',
+      component: Login,
+      alias: 'login'
+    },
+    {
+      path: '/register',
+      component: Register
     },
     {
       path: '/permainan',
