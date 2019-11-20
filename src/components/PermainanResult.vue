@@ -16,6 +16,7 @@ export default {
   props: ["results"],
   computed: {
     items() {
+      if (!this.results) return [];
       return [
         {
           prop: "Benar",
@@ -31,7 +32,7 @@ export default {
         },
         {
           prop: "Tidak Di Jawab",
-          val: this.results.takDiJawab,
+          val: this.results.tidakDiJawab,
           color: "text-yellow-600",
           icon: "exclamation"
         }

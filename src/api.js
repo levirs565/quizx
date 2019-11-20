@@ -4,6 +4,7 @@ function throwError(res) {
   let data = res.data;
 
   if (data.error) {
+    console.log(data.error);
     throw data.error;
   } else {
     return data;
@@ -46,5 +47,27 @@ export const User = {
   },
   state() {
     return instance.get('/user/state').then(throwError);
+  }
+};
+
+export const Permainan = {
+  startPermainan(paketSoalID) {
+    return instance
+      .post('/permainan/start', { soalId: paketSoalID })
+      .then(throwError);
+  },
+  getSoal(index) {
+    return instance.get(`/permainan/soal/${index}`).then(throwError);
+  },
+  putJawaban(index, jawaban) {
+    return instance
+      .put(`/permainan/soal/${index}`, { jawaban })
+      .then(throwError);
+  },
+  stopPermainan() {
+    return instance.post('/permainan/stop').then(throwError);
+  },
+  state() {
+    return instance.get('/permainan/state').then(throwError);
   }
 };

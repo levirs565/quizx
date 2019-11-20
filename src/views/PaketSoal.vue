@@ -4,11 +4,13 @@
     <p class="subtext">{{ paket.soalList.length }} Soal</p>
     <hr class="hr">
 
-    <button class="button primary">
-      <font-awesome icon="play"></font-awesome>Mainkan
-    </button>
+    <template v-if="$store.state.loggedIn">
+      <router-link :to="`/permainan/config?id=${paket_id}`" class="button primary">
+        <font-awesome icon="play"></font-awesome>Mainkan
+      </router-link>
 
-    <div class="h-8"></div>
+      <div class="h-8"></div>
+    </template>
 
     <div class="flex h-full">
       <ul class="w-1/2 pr-4">

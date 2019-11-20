@@ -6,11 +6,15 @@ Vue.use(Vuex);
 
 const store = new Vuex.Store({
   state: {
-    loggedIn: undefined
+    loggedIn: undefined,
+    permaiananResult: undefined
   },
   mutations: {
     login(state, username) {
       state.loggedIn = username;
+    },
+    changePermainanResult(state, result) {
+      state.permaiananResult = result;
     }
   },
   actions: {
