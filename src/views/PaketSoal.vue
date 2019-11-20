@@ -1,24 +1,20 @@
 <template>
   <div class="container mx-auto py-4">
-    <h1 class="text-2xl font-medium" v-text="paket.name"></h1>
-    <p class="text-gray-700 text-lg">{{ paket.soalList.length }} Soal</p>
-    <hr class="border-solid border-b border-gray-500">
+    <h1 class="title" v-text="paket.name"></h1>
+    <p class="subtext">{{ paket.soalList.length }} Soal</p>
+    <hr class="hr">
 
     <button class="button primary">
-      <font-awesome icon="play" class="mr-2"></font-awesome>Mainkan
+      <font-awesome icon="play"></font-awesome>Mainkan
     </button>
 
     <div class="h-8"></div>
 
     <div class="flex h-full">
       <ul class="w-1/2 pr-4">
-        <li
-          v-for="soal in paket.soalList"
-          :key="soal.id"
-          class="px-4 py-2 border-solid border-b border-gray-300 hover:bg-gray-300"
-        >
+        <li v-for="soal in paket.soalList" :key="soal.id" class="list-item">
           <router-link :to="`/soal/${paket_id}/${soal.id}`">
-            <p class="text-lg truncate" v-text="`${soal.id + 1}. ${soal.soal}`"></p>
+            <p class="text truncate" v-text="`${soal.id + 1}. ${soal.soal}`"></p>
           </router-link>
         </li>
       </ul>

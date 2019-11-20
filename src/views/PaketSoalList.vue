@@ -1,16 +1,12 @@
 <template>
   <div class="container mx-auto py-4">
-    <h1 class="text-2xl font-medium">Koleksi Soal</h1>
-    <hr class="border-solid border-b border-gray-500">
+    <h1 class="title">Koleksi Soal</h1>
+    <hr class="hr">
     <ul>
-      <li
-        v-for="paket in paketList"
-        :key="paket.id"
-        class="px-4 py-2 border-solid border-b border-gray-300 hover:bg-gray-300"
-      >
+      <li v-for="paket in paketList" :key="paket.id" class="list-item">
         <router-link :to="'/soal/' + paket.id">
-          <p class="text-lg" v-text="paket.name"></p>
-          <p class="text-gray-700">{{ paket.soalCount }} Soal</p>
+          <p class="text" v-text="paket.name"></p>
+          <p class="subtext">{{ paket.soalCount }} Soal</p>
         </router-link>
       </li>
     </ul>

@@ -1,7 +1,15 @@
 .title {
-  @apply text-xl font-medium;
+  @apply text-3xl font-medium;
 }
 
 .hr {
   @apply border-solid border-b border-gray-500 mb-8;
+}
+
+.text {
+  @apply text-base;
+}
+
+.subtext {
+  @apply text-base text-gray-700;
 }

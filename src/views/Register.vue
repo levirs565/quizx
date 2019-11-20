@@ -1,7 +1,7 @@
 <template>
   <form class="box m-auto" action="none" @submit.prevent="register">
-    <p class="title">Register</p>
-    <p>
+    <h1 class="title">Register</h1>
+    <p class="subtext">
       <i>
         Punya akun?&nbsp;
         <router-link to="/login">Login</router-link>
