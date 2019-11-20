@@ -35,7 +35,7 @@ exports.logout = (req, res) => {
     .catch(sendError(res));
 };
 
-exports.status = (req, res) => {
+exports.state = (req, res) => {
   Promise.resolve(UserService.getLoggedInAs(req.session))
     .then(user =>
       res.json({
