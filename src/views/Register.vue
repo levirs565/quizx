@@ -1,5 +1,5 @@
 <template>
-  <form class="box m-auto" action="none" @submit.prevent="register">
+  <form class="box form" action="none" @submit.prevent="register">
     <h1 class="title">Register</h1>
     <p class="subtext">
       <i>
@@ -50,11 +50,9 @@ export default {
   },
   methods: {
     register() {
-      User.signup(this.userID, this.userPassword, this.userPassword2).then(
-        () => {
-          this.$router.push("/login");
-        }
-      );
+      User.signup(this.userID, this.userName, this.userPassword).then(() => {
+        this.$router.push("/login");
+      });
     }
   }
 };

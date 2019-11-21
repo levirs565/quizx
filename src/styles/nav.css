@@ -1,5 +1,5 @@
 nav {
-  @apply flex bg-green-500 flex-wrap justify-between px-4;
+  @apply flex bg-green-500 flex-wrap justify-between px-4 shadow-lg;
 }
 
 nav > .logo {

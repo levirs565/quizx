@@ -1,5 +1,5 @@
 <template>
-  <form class="box m-auto" action="none" @submit.prevent="login">
+  <form class="box form" action="none" @submit.prevent="login">
     <p class="title">Login</p>
     <p class="subtext">
       <i>

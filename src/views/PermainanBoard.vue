@@ -1,6 +1,6 @@
 <template>
-  <div class="box flex m-auto w-full flex-row">
-    <div class="w-1/5">
+  <div class="box container flex m-auto flex-row">
+    <div class="w-1/5 mr-4">
       <button @click="stop()" class="button danger w-full mb-2">Hentikan Permainan</button>
       <jumper :total="permainanState.soalCount" :value="1" v-model="soalID"></jumper>
     </div>
@@ -11,7 +11,7 @@
       @submit="soalSubmit"
       @change="soalChange"
       ref="soalView"
-      class="w-4/5 pl-4"
+      class="w-4/5 ml-4"
     ></soal>
   </div>
 </template>
