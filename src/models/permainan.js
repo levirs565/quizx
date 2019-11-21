@@ -16,7 +16,7 @@ const permainanScheme = new mongoose.Schema(
     jawabanList: [Number]
   },
   {
-    collation: 'permaianan'
+    collection: 'permaianan'
   }
 );
 
