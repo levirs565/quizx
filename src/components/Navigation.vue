@@ -9,25 +9,10 @@
     <div class="items" :class="{
         'active': burgerActive
       }">
-      <router-link to="/" :class="{
-          selected: path == '/'
-        }">Home</router-link>
-      <router-link to="/soal" :class="{
-          selected: path == '/soal'
-        }">Paket Soal</router-link>
-      <router-link
-        :class="{
-            selected: path == '/permainan'
-          }"
-        to="/permainan"
-      >Permainan</router-link>
-      <router-link
-        :class="{
-          selected: path == '/login'
-        }"
-        to="/login"
-        v-show="!username"
-      >Login</router-link>
+      <navigation-link to="/">Home</navigation-link>
+      <navigation-link to="/soal">Paket Soal</navigation-link>
+      <navigation-link to="/permainan/config">Permainan</navigation-link>
+      <navigation-link to="/login" v-show="!username">Login</navigation-link>
     </div>
 
     <div class="user" v-if="username" @click="toggleUserBox">
@@ -45,8 +30,10 @@
 
 <script>
 import { User } from "../api";
+import NavigationLink from "./NavigationLink.vue";
 
 export default {
+  components: { NavigationLink },
   data() {
     return {
       burgerActive: false,
@@ -70,9 +57,6 @@ export default {
     }
   },
   computed: {
-    path() {
-      return this.$route.path;
-    },
     username() {
       return this.$store.state.loggedIn;
     }
