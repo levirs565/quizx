@@ -22,6 +22,14 @@ soalScheme.methods.toShortDetail = function f(id) {
   };
 };
 
+soalScheme.methods.toDetail = function f() {
+  return {
+    soal: this.soal,
+    pilihan: this.pilihan,
+    jawaban: this.jawaban
+  };
+};
+
 const paketScheme = new mongoose.Schema(
   {
     _id: Number,
