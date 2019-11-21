@@ -30,12 +30,12 @@
       >Login</router-link>
     </div>
 
-    <div class="user" v-show="username" @click="toggleUserBox">
+    <div class="user" v-if="username" @click="toggleUserBox">
       <font-awesome icon="user" size="lg"></font-awesome>
 
       <div ref="userbox" class="box" v-show="showUserBox" v-click-outside="hideUserBox">
         <font-awesome icon="user" size="6x" class="w-full"></font-awesome>
-        <p v-text="username" class="font-semibold text-center w-full mb-4"></p>
+        <p v-text="username.name" class="font-semibold text-center w-full mb-4"></p>
 
         <button class="button w-full" @click="userLogout">Logout</button>
       </div>
