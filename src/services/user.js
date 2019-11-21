@@ -4,9 +4,14 @@ const { EError, E } = require('../error');
 
 const saltRounds = 10;
 
-const loginAs = (id, session) => {
+const loginAs = (user, session) => {
   const ses = session;
-  ses.user = id;
+  ses.user = user
+    ? {
+        id: user.id,
+        isAdmin: user.isAdmin
+      }
+    : undefined;
 };
 
 const loggedAs = session => session.user;
@@ -50,7 +55,7 @@ exports.login = (id, password, session) => {
     .then(([user, matched]) => {
       if (!matched) throw new EError(...E.E305_USER_PASSWORD_NOT_MATCH);
 
-      loginAs(user.id, session);
+      loginAs(user, session);
     });
 };
 
@@ -63,5 +68,10 @@ exports.validateUserLoggedIn = session => {
   const user = loggedAs(session);
   return user ? Promise.resolve(user) : Promise.reject(new EError(...E.E304_USER_NOT_LOGGED_IN));
 };
+
+exports.validateUserIsAdmin = session =>
+  this.validateUserLoggedIn(session).then(user =>
+    user.isAdmin ? Promise.resolve(user) : Promise.reject(new EError(...E.E306_USER_IS_NOT_ADMIN))
+  );
 
 exports.getLoggedInAs = loggedAs;

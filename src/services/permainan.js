@@ -5,7 +5,7 @@ const { EError, E } = require('../error');
 
 const getUserPermainan = session =>
   UserService.validateUserLoggedIn(session).then(user => {
-    return Promise.all([Promise.resolve(user), Permainan.findOne({ user })]);
+    return Promise.all([Promise.resolve(user.id), Permainan.findOne({ user: user.id })]);
   });
 
 const validatePermainanStarted = session =>
