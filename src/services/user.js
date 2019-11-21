@@ -8,6 +8,7 @@ const loginAs = (user, session) => {
   const ses = session;
   ses.user = user
     ? {
+        name: user.name,
         id: user.id,
         isAdmin: user.isAdmin
       }
