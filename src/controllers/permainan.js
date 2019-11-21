@@ -31,3 +31,18 @@ exports.stopPermainan = (req, res) => {
     .then(([result, permainan]) => res.json(result))
     .catch(sendError(res));
 };
+
+exports.state = (req, res) => {
+  PermainanService.getUserPermainan(req.session).then(([user, permainan]) => {
+    res.json({
+      permainanStarted: permainan != null,
+      permainan: permainan
+        ? {
+            soalPaketID: permainan.soalPaketID,
+            soalCount: permainan.soalList.length,
+            jawabanCount: permainan.jawabanList.reduce((acc, val) => acc + (val ? 1 : 0), 0)
+          }
+        : null
+    });
+  });
+};

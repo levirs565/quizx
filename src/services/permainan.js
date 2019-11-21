@@ -84,3 +84,5 @@ exports.stopPermainan = session =>
 
     return Promise.all([Promise.resolve(result), permainan.remove()]);
   });
+
+exports.getUserPermainan = getUserPermainan;
