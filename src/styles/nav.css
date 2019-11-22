@@ -1,70 +1,71 @@
 nav {
-  @apply flex bg-green-500 flex-wrap justify-between px-4 shadow-lg;
+  @apply flex bg-green-500 flex-wrap justify-between px-6 shadow-lg items-center select-none;
 }
 
-nav > .logo {
-  @apply flex-grow-0;
+.nav-logo {
+  @apply flex-grow-0 mr-6;
 }
 
-/* nav > .burger {
-  @apply flex-grow;
-} */
-
-@screen lg {
-  nav > .burger {
-    @apply hidden;
-  }
+.nav-logo > span {
+  @apply font-semibold text-lg text-white;
 }
 
-nav > .burger > button {
+.nav-burger > button {
   @apply text-green-200 py-4 px-6;
 }
 
-nav > .burger > button:hover {
+.nav-burger > button:hover {
   @apply text-white bg-green-600;
 }
 
-/* lg:flex flex-col lg:flex-row w-full */
-nav > .items {
-  @apply w-full hidden;
+.nav-items {
+  @apply w-full hidden text-sm font-semibold;
 }
 
-nav > .items.active {
+.nav-items.active {
   @apply block;
 }
 
+.nav-items > .start > a {
+  @apply block px-6 py-4 text-white w-full mt-2 border-b-2 border-transparent;
+}
+
+.nav-items > .start > a:hover,
+.nav-items > .start > a.selected {
+  @apply border-white;
+}
+
+.nav-items > .end {
+  @apply w-full flex justify-center my-2 mx-auto;
+}
+
 @screen lg {
-  nav > .items {
-    @apply block w-auto flex-grow;
+  .nav-burger {
+    @apply hidden;
   }
-}
 
-nav > .items > a {
-  @apply block px-6 py-4 text-white w-full mt-2;
-}
+  .nav-items,
+  .nav-items.active {
+    @apply flex w-auto flex-grow items-center;
+  }
 
-@screen lg {
-  nav > .items > a {
+  .nav-items > .start {
+    @apply flex-grow;
+  }
+
+  .nav-items > .start > a {
     @apply inline-block w-auto mr-2 mt-0;
   }
+
+  .nav-items > .end {
+    @apply w-auto block m-0;
+  }
 }
 
-nav > .items > a:hover {
-  @apply bg-green-600;
+.nav-items > .user {
+  @apply rounded-full bg-white self-center w-12 h-12 flex items-center justify-center;
 }
 
-nav > .items > a.selected {
-  @apply bg-green-400;
-}
-
-nav > .user {
-  @apply rounded-full bg-gray-200 self-center w-12 h-12 flex;
-}
-
-nav > .user > svg {
-  @apply align-middle text-center inline-block m-auto;
-}
-
-nav > .user > .box {
-  @apply absolute right-0 mt-16 mr-4  w-48;
+.nav-items > .user > .box {
+  @apply absolute right-0 top-0 mt-16 mr-4 w-48;
 }
