@@ -30,7 +30,19 @@ export default {
     },
     start() {
       Permainan.startPermainan(this.paketSoalId).then(() => {
-        this.$router.push("/permainan/board");
+        this.goToBoard();
+      });
+    },
+    goToBoard() {
+      this.$router.push("/permainan/board");
+    }
+  },
+  beforeCreate() {
+    if (this.$store.state.loggedIn) {
+      Permainan.state().then(state => {
+        if (state.permainanStarted) {
+          this.goToBoard();
+        }
       });
     }
   },
