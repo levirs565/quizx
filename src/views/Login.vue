@@ -7,15 +7,19 @@
         <router-link to="/register">Register</router-link>
       </i>
     </p>
-    <hr class="hr mb-8">
+    <hr class="hr">
 
-    <label>ID</label>
-    <input class="input w-full mb-4" type="text" v-model="userID">
+    <div class="field">
+      <label class="font-sans">ID</label>
+      <input class="input" type="text" v-model="userID">
+    </div>
 
-    <label>Password</label>
-    <input class="input w-full mb-8" type="password" v-model="userPassword">
+    <div class="field">
+      <label>Password</label>
+      <input class="input" type="password" v-model="userPassword">
+    </div>
 
-    <input class="button primary" type="submit" value="Login" :disabled="!valid">
+    <input class="button primary submit" type="submit" value="Login" :disabled="!valid">
   </form>
 </template>
 

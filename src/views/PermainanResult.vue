@@ -1,7 +1,7 @@
 <template>
   <form class="box form" action="none" @submit.prevent="start">
     <h1 class="title">Hasil Permainan</h1>
-    <hr class="hr mb-8">
+    <hr class="hr">
     <permainan-result :results="result"></permainan-result>
   </form>
 </template>

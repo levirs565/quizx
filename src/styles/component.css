@@ -1,9 +1,21 @@
 .box {
-  @apply bg-gray-100 mx-auto p-4 shadow-lg;
+  @apply bg-white mx-auto p-4 shadow-lg;
 }
 
 .form {
   @apply max-w-md w-full m-auto;
+}
+
+.form > .submit {
+  @apply mt-4;
+}
+
+.field {
+  @apply mb-4;
+}
+
+.field > .input {
+  @apply w-full;
 }
 
 .input {
@@ -11,9 +23,9 @@
 }
 
 .list-item {
-  @apply px-4 py-2 border-solid border-b border-gray-300;
+  @apply px-4 py-2 border-solid border-b border-gray-300 cursor-pointer;
 }
 
 .list-item:hover {
-  @apply bg-gray-300;
+  @apply bg-gray-100;
 }

@@ -1,5 +1,5 @@
 <template>
-  <div class="container mx-auto py-4">
+  <div class="box container">
     <h1 class="title">Koleksi Soal</h1>
     <hr class="hr">
     <ul>

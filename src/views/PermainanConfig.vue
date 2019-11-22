@@ -1,7 +1,7 @@
 <template>
   <form class="box form" action="none" @submit.prevent="start">
     <h1 class="title">Konfigurasi Permainan</h1>
-    <hr class="hr mb-8">
+    <hr class="hr">
     <label>ID Paket Soal</label>
     <input type="number" class="input w-full mb-8" v-model="paketSoalId">
 

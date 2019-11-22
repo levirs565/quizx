@@ -1,9 +1,9 @@
 .title {
-  @apply text-3xl font-medium;
+  @apply text-3xl font-light;
 }
 
 .hr {
-  @apply border-solid border-b border-gray-500 mb-8;
+  @apply w-full border-solid border-b border-gray-500 mb-8;
 }
 
 .text {

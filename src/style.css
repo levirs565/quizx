@@ -2,6 +2,14 @@
 @tailwind components;
 @tailwind utilities;
 
+#app {
+  @apply bg-gray-100;
+}
+
+.container {
+  @apply my-4 h-full;
+}
+
 @import './styles/text.css';
 @import './styles/button.css';
 @import './styles/component.css';

@@ -7,21 +7,29 @@
         <router-link to="/login">Login</router-link>
       </i>
     </p>
-    <hr class="hr mb-8">
+    <hr class="hr">
 
-    <label>ID</label>
-    <input class="input w-full mb-4" type="text" v-model="userID">
+    <div class="field">
+      <label>ID</label>
+      <input class="input" type="text" v-model="userID">
+    </div>
 
-    <label>Name</label>
-    <input class="input w-full mb-8" type="text" v-model="userName">
+    <div class="field">
+      <label>Name</label>
+      <input class="input" type="text" v-model="userName">
+    </div>
 
-    <label>Password</label>
-    <input class="input w-full mb-8" type="password" v-model="userPassword">
+    <div class="field">
+      <label>Password</label>
+      <input class="input" type="password" v-model="userPassword">
+    </div>
 
-    <label>Retry Password</label>
-    <input class="input w-full mb-8" type="password" v-model="userPassword2">
+    <div class="field">
+      <label>Retry Password</label>
+      <input class="input" type="password" v-model="userPassword2">
+    </div>
 
-    <input class="button primary" type="submit" value="Register" :disabled="!valid">
+    <input class="button primary submit" type="submit" value="Register" :disabled="!valid">
   </form>
 </template>
 

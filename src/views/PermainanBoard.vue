@@ -1,5 +1,5 @@
 <template>
-  <div class="box container flex m-auto flex-row">
+  <div class="box container flex flex-row">
     <div class="w-1/5 mr-4">
       <button @click="stop()" class="button danger w-full mb-2">Hentikan Permainan</button>
       <jumper :total="permainanState.soalCount" :value="1" v-model="soalID"></jumper>

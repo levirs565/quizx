@@ -3,7 +3,8 @@ module.exports = {
   theme: {
     extend: {},
     container: {
-      padding: '1rem'
+      padding: '1rem',
+      center: true
     }
   },
   variants: {},
