@@ -1,12 +1,10 @@
 <template>
   <nav>
+    <button class="nav-burger" @click="burgerActive = !burgerActive">
+      <font-awesome icon="bars"></font-awesome>
+    </button>
     <div class="nav-logo">
       <span>soalku</span>
-    </div>
-    <div class="nav-burger">
-      <button @click="burgerActive = !burgerActive">
-        <font-awesome icon="bars"></font-awesome>
-      </button>
     </div>
     <div class="nav-items" :class="{
         'active': burgerActive

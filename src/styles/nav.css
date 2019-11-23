@@ -1,5 +1,5 @@
 nav {
-  @apply flex bg-green-500 flex-wrap justify-between px-6 shadow-lg items-center select-none;
+  @apply flex bg-green-500 flex-wrap items-start shadow-md items-center select-none z-50;
 }
 
 .nav-logo {
@@ -10,12 +10,13 @@ nav {
   @apply font-semibold text-lg text-white;
 }
 
-.nav-burger > button {
-  @apply text-green-200 py-4 px-6;
+.nav-burger,
+.nav-burger:focus {
+  @apply text-green-200 py-4 px-6 border-transparent outline-none;
 }
 
-.nav-burger > button:hover {
-  @apply text-white bg-green-600;
+.nav-burger:hover {
+  @apply text-white;
 }
 
 .nav-items {
@@ -36,10 +37,14 @@ nav {
 }
 
 .nav-items > .end {
-  @apply w-full flex justify-center my-2 mx-auto;
+  @apply w-full flex justify-center py-4 mx-auto;
 }
 
 @screen lg {
+  nav {
+    @apply px-6;
+  }
+
   .nav-burger {
     @apply hidden;
   }
