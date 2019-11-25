@@ -1,5 +1,7 @@
 <template>
-  <router-view class="bg-gray-100 h-screen"></router-view>
+  <div class="flex flex-col">
+    <router-view></router-view>
+  </div>
 </template>
 
 <script>
@@ -7,5 +9,4 @@ export default {};
 </script>
 
 <style>
-@import "style.css";
 </style>

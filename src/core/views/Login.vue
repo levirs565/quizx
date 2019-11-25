@@ -1,10 +1,10 @@
 <template>
-  <form class="box form" action="none" @submit.prevent="login">
+  <form class="box form m-auto" action="none" @submit.prevent="login">
     <p class="title">Login</p>
     <p class="subtext">
       <i>
         Tidak punya akun?&nbsp;
-        <router-link to="/register">Register</router-link>
+        <router-link to="/auth/register">Register</router-link>
       </i>
     </p>
     <hr class="hr">
@@ -24,7 +24,7 @@
 </template>
 
 <script>
-import { User } from "../api.js";
+import { User } from "@/api.js";
 
 export default {
   data() {
@@ -41,7 +41,7 @@ export default {
   methods: {
     login() {
       User.login(this.userID, this.userPassword).then(() => {
-        this.$store.dispatch("updateLogin");
+        this.$store.dispatch("updateUser");
         this.$router.push("/");
       });
     }

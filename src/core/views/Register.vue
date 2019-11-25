@@ -4,7 +4,7 @@
     <p class="subtext">
       <i>
         Punya akun?&nbsp;
-        <router-link to="/login">Login</router-link>
+        <router-link to="/auth/login">Login</router-link>
       </i>
     </p>
     <hr class="hr">
@@ -34,7 +34,7 @@
 </template>
 
 <script>
-import { User } from "../api";
+import { User } from "@/api";
 
 export default {
   data() {
@@ -59,7 +59,7 @@ export default {
   methods: {
     register() {
       User.signup(this.userID, this.userName, this.userPassword).then(() => {
-        this.$router.push("/login");
+        this.$router.push("/auth/login");
       });
     }
   }

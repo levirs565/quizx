@@ -18,7 +18,7 @@ export default {
   },
   mounted() {
     this.result = this.$store.state.permaiananResult;
-    this.$store.commit("changePermainanResult", undefined);
+    this.$store.commit("setPermainanResult", undefined);
   }
 };
 </script>

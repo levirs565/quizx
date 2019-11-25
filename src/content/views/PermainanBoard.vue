@@ -17,7 +17,7 @@
 </template>
 
 <script>
-import { Permainan } from "../api.js";
+import { Permainan } from "@/api.js";
 import Soal from "../components/Soal.vue";
 import Jumper from "../components/Jumper.vue";
 
@@ -62,7 +62,7 @@ export default {
     },
     stop() {
       Permainan.stopPermainan().then(val => {
-        this.$store.commit("changePermainanResult", val);
+        this.$store.commit("setPermainanResult", val);
         this.$router.push("/permainan/result");
       });
     }

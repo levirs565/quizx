@@ -18,7 +18,7 @@
 
 <script>
 import Soal from "../components/Soal.vue";
-import { Soal as SoalApi } from "../api.js";
+import { Soal as SoalApi } from "@/api.js";
 
 export default {
   components: {

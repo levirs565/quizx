@@ -14,7 +14,7 @@
 </template>
 
 <script>
-import { Soal } from "../api.js";
+import { Soal } from "@/api.js";
 
 export default {
   data() {

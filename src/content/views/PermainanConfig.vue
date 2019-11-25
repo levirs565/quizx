@@ -10,7 +10,7 @@
 </template>
 
 <script>
-import { Permainan } from "../api";
+import { Permainan } from "@/api";
 
 export default {
   data() {
@@ -38,7 +38,7 @@ export default {
     }
   },
   beforeCreate() {
-    if (this.$store.state.loggedIn) {
+    if (this.$store.state.core.user) {
       Permainan.state().then(state => {
         if (state.permainanStarted) {
           this.goToBoard();

@@ -16,8 +16,8 @@
       </div>
 
       <div class="end" v-if="!username">
-        <router-link class="button mr-4" to="/login">Login</router-link>
-        <router-link class="button" to="/register">Register</router-link>
+        <router-link class="button mr-4" to="/auth/login">Login</router-link>
+        <router-link class="button" to="/auth/register">Register</router-link>
       </div>
 
       <div class="end user" v-else @click="toggleUserBox">
@@ -35,7 +35,7 @@
 </template>
 
 <script>
-import { User } from "../api";
+import { User } from "@/api";
 import NavigationLink from "./NavigationLink.vue";
 
 export default {
@@ -58,13 +58,13 @@ export default {
     userLogout() {
       this.hideUserBox();
       User.logout().then(() => {
-        this.$store.dispatch("updateLogin");
+        this.$store.dispatch("updateUser");
       });
     }
   },
   computed: {
     username() {
-      return this.$store.state.loggedIn;
+      return this.$store.state.core.user;
     }
   }
 };

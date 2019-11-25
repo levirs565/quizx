@@ -4,7 +4,7 @@
     <p class="subtext">{{ paket.soalList.length }} Soal</p>
     <hr class="hr">
 
-    <div v-if="$store.state.loggedIn" class="mb-8">
+    <div v-if="$store.state.core.user" class="mb-8">
       <router-link :to="`/permainan/config?id=${paket_id}`" class="button primary">
         <font-awesome icon="play"></font-awesome>Mainkan
       </router-link>
@@ -24,7 +24,7 @@
 </template>
 
 <script>
-import { Soal } from "../api.js";
+import { Soal } from "@/api.js";
 
 export default {
   props: {
