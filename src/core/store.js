@@ -14,6 +14,11 @@ export default {
       return User.state().then(result => {
         commit('setUser', result.user);
       });
+    },
+    logout({ dispatch }) {
+      User.logout().then(() => {
+        dispatch('updateUser');
+      });
     }
   }
 };

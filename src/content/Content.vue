@@ -11,9 +11,6 @@ import Navigation from "./navigation/Navigation";
 export default {
   components: {
     Navigation
-  },
-  mounted() {
-    this.$store.dispatch("updateUser");
   }
 };
 </script>

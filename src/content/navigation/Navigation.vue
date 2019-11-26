@@ -35,7 +35,6 @@
 </template>
 
 <script>
-import { User } from "@/api";
 import NavigationLink from "./components/NavigationLink.vue";
 
 export default {
@@ -57,9 +56,7 @@ export default {
     },
     userLogout() {
       this.hideUserBox();
-      User.logout().then(() => {
-        this.$store.dispatch("updateUser");
-      });
+      this.$store.dispatch("logout");
     }
   },
   computed: {
