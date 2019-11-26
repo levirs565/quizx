@@ -36,7 +36,7 @@
 
 <script>
 import { User } from "@/api";
-import NavigationLink from "./NavigationLink.vue";
+import NavigationLink from "./components/NavigationLink.vue";
 
 export default {
   components: { NavigationLink },
@@ -70,5 +70,5 @@ export default {
 };
 </script>
 
-<style>
+<style src="./style.css" scoped>
 </style>

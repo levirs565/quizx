@@ -6,7 +6,7 @@
 </template>
 
 <script>
-import Navigation from "./components/Navigation";
+import Navigation from "./navigation/Navigation";
 
 export default {
   components: {
@@ -19,5 +19,4 @@ export default {
 </script>
 
 <style>
-@import "style.css";
 </style>

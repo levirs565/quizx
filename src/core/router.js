@@ -1,20 +1,3 @@
-import CoreContainer from './Core.vue';
-import Login from './views/Login';
-import Register from './views/Register.vue';
+import AuthRouter from './auth/router';
 
-export default [
-  {
-    path: '/auth',
-    component: CoreContainer,
-    children: [
-      {
-        path: 'login',
-        component: Login
-      },
-      {
-        path: 'register',
-        component: Register
-      }
-    ]
-  }
-];
+export default [...AuthRouter];

@@ -18,7 +18,7 @@
 
 <script>
 import { Permainan } from "@/api.js";
-import Soal from "../components/Soal.vue";
+import Soal from "../../soal/components/Soal.vue";
 import Jumper from "../components/Jumper.vue";
 
 export default {

@@ -17,7 +17,7 @@ export default {
     };
   },
   mounted() {
-    this.result = this.$store.state.permaiananResult;
+    this.result = this.$store.state.content.permaiananResult;
     this.$store.commit("setPermainanResult", undefined);
   }
 };
