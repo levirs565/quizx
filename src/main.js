@@ -9,13 +9,22 @@ import {
   faExclamation,
   faBars,
   faPlay,
-  faUser
+  faUser,
+  faQuestionCircle
 } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 import vClickOutside from 'v-click-outside';
 import '@/style.css';
 
-library.add(faCheck, faTimes, faExclamation, faBars, faPlay, faUser);
+library.add(
+  faCheck,
+  faTimes,
+  faExclamation,
+  faBars,
+  faPlay,
+  faUser,
+  faQuestionCircle
+);
 
 Vue.component('font-awesome', FontAwesomeIcon);
 Vue.use(vClickOutside);
