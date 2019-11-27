@@ -1,5 +1,5 @@
 <template>
-  <router-link active-class="selected" :to="to" tag="li">
+  <router-link exact-active-class="selected" :to="to" tag="li">
     <slot></slot>
   </router-link>
 </template>
