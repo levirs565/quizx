@@ -71,3 +71,38 @@ export const Permainan = {
     return instance.get('/permainan/state').then(throwError);
   }
 };
+
+export const AdminSoal = {
+  baseURL: '/admin/soal/',
+  getPaketList() {
+    return instance.get(this.baseURL).then(throwError);
+  },
+  newPaket(data) {
+    return instance.post(this.baseURL, data).then(throwError);
+  },
+  getPaket(id) {
+    return instance.get(this.baseURL + id).then(throwError);
+  },
+  editPaket(id, data) {
+    return instance.put(this.baseURL + id, data).then(throwError);
+  },
+  removePaket(id) {
+    return instance.delete(this.baseURL + id).then(throwError);
+  },
+  newSoal(paketID, data) {
+    return instance.post(this.baseURL + paketID, data).then(throwError);
+  },
+  getSoal(paketID, soalID) {
+    return instance.get(this.baseURL + paketID + '/' + soalID).then(throwError);
+  },
+  editSoal(paketID, soalID, data) {
+    return instance
+      .put(this.baseURL + paketID + '/' + soalID, data)
+      .then(throwError);
+  },
+  removeSoal(paketID, soalID) {
+    return instance
+      .delete(this.baseURL + paketID + '/' + soalID)
+      .then(throwError);
+  }
+};
