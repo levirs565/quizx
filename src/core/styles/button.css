@@ -1,5 +1,5 @@
 .button {
-  @apply py-2 px-4;
+  @apply py-2 px-4 cursor-pointer select-none;
   @apply bg-white text-black shadow font-semibold border border-gray-100;
 }
 
