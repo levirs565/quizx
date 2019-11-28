@@ -1,15 +1,19 @@
 <template>
-  <div class="box container">
-    <div class="top-0 bg-white list-item sticky flex flex-row justify-end">
+  <div class="box container list">
+    <div class="list-toolbox list-item">
       <button class="button primary" @click="showNewPaket">Paket Baru</button>
     </div>
-    <ul class="bg-white">
-      <li v-for="paket in paketList" :key="paket.id" class="list-item">
-        <router-link :to="`/admin/soal/${paket.id}`">
-          <p class="text" v-text="paket.name"></p>
-          <p class="subtext">{{ paket.soalCount }} Soal</p>
-        </router-link>
-      </li>
+    <ul>
+      <router-link
+        v-for="paket in paketList"
+        :key="paket.id"
+        class="list-item"
+        :to="`/admin/soal/${paket.id}`"
+        tag="li"
+      >
+        <p class="text" v-text="paket.name"></p>
+        <p class="subtext">{{ paket.soalCount }} Soal</p>
+      </router-link>
     </ul>
   </div>
 </template>
@@ -44,5 +48,5 @@ export default {
 };
 </script>
 
-<style>
+<style src="../styles/list.css" scoped>
 </style>
