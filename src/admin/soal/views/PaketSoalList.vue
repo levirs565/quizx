@@ -1,20 +1,24 @@
 <template>
-  <div class="box container list">
-    <div class="list-toolbox list-item">
-      <button class="button primary" @click="showNewPaket">Paket Baru</button>
+  <div class="flex flex-col">
+    <h1 class="title">Pengelola Soal</h1>
+    <hr class="hr">
+    <div class="box container list">
+      <div class="list-toolbox list-item">
+        <button class="button primary" @click="showNewPaket">Paket Baru</button>
+      </div>
+      <ul>
+        <router-link
+          v-for="paket in paketList"
+          :key="paket.id"
+          class="list-item"
+          :to="`/admin/soal/${paket.id}`"
+          tag="li"
+        >
+          <p class="text" v-text="paket.name"></p>
+          <p class="subtext">{{ paket.soalCount }} Soal</p>
+        </router-link>
+      </ul>
     </div>
-    <ul>
-      <router-link
-        v-for="paket in paketList"
-        :key="paket.id"
-        class="list-item"
-        :to="`/admin/soal/${paket.id}`"
-        tag="li"
-      >
-        <p class="text" v-text="paket.name"></p>
-        <p class="subtext">{{ paket.soalCount }} Soal</p>
-      </router-link>
-    </ul>
   </div>
 </template>
 
