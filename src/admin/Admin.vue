@@ -1,19 +1,27 @@
 <template>
   <div class="flex flex-row">
+    <modal></modal>
     <navigation></navigation>
-    <router-view class="m-8 h-auto w-auto flex-grow"></router-view>
+    <div class="content-wrap overflow-auto">
+      <router-view class="py-8 px-12 flex-grow"></router-view>
+    </div>
   </div>
 </template>
 
 <script>
 import Navigation from "./navigation/Navigation";
+import Modal from "./modal/Modal";
 
 export default {
   components: {
-    Navigation
+    Navigation,
+    Modal
   }
 };
 </script>
 
-<style>
+<style lang="postcss" scoped>
+.content-wrap {
+  @apply h-auto w-auto flex-grow flex flex-col;
+}
 </style>

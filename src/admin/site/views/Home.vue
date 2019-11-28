@@ -1,5 +1,5 @@
 <template>
-  <div class="p-4">
+  <div>
     <h1 class="title mb-8">Beranda Admin</h1>
     <hr class="hr">
     <router-link tag="div" class="button info box" to="/admin/soal">
