@@ -10,7 +10,8 @@ import {
   faBars,
   faPlay,
   faUser,
-  faQuestionCircle
+  faQuestionCircle,
+  faEdit
 } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 import vClickOutside from 'v-click-outside';
@@ -23,7 +24,8 @@ library.add(
   faBars,
   faPlay,
   faUser,
-  faQuestionCircle
+  faQuestionCircle,
+  faEdit
 );
 
 Vue.component('font-awesome', FontAwesomeIcon);

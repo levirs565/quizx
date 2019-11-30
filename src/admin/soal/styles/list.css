@@ -1,7 +1,7 @@
-.list > div {
-  @apply bg-white;
+.list-toolbox {
+  @apply top-0 sticky flex flex-row justify-end bg-white;
 }
 
-.list-toolbox {
-  @apply top-0 sticky flex flex-row justify-end;
+.list-toolbox:hover {
+  @apply bg-white;
 }
