@@ -61,12 +61,24 @@ export default {
           jawaban: 0
         };
         this.isNew = true;
+        this.refreshTextArea();
       } else {
         AdminSoal.getSoal(this.$attrs.paket_id, this.soal_id).then(val => {
           this.soal = val;
           this.isNew = false;
+          this.refreshTextArea();
         });
       }
+    },
+    refreshTextArea() {
+      this.$nextTick(() => {
+        const arr = this.$el.getElementsByTagName("textarea");
+        for (let i = 0; i < arr.length; i++) {
+          const target = arr[i];
+
+          this.expandInput({ target });
+        }
+      });
     },
     setPilihan(index, val) {
       this.$set(this.soal.pilihan, index, val);
@@ -79,6 +91,7 @@ export default {
     },
     expandInput(event) {
       const el = event.target;
+      el.style.height = "3rem";
       const height = el.offsetHeight - el.clientHeight + el.scrollHeight;
       el.style.height = height + "px";
     },
