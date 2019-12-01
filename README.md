@@ -1,29 +1,29 @@
 # soalku-front-end
 
-## Project setup
+soalku-front-end adalah antarmuka web untuk SoalKU. Ini dibuat dengan vue.
+
+## Pengembangan
+
+Sebelum memulai pegembangan pastikan anda sudah menginstall semua dependensi yang dibutuhkan dengan menjalankan perintah berikut:
+
 ```
 yarn install
 ```
 
-### Compiles and hot-reloads for development
+Untuk menampilkan live preview pada browser gunakan perintah berikut:
+
 ```
-yarn run serve
+yarn serve
 ```
 
-### Compiles and minifies for production
+Untuk mengkompilasi dan menggunakanya pada produksi gunakan perintah berikut:
+
 ```
-yarn run build
+yarn build
 ```
 
-### Run your tests
-```
-yarn run test
-```
+Untuk menjalankan test gunakan perintah berikut:
 
-### Lints and fixes files
 ```
-yarn run lint
+yarn test
 ```
-
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
