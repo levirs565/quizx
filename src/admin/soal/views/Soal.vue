@@ -1,13 +1,24 @@
 <template>
   <form class="flex flex-col" @submit.prevent="saveSoal">
     <div class="list-toolbox list-item mb-2">
-      <button class="button danger mr-2" v-show="!isNew" @click="deleteSoal">Hapus</button>
-      <input class="button primary submit" type="submit" value="Simpan">
+      <button class="button danger" v-show="!isNew" @click="deleteSoal">
+        Hapus
+      </button>
+      <input class="button primary submit" type="submit" value="Simpan" />
     </div>
 
     <textarea class="input" v-model="soal.soal" @input="expandInput"></textarea>
-    <div v-for="(entry, index) in soal.pilihan" :key="index" class="flex flex-row">
-      <input type="radio" name="pilihan" :value="index" v-model="soal.jawaban">
+    <div
+      v-for="(entry, index) in soal.pilihan"
+      :key="index"
+      class="flex flex-row"
+    >
+      <input
+        type="radio"
+        name="pilihan"
+        :value="index"
+        v-model="soal.jawaban"
+      />
       <textarea
         v-text="entry"
         @change="setPilihan(index, $event.target.value)"

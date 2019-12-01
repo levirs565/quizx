@@ -3,6 +3,10 @@
   @apply bg-white text-black shadow font-semibold border border-gray-100;
 }
 
+.button + .button {
+  @apply ml-2;
+}
+
 .button:hover {
   @apply bg-gray-100;
 }
