@@ -9,7 +9,8 @@
         :to="`/permainan/config?id=${paket_id}`"
         class="button primary"
       >
-        <font-awesome icon="play"></font-awesome>Mainkan
+        <font-awesome icon="play"></font-awesome>
+        <span>Mainkan</span>
       </router-link>
     </div>
 

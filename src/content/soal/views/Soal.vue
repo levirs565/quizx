@@ -1,6 +1,12 @@
 <template>
   <div>
-    <soal ref="soalView" class="h-full" v-if="soal" :soal="soal" @submit="soalSubmit"></soal>
+    <soal
+      ref="soalView"
+      class="h-full"
+      v-if="soal"
+      :soal="soal"
+      @submit="soalSubmit"
+    ></soal>
     <div
       class="py-2 px-4 mt-4"
       :class="{
@@ -10,7 +16,7 @@
     >
       <p class="text-white" v-show="telahDijawab">
         <font-awesome :icon="jawabanBenar ? 'check' : 'times'"></font-awesome>
-        Jawaban anda {{ jawabanBenar ? 'benar' : 'salah' }}
+        Jawaban anda {{ jawabanBenar ? "benar" : "salah" }}
       </p>
     </div>
   </div>

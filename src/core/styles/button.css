@@ -15,8 +15,8 @@
   @apply bg-gray-200;
 }
 
-.button > svg {
-  @apply mr-2;
+.button > svg + span {
+  @apply ml-2;
 }
 
 .button.primary {
