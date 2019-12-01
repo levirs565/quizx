@@ -1,6 +1,9 @@
 <template>
   <form class="flex flex-col" @submit.prevent="saveSoal">
     <div class="list-toolbox list-item">
+      <span class="flex-grow self-center text-lg font-normal"
+        >Soal {{ soal_id == "new" ? "Baru" : "#" + soal_id }}</span
+      >
       <button class="button danger" v-show="!isNew" @click="deleteSoal">
         Hapus
       </button>
@@ -71,8 +74,8 @@ export default {
     deletePilihan(index) {
       this.$delete(this.soal.pilihan, index);
     },
-    newPilihan(){
-      this.soal.pilihan.push('');
+    newPilihan() {
+      this.soal.pilihan.push("");
     },
     expandInput(event) {
       const el = event.target;
