@@ -1,7 +1,5 @@
 <template>
-  <router-link :class="{
-      selected: $route.path == to
-    }" :to="to">
+  <router-link exact-active-class="selected" :to="to">
     <slot></slot>
   </router-link>
 </template>

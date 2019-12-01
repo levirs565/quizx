@@ -2,19 +2,31 @@
   <div class="box container flex flex-col">
     <h1 class="title" v-text="paket.name"></h1>
     <p class="subtext">{{ paket.soalList.length }} Soal</p>
-    <hr class="hr">
+    <hr class="hr" />
 
     <div v-if="$store.state.core.user" class="mb-8">
-      <router-link :to="`/permainan/config?id=${paket_id}`" class="button primary">
+      <router-link
+        :to="`/permainan/config?id=${paket_id}`"
+        class="button primary"
+      >
         <font-awesome icon="play"></font-awesome>Mainkan
       </router-link>
     </div>
 
     <div class="flex flex-1">
       <ul class="w-1/2 pr-4 h-full">
-        <li v-for="soal in paket.soalList" :key="soal.id" class="list-item">
-          <router-link :to="`/soal/${paket_id}/${soal.id}`">
-            <p class="text truncate" v-text="`${soal.id + 1}. ${soal.soal}`"></p>
+        <li>
+          <router-link
+            v-for="soal in paket.soalList"
+            :key="soal.id"
+            tag="li"
+            :to="`/soal/${paket_id}/${soal.id}`"
+            class="list-item"
+          >
+            <p
+              class="text truncate"
+              v-text="`${soal.id + 1}. ${soal.soal}`"
+            ></p>
           </router-link>
         </li>
       </ul>
