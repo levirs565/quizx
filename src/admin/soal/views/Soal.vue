@@ -45,6 +45,7 @@ export default {
   },
   methods: {
     refresh() {
+      this.soal = {};
       if (this.soal_id == "new") {
         this.soal = {
           soal: "",
