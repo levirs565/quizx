@@ -5,10 +5,12 @@
       :key="index"
       @click="jumpClick(index)"
       :class="{
-        'info': current == index
+        info: current == index
       }"
-      class="button"
-    >{{ index }}</button>
+      class="button no-margin"
+    >
+      {{ index }}
+    </button>
   </div>
 </template>
 
