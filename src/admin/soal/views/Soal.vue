@@ -1,6 +1,6 @@
 <template>
   <form class="flex flex-col" @submit.prevent="saveSoal">
-    <div class="list-toolbox list-item mb-2">
+    <div class="list-toolbox list-item">
       <button class="button danger" v-show="!isNew" @click="deleteSoal">
         Hapus
       </button>
@@ -11,7 +11,7 @@
     <div
       v-for="(entry, index) in soal.pilihan"
       :key="index"
-      class="flex flex-row"
+      class="flex flex-row items-center pilihan"
     >
       <input
         type="radio"
@@ -25,7 +25,12 @@
         @input="expandInput"
         class="input flex-grow"
       ></textarea>
+      <button class="button danger" @click="deletePilihan(index)">
+        <font-awesome icon="trash"></font-awesome>
+      </button>
     </div>
+
+    <button class="button primary" @click="newPilihan">Pilihan Baru</button>
   </form>
 </template>
 
@@ -62,6 +67,12 @@ export default {
     },
     setPilihan(index, val) {
       this.$set(this.soal.pilihan, index, val);
+    },
+    deletePilihan(index) {
+      this.$delete(this.soal.pilihan, index);
+    },
+    newPilihan(){
+      this.soal.pilihan.push('');
     },
     expandInput(event) {
       const el = event.target;
@@ -107,8 +118,12 @@ export default {
 </style>
 <style lang="postcss" scoped >
 textarea {
-  @apply mb-2 ml-2;
+  @apply mx-2;
   min-height: 2rem;
   height: 3rem;
+}
+
+form > * {
+  @apply mb-2;
 }
 </style>
