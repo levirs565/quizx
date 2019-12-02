@@ -10,7 +10,12 @@ const permainanScheme = new mongoose.Schema(
     },
     soalPaketID: {
       type: Number,
-      rquired: true
+      required: true
+    },
+    interaktif: {
+      type: Boolean,
+      required: true,
+      default: false
     },
     soalList: [soalScheme],
     jawabanList: [Number]

@@ -14,7 +14,7 @@ const validatePermainanStarted = session =>
     throw new EError(...E.E401_PERMAINAN_NOT_STARTED);
   });
 
-exports.startPermainan = (session, soalPaketID) =>
+exports.startPermainan = (session, soalPaketID, interaktif) =>
   getUserPermainan(session)
     .then(([user, permainan]) => {
       if (permainan) throw new EError(...E.E402_PERMAINAN_NOT_FINISHED);
@@ -22,7 +22,8 @@ exports.startPermainan = (session, soalPaketID) =>
       const soalPaketPromise = SoalService.getPaketFull(soalPaketID);
       const permainanPromise = Promise.resolve({
         user,
-        soalPaketID
+        soalPaketID,
+        interaktif
       });
 
       return Promise.all([permainanPromise, soalPaketPromise]);
@@ -51,18 +52,28 @@ exports.getSoal = (session, index) =>
   });
 
 exports.putJawaban = (session, index, jawaban) =>
-  validatePermainanStarted(session).then(per => {
-    const soalCount = per.soalList.length;
+  validatePermainanStarted(session)
+    .then(per => {
+      const soalCount = per.soalList.length;
 
-    if (index < 0 || index >= soalCount) {
-      throw new EError(...E.E403_PERMAINAN_SOAL_NOT_FOUND);
-    }
+      if (index < 0 || index >= soalCount) {
+        throw new EError(...E.E403_PERMAINAN_SOAL_NOT_FOUND);
+      }
 
-    const permainan = per;
-    permainan.jawabanList.set(index, jawaban);
+      const permainan = per;
+      permainan.jawabanList.set(index, jawaban);
 
-    return permainan.save();
-  });
+      return permainan.save();
+    })
+    .then(permainan => {
+      const result = {};
+      if (permainan.interaktif) {
+        const benar = permainan.soalList[index].jawaban === jawaban;
+        result.benar = benar;
+      }
+
+      return result;
+    });
 
 exports.stopPermainan = session =>
   validatePermainanStarted(session).then(permainan => {

@@ -2,9 +2,9 @@ const PermainanService = require('../services/permainan');
 const { sendError } = require('../error');
 
 exports.startPermainan = (req, res) => {
-  const { soalId } = req.body;
+  const { soalId, interaktif } = req.body;
 
-  PermainanService.startPermainan(req.session, soalId)
+  PermainanService.startPermainan(req.session, soalId, interaktif)
     .then(permainan => res.json({ msg: 'permainan started' }))
     .catch(sendError(res));
 };
@@ -22,7 +22,7 @@ exports.putJawaban = (req, res) => {
   const { jawaban } = req.body;
 
   PermainanService.putJawaban(req.session, id, jawaban)
-    .then(permainan => res.json({ msg: 'jawaban is saved' }))
+    .then(result => res.json({ ...result, msg: 'jawaban is saved' }))
     .catch(sendError(res));
 };
 
@@ -39,6 +39,7 @@ exports.state = (req, res) => {
       permainan: permainan
         ? {
             soalPaketID: permainan.soalPaketID,
+            interaktif: permainan.interaktif,
             soalCount: permainan.soalList.length,
             jawabanCount: permainan.jawabanList.reduce((acc, val) => acc + (val ? 1 : 0), 0)
           }
