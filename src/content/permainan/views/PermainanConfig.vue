@@ -1,11 +1,24 @@
 <template>
   <form class="box form" action="none" @submit.prevent="start">
     <h1 class="title">Konfigurasi Permainan</h1>
-    <hr class="hr">
-    <label>ID Paket Soal</label>
-    <input type="number" class="input w-full mb-8" v-model="paketSoalId">
+    <hr class="hr" />
 
-    <input class="button primary" type="submit" value="Mulai Permainan" :disabled="!valid">
+    <div class="field">
+      <label>ID Paket Soal</label>
+      <input type="number" class="input w-full" v-model="paketSoalId" />
+    </div>
+
+    <div class="field">
+      <input type="checkbox" class="mr-2" v-model="interaktif" />
+      <label>Interaktif</label>
+    </div>
+
+    <input
+      class="button primary"
+      type="submit"
+      value="Mulai Permainan"
+      :disabled="!valid"
+    />
   </form>
 </template>
 
@@ -15,7 +28,8 @@ import { Permainan } from "@/api";
 export default {
   data() {
     return {
-      paketSoalId: 0
+      paketSoalId: 0,
+      interaktif: false
     };
   },
   computed: {
@@ -29,7 +43,7 @@ export default {
         this.paketSoalId = Number(this.$route.query.id);
     },
     start() {
-      Permainan.startPermainan(this.paketSoalId).then(() => {
+      Permainan.startPermainan(this.paketSoalId, this.interaktif).then(() => {
         this.goToBoard();
       });
     },

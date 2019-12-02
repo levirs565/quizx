@@ -51,9 +51,9 @@ export const User = {
 };
 
 export const Permainan = {
-  startPermainan(paketSoalID) {
+  startPermainan(paketSoalID, interaktif) {
     return instance
-      .post('/permainan/start', { soalId: paketSoalID })
+      .post('/permainan/start', { soalId: paketSoalID, interaktif })
       .then(throwError);
   },
   getSoal(index) {
