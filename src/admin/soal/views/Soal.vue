@@ -10,7 +10,12 @@
       <input class="button primary submit" type="submit" value="Simpan" />
     </div>
 
-    <textarea class="input" v-model="soal.soal" @input="expandInput"></textarea>
+    <textarea
+      class="input"
+      v-model="soal.soal"
+      @input="expandInput"
+      tabindex="1"
+    ></textarea>
     <div
       v-for="(entry, index) in soal.pilihan"
       :key="index"
@@ -27,6 +32,7 @@
         @change="setPilihan(index, $event.target.value)"
         @input="expandInput"
         class="input flex-grow"
+        :tabindex="index + 2"
       ></textarea>
       <button class="button danger" @click="deletePilihan(index)">
         <font-awesome icon="trash"></font-awesome>
