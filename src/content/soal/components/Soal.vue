@@ -1,6 +1,6 @@
 <template>
   <form class="flex flex-col">
-    <p v-text="soal.soal"></p>
+    <p v-html="soal.soal"></p>
     <label v-for="(entry, index) in soal.pilihan" :key="index" class="block">
       <input
         type="radio"
@@ -8,7 +8,7 @@
         :value="index"
         v-model="pilihanTerpilih"
       />
-      {{ entry }}
+      <p class="inline-block ml-2" v-html="entry"></p>
     </label>
     <div class="flex-grow"></div>
     <slot></slot>
