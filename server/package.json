@@ -1,4 +1,5 @@
 {
+  "name": "soalku-back-end",
   "scripts": {
     "serve": "node index.js",
     "dev": "nodemon index.js"
