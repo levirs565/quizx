@@ -1,3 +1,0 @@
-## TODO
-
-- Migrasi ke TypeScript
