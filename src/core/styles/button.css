@@ -1,0 +1,60 @@
+.button {
+  @apply py-2 px-4 cursor-pointer select-none;
+  @apply bg-white text-black shadow font-semibold border border-gray-100;
+}
+
+.button + .button {
+  @apply ml-2;
+}
+
+.button.no-margin {
+  @apply m-0;
+}
+
+.button:hover {
+  @apply bg-gray-100;
+}
+
+.button:active {
+  @apply bg-gray-200;
+}
+
+.button > svg + span {
+  @apply ml-2;
+}
+
+.button.primary {
+  @apply bg-green-500 text-white border-green-600;
+}
+
+.button.primary:hover {
+  @apply bg-green-600;
+}
+
+.button.primary:active {
+  @apply bg-green-700;
+}
+
+.button.danger {
+  @apply bg-red-500 text-white border-red-600;
+}
+
+.button.danger:hover {
+  @apply bg-red-600;
+}
+
+.button.danger:active {
+  @apply bg-red-700;
+}
+
+.button.info {
+  @apply bg-blue-500 text-white border-blue-600;
+}
+
+.button.info:hover {
+  @apply bg-blue-600;
+}
+
+.button.info:active {
+  @apply bg-blue-700;
+}
