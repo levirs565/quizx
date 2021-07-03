@@ -6,7 +6,7 @@
   },
   "dependencies": {
     "@types/mongoose": "^5.3.27",
-    "bcrypt": "^3.0.6",
+    "bcrypt": "^5.0.1",
     "connect-mongo": "^2.0.3",
     "cors": "^2.8.5",
     "dotenv": "^8.2.0",
