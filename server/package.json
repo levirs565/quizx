@@ -1,5 +1,5 @@
 {
-  "name": "soalku-back-end",
+  "name": "@quizx/server",
   "scripts": {
     "serve": "node index.js",
     "dev": "nodemon index.js"

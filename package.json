@@ -6,8 +6,8 @@
     "server"
   ],
   "scripts": {
-    "dev-server": "yarn workspace soalku-back-end dev",
-    "dev-client": "yarn workspace soalku-front-end serve",
+    "dev-server": "yarn workspace @quizx/server dev",
+    "dev-client": "yarn workspace @quizx/client serve",
     "dev": "concurrently --kill-others-on-fail \"yarn dev-server\"  \"yarn dev-client\""
   },
   "dependencies": {

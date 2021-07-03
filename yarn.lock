@@ -1617,6 +1617,62 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@quizx/client@workspace:client":
+  version: 0.0.0-use.local
+  resolution: "@quizx/client@workspace:client"
+  dependencies:
+    "@babel/core": ^7.6.4
+    "@fortawesome/fontawesome-svg-core": ^1.2.18
+    "@fortawesome/free-solid-svg-icons": ^5.8.2
+    "@fortawesome/vue-fontawesome": ^0.1.6
+    "@storybook/vue": ^5.2.5
+    "@vue/cli-plugin-babel": ^3.6.0
+    "@vue/cli-plugin-eslint": ^3.6.0
+    "@vue/cli-service": ^3.6.0
+    axios: ^0.18.0
+    babel-eslint: ^10.0.1
+    babel-loader: ^8.0.6
+    babel-preset-vue: ^2.0.2
+    bulma: ^0.7.4
+    core-js: ^2.6.5
+    eslint: ^5.16.0
+    eslint-loader: ^3.0.2
+    eslint-plugin-vue: ^5.0.0
+    tailwindcss: ^1.0.1
+    v-click-outside: ^3.0.0
+    vue: ^2.6.10
+    vue-loader: ^15.7.1
+    vue-router: ^3.0.6
+    vue-template-compiler: ^2.6.10
+    vuex: ^3.1.2
+    webpack-merge: ^4.2.2
+  languageName: unknown
+  linkType: soft
+
+"@quizx/server@workspace:server":
+  version: 0.0.0-use.local
+  resolution: "@quizx/server@workspace:server"
+  dependencies:
+    "@types/mongoose": ^5.3.27
+    bcrypt: ^3.0.6
+    connect-mongo: ^2.0.3
+    cors: ^2.8.5
+    dotenv: ^8.2.0
+    eslint: ^5.16.0
+    eslint-config-airbnb-base: ^13.1.0
+    eslint-config-prettier: ^4.2.0
+    eslint-plugin-import: ^2.17.2
+    eslint-plugin-prettier: ^3.0.1
+    express: ^4.16.4
+    express-session: ^1.16.1
+    express-validator: ^6.2.0
+    mongoose: ^5.5.4
+    nodemon: ^1.19.4
+    prettier: ^1.17.0
+    underscore: ^1.9.1
+  languageName: unknown
+  linkType: soft
+
 "@reach/router@npm:^1.2.1":
   version: 1.3.4
   resolution: "@reach/router@npm:1.3.4"
@@ -14450,62 +14506,6 @@ fsevents@~2.3.2:
   checksum: c30b63a732bf37dbd2147bf57b4d9eac651ab7b313d1521f73855154b2c2f5a3f2ad18bd47e21cc64b6991f868ecb2a99f8da973ca86da39956f1f0f720b7033
   languageName: node
   linkType: hard
-
-"soalku-back-end@workspace:server":
-  version: 0.0.0-use.local
-  resolution: "soalku-back-end@workspace:server"
-  dependencies:
-    "@types/mongoose": ^5.3.27
-    bcrypt: ^3.0.6
-    connect-mongo: ^2.0.3
-    cors: ^2.8.5
-    dotenv: ^8.2.0
-    eslint: ^5.16.0
-    eslint-config-airbnb-base: ^13.1.0
-    eslint-config-prettier: ^4.2.0
-    eslint-plugin-import: ^2.17.2
-    eslint-plugin-prettier: ^3.0.1
-    express: ^4.16.4
-    express-session: ^1.16.1
-    express-validator: ^6.2.0
-    mongoose: ^5.5.4
-    nodemon: ^1.19.4
-    prettier: ^1.17.0
-    underscore: ^1.9.1
-  languageName: unknown
-  linkType: soft
-
-"soalku-front-end@workspace:client":
-  version: 0.0.0-use.local
-  resolution: "soalku-front-end@workspace:client"
-  dependencies:
-    "@babel/core": ^7.6.4
-    "@fortawesome/fontawesome-svg-core": ^1.2.18
-    "@fortawesome/free-solid-svg-icons": ^5.8.2
-    "@fortawesome/vue-fontawesome": ^0.1.6
-    "@storybook/vue": ^5.2.5
-    "@vue/cli-plugin-babel": ^3.6.0
-    "@vue/cli-plugin-eslint": ^3.6.0
-    "@vue/cli-service": ^3.6.0
-    axios: ^0.18.0
-    babel-eslint: ^10.0.1
-    babel-loader: ^8.0.6
-    babel-preset-vue: ^2.0.2
-    bulma: ^0.7.4
-    core-js: ^2.6.5
-    eslint: ^5.16.0
-    eslint-loader: ^3.0.2
-    eslint-plugin-vue: ^5.0.0
-    tailwindcss: ^1.0.1
-    v-click-outside: ^3.0.0
-    vue: ^2.6.10
-    vue-loader: ^15.7.1
-    vue-router: ^3.0.6
-    vue-template-compiler: ^2.6.10
-    vuex: ^3.1.2
-    webpack-merge: ^4.2.2
-  languageName: unknown
-  linkType: soft
 
 "sockjs-client@npm:1.4.0":
   version: 1.4.0
