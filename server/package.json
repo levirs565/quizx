@@ -2,7 +2,7 @@
   "name": "@quizx/server",
   "scripts": {
     "serve": "node index.js",
-    "dev": "nodemon index.js"
+    "dev": "nodemon --watch './src/**/*' --exec 'yarn ts-node' src/main.js"
   },
   "dependencies": {
     "@types/mongoose": "^5.3.27",
@@ -14,7 +14,6 @@
     "express-session": "^1.16.1",
     "express-validator": "^6.2.0",
     "mongoose": "^5.5.4",
-    "nodemon": "^1.19.4",
     "underscore": "^1.9.1"
   },
   "devDependencies": {
@@ -23,6 +22,9 @@
     "eslint-config-prettier": "^4.2.0",
     "eslint-plugin-import": "^2.17.2",
     "eslint-plugin-prettier": "^3.0.1",
-    "prettier": "^1.17.0"
+    "prettier": "^1.17.0",
+    "typescript": "^4.3.5",
+    "nodemon": "^1.19.4",
+    "ts-node": "^10.0.0"
   }
 }
