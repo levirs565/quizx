@@ -52,6 +52,6 @@ paketScheme.methods.toShortDetail = function f() {
 };
 
 const Soal = mongoose.model('Soal', paketScheme);
-Soal.soalScheme = soalScheme;
+Soal["soalScheme"] = soalScheme;
 
 module.exports = Soal;
