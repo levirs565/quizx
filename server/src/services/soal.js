@@ -1,4 +1,4 @@
-const SoalModel = require('../models/soal');
+const SoalModel = require('../models/soal').default;
 const { EError, E } = require('../error');
 
 exports.getPaketList = () =>
@@ -17,6 +17,7 @@ exports.getPaket = id =>
   this.getPaketFull(id).then(val => {
     return {
       ...val.toShortDetail(),
+      // @ts-ignore
       soalList: val.soalList.map((item, idx) => item.toShortDetail(idx))
     };
   });
@@ -32,6 +33,7 @@ exports.getSoalFull = (colId, soalId) =>
 exports.getSoal = (colId, soalId) =>
   this.getSoalFull(colId, soalId).then(item => {
     return {
+      // @ts-ignore
       ...item.toShortDetail(soalId),
       paketID: colId,
       pilihan: item.pilihan

@@ -1,6 +1,6 @@
 const SoalService = require('./soal');
 const UserService = require('./user');
-const Soal = require('../models/soal');
+const Soal = require('../models/soal').default;
 const { EError, E } = require('../error');
 
 exports.getPaketList = session =>
@@ -17,6 +17,7 @@ exports.newPaket = (session, paket) =>
 
       return paketDb.save();
     })
+    // @ts-ignore
     .then(val => val.toShortDetail());
 
 exports.getPaket = (session, id) =>
@@ -31,7 +32,9 @@ exports.editPaket = (session, id, paket) =>
       return paketDB.save();
     })
     .then(val => ({
+      // @ts-ignore
       ...val.toShortDetail(),
+      // @ts-ignore
       soalList: val.soalList.map((item, idx) => item.toShortDetail(idx))
     }));
 
@@ -55,11 +58,13 @@ exports.newSoal = (session, paketID, soal) =>
       return paketDB.save();
     })
     .then(paketDB => {
+      // @ts-ignore
       const id = paketDB.soalList.length - 1;
 
       return {
         id,
         paketID,
+        // @ts-ignore
         ...paketDB.soalList[id].toDetail()
       };
     });
@@ -84,6 +89,7 @@ exports.editSoal = (session, paketID, soalID, soal) =>
 
       return paketDB.save();
     })
+    // @ts-ignore
     .then(val => ({ id: soalID, paketID, ...val.soalList[soalID].toDetail() }));
 
 exports.removeSoal = (session, paketID, soalID) =>

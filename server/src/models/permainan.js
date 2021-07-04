@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-const { soalScheme } = require('./soal');
+const { soalScheme } = require('./soal').default;
 
 const permainanScheme = new mongoose.Schema(
   {
