@@ -57,7 +57,7 @@ interface QuizPackageShort {
   name: string
 }
 
-interface QuizPackageDocument extends QuizPackage, Omit<Document, "_id"> {
+export interface QuizPackageDocument extends QuizPackage, Omit<Document, "_id"> {
   soalList: Types.Array<QuizDocument>
   toShortDetail(): QuizPackageShort
 }
