@@ -1,4 +1,4 @@
-const Permainan = require('../models/permainan');
+const Permainan = require('../models/permainan').default;
 const UserService = require('./user');
 const SoalService = require('./soal');
 const { EError, E } = require('../error');
