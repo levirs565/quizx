@@ -1,6 +1,16 @@
-const mongoose = require('mongoose');
+import { Schema, Model, model } from 'mongoose';
 
-const userScheme = new mongoose.Schema(
+// TODO: Rename id to _id
+
+interface User {
+  id: string
+  name: string
+  password: string
+  isAdmin: boolean
+  registerDate: Date
+}
+
+const userScheme = new Schema<User>(
   {
     id: {
       type: String,
@@ -34,6 +44,6 @@ const userScheme = new mongoose.Schema(
   }
 );
 
-const User = mongoose.model('User', userScheme);
+const UserModel: Model<User> = model<User>('User', userScheme);
 
-module.exports = User;
+export default UserModel;
