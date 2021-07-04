@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-const { soalScheme } = require('./soal').default;
+const QuizSchema = require("./quiz").QuizSchema
 
 const permainanScheme = new mongoose.Schema(
   {
@@ -17,7 +17,7 @@ const permainanScheme = new mongoose.Schema(
       required: true,
       default: false
     },
-    soalList: [soalScheme],
+    soalList: [QuizSchema],
     jawabanList: [Number]
   },
   {
