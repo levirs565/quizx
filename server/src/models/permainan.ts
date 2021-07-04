@@ -38,6 +38,6 @@ const permainanScheme = new Schema<PermainanDocument>(
   }
 );
 
-const Permainan = model('Permainan', permainanScheme);
+const Permainan = model<PermainanDocument>('Permainan', permainanScheme);
 
 export default Permainan;
