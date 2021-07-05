@@ -18,7 +18,7 @@ export async function newPackage(session: Session, paket) {
   });
 
   await paketDb.save();
-  return paketDb.toShortDetail();
+  return paketDb.getInformationOnly();
 }
 
 export async function getPackageShortDetail(session: Session, id: number) {
@@ -32,7 +32,7 @@ export async function editPackage(session: Session, id: number, paket) {
   paketDB.name = paket.name;
   await paketDB.save();
   return {
-    ...paketDB.toShortDetail(),
+    ...paketDB.getInformationOnly(),
     soalList: paketDB.soalList.map((item, idx) => item.toShortDetail(idx)),
   };
 }

@@ -5,7 +5,7 @@ export async function getPackageShortDetailList() {
   const list = await QuizModel.find();
 
   return list.map(val => ({
-    ...val.toShortDetail(),
+    ...val.getInformationOnly(),
     soalCount: val.soalList.length
   }));
 }
@@ -22,7 +22,7 @@ export async function getPackageShortDetail(id: number) {
   const quizPackage = await getPackageDocument(id);
 
   return {
-    ...quizPackage.toShortDetail(),
+    ...quizPackage.getInformationOnly(),
     soalList: quizPackage.soalList.map(
       (item, idx) => item.toShortDetail(idx)
     )

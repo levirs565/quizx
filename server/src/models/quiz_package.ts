@@ -7,14 +7,14 @@ interface QuizPackage {
   soalList: Array<Quiz>
 }
 
-interface QuizPackageShort {
+interface QuizPackageInformation {
   id: number
   name: string
 }
 
 export interface QuizPackageDocument extends QuizPackage, Omit<Document, "_id"> {
   soalList: Types.Array<QuizDocument>
-  toShortDetail(): QuizPackageShort
+  getInformationOnly(): QuizPackageInformation
 }
 
 const paketScheme = new Schema<QuizPackageDocument>(
@@ -31,7 +31,7 @@ const paketScheme = new Schema<QuizPackageDocument>(
   }
 );
 
-paketScheme.methods.toShortDetail = function () {
+paketScheme.methods.getInformationOnly = function () {
   return {
     id: this._id,
     name: this.name
