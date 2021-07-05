@@ -33,7 +33,7 @@ exports.stopPermainan = (req, res) => {
 };
 
 exports.state = (req, res) => {
-  PermainanService.getUserPermainan(req.session).then(([user, permainan]) => {
+  PermainanService.getUserPermainan(req.session).then(({ permainan}) => {
     res.json({
       permainanStarted: permainan != null,
       permainan: permainan

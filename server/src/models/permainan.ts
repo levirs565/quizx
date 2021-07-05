@@ -6,12 +6,12 @@ interface Permainan {
   soalPaketID: Number
   interaktif: Boolean
   soalList: Array<Quiz>
-  jawabanList: Array<Number>
+  jawabanList: Array<number>
 }
 
 interface PermainanDocument extends Permainan, Document {
   soalList: Types.Array<QuizDocument>
-  jawabanList: Types.Array<Number>
+  jawabanList: Types.Array<number>
 }
 
 const permainanScheme = new Schema<PermainanDocument>(
