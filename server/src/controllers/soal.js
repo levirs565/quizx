@@ -1,4 +1,4 @@
-const SoalService = require('../services/soal');
+const SoalService = require('../services/quiz');
 const { sendError } = require('../error');
 
 exports.getPaketList = (req, res) =>

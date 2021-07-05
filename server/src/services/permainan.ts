@@ -1,6 +1,6 @@
 import GameModel from '../models/game';
 import * as UserService from './user';
-import * as SoalService from './soal';
+import * as QuizService from './quiz';
 import { EError, E } from '../error';
 
 export async function getUserPermainan(session) {
@@ -21,7 +21,7 @@ export async function startPermainan(session, soalPaketID, interaktif) {
   const { userID, permainan: currentPermainan } = await getUserPermainan(session);
   if (currentPermainan) throw new EError(...E.E402_PERMAINAN_NOT_FINISHED);
 
-  const paketSoal = await SoalService.getPaketFull(soalPaketID);
+  const paketSoal = await QuizService.getPackageDocument(soalPaketID);
   const permainan = {
     user: userID,
     soalPaketID,
