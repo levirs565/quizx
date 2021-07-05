@@ -21,12 +21,7 @@ export async function getPackageDocument(id: number) {
 export async function getPackageShortDetail(id: number) {
   const quizPackage = await getPackageDocument(id);
 
-  return {
-    ...quizPackage.getInformationOnly(),
-    soalList: quizPackage.soalList.map(
-      (item, idx) => item.toShortDetail(idx)
-    )
-  };
+  return quizPackage.toShort()
 }
 
 export async function getQuizDocument(colId: number, soalId: number) {

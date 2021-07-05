@@ -6,13 +6,13 @@ export interface Quiz {
   jawaban: number
 }
 
-interface QuizDocumentShort {
+export interface QuizShort {
   id: number,
   soal: string
 }
 
 export interface QuizDocument extends Quiz, Partial<Types.Subdocument> {
-  toShortDetail?(id: number): QuizDocumentShort
+  toShortDetail?(id: number): QuizShort
   toDetail?(): Quiz
 }
 

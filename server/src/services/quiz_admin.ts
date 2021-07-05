@@ -31,10 +31,7 @@ export async function editPackage(session: Session, id: number, paket) {
   const paketDB = await QuizService.getPackageDocument(id);
   paketDB.name = paket.name;
   await paketDB.save();
-  return {
-    ...paketDB.getInformationOnly(),
-    soalList: paketDB.soalList.map((item, idx) => item.toShortDetail(idx)),
-  };
+  return paketDB.toShort();
 }
 
 export async function removePackage(session: Session, id: number) {
