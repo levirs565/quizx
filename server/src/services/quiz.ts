@@ -4,10 +4,7 @@ import { EError, E } from '../error';
 export async function getPackageShortDetailList() {
   const list = await QuizModel.find();
 
-  return list.map(val => ({
-    ...val.getInformationOnly(),
-    soalCount: val.soalList.length
-  }));
+  return list.map((val) => val.getInformationWithQuizCount());
 }
 
 export async function getPackageDocument(id: number) {
@@ -21,7 +18,7 @@ export async function getPackageDocument(id: number) {
 export async function getPackageShortDetail(id: number) {
   const quizPackage = await getPackageDocument(id);
 
-  return quizPackage.toShort()
+  return quizPackage.toShort();
 }
 
 export async function getQuizDocument(colId: number, soalId: number) {
@@ -36,11 +33,11 @@ export async function getQuizShortDetail(colId: number, soalId: number) {
   return {
     ...item.toShortDetail(soalId),
     paketID: colId,
-    pilihan: item.pilihan
+    pilihan: item.pilihan,
   };
 }
 
 export async function answerQuiz(colId: number, soalId: number, answer: number) {
-  const item = await getQuizDocument(colId, soalId)
+  const item = await getQuizDocument(colId, soalId);
   return Boolean(item.jawaban === answer);
 }
