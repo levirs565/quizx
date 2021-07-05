@@ -2,7 +2,7 @@ const SoalService = require('../services/quiz');
 const { sendError } = require('../error');
 
 exports.getPaketList = (req, res) =>
-  SoalService.getPaketList()
+  SoalService.getPackageShortDetailList()
     .then(list => res.json({ list }))
     .catch(sendError(res));
 

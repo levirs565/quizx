@@ -1,7 +1,7 @@
 import QuizModel, { QuizPackageDocument } from '../models/quiz_package';
 import { EError, E } from '../error';
 
-export async function getPaketList() {
+export async function getPackageShortDetailList() {
   const list = await QuizModel.find();
 
   return list.map(val => ({

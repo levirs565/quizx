@@ -5,7 +5,7 @@ import { EError, E } from '../error';
 
 export async function getPaketList(session) {
   await UserService.validateUserIsAdmin(session);
-  return QuizService.getPaketList();
+  return QuizService.getPackageShortDetailList();
 }
 
 export async function newPaket(session, paket) {
