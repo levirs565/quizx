@@ -2,13 +2,13 @@ import { Document, Schema, model, Types } from "mongoose"
 import { Quiz, QuizDocument, QuizSchema } from "./quiz"
 
 interface QuizPackage {
-  _id: Number
+  _id: number
   name: string
   soalList: Array<Quiz>
 }
 
 interface QuizPackageShort {
-  id: Number
+  id: number
   name: string
 }
 

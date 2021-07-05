@@ -3,16 +3,16 @@ import { Schema, Types } from "mongoose"
 export interface Quiz {
   soal: string,
   pilihan: Array<string>,
-  jawaban: Number
+  jawaban: number
 }
 
 interface QuizDocumentShort {
-  id: Number,
+  id: number,
   soal: string
 }
 
 export interface QuizDocument extends Quiz, Partial<Types.Subdocument> {
-  toShortDetail?(id: Number): QuizDocumentShort
+  toShortDetail?(id: number): QuizDocumentShort
   toDetail?(): Quiz
 }
 

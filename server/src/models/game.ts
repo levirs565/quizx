@@ -3,7 +3,7 @@ import { Quiz, QuizDocument, QuizSchema } from "./quiz";
 
 interface Game {
   user: string
-  soalPaketID: Number
+  soalPaketID: number
   interaktif: Boolean
   soalList: Array<Quiz>
   jawabanList: Array<number>
