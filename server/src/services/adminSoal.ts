@@ -1,6 +1,6 @@
 import * as SoalService from './soal';
 import * as UserService from './user';
-import Soal from '../models/soal';
+import Soal from '../models/quiz_package';
 import { EError, E } from '../error';
 
 export async function getPaketList(session) {

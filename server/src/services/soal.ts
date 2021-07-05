@@ -1,4 +1,4 @@
-import SoalModel, { QuizPackageDocument } from '../models/soal';
+import SoalModel, { QuizPackageDocument } from '../models/quiz_package';
 import { EError, E } from '../error';
 
 export async function getPaketList() {
