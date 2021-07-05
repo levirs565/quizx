@@ -3,7 +3,7 @@ import * as UserService from './user';
 import * as QuizService from './quiz';
 import { EError, E } from '../error';
 
-export async function getUserPermainan(session) {
+export async function getUserGame(session) {
   const user = await UserService.validateUserLoggedIn(session);
   return {
     userID: user.id,
@@ -11,14 +11,14 @@ export async function getUserPermainan(session) {
   };
 }
 
-async function validatePermainanStarted(session) {
-  const { permainan } = await getUserPermainan(session);
+async function validateGameStarted(session) {
+  const { permainan } = await getUserGame(session);
   if (permainan) return permainan;
   throw new EError(...E.E401_PERMAINAN_NOT_STARTED);
 }
 
-export async function startPermainan(session, soalPaketID, interaktif) {
-  const { userID, permainan: currentPermainan } = await getUserPermainan(session);
+export async function startGame(session, soalPaketID, interaktif) {
+  const { userID, permainan: currentPermainan } = await getUserGame(session);
   if (currentPermainan) throw new EError(...E.E402_PERMAINAN_NOT_FINISHED);
 
   const paketSoal = await QuizService.getPackageDocument(soalPaketID);
@@ -38,8 +38,8 @@ export async function startPermainan(session, soalPaketID, interaktif) {
   return mdPermainan.save();
 }
 
-export async function getSoal(session, index) {
-  const permainan = await validatePermainanStarted(session);
+export async function getQuiz(session, index) {
+  const permainan = await validateGameStarted(session);
   const soal = permainan.soalList[index];
 
   if (!soal) throw new EError(...E.E403_PERMAINAN_SOAL_NOT_FOUND);
@@ -50,8 +50,8 @@ export async function getSoal(session, index) {
   };
 }
 
-export async function putJawaban(session, index, jawaban) {
-  const currentPermainan = await validatePermainanStarted(session);
+export async function putAnswer(session, index, jawaban) {
+  const currentPermainan = await validateGameStarted(session);
   const soalCount = currentPermainan.soalList.length;
 
   if (index < 0 || index >= soalCount) {
@@ -72,8 +72,8 @@ export async function putJawaban(session, index, jawaban) {
   return {};
 }
 
-export async function stopPermainan(session) {
-  const permainan = await validatePermainanStarted(session);
+export async function stopGame(session) {
+  const permainan = await validateGameStarted(session);
   const { soalList, jawabanList } = permainan;
   const result = {
     tidakDiJawab: 0,
