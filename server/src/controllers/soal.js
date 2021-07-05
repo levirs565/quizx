@@ -9,7 +9,7 @@ exports.getPaketList = (req, res) =>
 exports.getPaket = (req, res) => {
   const { id } = req.params;
 
-  SoalService.getPaket(id)
+  SoalService.getPackageShortDetail(id)
     .then(val => {
       res.json({
         ...val
@@ -21,7 +21,7 @@ exports.getPaket = (req, res) => {
 exports.getSoal = (req, res) => {
   const { colId, soalId } = req.params;
 
-  SoalService.getSoal(colId, soalId)
+  SoalService.getQuizShortDetail(colId, soalId)
     .then(val => {
       res.json({
         ...val
@@ -34,7 +34,7 @@ exports.jawabSoal = (req, res) => {
   const { colId, soalId } = req.params;
   const { jawaban } = req.body;
 
-  SoalService.jawabSoal(colId, soalId, jawaban)
+  SoalService.answerQuiz(colId, soalId, jawaban)
     .then(val => {
       res.json({
         benar: val

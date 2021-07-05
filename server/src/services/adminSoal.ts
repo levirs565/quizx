@@ -1,11 +1,11 @@
-import * as SoalService from './soal';
+import * as QuizService from './quiz';
 import * as UserService from './user';
 import Soal from '../models/quiz_package';
 import { EError, E } from '../error';
 
 export async function getPaketList(session) {
   await UserService.validateUserIsAdmin(session);
-  return SoalService.getPaketList();
+  return QuizService.getPaketList();
 }
 
 export async function newPaket(session, paket) {
@@ -22,12 +22,12 @@ export async function newPaket(session, paket) {
 
 export async function getPaket(session, id) {
   await UserService.validateUserIsAdmin(session);
-  return await SoalService.getPaket(id);
+  return await QuizService.getPackageShortDetail(id);
 }
 
 export async function editPaket(session, id, paket) {
   await UserService.validateUserIsAdmin(session);
-  const paketDB = await SoalService.getPaketFull(id);
+  const paketDB = await QuizService.getPackageDocument(id);
   paketDB.name = paket.name;
   await paketDB.save();
   return {
@@ -38,13 +38,13 @@ export async function editPaket(session, id, paket) {
 
 export async function removePaket(session, id) {
   await UserService.validateUserIsAdmin(session);
-  const paketDB = await SoalService.getPaketFull(id);
+  const paketDB = await QuizService.getPackageDocument(id);
   return await paketDB.remove();
 }
 
 export async function newSoal(session, paketID, soal) {
   await UserService.validateUserIsAdmin(session);
-  const paketDB = await SoalService.getPaketFull(paketID);
+  const paketDB = await QuizService.getPackageDocument(paketID);
   paketDB.soalList.push({
     soal: soal.soal,
     pilihan: soal.pilihan,
@@ -63,13 +63,13 @@ export async function newSoal(session, paketID, soal) {
 
 export async function getSoal(session, paketID, soalID) {
   await UserService.validateUserIsAdmin(session);
-  const soalDB = await SoalService.getSoalFull(paketID, soalID);
+  const soalDB = await QuizService.getQuizDocument(paketID, soalID);
   return { id: soalID, paketID, ...soalDB.toDetail() };
 }
 
 export async function editSoal(session, paketID, soalID, soal) {
   await UserService.validateUserIsAdmin(session);
-  const paketDB = await SoalService.getPaketFull(paketID);
+  const paketDB = await QuizService.getPackageDocument(paketID);
   if (soalID < 0 || soalID >= paketDB.soalList.length) throw new EError(...E.E202_SOAL_NOT_FOUND);
 
   paketDB.soalList.set(soalID, {
@@ -84,7 +84,7 @@ export async function editSoal(session, paketID, soalID, soal) {
 
 export async function removeSoal(session, paketID, soalID) {
   await UserService.validateUserIsAdmin(session);
-  const paketDB = await SoalService.getPaketFull(paketID);
+  const paketDB = await QuizService.getPackageDocument(paketID);
   const soal = paketDB.soalList[soalID];
 
   if (!soal) throw new EError(...E.E202_SOAL_NOT_FOUND);
