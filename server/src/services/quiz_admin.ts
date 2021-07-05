@@ -52,17 +52,13 @@ export async function newQuiz(session: Session, paketID: number, soal) {
   await paketDB.save();
   const id = paketDB.soalList.length - 1;
 
-  return {
-    id,
-    paketID,
-    ...paketDB.soalList[id].toDetail(),
-  };
+  return paketDB.soalList[id].toDetail(id, paketID)
 }
 
 export async function getQuizDetail(session: Session, paketID: number, soalID: number) {
   await UserService.validateUserIsAdmin(session);
   const soalDB = await QuizService.getQuizDocument(paketID, soalID);
-  return { id: soalID, paketID, ...soalDB.toDetail() };
+  return soalDB.toDetail(soalID, paketID);
 }
 
 export async function editQuiz(session: Session, paketID: number, soalID: number, soal) {
@@ -77,7 +73,7 @@ export async function editQuiz(session: Session, paketID: number, soalID: number
   });
 
   await paketDB.save();
-  return { id: soalID, paketID, ...paketDB.soalList[soalID].toDetail() };
+  return paketDB.soalList[soalID].toDetail(soalID, paketID)
 }
 
 export async function removeQuiz(session: Session, paketID: number, soalID: number) {
