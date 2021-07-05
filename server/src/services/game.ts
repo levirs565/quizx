@@ -45,10 +45,7 @@ export async function getQuiz(session: Session, index) {
 
   if (!soal) throw new EError(...E.E403_PERMAINAN_SOAL_NOT_FOUND);
 
-  return {
-    ...soal.toShortDetail(index),
-    pilihan: soal.pilihan,
-  };
+  return soal.toShortWithChoices(index)
 }
 
 export async function putAnswer(session: Session, index, jawaban) {

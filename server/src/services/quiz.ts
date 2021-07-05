@@ -30,11 +30,7 @@ export async function getQuizDocument(colId: number, soalId: number) {
 
 export async function getQuizShortDetail(colId: number, soalId: number) {
   const item = await getQuizDocument(colId, soalId);
-  return {
-    ...item.toShortDetail(soalId),
-    paketID: colId,
-    pilihan: item.pilihan,
-  };
+  return item.toDetailWithChoices(soalId, colId);
 }
 
 export async function answerQuiz(colId: number, soalId: number, answer: number) {
