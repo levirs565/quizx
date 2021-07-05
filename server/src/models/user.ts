@@ -2,7 +2,7 @@ import { Schema, Model, model } from 'mongoose';
 
 // TODO: Rename id to _id
 
-interface User {
+export interface User {
   id: string
   name: string
   password: string

@@ -1,14 +1,15 @@
 import * as QuizService from './quiz';
 import * as UserService from './user';
 import Soal from '../models/quiz_package';
+import Session from '../types/session'
 import { EError, E } from '../error';
 
-export async function getPackageShortDetailList(session) {
+export async function getPackageShortDetailList(session: Session) {
   await UserService.validateUserIsAdmin(session);
   return QuizService.getPackageShortDetailList();
 }
 
-export async function newPackage(session, paket) {
+export async function newPackage(session: Session, paket) {
   await UserService.validateUserIsAdmin(session);
   const id = await Soal.estimatedDocumentCount();
   const paketDb = new Soal({
@@ -20,12 +21,12 @@ export async function newPackage(session, paket) {
   return paketDb.toShortDetail();
 }
 
-export async function getPackageShortDetail(session, id: number) {
+export async function getPackageShortDetail(session: Session, id: number) {
   await UserService.validateUserIsAdmin(session);
   return await QuizService.getPackageShortDetail(id);
 }
 
-export async function editPackage(session, id: number, paket) {
+export async function editPackage(session: Session, id: number, paket) {
   await UserService.validateUserIsAdmin(session);
   const paketDB = await QuizService.getPackageDocument(id);
   paketDB.name = paket.name;
@@ -36,13 +37,13 @@ export async function editPackage(session, id: number, paket) {
   };
 }
 
-export async function removePackage(session, id: number) {
+export async function removePackage(session: Session, id: number) {
   await UserService.validateUserIsAdmin(session);
   const paketDB = await QuizService.getPackageDocument(id);
   return await paketDB.remove();
 }
 
-export async function newQuiz(session, paketID: number, soal) {
+export async function newQuiz(session: Session, paketID: number, soal) {
   await UserService.validateUserIsAdmin(session);
   const paketDB = await QuizService.getPackageDocument(paketID);
   paketDB.soalList.push({
@@ -61,13 +62,13 @@ export async function newQuiz(session, paketID: number, soal) {
   };
 }
 
-export async function getQuizDetail(session, paketID: number, soalID: number) {
+export async function getQuizDetail(session: Session, paketID: number, soalID: number) {
   await UserService.validateUserIsAdmin(session);
   const soalDB = await QuizService.getQuizDocument(paketID, soalID);
   return { id: soalID, paketID, ...soalDB.toDetail() };
 }
 
-export async function editQuiz(session, paketID: number, soalID: number, soal) {
+export async function editQuiz(session: Session, paketID: number, soalID: number, soal) {
   await UserService.validateUserIsAdmin(session);
   const paketDB = await QuizService.getPackageDocument(paketID);
   if (soalID < 0 || soalID >= paketDB.soalList.length) throw new EError(...E.E202_SOAL_NOT_FOUND);
@@ -82,7 +83,7 @@ export async function editQuiz(session, paketID: number, soalID: number, soal) {
   return { id: soalID, paketID, ...paketDB.soalList[soalID].toDetail() };
 }
 
-export async function removeQuiz(session, paketID: number, soalID: number) {
+export async function removeQuiz(session: Session, paketID: number, soalID: number) {
   await UserService.validateUserIsAdmin(session);
   const paketDB = await QuizService.getPackageDocument(paketID);
   const soal = paketDB.soalList[soalID];

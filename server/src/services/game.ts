@@ -1,9 +1,10 @@
 import GameModel from '../models/game';
 import * as UserService from './user';
 import * as QuizService from './quiz';
+import Session from '../types/session';
 import { EError, E } from '../error';
 
-export async function getUserGame(session) {
+export async function getUserGame(session: Session) {
   const user = await UserService.validateUserLoggedIn(session);
   return {
     userID: user.id,
@@ -11,13 +12,13 @@ export async function getUserGame(session) {
   };
 }
 
-async function validateGameStarted(session) {
+async function validateGameStarted(session: Session) {
   const { permainan } = await getUserGame(session);
   if (permainan) return permainan;
   throw new EError(...E.E401_PERMAINAN_NOT_STARTED);
 }
 
-export async function startGame(session, soalPaketID, interaktif) {
+export async function startGame(session: Session, soalPaketID, interaktif) {
   const { userID, permainan: currentPermainan } = await getUserGame(session);
   if (currentPermainan) throw new EError(...E.E402_PERMAINAN_NOT_FINISHED);
 
@@ -38,7 +39,7 @@ export async function startGame(session, soalPaketID, interaktif) {
   return mdPermainan.save();
 }
 
-export async function getQuiz(session, index) {
+export async function getQuiz(session: Session, index) {
   const permainan = await validateGameStarted(session);
   const soal = permainan.soalList[index];
 
@@ -50,7 +51,7 @@ export async function getQuiz(session, index) {
   };
 }
 
-export async function putAnswer(session, index, jawaban) {
+export async function putAnswer(session: Session, index, jawaban) {
   const currentPermainan = await validateGameStarted(session);
   const soalCount = currentPermainan.soalList.length;
 
@@ -72,7 +73,7 @@ export async function putAnswer(session, index, jawaban) {
   return {};
 }
 
-export async function stopGame(session) {
+export async function stopGame(session: Session) {
   const permainan = await validateGameStarted(session);
   const { soalList, jawabanList } = permainan;
   const result = {
