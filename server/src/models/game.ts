@@ -1,7 +1,7 @@
 import { Schema, model, Types, Document } from 'mongoose';
 import { Quiz, QuizDocument, QuizSchema } from "./quiz";
 
-interface Permainan {
+interface Game {
   user: string
   soalPaketID: Number
   interaktif: Boolean
@@ -9,12 +9,12 @@ interface Permainan {
   jawabanList: Array<number>
 }
 
-interface PermainanDocument extends Permainan, Document {
+interface GameDocument extends Game, Document {
   soalList: Types.Array<QuizDocument>
   jawabanList: Types.Array<number>
 }
 
-const permainanScheme = new Schema<PermainanDocument>(
+const gameScheme = new Schema<GameDocument>(
   {
     user: {
       type: String,
@@ -38,6 +38,6 @@ const permainanScheme = new Schema<PermainanDocument>(
   }
 );
 
-const Permainan = model<PermainanDocument>('Permainan', permainanScheme);
+const GameModel = model<GameDocument>('Permainan', gameScheme);
 
-export default Permainan;
+export default GameModel;

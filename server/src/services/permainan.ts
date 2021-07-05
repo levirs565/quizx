@@ -1,4 +1,4 @@
-import Permainan from '../models/permainan';
+import GameModel from '../models/game';
 import * as UserService from './user';
 import * as SoalService from './soal';
 import { EError, E } from '../error';
@@ -7,7 +7,7 @@ export async function getUserPermainan(session) {
   const user = await UserService.validateUserLoggedIn(session);
   return {
     userID: user.id,
-    permainan: await Permainan.findOne({ user: user.id }),
+    permainan: await GameModel.findOne({ user: user.id }),
   };
 }
 
@@ -29,7 +29,7 @@ export async function startPermainan(session, soalPaketID, interaktif) {
   };
 
   const { soalList } = paketSoal;
-  const mdPermainan = new Permainan({
+  const mdPermainan = new GameModel({
     ...permainan,
     soalList,
     jawabanList: [].fill(null, 0, soalList.length),
