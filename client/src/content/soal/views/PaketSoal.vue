@@ -19,7 +19,7 @@
         v-for="soal in paket.soalList"
         :key="soal.id"
       >
-        <soal :soal="soal"></soal>
+        <soal :soal="soal" @submit="checkAnswer"></soal>
       </li>
     </ul>
   </div>
@@ -57,6 +57,11 @@ export default {
       SoalApi.getPaket(this.paket_id).then(val => {
         this.paket = val;
       });
+    },
+    checkAnswer(event) {
+      SoalApi.postJawaban(this.paket_id, event.soal.id).then(val => {
+        console.log(val)
+      })
     }
   }
 };
