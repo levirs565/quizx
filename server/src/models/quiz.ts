@@ -55,7 +55,7 @@ QuizSchema.methods.toShortDetail = function (id) {
 
 QuizSchema.methods.toShortWithChoices = function (id): QuizShortWithChoices {
   return {
-    ...this.toShortDetail(),
+    ...this.toShortDetail(id),
     pilihan: this.pilihan
   }
 }
