@@ -28,12 +28,12 @@ exports.putJawaban = (req, res) => {
 
 exports.stopPermainan = (req, res) => {
   GameService.stopGame(req.session)
-    .then(([result, permainan]) => res.json(result))
+    .then((result) => res.json(result))
     .catch(sendError(res));
 };
 
 exports.state = (req, res) => {
-  GameService.getUserGame(req.session).then(({ permainan}) => {
+  GameService.getUserGame(req.session).then((permainan) => {
     res.json({
       permainanStarted: permainan != null,
       permainan: permainan

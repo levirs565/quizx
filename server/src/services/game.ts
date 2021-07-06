@@ -1,40 +1,36 @@
-import GameModel from '../models/game';
+import GameModel, { Game } from '../models/game';
 import * as UserService from './user';
 import * as QuizService from './quiz';
 import Session from '../types/session';
 import { EError, E } from '../error';
+import { GameResult } from '../types/game';
 
 export async function getUserGame(session: Session) {
   const user = await UserService.validateUserLoggedIn(session);
-  return {
-    userID: user.id,
-    permainan: await GameModel.findOne({ user: user.id }),
-  };
+  return await GameModel.findOne({ user: user.id });
 }
 
 async function validateGameStarted(session: Session) {
-  const { permainan } = await getUserGame(session);
+  const permainan = await getUserGame(session);
   if (permainan) return permainan;
   throw new EError(...E.E401_PERMAINAN_NOT_STARTED);
 }
 
 export async function startGame(session: Session, soalPaketID, interaktif) {
-  const { userID, permainan: currentPermainan } = await getUserGame(session);
+  const currentPermainan = await getUserGame(session);
   if (currentPermainan) throw new EError(...E.E402_PERMAINAN_NOT_FINISHED);
 
   const paketSoal = await QuizService.getPackageDocument(soalPaketID);
-  const permainan = {
-    user: userID,
-    soalPaketID,
-    interaktif,
-  };
 
   const { soalList } = paketSoal;
+
   const mdPermainan = new GameModel({
-    ...permainan,
+    user: session.user.id,
+    soalPaketID,
     soalList,
+    interaktif,
     jawabanList: [].fill(null, 0, soalList.length),
-  });
+  } as Game);
 
   return mdPermainan.save();
 }
@@ -45,7 +41,7 @@ export async function getQuiz(session: Session, index) {
 
   if (!soal) throw new EError(...E.E403_PERMAINAN_SOAL_NOT_FOUND);
 
-  return soal.toShortWithChoices(index)
+  return soal.toShortWithChoices(index);
 }
 
 export async function putAnswer(session: Session, index, jawaban) {
@@ -73,7 +69,7 @@ export async function putAnswer(session: Session, index, jawaban) {
 export async function stopGame(session: Session) {
   const permainan = await validateGameStarted(session);
   const { soalList, jawabanList } = permainan;
-  const result = {
+  const result: GameResult = {
     tidakDiJawab: 0,
     benar: 0,
     salah: 0,
@@ -88,5 +84,6 @@ export async function stopGame(session: Session) {
     else result.salah += 1;
   });
 
-  return [result, await permainan.remove()];
+  await permainan.remove();
+  return result;
 }

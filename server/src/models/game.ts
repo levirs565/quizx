@@ -1,7 +1,7 @@
 import { Schema, model, Types, Document } from 'mongoose';
 import { Quiz, QuizDocument, QuizSchema } from "./quiz";
 
-interface Game {
+export interface Game {
   user: string
   soalPaketID: number
   interaktif: Boolean
