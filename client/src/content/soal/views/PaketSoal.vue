@@ -14,32 +14,25 @@
       </router-link>
     </div>
 
-    <div class="flex flex-1">
-      <ul class="w-1/2 pr-4 h-full">
-        <li>
-          <router-link
-            v-for="soal in paket.soalList"
-            :key="soal.id"
-            tag="li"
-            :to="`/soal/${paket_id}/${soal.id}`"
-            class="list-item"
-          >
-            <p
-              class="text truncate"
-              v-text="`${soal.id + 1}. ${soal.soal}`"
-            ></p>
-          </router-link>
-        </li>
-      </ul>
-      <router-view class="w-1/2 pl-4 h-full"></router-view>
-    </div>
+    <ul>
+      <li
+        v-for="soal in paket.soalList"
+        :key="soal.id"
+      >
+        <soal :soal="soal"></soal>
+      </li>
+    </ul>
   </div>
 </template>
 
 <script>
-import { Soal } from "@/api.js";
+import Soal from "../components/Soal";
+import { Soal as SoalApi } from "@/api.js";
 
 export default {
+  components: {
+    Soal
+  },
   props: {
     paket_id: String
   },
@@ -61,7 +54,7 @@ export default {
   },
   methods: {
     updatePaket() {
-      Soal.getPaket(this.paket_id).then(val => {
+      SoalApi.getPaket(this.paket_id).then(val => {
         this.paket = val;
       });
     }

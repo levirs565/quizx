@@ -58,7 +58,7 @@ paketScheme.methods.getInformationWithQuizCount = function () {
 paketScheme.methods.toShort = function () {
   return {
     ...this.getInformationOnly(),
-    soalList: this.soalList.map((item, idx) => item.toShortDetail(idx)),
+    soalList: this.soalList.map((item, idx) => item.toShortWithChoices(idx)),
   } as QuizPackageShort;
 };
 
