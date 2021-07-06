@@ -36,9 +36,7 @@ exports.jawabSoal = (req, res) => {
 
   SoalService.answerQuiz(colId, soalId, jawaban)
     .then(val => {
-      res.json({
-        benar: val
-      });
+      res.json(val);
     })
     .catch(sendError(res));
 };

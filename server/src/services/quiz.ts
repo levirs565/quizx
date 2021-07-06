@@ -1,5 +1,6 @@
 import QuizModel, { QuizPackageDocument } from '../models/quiz_package';
 import { EError, E } from '../error';
+import { AnswerQuizResult } from "../types/quiz"
 
 export async function getPackageShortDetailList() {
   const list = await QuizModel.find();
@@ -33,7 +34,9 @@ export async function getQuizShortDetail(colId: number, soalId: number) {
   return item.toDetailWithChoices(soalId, colId);
 }
 
-export async function answerQuiz(colId: number, soalId: number, answer: number) {
+export async function answerQuiz(colId: number, soalId: number, answer: number): Promise<AnswerQuizResult> {
   const item = await getQuizDocument(colId, soalId);
-  return Boolean(item.jawaban === answer);
+  return {
+    benar: item.jawaban == answer
+  };
 }

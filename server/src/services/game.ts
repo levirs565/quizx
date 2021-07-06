@@ -4,6 +4,7 @@ import * as QuizService from './quiz';
 import Session from '../types/session';
 import { EError, E } from '../error';
 import { GameResult } from '../types/game';
+import { AnswerQuizResult } from '../types/quiz'
 
 export async function getUserGame(session: Session) {
   const user = await UserService.validateUserLoggedIn(session);
@@ -44,7 +45,7 @@ export async function getQuiz(session: Session, index) {
   return soal.toShortWithChoices(index);
 }
 
-export async function putAnswer(session: Session, index, jawaban) {
+export async function putAnswer(session: Session, index, jawaban): Promise<AnswerQuizResult> {
   const currentPermainan = await validateGameStarted(session);
   const soalCount = currentPermainan.soalList.length;
 
@@ -59,7 +60,7 @@ export async function putAnswer(session: Session, index, jawaban) {
   if (currentPermainan.interaktif) {
     const benar = currentPermainan.soalList[index].jawaban === jawaban;
     return {
-      benar,
+      benar
     };
   }
 
