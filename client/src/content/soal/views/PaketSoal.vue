@@ -27,6 +27,11 @@
             @click="checkAnswer(props.quiz, props.answer)">
             Check Answer
           </button>
+          <span v-if="answerResults[props.quiz.id]"
+            class="ml-4"
+            :class="answerResults[props.quiz.id].benar ? 'text-green-600' : 'text-red-600'">
+            Jawaban anda {{ answerResults[props.quiz.id].benar ? "benar" : "salah coba lagi." }}
+          </span>
         </soal>
       </li>
     </ul>
@@ -46,6 +51,7 @@ export default {
   },
   data() {
     return {
+      answerResults: {},
       paket: {
         name: "undefined",
         soalList: []
@@ -68,7 +74,7 @@ export default {
     },
     checkAnswer(quiz, answer) {
       SoalApi.postJawaban(this.paket_id, quiz.id, answer).then(val => {
-        console.log(val)
+        this.$set(this.answerResults, quiz.id, val)
       })
     }
   }
