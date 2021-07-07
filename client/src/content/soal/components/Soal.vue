@@ -1,5 +1,5 @@
 <template>
-  <form class="flex flex-col">
+  <form>
     <p v-html="soal.soal"></p>
     <label v-for="(entry, index) in soal.pilihan" :key="index" class="block">
       <input
@@ -10,44 +10,26 @@
       />
       <p class="inline-block ml-2" v-html="entry"></p>
     </label>
-    <div class="flex-grow"></div>
-    <slot></slot>
-    <button
-      class="button primary self-end"
-      :class="{
-        'is-loading': isLoading
-      }"
-      type="button"
-      v-text="teksSubmit"
-      :disabled="pilihanTerpilih < 0"
-      @click="buttonClick"
-    ></button>
+    <slot v-bind:answer="pilihanTerpilih" v-bind:quiz="soal"></slot>
   </form>
 </template>
 
 <script>
 export default {
   props: {
-    soal: Object,
-    teksSubmit: {
-      type: String,
-      default: "Check Jawaban"
-    }
+    soal: Object
   },
   data() {
     return {
-      pilihanTerpilih: -1,
-      isLoading: false
-    };
-  },
-  methods: {
-    buttonClick() {
-      this.$emit("submit", this);
+      pilihanTerpilih: -1
     }
   },
   watch: {
     soal() {
       this.$emit("change", this);
+    },
+    pilihanTerpilih() {
+      this.$emit("change", this)
     }
   }
 };

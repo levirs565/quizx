@@ -19,7 +19,15 @@
         v-for="soal in paket.soalList"
         :key="soal.id"
       >
-        <soal :soal="soal" @submit="checkAnswer"></soal>
+        <soal :soal="soal" @submit="checkAnswer" v-slot="props">
+          <button 
+            v-show="props.answer > -1" 
+            type="button" 
+            class="button primary"
+            @click="checkAnswer(props.quiz, props.answer)">
+            Check Answer
+          </button>
+        </soal>
       </li>
     </ul>
   </div>
@@ -58,8 +66,8 @@ export default {
         this.paket = val;
       });
     },
-    checkAnswer(event) {
-      SoalApi.postJawaban(this.paket_id, event.soal.id).then(val => {
+    checkAnswer(quiz, answer) {
+      SoalApi.postJawaban(this.paket_id, quiz.id, answer).then(val => {
         console.log(val)
       })
     }
