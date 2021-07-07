@@ -2,6 +2,7 @@ const route = require('express').Router();
 const PermainanController = require('../controllers/permainan');
 
 route.post('/start', PermainanController.startPermainan);
+route.get('/soal/', PermainanController.getAllQuiz);
 route.get('/soal/:id', PermainanController.getSoal);
 route.put('/soal/:id', PermainanController.putJawaban);
 route.post('/stop', PermainanController.stopPermainan);

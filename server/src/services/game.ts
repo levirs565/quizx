@@ -36,6 +36,12 @@ export async function startGame(session: Session, soalPaketID, interaktif) {
   return mdPermainan.save();
 }
 
+export async function getAllQuiz(session: Session) {
+  const permainan = await validateGameStarted(session);
+
+  return permainan.soalList.map((val, index) => val.toShortWithChoices(index))
+}
+
 export async function getQuiz(session: Session, index) {
   const permainan = await validateGameStarted(session);
   const soal = permainan.soalList[index];

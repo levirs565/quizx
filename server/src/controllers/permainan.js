@@ -9,6 +9,12 @@ exports.startPermainan = (req, res) => {
     .catch(sendError(res));
 };
 
+exports.getAllQuiz = (req, res) => {
+  GameService.getAllQuiz(req.session)
+    .then(soal => res.json(soal))
+    .catch(sendError(res));
+};
+
 exports.getSoal = (req, res) => {
   const { id } = req.params;
 

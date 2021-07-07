@@ -56,6 +56,9 @@ export const Permainan = {
       .post('/permainan/start', { soalId: paketSoalID, interaktif })
       .then(throwError);
   },
+  getAllQuiz(index) {
+    return instance.get(`/permainan/soal/`).then(throwError);
+  },
   getSoal(index) {
     return instance.get(`/permainan/soal/${index}`).then(throwError);
   },
