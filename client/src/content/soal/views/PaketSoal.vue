@@ -1,17 +1,19 @@
 <template>
-  <div class="box container flex flex-col">
-    <h1 class="title" v-text="paket.name"></h1>
-    <p class="subtext">{{ paket.soalList.length }} Soal</p>
-    <hr class="hr" />
+  <div class="container">
+    <div class="box mb-8">
+      <h1 class="title" v-text="paket.name"></h1>
+      <p class="subtext">{{ paket.soalList.length }} Soal</p>
+      <hr class="hr" />
 
-    <div v-if="$store.state.core.user" class="mb-8">
-      <router-link
-        :to="`/permainan/config?id=${paket_id}`"
-        class="button primary"
-      >
-        <font-awesome icon="play"></font-awesome>
-        <span>Mainkan</span>
-      </router-link>
+      <div v-if="$store.state.core.user" class="mb-2">
+        <router-link
+          :to="`/permainan/config?id=${paket_id}`"
+          class="button primary"
+        >
+          <font-awesome icon="play"></font-awesome>
+          <span>Mainkan</span>
+        </router-link>
+      </div>
     </div>
 
     <ul>
@@ -19,11 +21,11 @@
         v-for="soal in paket.soalList"
         :key="soal.id"
       >
-        <soal :soal="soal" @submit="checkAnswer" v-slot="props">
+        <soal class="box my-4" :soal="soal" @submit="checkAnswer" v-slot="props">
           <button 
             v-show="props.answer > -1" 
             type="button" 
-            class="button primary"
+            class="button primary mt-4"
             @click="checkAnswer(props.quiz, props.answer)">
             Check Answer
           </button>
