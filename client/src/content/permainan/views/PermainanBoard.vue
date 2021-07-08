@@ -13,8 +13,7 @@
       <li v-for="quiz in quizes" :key="quiz.id">
         <soal
           :soal="quiz"
-          teksSubmit="Kirim Jawaban"
-          @submit="soalSubmit"
+          @change="answerChanged"
         >
           <p
             v-if="permainanState.interaktif"
@@ -53,10 +52,10 @@ export default {
     };
   },
   methods: {
-    soalSubmit(co) {
-      let jawaban = co.pilihanTerpilih;
-      let id = co.soal.id;
-      Permainan.putJawaban(id, jawaban).then(val => {
+    answerChanged(data) {
+      let answer = data.pilihanTerpilih;
+      let id = data.soal.id;
+      Permainan.putJawaban(id, answer).then(val => {
         if (this.permainanState.interaktif) {
           // TODO: Untuk permainan interaktif
           // Contoh khan academeny

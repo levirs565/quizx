@@ -25,9 +25,6 @@ export default {
     }
   },
   watch: {
-    soal() {
-      this.$emit("change", this);
-    },
     pilihanTerpilih() {
       this.$emit("change", this)
     }
