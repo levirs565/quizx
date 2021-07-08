@@ -1,18 +1,18 @@
-import Soal from './Soal.vue';
+import Question from './Question.vue';
 
 export default { title: 'Soal' };
 
-export const standar = () => ({
+export const standart = () => ({
   components: {
-    Soal
+    Question
   },
   data() {
     return {
-      soal: {
+      question: {
         soal: 'Soal Standar',
         pilihan: ['Pilihan 1', 'Pilihan 2', 'Pilihan 3', 'Pilihan 4']
       }
     };
   },
-  template: '<soal :soal="soal" class="w-full" style="height: 50vh;"></soal>'
+  template: '<question :question="soal" class="w-full" style="height: 50vh;"></question>'
 });

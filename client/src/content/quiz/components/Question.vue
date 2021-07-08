@@ -1,27 +1,27 @@
 <template>
   <form>
-    <p v-html="soal.soal"></p>
-    <label v-for="(entry, index) in soal.pilihan" :key="index" class="block">
+    <p v-html="question.soal"></p>
+    <label v-for="(entry, index) in question.pilihan" :key="index" class="block">
       <input
         type="radio"
-        name="pilihan"
+        name="choices"
         :value="index"
-        v-model="pilihanTerpilih"
+        v-model="answer"
       />
       <p class="inline-block ml-2" v-html="entry"></p>
     </label>
-    <slot v-bind:answer="pilihanTerpilih" v-bind:quiz="soal"></slot>
+    <slot v-bind:answer="answer" v-bind:question="question"></slot>
   </form>
 </template>
 
 <script>
 export default {
   props: {
-    soal: Object
+    question: Object
   },
   data() {
     return {
-      pilihanTerpilih: -1
+      answer: -1
     }
   },
   watch: {

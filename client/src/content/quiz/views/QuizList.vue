@@ -4,14 +4,14 @@
     <hr class="hr" />
     <ul>
       <router-link
-        v-for="paket in paketList"
-        :key="paket.id"
+        v-for="quiz in quizList"
+        :key="quiz.id"
         tag="li"
-        :to="`/soal/${paket.id}`"
+        :to="`/soal/${quiz.id}`"
         class="list-item"
       >
-        <p class="text" v-text="paket.name"></p>
-        <p class="subtext">{{ paket.soalCount }} Soal</p>
+        <p class="text" v-text="quiz.name"></p>
+        <p class="subtext">{{ quiz.soalCount }} Soal</p>
       </router-link>
     </ul>
   </div>
@@ -23,13 +23,13 @@ import { Soal } from "@/api.js";
 export default {
   data() {
     return {
-      paketList: []
+      quizList: []
     };
   },
 
   mounted() {
     Soal.getPaketList().then(val => {
-      this.paketList = val.list;
+      this.quizList = val.list;
     });
   }
 };

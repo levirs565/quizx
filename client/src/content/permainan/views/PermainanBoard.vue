@@ -10,9 +10,9 @@
       ></jumper>
     </div>
     <ul>
-      <li v-for="quiz in quizes" :key="quiz.id">
-        <soal
-          :soal="quiz"
+      <li v-for="question in questions" :key="question.id">
+        <question
+          :question="question"
           @change="answerChanged"
         >
           <p
@@ -23,7 +23,7 @@
           >
             Jawaban anda {{ lastJawabanState == 2 ? "benar" : "salah coba lagi." }}
           </p>
-        </soal>
+        </question>
       </li>
     </ul>
   </div>
@@ -31,12 +31,12 @@
 
 <script>
 import { Permainan } from "@/api.js";
-import Soal from "../../soal/components/Soal.vue";
+import Question from "../../quiz/components/Question.vue";
 import Jumper from "../components/Jumper.vue";
 
 export default {
   components: {
-    Soal,
+    Question,
     Jumper
   },
   data() {
@@ -48,7 +48,7 @@ export default {
         jawabanCount: 0
       },
       lastJawabanState: 0,
-      quizes: []
+      questions: []
     };
   },
   methods: {
@@ -82,7 +82,7 @@ export default {
         
         return Promise.resolve([])
       }).then(val => {
-        this.quizes = val
+        this.questions = val
       });
     },
     stop() {
