@@ -2,7 +2,7 @@
   "name": "@quizx/server",
   "scripts": {
     "serve": "node index.js",
-    "dev": "nodemon --watch './src/**/*' --exec 'yarn ts-node' src/main.js"
+    "dev": "nodemon -e js,ts --watch './src/**/*' --exec 'yarn ts-node' src/main.js"
   },
   "dependencies": {
     "@types/bcrypt": "^5.0.0",
