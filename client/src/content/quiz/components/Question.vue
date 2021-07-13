@@ -7,6 +7,7 @@
         name="choices"
         :value="index"
         v-model="answer"
+        @click="radioClicked"
       />
       <p class="inline-block ml-2" v-html="entry"></p>
     </label>
@@ -17,11 +18,25 @@
 <script>
 export default {
   props: {
-    question: Object
+    question: Object,
+    initialAnswer: {
+      type: Number,
+      default: -1,
+    },
+    radioEnabled: {
+      type: Boolean,
+      default: true
+    }
   },
   data() {
     return {
-      answer: -1
+      answer: this.initialAnswer
+    }
+  },
+  methods: {
+    radioClicked(e) {
+      if (!this.radioEnabled)
+        e.preventDefault()
     }
   },
   watch: {

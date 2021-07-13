@@ -17,6 +17,8 @@
           :key="question.id">
         <question
           :question="question"
+          :initialAnswer="question.jawaban"
+          :radioEnabled="false"
           class="box my-4"
         >
         </question>
