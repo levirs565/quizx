@@ -1,5 +1,5 @@
 import { Document, Schema, model, Types } from 'mongoose';
-import { Quiz, QuizShort, QuizDocument, QuizSchema } from './quiz';
+import { Quiz, QuizShort, QuizDetailWithChoices, QuizDocument, QuizSchema } from './quiz';
 
 interface QuizPackage {
   _id: number;
@@ -20,11 +20,16 @@ interface QuizPackageShort extends QuizPackageInformation {
   soalList: Array<QuizShort>;
 }
 
+interface AdminQuizPackage extends QuizPackageInformation {
+  soalList: Array<QuizDetailWithChoices>
+}
+
 export interface QuizPackageDocument extends QuizPackage, Omit<Document, '_id'> {
   soalList: Types.Array<QuizDocument>;
   getInformationOnly(): QuizPackageInformation;
   getInformationWithQuizCount(): QuizPackageInformationWithQuizCount;
   toShort(): QuizPackageShort;
+  toForAdmin(): AdminQuizPackage
 }
 
 const paketScheme = new Schema<QuizPackageDocument>(
@@ -61,6 +66,13 @@ paketScheme.methods.toShort = function () {
     soalList: this.soalList.map((item, idx) => item.toShortWithChoices(idx)),
   } as QuizPackageShort;
 };
+
+paketScheme.methods.toForAdmin = function (): AdminQuizPackage {
+  return {
+    ...this.getInformationOnly(),
+    soalList: this.soalList.map((item, idx) => item.toDetailWithChoices(idx, this._id))
+  }
+}
 
 const Soal = model<QuizPackageDocument>('Soal', paketScheme);
 

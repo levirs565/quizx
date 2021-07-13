@@ -21,9 +21,10 @@ export async function newPackage(session: Session, paket) {
   return paketDb.getInformationOnly();
 }
 
-export async function getPackageShortDetail(session: Session, id: number) {
+export async function getPackage(session: Session, id: number) {
   await UserService.validateUserIsAdmin(session);
-  return await QuizService.getPackageShortDetail(id);
+  const doc = await QuizService.getPackageDocument(id)
+  return doc.toForAdmin()
 }
 
 export async function editPackage(session: Session, id: number, paket) {

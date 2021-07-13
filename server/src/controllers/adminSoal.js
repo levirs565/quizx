@@ -14,7 +14,7 @@ exports.newPaket = (req, res) =>
 exports.getPaket = (req, res) => {
   const { id } = req.params;
 
-  QuizAdminService.getPackageShortDetail(req.session, id)
+  QuizAdminService.getPackage(req.session, id)
     .then(val => res.json(val))
     .catch(sendError(res));
 };
