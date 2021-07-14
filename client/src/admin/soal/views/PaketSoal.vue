@@ -20,7 +20,10 @@
     </ul>
     <button
       class="button primary float-right"
-      >Soal Baru</button>
+      @click="newQuestion"
+      >
+      Soal Baru
+    </button>
   </div>
 </template>
 
@@ -64,6 +67,14 @@ export default {
       AdminSoal.editPaket(this.paket_id, { name }).then(val => {
         this.paket = val;
       });
+    },
+    newQuestion() {
+      this.paket.soalList.push({
+        id: "new",
+        soal: "",
+        pilihan: ["", "", "", ""],
+        jawaban: 0
+      })
     }
   },
   computed: {

@@ -1,8 +1,8 @@
 <template>
   <div class="box my-4">
     <div class="overflow-auto mb-4">
-      <span>Soal ke {{question.id + 1}}</span>
-      <button class="button danger ml-4 float-right" v-show="question">
+      <span v-text="questionTitle" />
+      <button class="button danger ml-4 float-right" v-show="question.id != 'new'">
         Hapus
       </button>
       <button class="button primary float-right" @click="toEditMode" v-show="!isEditMode">
@@ -67,8 +67,13 @@ export default {
   },
   data() {
     return {
-      isEditMode: false
+      isEditMode: this.question.id == "new"
     };
+  },
+  computed: {
+    questionTitle() {
+      return "Soal " + (this.question.id == "new" ? "Baru" : `ke ${this.question.id + 1}`);
+    }
   },
   methods: {
     saveQuestion() {
