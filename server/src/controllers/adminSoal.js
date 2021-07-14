@@ -35,8 +35,17 @@ exports.removePaket = (req, res) => {
     .catch(sendError(res));
 };
 
+
+function getQuestionIdsFromParams(params) {
+  const { paketID, soalID } = params;
+  return {
+    paketID: parseInt(paketID),
+    soalID: parseInt(soalID)
+  }
+}
+
 exports.newSoal = (req, res) => {
-  const { paketID } = req.params;
+  const { paketID } = getQuestionIdsFromParams(req.params);
 
   QuizAdminService.newQuiz(req.session, paketID, req.body)
     .then(val => res.json(val))
@@ -44,7 +53,7 @@ exports.newSoal = (req, res) => {
 };
 
 exports.getSoal = (req, res) => {
-  const { paketID, soalID } = req.params;
+  const { paketID, soalID } = getQuestionIdsFromParams(req.params)
 
   QuizAdminService.getQuizDetail(req.session, paketID, soalID)
     .then(val => res.json(val))
@@ -52,7 +61,7 @@ exports.getSoal = (req, res) => {
 };
 
 exports.editSoal = (req, res) => {
-  const { paketID, soalID } = req.params;
+  const { paketID, soalID } = getQuestionIdsFromParams(req.params)
 
   QuizAdminService.editQuiz(req.session, paketID, soalID, req.body)
     .then(val => res.json(val))
@@ -60,7 +69,7 @@ exports.editSoal = (req, res) => {
 };
 
 exports.removeSoal = (req, res) => {
-  const { paketID, soalID } = req.params;
+  const { paketID, soalID } = getQuestionIdsFromParams(req.params)
 
   QuizAdminService.removeQuiz(req.session, paketID, soalID)
     .then(val => res.json({ msg: 'soal is removed' }))
