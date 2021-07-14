@@ -15,13 +15,7 @@
     <ul>
       <li v-for="question in paket.soalList"
           :key="question.id">
-        <question
-          :question="question"
-          :initialAnswer="question.jawaban"
-          :radioEnabled="false"
-          class="box my-4"
-        >
-        </question>
+        <question-admin :question="question"/>
       </li>
     </ul>
     <button
@@ -33,15 +27,15 @@
 <script>
 import { AdminSoal } from "@/api";
 import ModalEditPaket from "../components/ModalEditPaket";
+import QuestionAdmin from "../components/QuestionAdmin.vue";
 import showModal from "@/admin/modal/bus";
-import Question from "@/content/quiz/components/Question.vue";
 
 export default {
   props: {
     paket_id: String
   },
   components: {
-    Question
+    QuestionAdmin
   },
   data() {
     return {
