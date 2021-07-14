@@ -63,7 +63,8 @@ export default {
     Question
   },
   props: {
-    question: Object
+    question: Object,
+    index: Number
   },
   data() {
     return {
@@ -76,7 +77,10 @@ export default {
     }
   },
   methods: {
-    saveQuestion() {
+    async saveQuestion() {
+      await new Promise((resolve) => {
+        this.$emit("save", this.index, this.question, resolve)
+      })
       this.isEditMode = false
     },
     toEditMode() {

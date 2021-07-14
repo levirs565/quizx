@@ -13,9 +13,9 @@
     </div>
     <hr class="hr" />
     <ul>
-      <li v-for="question in paket.soalList"
+      <li v-for="(question, index) in paket.soalList"
           :key="question.id">
-        <question-admin :question="question"/>
+        <question-admin :index="index" :question="question" @save="saveQuestion"/>
       </li>
     </ul>
     <button
@@ -75,6 +75,16 @@ export default {
         pilihan: ["", "", "", ""],
         jawaban: 0
       })
+    },
+    async saveQuestion(index, question, finish) {
+      let result;
+      if (question.id == "new") {
+        result = await AdminSoal.newSoal(this.paket_id, question)
+      } else {
+        result = await AdminSoal.editSoal(this.paket_id, question.id, question)
+      }
+      this.$set(this.paket.soalList, index, result)
+      finish()
     }
   },
   computed: {
