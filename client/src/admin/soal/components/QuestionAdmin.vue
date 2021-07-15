@@ -8,7 +8,7 @@
       <button class="button primary float-right" @click="toEditMode" v-show="!isEditMode">
         Edit
       </button>
-      <button class="button primary float-right" @click="saveQuestion" v-show="isEditMode">
+      <button class="button primary float-right" @click="saveQuestion" v-show="isEditMode" :disabled="question.soal.length == 0">
         Save
       </button>
     </div>
