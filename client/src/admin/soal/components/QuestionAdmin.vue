@@ -73,7 +73,7 @@ export default {
   },
   computed: {
     questionTitle() {
-      return "Soal " + (this.question.id == "new" ? "Baru" : `ke ${this.question.id + 1}`);
+      return "Soal " + (this.question.id == "new" ? "Baru" : `ke ${this.index + 1}`);
     }
   },
   methods: {
