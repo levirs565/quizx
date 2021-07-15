@@ -2,7 +2,7 @@
   <div>
     <div>
       <h1 class="title inline-block">
-        {{ paket.name }}
+        {{ quiz.name }}
         <font-awesome
           icon="edit"
           class="ml-2 cursor-pointer"
@@ -13,7 +13,7 @@
     </div>
     <hr class="hr" />
     <ul>
-      <li v-for="(question, index) in paket.soalList"
+      <li v-for="(question, index) in quiz.soalList"
           :key="question.id">
         <question-admin :index="index" :question="question" @save="saveQuestion" @delete="deleteQuestion"/>
       </li>
@@ -35,41 +35,41 @@ import showModal from "@/admin/modal/bus";
 
 export default {
   props: {
-    paket_id: String
+    quiz_id: String
   },
   components: {
     QuestionAdmin
   },
   data() {
     return {
-      paket: {}
+      quiz: {}
     };
   },
   methods: {
     refresh() {
-      AdminSoal.getPaket(this.paket_id).then(val => {
-        this.paket = val;
+      AdminSoal.getPaket(this.quiz_id).then(val => {
+        this.quiz = val;
       });
     },
     deletePaket() {
-      AdminSoal.removePaket(this.paket_id).then(() => {
+      AdminSoal.removePaket(this.quiz_id).then(() => {
         this.$router.replace("/admin/soal");
       });
     },
     showEditQuiz() {
       showModal(
         ModalEditQuiz,
-        { currentName: this.paket.name },
+        { currentName: this.quiz.name },
         this.editPaket
       );
     },
     editPaket(name) {
-      AdminSoal.editPaket(this.paket_id, { name }).then(val => {
-        this.paket = val;
+      AdminSoal.editPaket(this.quiz_id, { name }).then(val => {
+        this.quiz = val;
       });
     },
     newQuestion() {
-      this.paket.soalList.push({
+      this.quiz.soalList.push({
         id: "new",
         soal: "",
         pilihan: ["", "", "", ""],
@@ -79,28 +79,28 @@ export default {
     async saveQuestion(index, question, finish) {
       let result;
       if (question.id == "new") {
-        result = await AdminSoal.newSoal(this.paket_id, question)
+        result = await AdminSoal.newSoal(this.quiz_id, question)
       } else {
-        result = await AdminSoal.editSoal(this.paket_id, question.id, question)
+        result = await AdminSoal.editSoal(this.quiz_id, question.id, question)
       }
-      this.$set(this.paket.soalList, index, result)
+      this.$set(this.quiz.soalList, index, result)
       finish()
     },
     async deleteQuestion(index, question, finish) {
-      await AdminSoal.removeSoal(this.paket_id, question.id)
-      this.$delete(this.paket.soalList, index)
+      await AdminSoal.removeSoal(this.quiz_id, question.id)
+      this.$delete(this.quiz.soalList, index)
       // TODO: When id is not index dependent below code are redundant
       this.refresh()
       finish()
     }
   },
   computed: {
-    paketURI() {
-      return `/admin/soal/${this.paket.id}`;
+    quizURI() {
+      return `/admin/soal/${this.quiz.id}`;
     }
   },
   watch: {
-    paket_id() {
+    quiz_id() {
       this.refresh();
     }
   },

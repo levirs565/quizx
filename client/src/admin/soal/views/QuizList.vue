@@ -8,14 +8,14 @@
       </div>
       <ul>
         <router-link
-          v-for="paket in paketList"
-          :key="paket.id"
+          v-for="quiz in quizList"
+          :key="quiz.id"
           class="list-item"
-          :to="`/admin/soal/${paket.id}`"
+          :to="`/admin/soal/${quiz.id}`"
           tag="li"
         >
-          <p class="text" v-text="paket.name"></p>
-          <p class="subtext">{{ paket.soalCount }} Soal</p>
+          <p class="text" v-text="quiz.name"></p>
+          <p class="subtext">{{ quiz.soalCount }} Soal</p>
         </router-link>
       </ul>
     </div>
@@ -30,13 +30,13 @@ import showModal from "@/admin/modal/bus";
 export default {
   data() {
     return {
-      paketList: []
+      quizList: []
     };
   },
   methods: {
     refresh() {
       AdminSoal.getPaketList().then(data => {
-        this.paketList = data.list;
+        this.quizList = data.list;
       });
     },
     showNewQuiz() {

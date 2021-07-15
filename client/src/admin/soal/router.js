@@ -7,7 +7,7 @@ export default [
     component: QuizList
   },
   {
-    path: 'soal/:paket_id',
+    path: 'soal/:quiz_id',
     component: Quiz,
     props: true
   }
