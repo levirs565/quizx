@@ -89,6 +89,8 @@ export default {
     async deleteQuestion(index, question, finish) {
       await AdminSoal.removeSoal(this.paket_id, question.id)
       this.$delete(this.paket.soalList, index)
+      // TODO: When id is not index dependent below code are redundant
+      this.refresh()
       finish()
     }
   },
