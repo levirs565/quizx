@@ -4,7 +4,7 @@
     <hr class="hr">
     <div class="box container list">
       <div class="list-toolbox list-item">
-        <button class="button primary" @click="showNewPaket">Paket Baru</button>
+        <button class="button primary" @click="showNewQuiz">Paket Baru</button>
       </div>
       <ul>
         <router-link
@@ -24,7 +24,7 @@
 
 <script>
 import { AdminSoal } from "@/api";
-import ModalNewPaket from "../components/ModalNewPaket";
+import ModalNewQuiz from "../components/ModalNewQuiz";
 import showModal from "@/admin/modal/bus";
 
 export default {
@@ -39,8 +39,8 @@ export default {
         this.paketList = data.list;
       });
     },
-    showNewPaket() {
-      showModal(ModalNewPaket, {}, this.newPaket);
+    showNewQuiz() {
+      showModal(ModalNewQuiz, {}, this.newPaket);
     },
     newPaket(name) {
       AdminSoal.newPaket({ name }).then(this.refresh);

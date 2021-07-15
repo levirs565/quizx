@@ -1,14 +1,14 @@
-import PaketSoalList from './views/PaketSoalList.vue';
-import PaketSoal from './views/PaketSoal.vue';
+import QuizList from './views/QuizList.vue';
+import Quiz from './views/Quiz.vue';
 
 export default [
   {
     path: 'soal',
-    component: PaketSoalList
+    component: QuizList
   },
   {
     path: 'soal/:paket_id',
-    component: PaketSoal,
+    component: Quiz,
     props: true
   }
 ];

@@ -6,7 +6,7 @@
         <font-awesome
           icon="edit"
           class="ml-2 cursor-pointer"
-          @click="showEditPaket"
+          @click="showEditQuiz"
         ></font-awesome>
       </h1>
       <button class="button danger float-right" @click="deletePaket">Hapus</button>
@@ -29,7 +29,7 @@
 
 <script>
 import { AdminSoal } from "@/api";
-import ModalEditPaket from "../components/ModalEditPaket";
+import ModalEditQuiz from "../components/ModalEditQuiz";
 import QuestionAdmin from "../components/QuestionAdmin.vue";
 import showModal from "@/admin/modal/bus";
 
@@ -56,9 +56,9 @@ export default {
         this.$router.replace("/admin/soal");
       });
     },
-    showEditPaket() {
+    showEditQuiz() {
       showModal(
-        ModalEditPaket,
+        ModalEditQuiz,
         { currentName: this.paket.name },
         this.editPaket
       );
