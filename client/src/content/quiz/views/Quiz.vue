@@ -26,13 +26,13 @@
             v-show="props.answer > -1" 
             type="button" 
             class="button primary mt-4"
-            @click="checkAnswer(props.quiz, props.answer)">
+            @click="checkAnswer(props.question, props.answer)">
             Check Answer
           </button>
-          <span v-if="answerResults[props.quiz.id]"
+          <span v-if="answerResults[props.question.id]"
             class="ml-4"
-            :class="answerResults[props.quiz.id].benar ? 'text-green-600' : 'text-red-600'">
-            Jawaban anda {{ answerResults[props.quiz.id].benar ? "benar" : "salah coba lagi." }}
+            :class="answerResults[props.question.id].benar ? 'text-green-600' : 'text-red-600'">
+            Jawaban anda {{ answerResults[props.question.id].benar ? "benar" : "salah coba lagi." }}
           </span>
         </question>
       </li>

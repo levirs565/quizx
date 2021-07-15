@@ -40,7 +40,7 @@ export default {
     }
   },
   watch: {
-    pilihanTerpilih() {
+    answer() {
       this.$emit("change", this)
     }
   }

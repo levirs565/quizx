@@ -53,8 +53,8 @@ export default {
   },
   methods: {
     answerChanged(data) {
-      let answer = data.pilihanTerpilih;
-      let id = data.soal.id;
+      let answer = data.answer;
+      let id = data.question.id;
       Permainan.putJawaban(id, answer).then(val => {
         if (this.permainanState.interaktif) {
           // TODO: Untuk permainan interaktif
