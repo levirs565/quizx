@@ -2,7 +2,7 @@
   <div class="box my-4">
     <div class="overflow-auto mb-4">
       <span v-text="questionTitle" />
-      <button class="button danger ml-4 float-right" v-show="question.id != 'new'">
+      <button class="button danger ml-4 float-right" @click="deleteQuestion" v-show="question.id != 'new'">
         Hapus
       </button>
       <button class="button primary float-right" @click="toEditMode" v-show="!isEditMode">
@@ -82,6 +82,11 @@ export default {
         this.$emit("save", this.index, this.question, resolve)
       })
       this.isEditMode = false
+    },
+    async deleteQuestion() {
+      await new Promise((resolve) => {
+        this.$emit("delete", this.index, this.question, resolve)
+      })
     },
     toEditMode() {
       this.isEditMode = true

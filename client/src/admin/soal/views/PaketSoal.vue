@@ -15,7 +15,7 @@
     <ul>
       <li v-for="(question, index) in paket.soalList"
           :key="question.id">
-        <question-admin :index="index" :question="question" @save="saveQuestion"/>
+        <question-admin :index="index" :question="question" @save="saveQuestion" @delete="deleteQuestion"/>
       </li>
     </ul>
     <button
@@ -84,6 +84,11 @@ export default {
         result = await AdminSoal.editSoal(this.paket_id, question.id, question)
       }
       this.$set(this.paket.soalList, index, result)
+      finish()
+    },
+    async deleteQuestion(index, question, finish) {
+      await AdminSoal.removeSoal(this.paket_id, question.id)
+      this.$delete(this.paket.soalList, index)
       finish()
     }
   },
