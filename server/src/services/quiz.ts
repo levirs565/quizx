@@ -1,4 +1,4 @@
-import QuizModel, { QuizPackageDocument } from '../models/quiz_package';
+import QuizModel from '../models/quiz';
 import { EError, E } from '../error';
 import { AnswerQuizResult } from "../types/quiz"
 

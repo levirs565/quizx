@@ -1,5 +1,5 @@
 import { Schema, model, Types, Document } from 'mongoose';
-import { Quiz, QuizDocument, QuizSchema } from "./quiz";
+import { Quiz, QuizDocument, QuizSchema } from "./question";
 
 export interface Game {
   user: string

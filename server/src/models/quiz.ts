@@ -1,79 +1,79 @@
-import { Schema, Types } from 'mongoose';
+import { Document, Schema, model, Types } from 'mongoose';
+import { Quiz, QuizShort, QuizDetailWithChoices, QuizDocument, QuizSchema } from './question';
 
-export interface Quiz {
-  soal: string;
-  pilihan: Array<string>;
-  jawaban: number;
+interface QuizPackage {
+  _id: number;
+  name: string;
+  soalList: Array<Quiz>;
 }
 
-export interface QuizShort {
+interface QuizPackageInformation {
   id: number;
-  soal: string;
+  name: string;
 }
 
-export interface QuizShortWithChoices extends QuizShort {
-  pilihan: Array<string>
+interface QuizPackageInformationWithQuizCount extends QuizPackageInformation {
+  soalCount: number;
 }
 
-export interface QuizDetail extends Quiz {
-  id: number;
-  paketID: number;
+interface QuizPackageShort extends QuizPackageInformation {
+  soalList: Array<QuizShort>;
 }
 
-export interface QuizDetailWithChoices extends QuizDetail {
-  pilihan: Array<string>
+interface AdminQuizPackage extends QuizPackageInformation {
+  soalList: Array<QuizDetailWithChoices>
 }
 
-export interface QuizDocument extends Quiz, Partial<Types.Subdocument> {
-  toShortDetail?(id: number): QuizShort;
-  toShortWithChoices?(id: number): QuizShortWithChoices
-  toDetail?(id: number, paketID: number): QuizDetail;
-  toDetailWithChoices?(id: number, paketID: number): QuizDetailWithChoices;
+export interface QuizPackageDocument extends QuizPackage, Omit<Document, '_id'> {
+  soalList: Types.Array<QuizDocument>;
+  getInformationOnly(): QuizPackageInformation;
+  getInformationWithQuizCount(): QuizPackageInformationWithQuizCount;
+  toShort(): QuizPackageShort;
+  toForAdmin(): AdminQuizPackage
 }
 
-export const QuizSchema = new Schema<QuizDocument>({
-  soal: {
-    type: String,
-    required: true,
+const paketScheme = new Schema<QuizPackageDocument>(
+  {
+    _id: Number,
+    name: {
+      type: String,
+      required: true,
+    },
+    soalList: [QuizSchema],
   },
-  pilihan: {
-    type: Array,
-    required: true,
-  },
-  jawaban: {
-    type: Number,
-    required: true,
-  },
-});
+  {
+    collection: 'soal',
+  }
+);
 
-QuizSchema.methods.toShortDetail = function (id) {
+paketScheme.methods.getInformationOnly = function () {
   return {
-    id,
-    soal: this.soal,
+    id: this._id,
+    name: this.name,
   };
 };
 
-QuizSchema.methods.toShortWithChoices = function (id): QuizShortWithChoices {
+paketScheme.methods.getInformationWithQuizCount = function () {
   return {
-    ...this.toShortDetail(id),
-    pilihan: this.pilihan
-  }
-}
-
-QuizSchema.methods.toDetail = function (id, paketID) {
-  return {
-    id,
-    paketID,
-    soal: this.soal,
-    pilihan: this.pilihan,
-    jawaban: this.jawaban,
+    ...this.getInformationOnly(),
+    soalCount: this.soalList.length,
   };
 };
 
-
-QuizSchema.methods.toDetailWithChoices = function (id, paketID): QuizDetailWithChoices {
+paketScheme.methods.toShort = function () {
   return {
-    ...this.toDetail(id, paketID),
-    pilihan: this.pilihan
+    ...this.getInformationOnly(),
+    soalList: this.soalList.map((item, idx) => item.toShortWithChoices(idx)),
+  } as QuizPackageShort;
+};
+
+paketScheme.methods.toForAdmin = function (): AdminQuizPackage {
+  return {
+    ...this.getInformationOnly(),
+    soalList: this.soalList.map((item, idx) => item.toDetailWithChoices(idx, this._id))
   }
 }
+
+const Soal = model<QuizPackageDocument>('Soal', paketScheme);
+
+export default Soal;

@@ -1,6 +1,6 @@
 import * as QuizService from './quiz';
 import * as UserService from './user';
-import Soal from '../models/quiz_package';
+import QuizModel from '../models/quiz';
 import Session from '../types/session'
 import { EError, E } from '../error';
 
@@ -11,8 +11,8 @@ export async function getPackageShortDetailList(session: Session) {
 
 export async function newPackage(session: Session, paket) {
   await UserService.validateUserIsAdmin(session);
-  const id = await Soal.estimatedDocumentCount();
-  const paketDb = new Soal({
+  const id = await QuizModel.estimatedDocumentCount();
+  const paketDb = new QuizModel({
     _id: id,
     name: paket.name,
   });
