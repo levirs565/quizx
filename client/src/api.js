@@ -13,99 +13,113 @@ function throwError(res) {
 
 const instance = axios.create({
   baseURL: 'http://localhost:3000/api',
-  withCredentials: true
+  withCredentials: true,
 });
 
 export const Soal = {
-  getPaketList() {
-    return instance.get('/soal').then(throwError);
+  async getPaketList() {
+    const res = await instance.get('/soal');
+    return throwError(res);
   },
-  getPaket(id) {
-    return instance.get(`/soal/${id}`).then(throwError);
+  async getPaket(id) {
+    const res = await instance.get(`/soal/${id}`);
+    return throwError(res);
   },
-  getSoal(colId, soalId) {
-    return instance.get(`/soal/${colId}/${soalId}`).then(throwError);
+  async getSoal(colId, soalId) {
+    const res = await instance.get(`/soal/${colId}/${soalId}`);
+    return throwError(res);
   },
-  postJawaban(colId, soalId, jawaban) {
-    return instance
-      .post(`/soal/${colId}/${soalId}`, { jawaban })
-      .then(throwError);
-  }
+  async postJawaban(colId, soalId, jawaban) {
+    const res = await instance.post(`/soal/${colId}/${soalId}`, { jawaban });
+    return throwError(res);
+  },
 };
 
 export const User = {
-  signup(id, name, password) {
-    return instance
-      .post('/user/signup', { id, name, password })
-      .then(throwError);
+  async signup(id, name, password) {
+    const res = await instance.post('/user/signup', { id, name, password });
+    return throwError(res);
   },
-  login(id, password) {
-    return instance.post('/user/login', { id, password }).then(throwError);
+  async login(id, password) {
+    const res = await instance.post('/user/login', { id, password });
+    return throwError(res);
   },
-  logout() {
-    return instance.post('/user/logout').then(throwError);
+  async logout() {
+    const res = await instance.post('/user/logout');
+    return throwError(res);
   },
-  state() {
-    return instance.get('/user/state').then(throwError);
-  }
+  async state() {
+    const res = await instance.get('/user/state');
+    return throwError(res);
+  },
 };
 
 export const Permainan = {
-  startPermainan(paketSoalID, interaktif) {
-    return instance
-      .post('/permainan/start', { soalId: paketSoalID, interaktif })
-      .then(throwError);
+  async startPermainan(paketSoalID, interaktif) {
+    const res = await instance.post('/permainan/start', {
+      soalId: paketSoalID,
+      interaktif,
+    });
+    return throwError(res);
   },
-  getAllQuiz(index) {
-    return instance.get(`/permainan/soal/`).then(throwError);
+  async getAllQuiz(index) {
+    const res = await instance.get(`/permainan/soal/`);
+    return throwError(res);
   },
-  getSoal(index) {
-    return instance.get(`/permainan/soal/${index}`).then(throwError);
+  async getSoal(index) {
+    const res = await instance.get(`/permainan/soal/${index}`);
+    return throwError(res);
   },
-  putJawaban(index, jawaban) {
-    return instance
-      .put(`/permainan/soal/${index}`, { jawaban })
-      .then(throwError);
+  async putJawaban(index, jawaban) {
+    const res = await instance.put(`/permainan/soal/${index}`, { jawaban });
+    return throwError(res);
   },
-  stopPermainan() {
-    return instance.post('/permainan/stop').then(throwError);
+  async stopPermainan() {
+    const res = await instance.post('/permainan/stop');
+    return throwError(res);
   },
-  state() {
-    return instance.get('/permainan/state').then(throwError);
-  }
+  async state() {
+    const res = await instance.get('/permainan/state');
+    return throwError(res);
+  },
 };
 
 export const AdminSoal = {
   baseURL: '/admin/soal/',
-  getPaketList() {
-    return instance.get(this.baseURL).then(throwError);
+  async getPaketList() {
+    const res = await instance.get(this.baseURL);
+    return throwError(res);
   },
-  newPaket(data) {
-    return instance.post(this.baseURL, data).then(throwError);
+  async newPaket(data) {
+    const res = await instance.post(this.baseURL, data);
+    return throwError(res);
   },
-  getPaket(id) {
-    return instance.get(this.baseURL + id).then(throwError);
+  async getPaket(id) {
+    const res = await instance.get(this.baseURL + id);
+    return throwError(res);
   },
-  editPaket(id, data) {
-    return instance.put(this.baseURL + id, data).then(throwError);
+  async editPaket(id, data) {
+    const res = await instance.put(this.baseURL + id, data);
+    return throwError(res);
   },
-  removePaket(id) {
-    return instance.delete(this.baseURL + id).then(throwError);
+  async removePaket(id) {
+    const res = await instance.delete(this.baseURL + id);
+    return throwError(res);
   },
-  newSoal(paketID, data) {
-    return instance.post(this.baseURL + paketID, data).then(throwError);
+  async newSoal(paketID, data) {
+    const res = await instance.post(this.baseURL + paketID, data);
+    return throwError(res);
   },
-  getSoal(paketID, soalID) {
-    return instance.get(this.baseURL + paketID + '/' + soalID).then(throwError);
+  async getSoal(paketID, soalID) {
+    const res = await instance.get(this.baseURL + paketID + '/' + soalID);
+    return throwError(res);
   },
-  editSoal(paketID, soalID, data) {
-    return instance
-      .put(this.baseURL + paketID + '/' + soalID, data)
-      .then(throwError);
+  async editSoal(paketID, soalID, data) {
+    const res = await instance.put(this.baseURL + paketID + '/' + soalID, data);
+    return throwError(res);
   },
-  removeSoal(paketID, soalID) {
-    return instance
-      .delete(this.baseURL + paketID + '/' + soalID)
-      .then(throwError);
-  }
+  async removeSoal(paketID, soalID) {
+    const res = await instance.delete(this.baseURL + paketID + '/' + soalID);
+    return throwError(res);
+  },
 };
