@@ -87,7 +87,7 @@ export default {
       finish()
     },
     async deleteQuestion(index, question, finish) {
-      await QuizAdmin.removeQuiz(this.quiz_id, question.id)
+      await QuizAdmin.removeQuestion(this.quiz_id, question.id)
       this.$delete(this.quiz.soalList, index)
       // TODO: When id is not index dependent below code are redundant
       this.refresh()

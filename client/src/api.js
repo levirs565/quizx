@@ -120,7 +120,7 @@ export const QuizAdmin = {
     const res = await instance.put(this.baseURL + quizId + '/' + questionId, data);
     return throwError(res);
   },
-  async removeSoal(quizId, questionId) {
+  async removeQuestion(quizId, questionId) {
     const res = await instance.delete(this.baseURL + quizId + '/' + questionId);
     return throwError(res);
   },
