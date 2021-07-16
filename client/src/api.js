@@ -16,21 +16,23 @@ const instance = axios.create({
   withCredentials: true,
 });
 
-export const Soal = {
-  async getPaketList() {
+export const Quiz = {
+  async getQuizList() {
     const res = await instance.get('/soal');
     return throwError(res);
   },
-  async getPaket(id) {
+  async getQuiz(id) {
     const res = await instance.get(`/soal/${id}`);
     return throwError(res);
   },
-  async getSoal(colId, soalId) {
-    const res = await instance.get(`/soal/${colId}/${soalId}`);
+  async getQuestion(quizId, questionId) {
+    const res = await instance.get(`/soal/${quizId}/${questionId}`);
     return throwError(res);
   },
-  async postJawaban(colId, soalId, jawaban) {
-    const res = await instance.post(`/soal/${colId}/${soalId}`, { jawaban });
+  async postAnswer(quizId, questionId, answer) {
+    const res = await instance.post(`/soal/${quizId}/${questionId}`, { 
+      jawaban: answer 
+    });
     return throwError(res);
   },
 };
@@ -54,27 +56,27 @@ export const User = {
   },
 };
 
-export const Permainan = {
-  async startPermainan(paketSoalID, interaktif) {
+export const Game = {
+  async startGame(quizId, interactive) {
     const res = await instance.post('/permainan/start', {
-      soalId: paketSoalID,
-      interaktif,
+      soalId: quizId,
+      interaktif: interactive,
     });
     return throwError(res);
   },
-  async getAllQuiz(index) {
+  async getAllQuestion(index) {
     const res = await instance.get(`/permainan/soal/`);
     return throwError(res);
   },
-  async getSoal(index) {
+  async getQuestion(index) {
     const res = await instance.get(`/permainan/soal/${index}`);
     return throwError(res);
   },
-  async putJawaban(index, jawaban) {
+  async putAnswer(index, jawaban) {
     const res = await instance.put(`/permainan/soal/${index}`, { jawaban });
     return throwError(res);
   },
-  async stopPermainan() {
+  async stopGame() {
     const res = await instance.post('/permainan/stop');
     return throwError(res);
   },
@@ -84,42 +86,42 @@ export const Permainan = {
   },
 };
 
-export const AdminSoal = {
+export const QuizAdmin = {
   baseURL: '/admin/soal/',
-  async getPaketList() {
+  async getQuizList() {
     const res = await instance.get(this.baseURL);
     return throwError(res);
   },
-  async newPaket(data) {
+  async createQuiz(data) {
     const res = await instance.post(this.baseURL, data);
     return throwError(res);
   },
-  async getPaket(id) {
+  async getQuiz(id) {
     const res = await instance.get(this.baseURL + id);
     return throwError(res);
   },
-  async editPaket(id, data) {
+  async editQuiz(id, data) {
     const res = await instance.put(this.baseURL + id, data);
     return throwError(res);
   },
-  async removePaket(id) {
+  async removeQuiz(id) {
     const res = await instance.delete(this.baseURL + id);
     return throwError(res);
   },
-  async newSoal(paketID, data) {
-    const res = await instance.post(this.baseURL + paketID, data);
+  async createQuestion(quizId, data) {
+    const res = await instance.post(this.baseURL + quizId, data);
     return throwError(res);
   },
-  async getSoal(paketID, soalID) {
-    const res = await instance.get(this.baseURL + paketID + '/' + soalID);
+  async getQuestion(quizId, questionId) {
+    const res = await instance.get(this.baseURL + quizId + '/' + questionId);
     return throwError(res);
   },
-  async editSoal(paketID, soalID, data) {
-    const res = await instance.put(this.baseURL + paketID + '/' + soalID, data);
+  async editQuestion(quizId, questionId, data) {
+    const res = await instance.put(this.baseURL + quizId + '/' + questionId, data);
     return throwError(res);
   },
-  async removeSoal(paketID, soalID) {
-    const res = await instance.delete(this.baseURL + paketID + '/' + soalID);
+  async removeSoal(quizId, questionId) {
+    const res = await instance.delete(this.baseURL + quizId + '/' + questionId);
     return throwError(res);
   },
 };

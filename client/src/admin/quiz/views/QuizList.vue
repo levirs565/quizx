@@ -23,7 +23,7 @@
 </template>
 
 <script>
-import { AdminSoal } from "@/api";
+import { QuizAdmin } from "@/api";
 import ModalNewQuiz from "../components/ModalNewQuiz";
 import showModal from "@/admin/modal/bus";
 
@@ -35,15 +35,15 @@ export default {
   },
   methods: {
     refresh() {
-      AdminSoal.getPaketList().then(data => {
+      QuizAdmin.getQuizList().then(data => {
         this.quizList = data.list;
       });
     },
     showNewQuiz() {
-      showModal(ModalNewQuiz, {}, this.newPaket);
+      showModal(ModalNewQuiz, {}, this.createQuiz);
     },
-    newPaket(name) {
-      AdminSoal.newPaket({ name }).then(this.refresh);
+    createQuiz(name) {
+      QuizAdmin.createQuiz({ name }).then(this.refresh);
     }
   },
   mounted() {

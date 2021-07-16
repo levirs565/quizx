@@ -30,7 +30,7 @@
 </template>
 
 <script>
-import { Permainan } from "@/api.js";
+import { Game } from "@/api.js";
 import Question from "../../quiz/components/Question.vue";
 import Jumper from "../components/Jumper.vue";
 
@@ -55,7 +55,7 @@ export default {
     answerChanged(data) {
       let answer = data.answer;
       let id = data.question.id;
-      Permainan.putJawaban(id, answer).then(val => {
+      Game.putAnswer(id, answer).then(val => {
         if (this.gameState.interaktif) {
           // TODO: Untuk permainan interaktif
           // Contoh khan academeny
@@ -72,12 +72,12 @@ export default {
       });
     },
     updateState() {
-      Permainan.state().then(val => {
+      Game.state().then(val => {
         this.gameStarted = val.permainanStarted;
 
         if (this.gameStarted) {
           this.gameState = val.permainan;
-          return Permainan.getAllQuiz();
+          return Game.getAllQuestion();
         }
         
         return Promise.resolve([])
@@ -86,7 +86,7 @@ export default {
       });
     },
     stop() {
-      Permainan.stopPermainan().then(val => {
+      Game.stopGame().then(val => {
         this.$store.commit("setPermainanResult", val);
         this.$router.push("/permainan/result");
       });

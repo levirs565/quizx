@@ -42,7 +42,7 @@
 
 <script>
 import Question from "../components/Question";
-import { Soal as SoalApi } from "@/api.js";
+import { Quiz } from "@/api.js";
 
 export default {
   components: {
@@ -70,12 +70,12 @@ export default {
   },
   methods: {
     updateQuiz() {
-      SoalApi.getPaket(this.paket_id).then(val => {
+      Quiz.getQuiz(this.paket_id).then(val => {
         this.quiz = val;
       });
     },
     checkAnswer(quiz, answer) {
-      SoalApi.postJawaban(this.paket_id, quiz.id, answer).then(val => {
+      Quiz.postAnswer(this.paket_id, quiz.id, answer).then(val => {
         this.$set(this.answerResults, quiz.id, val)
       })
     }

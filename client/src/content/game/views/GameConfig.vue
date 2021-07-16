@@ -23,7 +23,7 @@
 </template>
 
 <script>
-import { Permainan } from "@/api";
+import { Game } from "@/api";
 
 export default {
   data() {
@@ -43,7 +43,7 @@ export default {
         this.quizId = Number(this.$route.query.id);
     },
     start() {
-      Permainan.startPermainan(this.quizId, this.interactive).then(() => {
+      Game.startGame(this.quizId, this.interactive).then(() => {
         this.goToBoard();
       });
     },
@@ -53,7 +53,7 @@ export default {
   },
   beforeCreate() {
     if (this.$store.state.core.user) {
-      Permainan.state().then(state => {
+      Game.state().then(state => {
         if (state.permainanStarted) {
           this.goToBoard();
         }

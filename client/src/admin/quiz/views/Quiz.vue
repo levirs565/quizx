@@ -28,7 +28,7 @@
 </template>
 
 <script>
-import { AdminSoal } from "@/api";
+import { QuizAdmin } from "@/api";
 import ModalEditQuiz from "../components/ModalEditQuiz";
 import QuestionAdmin from "../components/QuestionAdmin.vue";
 import showModal from "@/admin/modal/bus";
@@ -47,12 +47,12 @@ export default {
   },
   methods: {
     refresh() {
-      AdminSoal.getPaket(this.quiz_id).then(val => {
+      QuizAdmin.getQuiz(this.quiz_id).then(val => {
         this.quiz = val;
       });
     },
     deletePaket() {
-      AdminSoal.removePaket(this.quiz_id).then(() => {
+      QuizAdmin.removeQuiz(this.quiz_id).then(() => {
         this.$router.replace("/admin/soal");
       });
     },
@@ -60,11 +60,11 @@ export default {
       showModal(
         ModalEditQuiz,
         { currentName: this.quiz.name },
-        this.editPaket
+        this.editQuiz
       );
     },
-    editPaket(name) {
-      AdminSoal.editPaket(this.quiz_id, { name }).then(val => {
+    editQuiz(name) {
+      QuizAdmin.editQuiz(this.quiz_id, { name }).then(val => {
         this.quiz = val;
       });
     },
@@ -79,15 +79,15 @@ export default {
     async saveQuestion(index, question, finish) {
       let result;
       if (question.id == "new") {
-        result = await AdminSoal.newSoal(this.quiz_id, question)
+        result = await QuizAdmin.createQuestion(this.quiz_id, question)
       } else {
-        result = await AdminSoal.editSoal(this.quiz_id, question.id, question)
+        result = await QuizAdmin.editQuestion(this.quiz_id, question.id, question)
       }
       this.$set(this.quiz.soalList, index, result)
       finish()
     },
     async deleteQuestion(index, question, finish) {
-      await AdminSoal.removeSoal(this.quiz_id, question.id)
+      await QuizAdmin.removeQuiz(this.quiz_id, question.id)
       this.$delete(this.quiz.soalList, index)
       // TODO: When id is not index dependent below code are redundant
       this.refresh()

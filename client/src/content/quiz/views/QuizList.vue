@@ -18,7 +18,7 @@
 </template>
 
 <script>
-import { Soal } from "@/api.js";
+import { Quiz } from "@/api.js";
 
 export default {
   data() {
@@ -28,7 +28,7 @@ export default {
   },
 
   mounted() {
-    Soal.getPaketList().then(val => {
+    Quiz.getQuizList().then(val => {
       this.quizList = val.list;
     });
   }
