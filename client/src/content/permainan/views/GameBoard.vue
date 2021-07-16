@@ -5,7 +5,7 @@
         Hentikan Permainan
       </button>
       <jumper
-        :total="permainanState.soalCount"
+        :total="gameState.soalCount"
         :value="1"
       ></jumper>
     </div>
@@ -16,12 +16,12 @@
           @change="answerChanged"
         >
           <p
-            v-if="permainanState.interaktif"
-            v-show="lastJawabanState > 0"
+            v-if="gameState.interaktif"
+            v-show="lastQuestionResult > 0"
             class="mb-4 text-white font-semibold p-4"
-            :class="lastJawabanState == 2 ? 'bg-green-500' : 'bg-red-500'"
+            :class="lastQuestionResult == 2 ? 'bg-green-500' : 'bg-red-500'"
           >
-            Jawaban anda {{ lastJawabanState == 2 ? "benar" : "salah coba lagi." }}
+            Jawaban anda {{ lastQuestionResult == 2 ? "benar" : "salah coba lagi." }}
           </p>
         </question>
       </li>
@@ -41,13 +41,13 @@ export default {
   },
   data() {
     return {
-      permainanStarted: false,
-      permainanState: {
+      gameStarted: false,
+      gameState: {
         interaktif: false,
         soalCount: 0,
         jawabanCount: 0
       },
-      lastJawabanState: 0,
+      lastQuestionResult: 0,
       questions: []
     };
   },
@@ -56,13 +56,13 @@ export default {
       let answer = data.answer;
       let id = data.question.id;
       Permainan.putJawaban(id, answer).then(val => {
-        if (this.permainanState.interaktif) {
+        if (this.gameState.interaktif) {
           // TODO: Untuk permainan interaktif
           // Contoh khan academeny
           // Hanya 2 Soal saja yang tampil
-          this.lastJawabanState = val.benar ? 2 : 1;
+          this.lastQuestionResult = val.benar ? 2 : 1;
           setTimeout(() => {
-            this.lastJawabanState = 0;
+            this.lastQuestionResult = 0;
             if (val.benar) {
               // TODO: seperti di tatas
               this.nextSoal();
@@ -73,10 +73,10 @@ export default {
     },
     updateState() {
       Permainan.state().then(val => {
-        this.permainanStarted = val.permainanStarted;
+        this.gameStarted = val.permainanStarted;
 
-        if (this.permainanStarted) {
-          this.permainanState = val.permainan;
+        if (this.gameStarted) {
+          this.gameState = val.permainan;
           return Permainan.getAllQuiz();
         }
         

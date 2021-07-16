@@ -5,11 +5,11 @@
 
     <div class="field">
       <label>ID Paket Soal</label>
-      <input type="number" class="input w-full" v-model="paketSoalId" />
+      <input type="number" class="input w-full" v-model="quizId" />
     </div>
 
     <div class="field">
-      <input type="checkbox" class="mr-2" v-model="interaktif" />
+      <input type="checkbox" class="mr-2" v-model="interactive" />
       <label>Interaktif</label>
     </div>
 
@@ -28,22 +28,22 @@ import { Permainan } from "@/api";
 export default {
   data() {
     return {
-      paketSoalId: 0,
-      interaktif: false
+      quizId: 0,
+      interactive: false
     };
   },
   computed: {
     valid() {
-      return !isNaN(this.paketSoalId);
+      return !isNaN(this.quizId);
     }
   },
   methods: {
     updateConfig() {
       if (!isNaN(this.$route.query.id))
-        this.paketSoalId = Number(this.$route.query.id);
+        this.quizId = Number(this.$route.query.id);
     },
     start() {
-      Permainan.startPermainan(this.paketSoalId, this.interaktif).then(() => {
+      Permainan.startPermainan(this.quizId, this.interactive).then(() => {
         this.goToBoard();
       });
     },
