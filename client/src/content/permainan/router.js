@@ -1,18 +1,18 @@
-import PermainanConfig from './views/PermainanConfig.vue';
-import PermainanBoard from './views/PermainanBoard.vue';
-import PermainanResult from './views/PermainanResult.vue';
+import GameConfig from './views/GameConfig.vue';
+import GameBoard from './views/GameBoard.vue';
+import GameResult from './views/GameResult.vue';
 
 export default [
   {
     path: 'permainan/config',
-    component: PermainanConfig
+    component: GameConfig
   },
   {
     path: 'permainan/board',
-    component: PermainanBoard
+    component: GameBoard
   },
   {
     path: 'permainan/result',
-    component: PermainanResult
+    component: GameResult
   }
 ];

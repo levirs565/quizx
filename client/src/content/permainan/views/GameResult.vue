@@ -2,15 +2,15 @@
   <form class="box form" action="none" @submit.prevent="start">
     <h1 class="title">Hasil Permainan</h1>
     <hr class="hr">
-    <permainan-result :results="result"></permainan-result>
+    <game-result :results="result"></game-result>
   </form>
 </template>
 
 <script>
-import PermainanResult from "../components/PermainanResult.vue";
+import GameResult from "../components/GameResult.vue";
 
 export default {
-  components: { PermainanResult },
+  components: { GameResult },
   data() {
     return {
       result: undefined

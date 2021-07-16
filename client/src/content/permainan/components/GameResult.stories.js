@@ -1,10 +1,10 @@
-import PermainanResult from './PermainanResult.vue';
+import GameResult from './GameResult.vue';
 
 export default { title: 'Permainan Result' };
 
 export const standar = () => ({
   components: {
-    PermainanResult
+    GameResult
   },
   data() {
     return {
@@ -15,5 +15,5 @@ export const standar = () => ({
       }
     };
   },
-  template: '<permainan-result :results="results"></permainan-result>'
+  template: '<game-result :results="results"></game-result>'
 });
