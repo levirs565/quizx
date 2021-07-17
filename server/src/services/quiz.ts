@@ -5,7 +5,7 @@ import { AnswerQuizResult } from "../types/quiz"
 export async function getPackageShortDetailList() {
   const list = await QuizModel.find();
 
-  return list.map((val) => val.getInformationWithQuizCount());
+  return list.map((val) => val.toSummary());
 }
 
 export async function getPackageDocument(id: number) {
@@ -19,7 +19,7 @@ export async function getPackageDocument(id: number) {
 export async function getPackageShortDetail(id: number) {
   const quizPackage = await getPackageDocument(id);
 
-  return quizPackage.toShort();
+  return quizPackage.toQuiz();
 }
 
 export async function getQuizDocument(colId: number, soalId: number) {

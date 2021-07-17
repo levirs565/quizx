@@ -18,13 +18,13 @@ export async function newPackage(session: Session, paket) {
   });
 
   await paketDb.save();
-  return paketDb.getInformationOnly();
+  return paketDb.toQuizWAnswer();
 }
 
 export async function getPackage(session: Session, id: number) {
   await UserService.validateUserIsAdmin(session);
   const doc = await QuizService.getPackageDocument(id)
-  return doc.toForAdmin()
+  return doc.toQuizWAnswer()
 }
 
 export async function editPackage(session: Session, id: number, paket) {
@@ -32,7 +32,7 @@ export async function editPackage(session: Session, id: number, paket) {
   const paketDB = await QuizService.getPackageDocument(id);
   paketDB.name = paket.name;
   await paketDB.save();
-  return paketDB.toShort();
+  return paketDB.toQuiz();
 }
 
 export async function removePackage(session: Session, id: number) {

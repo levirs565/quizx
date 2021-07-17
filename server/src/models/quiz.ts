@@ -1,35 +1,34 @@
 import { Document, Schema, model, Types } from 'mongoose';
 import { QuestionWAnswerWoId, Question, QuestionWAnswer, QuizDocument, QuizSchema } from './question';
 
-interface QuizPackage {
+interface QuizDB {
   _id: number;
   name: string;
   soalList: Array<QuestionWAnswerWoId>;
 }
 
-interface QuizPackageInformation {
+interface BaseQuiz {
   id: number;
   name: string;
 }
 
-interface QuizPackageInformationWithQuizCount extends QuizPackageInformation {
+interface QuizSummary extends BaseQuiz {
   soalCount: number;
 }
 
-interface QuizPackageShort extends QuizPackageInformation {
+interface Quiz extends BaseQuiz {
   soalList: Array<Question>;
 }
 
-interface AdminQuizPackage extends QuizPackageInformation {
+interface QuizWAnswer extends BaseQuiz {
   soalList: Array<QuestionWAnswer>;
 }
 
-export interface QuizPackageDocument extends QuizPackage, Omit<Document, '_id'> {
+export interface QuizPackageDocument extends QuizDB, Omit<Document, '_id'> {
   soalList: Types.Array<QuizDocument>;
-  getInformationOnly(): QuizPackageInformation;
-  getInformationWithQuizCount(): QuizPackageInformationWithQuizCount;
-  toShort(): QuizPackageShort;
-  toForAdmin(): AdminQuizPackage;
+  toSummary(): QuizSummary;
+  toQuiz(): Quiz;
+  toQuizWAnswer(): QuizWAnswer;
 }
 
 const paketScheme = new Schema<QuizPackageDocument>(
@@ -46,30 +45,26 @@ const paketScheme = new Schema<QuizPackageDocument>(
   }
 );
 
-paketScheme.methods.getInformationOnly = function () {
+paketScheme.methods.toSummary = function (): QuizSummary {
   return {
     id: this._id,
     name: this.name,
-  };
-};
-
-paketScheme.methods.getInformationWithQuizCount = function () {
-  return {
-    ...this.getInformationOnly(),
     soalCount: this.soalList.length,
   };
 };
 
-paketScheme.methods.toShort = function () {
+paketScheme.methods.toQuiz = function (): Quiz {
   return {
-    ...this.getInformationOnly(),
+    id: this._id,
+    name: this.name,
     soalList: this.soalList.map((item, idx) => item.toQuestion(idx)),
-  } as QuizPackageShort;
+  } as Quiz;
 };
 
-paketScheme.methods.toForAdmin = function (): AdminQuizPackage {
+paketScheme.methods.toQuizWAnswer = function (): QuizWAnswer {
   return {
-    ...this.getInformationOnly(),
+    id: this._id,
+    name: this.name,
     soalList: this.soalList.map((item, idx) => item.toQuestionWAnswer(idx)),
   };
 };
