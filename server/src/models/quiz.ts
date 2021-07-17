@@ -1,5 +1,5 @@
 import { Document, Schema, model, Types } from 'mongoose';
-import { QuestionWAnswerWoId, Question, QuestionWAnswer, QuizDocument, QuizSchema } from './question';
+import { QuestionWAnswerWoId, Question, QuestionSchema, QuestionDocument, QuestionWAnswer } from './question';
 
 interface QuizDB {
   _id: number;
@@ -24,21 +24,21 @@ interface QuizWAnswer extends BaseQuiz {
   soalList: Array<QuestionWAnswer>;
 }
 
-export interface QuizPackageDocument extends QuizDB, Omit<Document, '_id'> {
-  soalList: Types.Array<QuizDocument>;
+export interface QuizDocument extends QuizDB, Omit<Document, '_id'> {
+  soalList: Types.Array<QuestionDocument>;
   toSummary(): QuizSummary;
   toQuiz(): Quiz;
   toQuizWAnswer(): QuizWAnswer;
 }
 
-const paketScheme = new Schema<QuizPackageDocument>(
+const paketScheme = new Schema<QuizDocument>(
   {
     _id: Number,
     name: {
       type: String,
       required: true,
     },
-    soalList: [QuizSchema],
+    soalList: [QuestionSchema],
   },
   {
     collection: 'soal',
@@ -69,6 +69,6 @@ paketScheme.methods.toQuizWAnswer = function (): QuizWAnswer {
   };
 };
 
-const Soal = model<QuizPackageDocument>('Soal', paketScheme);
+const QuizModel = model<QuizDocument>('Soal', paketScheme);
 
-export default Soal;
+export default QuizModel;

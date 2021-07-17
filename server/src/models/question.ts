@@ -12,12 +12,12 @@ export interface QuestionWAnswer extends Question {
 
 export type QuestionWAnswerWoId = Omit<QuestionWAnswer, 'id'>
 
-export interface QuizDocument extends QuestionWAnswerWoId, Partial<Types.Subdocument> {
+export interface QuestionDocument extends QuestionWAnswerWoId, Partial<Types.Subdocument> {
   toQuestion?(id: number): Question
   toQuestionWAnswer?(id: number): QuestionWAnswer;
 }
 
-export const QuizSchema = new Schema<QuizDocument>({
+export const QuestionSchema = new Schema<QuestionDocument>({
   soal: {
     type: String,
     required: true,
@@ -32,7 +32,7 @@ export const QuizSchema = new Schema<QuizDocument>({
   },
 });
 
-QuizSchema.methods.toQuestion = function (id): Question {
+QuestionSchema.methods.toQuestion = function (id): Question {
   return {
     id,
     soal: this.soal,
@@ -40,7 +40,7 @@ QuizSchema.methods.toQuestion = function (id): Question {
   }
 }
 
-QuizSchema.methods.toQuestionWAnswer = function (id): QuestionWAnswer {
+QuestionSchema.methods.toQuestionWAnswer = function (id): QuestionWAnswer {
   return {
     id,
     soal: this.soal,

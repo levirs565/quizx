@@ -1,5 +1,5 @@
 import { Schema, model, Types, Document } from 'mongoose';
-import { QuestionWAnswerWoId, QuizDocument, QuizSchema } from "./question";
+import { QuestionWAnswerWoId, QuestionDocument, QuestionSchema } from "./question";
 
 export interface Game {
   user: string
@@ -10,7 +10,7 @@ export interface Game {
 }
 
 interface GameDocument extends Game, Document {
-  soalList: Types.Array<QuizDocument>
+  soalList: Types.Array<QuestionDocument>
   jawabanList: Types.Array<number>
 }
 
@@ -30,7 +30,7 @@ const gameScheme = new Schema<GameDocument>(
       required: true,
       default: false
     },
-    soalList: [QuizSchema],
+    soalList: [QuestionSchema],
     jawabanList: [Number]
   },
   {
