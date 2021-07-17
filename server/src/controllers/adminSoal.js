@@ -1,38 +1,37 @@
 const QuizAdminService = require('../services/quiz_admin');
-const { sendError } = require('../error');
 
-exports.getPaketList = (req, res) =>
+exports.getPaketList = (req, res, next) =>
   QuizAdminService.getPackageShortDetailList(req.session)
     .then(list => res.json({ list }))
-    .catch(sendError(res));
+    .catch(next);
 
-exports.newPaket = (req, res) =>
+exports.newPaket = (req, res, next) =>
   QuizAdminService.newPackage(req.session, req.body)
     .then(val => res.json(val))
-    .catch(sendError(res));
+    .catch(next);
 
-exports.getPaket = (req, res) => {
+exports.getPaket = (req, res, next) => {
   const { id } = req.params;
 
   QuizAdminService.getPackage(req.session, id)
     .then(val => res.json(val))
-    .catch(sendError(res));
+    .catch(next);
 };
 
-exports.editPaket = (req, res) => {
+exports.editPaket = (req, res, next) => {
   const { id } = req.params;
 
   QuizAdminService.editPackage(req.session, id, req.body)
     .then(val => res.json(val))
-    .catch(sendError(res));
+    .catch(next);
 };
 
-exports.removePaket = (req, res) => {
+exports.removePaket = (req, res, next) => {
   const { id } = req.params;
 
   QuizAdminService.removePackage(req.session, id)
     .then(() => res.json({ msg: 'paket is removed' }))
-    .catch(sendError(res));
+    .catch(next);
 };
 
 
@@ -44,34 +43,34 @@ function getQuestionIdsFromParams(params) {
   }
 }
 
-exports.newSoal = (req, res) => {
+exports.newSoal = (req, res, next) => {
   const { paketID } = getQuestionIdsFromParams(req.params);
 
   QuizAdminService.newQuiz(req.session, paketID, req.body)
     .then(val => res.json(val))
-    .catch(sendError(res));
+    .catch(next);
 };
 
-exports.getSoal = (req, res) => {
+exports.getSoal = (req, res, next) => {
   const { paketID, soalID } = getQuestionIdsFromParams(req.params)
 
   QuizAdminService.getQuizDetail(req.session, paketID, soalID)
     .then(val => res.json(val))
-    .catch(sendError(res));
+    .catch(next);
 };
 
-exports.editSoal = (req, res) => {
+exports.editSoal = (req, res, next) => {
   const { paketID, soalID } = getQuestionIdsFromParams(req.params)
 
   QuizAdminService.editQuiz(req.session, paketID, soalID, req.body)
     .then(val => res.json(val))
-    .catch(sendError(res));
+    .catch(next);
 };
 
-exports.removeSoal = (req, res) => {
+exports.removeSoal = (req, res, next) => {
   const { paketID, soalID } = getQuestionIdsFromParams(req.params)
 
   QuizAdminService.removeQuiz(req.session, paketID, soalID)
     .then(val => res.json({ msg: 'soal is removed' }))
-    .catch(sendError(res));
+    .catch(next);
 };

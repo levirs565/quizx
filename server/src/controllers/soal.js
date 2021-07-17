@@ -1,12 +1,11 @@
 const SoalService = require('../services/quiz');
-const { sendError } = require('../error');
 
-exports.getPaketList = (req, res) =>
+exports.getPaketList = (req, res, next) =>
   SoalService.getPackageShortDetailList()
     .then(list => res.json({ list }))
-    .catch(sendError(res));
+    .catch(next);
 
-exports.getPaket = (req, res) => {
+exports.getPaket = (req, res, next) => {
   const { id } = req.params;
 
   SoalService.getPackageShortDetail(id)
@@ -15,10 +14,10 @@ exports.getPaket = (req, res) => {
         ...val
       });
     })
-    .catch(sendError(res));
+    .catch(next);
 };
 
-exports.getSoal = (req, res) => {
+exports.getSoal = (req, res, next) => {
   const { colId, soalId } = req.params;
 
   SoalService.getQuizShortDetail(colId, soalId)
@@ -27,10 +26,10 @@ exports.getSoal = (req, res) => {
         ...val
       });
     })
-    .catch(sendError(res));
+    .catch(next);
 };
 
-exports.jawabSoal = (req, res) => {
+exports.jawabSoal = (req, res, next) => {
   const { colId, soalId } = req.params;
   const { jawaban } = req.body;
 
@@ -38,5 +37,5 @@ exports.jawabSoal = (req, res) => {
     .then(val => {
       res.json(val);
     })
-    .catch(sendError(res));
+    .catch(next);
 };

@@ -1,6 +1,7 @@
 const express = require('express');
 const cors = require('cors');
 const session = require('./configs/session');
+const errorMiddleware = require('./middleware/error').default
 
 const app = express();
 
@@ -14,6 +15,8 @@ app.use(express.json());
 app.use(session.savedSession);
 
 app.use('/api', require('./apis'));
+
+app.use(errorMiddleware)
 
 exports = app;
 module.exports = app;

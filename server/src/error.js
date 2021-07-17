@@ -10,25 +10,6 @@ class EError extends Error {
 
 exports.EError = EError;
 
-exports.sendError = res => err => {
-  const message = String(err.message);
-  let code;
-  if (err instanceof EError) {
-    // eslint-disable-next-line prefer-destructuring
-    code = err.code;
-  } else {
-    console.log('%O', err);
-    code = 100;
-  }
-
-  res.json({
-    error: {
-      message,
-      code
-    }
-  });
-};
-
 exports.E = {
   E201_SOAL_PAKET_NOT_FOUND: [201, 'Paket not found'],
   E202_SOAL_NOT_FOUND: [202, 'Soal not found'],

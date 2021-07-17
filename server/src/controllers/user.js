@@ -1,7 +1,6 @@
 const UserService = require('../services/user');
-const { sendError } = require('../error');
 
-exports.signup = (req, res) => {
+exports.signup = (req, res, next) => {
   const { id, name, password } = req.body;
 
   UserService.signup(id, name, password)
@@ -10,10 +9,10 @@ exports.signup = (req, res) => {
         msg: 'user registered'
       });
     })
-    .catch(sendError(res));
+    .catch(next);
 };
 
-exports.login = (req, res) => {
+exports.login = (req, res, next) => {
   const { id, password } = req.body;
 
   UserService.login(id, password, req.session)
@@ -22,20 +21,20 @@ exports.login = (req, res) => {
         msg: 'user logged in'
       });
     })
-    .catch(sendError(res));
+    .catch(next);
 };
 
-exports.logout = (req, res) => {
+exports.logout = (req, res, next) => {
   UserService.logout(req.session)
     .then(() => {
       res.json({
         msg: 'user logged out'
       });
     })
-    .catch(sendError(res));
+    .catch(next);
 };
 
-exports.state = (req, res) => {
+exports.state = (req, res, next) => {
   Promise.resolve(UserService.getLoggedInAs(req.session))
     .then(user =>
       res.json({
@@ -43,5 +42,5 @@ exports.state = (req, res) => {
         user
       })
     )
-    .catch(sendError(res));
+    .catch(next);
 };
