@@ -1,11 +1,11 @@
 import { Schema, model, Types, Document } from 'mongoose';
-import { Quiz, QuizDocument, QuizSchema } from "./question";
+import { QuestionWAnswerWoId, QuizDocument, QuizSchema } from "./question";
 
 export interface Game {
   user: string
   soalPaketID: number
   interaktif: Boolean
-  soalList: Array<Quiz>
+  soalList: Array<QuestionWAnswerWoId>
   jawabanList: Array<number>
 }
 

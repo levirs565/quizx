@@ -39,7 +39,7 @@ export async function startGame(session: Session, soalPaketID, interaktif) {
 export async function getAllQuiz(session: Session) {
   const permainan = await validateGameStarted(session);
 
-  return permainan.soalList.map((val, index) => val.toShortWithChoices(index))
+  return permainan.soalList.map((val, index) => val.toQuestion(index))
 }
 
 export async function getQuiz(session: Session, index) {
@@ -48,7 +48,7 @@ export async function getQuiz(session: Session, index) {
 
   if (!soal) throw new EError(...E.E403_PERMAINAN_SOAL_NOT_FOUND);
 
-  return soal.toShortWithChoices(index);
+  return soal.toQuestion(index);
 }
 
 export async function putAnswer(session: Session, index, jawaban): Promise<AnswerQuizResult> {

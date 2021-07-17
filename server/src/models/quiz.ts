@@ -1,10 +1,10 @@
 import { Document, Schema, model, Types } from 'mongoose';
-import { Quiz, QuizShort, QuizDetailWithChoices, QuizDocument, QuizSchema } from './question';
+import { QuestionWAnswerWoId, Question, QuestionWAnswer, QuizDocument, QuizSchema } from './question';
 
 interface QuizPackage {
   _id: number;
   name: string;
-  soalList: Array<Quiz>;
+  soalList: Array<QuestionWAnswerWoId>;
 }
 
 interface QuizPackageInformation {
@@ -17,11 +17,11 @@ interface QuizPackageInformationWithQuizCount extends QuizPackageInformation {
 }
 
 interface QuizPackageShort extends QuizPackageInformation {
-  soalList: Array<QuizShort>;
+  soalList: Array<Question>;
 }
 
 interface AdminQuizPackage extends QuizPackageInformation {
-  soalList: Array<QuizDetailWithChoices>
+  soalList: Array<QuestionWAnswer>;
 }
 
 export interface QuizPackageDocument extends QuizPackage, Omit<Document, '_id'> {
@@ -29,7 +29,7 @@ export interface QuizPackageDocument extends QuizPackage, Omit<Document, '_id'> 
   getInformationOnly(): QuizPackageInformation;
   getInformationWithQuizCount(): QuizPackageInformationWithQuizCount;
   toShort(): QuizPackageShort;
-  toForAdmin(): AdminQuizPackage
+  toForAdmin(): AdminQuizPackage;
 }
 
 const paketScheme = new Schema<QuizPackageDocument>(
@@ -63,16 +63,16 @@ paketScheme.methods.getInformationWithQuizCount = function () {
 paketScheme.methods.toShort = function () {
   return {
     ...this.getInformationOnly(),
-    soalList: this.soalList.map((item, idx) => item.toShortWithChoices(idx)),
+    soalList: this.soalList.map((item, idx) => item.toQuestion(idx)),
   } as QuizPackageShort;
 };
 
 paketScheme.methods.toForAdmin = function (): AdminQuizPackage {
   return {
     ...this.getInformationOnly(),
-    soalList: this.soalList.map((item, idx) => item.toDetailWithChoices(idx, this._id))
-  }
-}
+    soalList: this.soalList.map((item, idx) => item.toQuestionWAnswer(idx)),
+  };
+};
 
 const Soal = model<QuizPackageDocument>('Soal', paketScheme);
 
