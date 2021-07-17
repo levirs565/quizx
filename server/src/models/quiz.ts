@@ -1,27 +1,11 @@
 import { Document, Schema, model, Types } from 'mongoose';
-import { QuestionWAnswerWoId, Question, QuestionSchema, QuestionDocument, QuestionWAnswer } from './question';
+import { QuestionSchema, QuestionDocument } from './question';
+import { Quiz, QuizSummary, QuizWAnswer, QuestionWAnswerWoId } from '../types/quiz';
 
 interface QuizDB {
   _id: number;
   name: string;
   soalList: Array<QuestionWAnswerWoId>;
-}
-
-interface BaseQuiz {
-  id: number;
-  name: string;
-}
-
-interface QuizSummary extends BaseQuiz {
-  soalCount: number;
-}
-
-interface Quiz extends BaseQuiz {
-  soalList: Array<Question>;
-}
-
-interface QuizWAnswer extends BaseQuiz {
-  soalList: Array<QuestionWAnswer>;
 }
 
 export interface QuizDocument extends QuizDB, Omit<Document, '_id'> {

@@ -1,16 +1,5 @@
 import { Schema, Types } from 'mongoose';
-
-export interface Question {
-  id: number;
-  soal: string;
-  pilihan: Array<string>
-}
-
-export interface QuestionWAnswer extends Question {
-  jawaban: number
-}
-
-export type QuestionWAnswerWoId = Omit<QuestionWAnswer, 'id'>
+import { Question, QuestionWAnswer, QuestionWAnswerWoId } from '../types/quiz'
 
 export interface QuestionDocument extends QuestionWAnswerWoId, Partial<Types.Subdocument> {
   toQuestion?(id: number): Question
