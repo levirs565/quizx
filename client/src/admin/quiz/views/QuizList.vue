@@ -23,7 +23,7 @@
 </template>
 
 <script>
-import { QuizAdmin } from "@/api";
+import { Quiz } from "@/api";
 import ModalNewQuiz from "../components/ModalNewQuiz";
 import showModal from "@/admin/modal/bus";
 
@@ -35,7 +35,7 @@ export default {
   },
   methods: {
     refresh() {
-      QuizAdmin.getQuizList().then(data => {
+      Quiz.getQuizList().then(data => {
         this.quizList = data.list;
       });
     },
@@ -43,7 +43,7 @@ export default {
       showModal(ModalNewQuiz, {}, this.createQuiz);
     },
     createQuiz(name) {
-      QuizAdmin.createQuiz({ name }).then(this.refresh);
+      Quiz.createQuiz({ name }).then(this.refresh);
     }
   },
   mounted() {

@@ -16,26 +16,53 @@ const instance = axios.create({
   withCredentials: true,
 });
 
-export const Quiz = {
+class QuizApi {
+  path = "/soal"
+
   async getQuizList() {
-    const res = await instance.get('/soal');
+    const res = await instance.get(this.path);
     return throwError(res);
-  },
+  }
   async getQuiz(id) {
-    const res = await instance.get(`/soal/${id}`);
+    const res = await instance.get(`${this.path}/${id}`);
     return throwError(res);
-  },
-  async getQuestion(quizId, questionId) {
-    const res = await instance.get(`/soal/${quizId}/${questionId}`);
-    return throwError(res);
-  },
-  async postAnswer(quizId, questionId, answer) {
-    const res = await instance.post(`/soal/${quizId}/${questionId}`, { 
+  }
+  async checkQuestionAnswer(quizId, questionId, answer) {
+    const res = await instance.post(`${this.path}/${quizId}/${questionId}/check`, { 
       jawaban: answer 
     });
     return throwError(res);
-  },
-};
+  }
+  async createQuiz(data) {
+    const res = await instance.post(this.path, data);
+    return throwError(res);
+  }
+  async getQuizForEditor(id) {
+    const res = await instance.get(`${this.path}/${id}/edit`);
+    return throwError(res);
+  }
+  async renameQuizTitle(id, data) {
+    const res = await instance.put(`${this.path}/${id}/rename`, data);
+    return throwError(res);
+  }
+  async deleteQuiz(id) {
+    const res = await instance.delete(`${this.path}/${id}`);
+    return throwError(res);
+  }
+  async addQuestion(quizId, data) {
+    const res = await instance.post(`${this.path}/${quizId}`, data);
+    return throwError(res);
+  }
+  async editQuestion(quizId, questionId, data) {
+    const res = await instance.put(`${this.path}/${quizId}/${questionId}`, data);
+    return throwError(res);
+  }
+  async deleteQuestion(quizId, questionId) {
+    const res = await instance.delete(`${this.path}/${quizId}/${questionId}`);
+    return throwError(res);
+  }
+}
+export const Quiz = new QuizApi()
 
 export const User = {
   async signup(id, name, password) {
@@ -82,46 +109,6 @@ export const Game = {
   },
   async state() {
     const res = await instance.get('/permainan/state');
-    return throwError(res);
-  },
-};
-
-export const QuizAdmin = {
-  baseURL: '/admin/soal/',
-  async getQuizList() {
-    const res = await instance.get(this.baseURL);
-    return throwError(res);
-  },
-  async createQuiz(data) {
-    const res = await instance.post(this.baseURL, data);
-    return throwError(res);
-  },
-  async getQuiz(id) {
-    const res = await instance.get(this.baseURL + id);
-    return throwError(res);
-  },
-  async editQuiz(id, data) {
-    const res = await instance.put(this.baseURL + id, data);
-    return throwError(res);
-  },
-  async removeQuiz(id) {
-    const res = await instance.delete(this.baseURL + id);
-    return throwError(res);
-  },
-  async createQuestion(quizId, data) {
-    const res = await instance.post(this.baseURL + quizId, data);
-    return throwError(res);
-  },
-  async getQuestion(quizId, questionId) {
-    const res = await instance.get(this.baseURL + quizId + '/' + questionId);
-    return throwError(res);
-  },
-  async editQuestion(quizId, questionId, data) {
-    const res = await instance.put(this.baseURL + quizId + '/' + questionId, data);
-    return throwError(res);
-  },
-  async removeQuestion(quizId, questionId) {
-    const res = await instance.delete(this.baseURL + quizId + '/' + questionId);
     return throwError(res);
   },
 };

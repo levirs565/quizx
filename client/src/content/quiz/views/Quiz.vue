@@ -75,7 +75,7 @@ export default {
       });
     },
     checkAnswer(quiz, answer) {
-      Quiz.postAnswer(this.paket_id, quiz.id, answer).then(val => {
+      Quiz.checkQuestionAnswer(this.paket_id, quiz.id, answer).then(val => {
         this.$set(this.answerResults, quiz.id, val)
       })
     }
