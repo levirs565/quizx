@@ -14,7 +14,7 @@ app.use(
 app.use(express.json());
 app.use(session.savedSession);
 
-app.use('/api', require('./apis'));
+app.use('/api', require('./routes').default);
 
 app.use(errorMiddleware)
 
