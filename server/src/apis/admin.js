@@ -1,5 +1,5 @@
 const route = require('express').Router();
 
-route.use('/soal', require('./adminSoal'));
+route.use('/soal', require('./adminSoal').default);
 
 module.exports = route;

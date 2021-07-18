@@ -1674,6 +1674,7 @@ __metadata:
   resolution: "@quizx/server@workspace:server"
   dependencies:
     "@types/bcrypt": ^5.0.0
+    "@types/express-session": ^1.17.4
     "@types/mongoose": ^5.3.27
     bcrypt: ^5.0.1
     connect-mongo: ^2.0.3
@@ -2169,7 +2170,16 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/express@npm:^4.17.13":
+"@types/express-session@npm:^1.17.4":
+  version: 1.17.4
+  resolution: "@types/express-session@npm:1.17.4"
+  dependencies:
+    "@types/express": "*"
+  checksum: 0763b30a819c139e700e813c6f51dd9238d1f13e56dea1cb5a029c33a422a524e6fac34537ebc1f0514c031e1eadfe3ee17a034f425cc2b4b4f4cd4d99e8508b
+  languageName: node
+  linkType: hard
+
+"@types/express@npm:*, @types/express@npm:^4.17.13":
   version: 4.17.13
   resolution: "@types/express@npm:4.17.13"
   dependencies:
