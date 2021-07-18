@@ -10,6 +10,5 @@ route.get('/test', (req, res) => {
 route.use('/soal', require('./quiz').default);
 route.use('/user', require('./user'));
 route.use('/permainan', require('./permainan'));
-route.use('/admin', require('./admin'));
 
 module.exports = route;
