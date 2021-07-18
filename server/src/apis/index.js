@@ -7,7 +7,7 @@ route.get('/test', (req, res) => {
   });
 });
 
-route.use('/soal', require('./quiz').default);
+route.use('/quiz', require('./quiz').default);
 route.use('/user', require('./user'));
 route.use('/permainan', require('./permainan'));
 

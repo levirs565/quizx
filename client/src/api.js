@@ -17,7 +17,7 @@ const instance = axios.create({
 });
 
 class QuizApi {
-  path = "/soal"
+  path = "/quiz"
 
   async getQuizList() {
     const res = await instance.get(this.path);
