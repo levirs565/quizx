@@ -1,15 +1,11 @@
-interface SessionUser {
-  id: string
-  name: string
-  isAdmin: boolean
-}
+import { UserData } from './user';
 
 declare module 'express-session' {
   interface SessionData {
-    user?: SessionUser
+    user?: UserData
   }
 }
 
 export default interface Session {
-  user?: SessionUser
+  user?: UserData
 }

@@ -1,18 +1,19 @@
-const UserService = require('../services/user');
+import { Request, Response, NextFunction } from 'express';
+import * as UserService from '../services/user';
 
-exports.signup = (req, res, next) => {
+export function signup(req: Request, res: Response, next: NextFunction) {
   const { id, name, password } = req.body;
 
   UserService.signup(id, name, password)
-    .then(user => {
+    .then(() => {
       res.json({
         msg: 'user registered'
       });
     })
     .catch(next);
-};
+}
 
-exports.login = (req, res, next) => {
+export function login(req: Request, res: Response, next: NextFunction) {
   const { id, password } = req.body;
 
   UserService.login(id, password, req.session)
@@ -22,9 +23,9 @@ exports.login = (req, res, next) => {
       });
     })
     .catch(next);
-};
+}
 
-exports.logout = (req, res, next) => {
+export function logout(req: Request, res: Response, next: NextFunction) {
   UserService.logout(req.session)
     .then(() => {
       res.json({
@@ -32,15 +33,8 @@ exports.logout = (req, res, next) => {
       });
     })
     .catch(next);
-};
+}
 
-exports.state = (req, res, next) => {
-  Promise.resolve(UserService.getLoggedInAs(req.session))
-    .then(user =>
-      res.json({
-        loggedIn: user != null,
-        user
-      })
-    )
-    .catch(next);
-};
+export function state(req: Request, res: Response, next: NextFunction) {
+  res.json(UserService.getState(req.session))
+}

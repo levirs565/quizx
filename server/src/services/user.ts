@@ -3,6 +3,7 @@ import UserModel, { User } from '../models/user';
 import Session from '../types/session';
 import { EError, E } from '../error';
 import { validateUserLoggedIn } from './helper';
+import { UserState } from '../types/user'
 
 const saltRounds = 10;
 
@@ -30,7 +31,7 @@ export async function signup(id: string, name: string, password: string) {
     password: hashedPassword,
   });
 
-  return await user.save();
+  await user.save();
 }
 
 export async function login(id: string, password: string, session: Session) {
@@ -55,4 +56,8 @@ export async function logout(session: Session) {
   loginAs(undefined, session);
 }
 
-export const getLoggedInAs = (session: Session) => session.user;
+export function getState(session: Session): UserState {
+  return {
+    user: session.user
+  }
+}
