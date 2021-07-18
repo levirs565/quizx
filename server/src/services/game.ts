@@ -1,13 +1,13 @@
 import GameModel, { Game } from '../models/game';
-import * as UserService from './user';
 import * as QuizService from './quiz';
 import Session from '../types/session';
 import { EError, E } from '../error';
 import { GameResult } from '../types/game';
 import { AnswerQuizResult } from '../types/quiz'
+import { validateUserLoggedIn } from './helper'
 
 export async function getUserGame(session: Session) {
-  const user = await UserService.validateUserLoggedIn(session);
+  const user = await validateUserLoggedIn(session);
   return await GameModel.findOne({ user: user.id });
 }
 

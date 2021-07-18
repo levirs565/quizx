@@ -2,6 +2,7 @@ import { genSalt, hash as _hash, compare } from 'bcrypt';
 import UserModel, { User } from '../models/user';
 import Session from '../types/session';
 import { EError, E } from '../error';
+import { validateUserLoggedIn } from './helper';
 
 const saltRounds = 10;
 
@@ -52,17 +53,6 @@ export async function login(id: string, password: string, session: Session) {
 export async function logout(session: Session) {
   await validateUserLoggedIn(session);
   loginAs(undefined, session);
-}
-
-export async function validateUserLoggedIn(session: Session) {
-  if (!session.user) throw new EError(...E.E304_USER_NOT_LOGGED_IN);
-  return session.user;
-}
-
-export async function validateUserIsAdmin(session: Session) {
-  const user = await validateUserLoggedIn(session);
-  if (!user.isAdmin) throw new EError(...E.E306_USER_IS_NOT_ADMIN);
-  return user;
 }
 
 export const getLoggedInAs = (session: Session) => session.user;
