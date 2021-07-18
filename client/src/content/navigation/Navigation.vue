@@ -14,7 +14,7 @@
     >
       <div class="start">
         <navigation-link to="/">Home</navigation-link>
-        <navigation-link to="/soal">Paket Soal</navigation-link>
+        <navigation-link to="/quiz">Paket Soal</navigation-link>
         <navigation-link to="/permainan/config">Permainan</navigation-link>
       </div>
 

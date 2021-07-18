@@ -3,11 +3,11 @@ import Quiz from './views/Quiz.vue';
 
 export default [
   {
-    path: 'soal',
+    path: 'quiz',
     component: QuizList
   },
   {
-    path: 'soal/:quiz_id',
+    path: 'quiz/:quiz_id',
     component: Quiz,
     props: true
   }

@@ -2,7 +2,7 @@
   <div>
     <h1 class="title mb-8">Beranda Admin</h1>
     <hr class="hr">
-    <router-link tag="div" class="button info box" to="/admin/soal">
+    <router-link tag="div" class="button info box" to="/admin/quiz">
       <font-awesome icon="question-circle" size="4x"></font-awesome>
       <span>Kelola Soal</span>
     </router-link>

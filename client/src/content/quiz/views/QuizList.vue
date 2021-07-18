@@ -7,7 +7,7 @@
         v-for="quiz in quizList"
         :key="quiz.id"
         tag="li"
-        :to="`/soal/${quiz.id}`"
+        :to="`/quiz/${quiz.id}`"
         class="list-item"
       >
         <p class="text" v-text="quiz.name"></p>

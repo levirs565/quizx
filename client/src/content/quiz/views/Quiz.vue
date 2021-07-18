@@ -7,7 +7,7 @@
 
       <div v-if="$store.state.core.user" class="mb-2">
         <router-link
-          :to="`/permainan/config?id=${paket_id}`"
+          :to="`/permainan/config?id=${quiz_id}`"
           class="button primary"
         >
           <font-awesome icon="play"></font-awesome>
@@ -49,7 +49,7 @@ export default {
     Question
   },
   props: {
-    paket_id: String
+    quiz_id: String
   },
   data() {
     return {
@@ -64,18 +64,18 @@ export default {
     this.updateQuiz();
   },
   watch: {
-    paket_id() {
+    quiz_id() {
       this.updateQuiz();
     }
   },
   methods: {
     updateQuiz() {
-      Quiz.getQuiz(this.paket_id).then(val => {
+      Quiz.getQuiz(this.quiz_id).then(val => {
         this.quiz = val;
       });
     },
     checkAnswer(quiz, answer) {
-      Quiz.checkQuestionAnswer(this.paket_id, quiz.id, answer).then(val => {
+      Quiz.checkQuestionAnswer(this.quiz_id, quiz.id, answer).then(val => {
         this.$set(this.answerResults, quiz.id, val)
       })
     }

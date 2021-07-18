@@ -53,7 +53,7 @@ export default {
     },
     deletePaket() {
       Quiz.deleteQuiz(this.quiz_id).then(() => {
-        this.$router.replace("/admin/soal");
+        this.$router.replace("/admin/quiz");
       });
     },
     showEditQuiz() {
@@ -96,7 +96,7 @@ export default {
   },
   computed: {
     quizURI() {
-      return `/admin/soal/${this.quiz.id}`;
+      return `/admin/quiz/${this.quiz.id}`;
     }
   },
   watch: {

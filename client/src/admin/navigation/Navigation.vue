@@ -5,7 +5,7 @@
     </div>
     <ul class="nav-items">
       <navigation-link to="/admin">Home</navigation-link>
-      <navigation-link to="/admin/soal">Soal</navigation-link>
+      <navigation-link to="/admin/quiz">Soal</navigation-link>
       <navigation-link to="/admin/about">About</navigation-link>
     </ul>
   </nav>

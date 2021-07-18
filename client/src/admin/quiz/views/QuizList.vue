@@ -11,7 +11,7 @@
           v-for="quiz in quizList"
           :key="quiz.id"
           class="list-item"
-          :to="`/admin/soal/${quiz.id}`"
+          :to="`/admin/quiz/${quiz.id}`"
           tag="li"
         >
           <p class="text" v-text="quiz.name"></p>
