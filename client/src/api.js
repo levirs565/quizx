@@ -84,31 +84,27 @@ export const User = {
 };
 
 export const Game = {
-  async startGame(quizId, interactive) {
-    const res = await instance.post('/permainan/start', {
+  async playGame(quizId, interactive) {
+    const res = await instance.post('/permainan/play', {
       soalId: quizId,
       interaktif: interactive,
     });
     return throwError(res);
   },
-  async getAllQuestion(index) {
-    const res = await instance.get(`/permainan/soal/`);
+  async getGame(id) {
+    const res = await instance.get(`/permainan/${id}`)
+    return throwError(res)
+  },
+  async getAllQuestion(gameId) {
+    const res = await instance.get(`/permainan/${gameId}/question/`);
     return throwError(res);
   },
-  async getQuestion(index) {
-    const res = await instance.get(`/permainan/soal/${index}`);
+  async putAnswer(gameId, questionIndex, jawaban) {
+    const res = await instance.put(`/permainan/${gameId}/question/${questionIndex}`, { jawaban });
     return throwError(res);
   },
-  async putAnswer(index, jawaban) {
-    const res = await instance.put(`/permainan/soal/${index}`, { jawaban });
-    return throwError(res);
-  },
-  async stopGame() {
-    const res = await instance.post('/permainan/stop');
-    return throwError(res);
-  },
-  async state() {
-    const res = await instance.get('/permainan/state');
+  async finishGame(gameId) {
+    const res = await instance.post(`/permainan/${gameId}/finish`);
     return throwError(res);
   },
 };

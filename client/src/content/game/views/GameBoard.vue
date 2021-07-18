@@ -5,7 +5,7 @@
         Hentikan Permainan
       </button>
       <jumper
-        :total="gameState.soalCount"
+        :total="questions.length"
         :value="1"
       ></jumper>
     </div>
@@ -13,10 +13,11 @@
       <li v-for="question in questions" :key="question.id">
         <question
           :question="question"
+          :initialAnswer="question.jawaban"
           @change="answerChanged"
         >
           <p
-            v-if="gameState.interaktif"
+            v-if="game.isInteractive"
             v-show="lastQuestionResult > 0"
             class="mb-4 text-white font-semibold p-4"
             :class="lastQuestionResult == 2 ? 'bg-green-500' : 'bg-red-500'"
@@ -39,14 +40,12 @@ export default {
     Question,
     Jumper
   },
+  props: {
+    game_id: String
+  },
   data() {
     return {
-      gameStarted: false,
-      gameState: {
-        interaktif: false,
-        soalCount: 0,
-        jawabanCount: 0
-      },
+      game: {},
       lastQuestionResult: 0,
       questions: []
     };
@@ -55,8 +54,8 @@ export default {
     answerChanged(data) {
       let answer = data.answer;
       let id = data.question.id;
-      Game.putAnswer(id, answer).then(val => {
-        if (this.gameState.interaktif) {
+      Game.putAnswer(this.game_id, id, answer).then(val => {
+        if (this.game.isInteractive) {
           // TODO: Untuk permainan interaktif
           // Contoh khan academeny
           // Hanya 2 Soal saja yang tampil
@@ -72,12 +71,11 @@ export default {
       });
     },
     updateState() {
-      Game.state().then(val => {
-        this.gameStarted = val.permainanStarted;
+      Game.getGame(this.game_id).then(val => {
+        this.game = val
 
-        if (this.gameStarted) {
-          this.gameState = val.permainan;
-          return Game.getAllQuestion();
+        if (this.game.isPlaying) {
+          return Game.getAllQuestion(this.game_id);
         }
         
         return Promise.resolve([])
@@ -86,9 +84,8 @@ export default {
       });
     },
     stop() {
-      Game.stopGame().then(val => {
-        this.$store.commit("setPermainanResult", val);
-        this.$router.push("/permainan/result");
+      Game.finishGame(this.game_id).then(() => {
+        this.$router.push(`/permainan/${this.game_id}/`);
       });
     }
   },

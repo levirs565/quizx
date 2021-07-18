@@ -8,17 +8,22 @@
 
 <script>
 import GameResult from "../components/GameResult.vue";
+import { Game } from "@/api";
 
 export default {
   components: { GameResult },
+  props: {
+    game_id: String
+  },
   data() {
     return {
       result: undefined
     };
   },
   mounted() {
-    this.result = this.$store.state.content.permaiananResult;
-    this.$store.commit("setPermainanResult", undefined);
+    Game.getGame(this.game_id).then(game => {
+      this.result = game.result
+    })
   }
 };
 </script>

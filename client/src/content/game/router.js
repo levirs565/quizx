@@ -8,11 +8,13 @@ export default [
     component: GameConfig
   },
   {
-    path: 'permainan/board',
+    path: 'permainan/:game_id/board',
+    props: true,
     component: GameBoard
   },
   {
-    path: 'permainan/result',
-    component: GameResult
+    path: 'permainan/:game_id',
+    component: GameResult,
+    props: true
   }
 ];

@@ -43,21 +43,12 @@ export default {
         this.quizId = Number(this.$route.query.id);
     },
     start() {
-      Game.startGame(this.quizId, this.interactive).then(() => {
-        this.goToBoard();
+      Game.playGame(this.quizId, this.interactive).then((game) => {
+        this.goToBoard(game.id);
       });
     },
-    goToBoard() {
-      this.$router.push("/permainan/board");
-    }
-  },
-  beforeCreate() {
-    if (this.$store.state.core.user) {
-      Game.state().then(state => {
-        if (state.permainanStarted) {
-          this.goToBoard();
-        }
-      });
+    goToBoard(id) {
+      this.$router.push(`/permainan/${id}/board`);
     }
   },
   mounted() {
