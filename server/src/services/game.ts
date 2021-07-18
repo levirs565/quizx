@@ -1,96 +1,100 @@
-import GameModel, { Game } from '../models/game';
+import GameModel, { GameDB } from '../models/game';
 import * as QuizService from './quiz';
 import Session from '../types/session';
 import { EError, E } from '../error';
 import { GameResult } from '../types/game';
-import { AnswerQuizResult } from '../types/quiz'
-import { validateUserLoggedIn } from './helper'
+import { AnswerQuizResult, QuestionWAnswerWoId } from '../types/quiz';
+import { validateUserLoggedIn, validateUserId } from './helper';
 
-export async function getUserGame(session: Session) {
-  const user = await validateUserLoggedIn(session);
-  return await GameModel.findOne({ user: user.id });
+export async function playGame(session: Session, quizId: number, isInteractive: boolean) {
+  const user = await validateUserLoggedIn(session)
+  const playedGame = await GameModel.findOne({ userId: user.id, isPlaying: true })
+  if (playedGame) throw new EError(...E.E402_PERMAINAN_NOT_FINISHED);
+
+  const quiz = await QuizService.getPackageDocument(quizId);
+
+  const correctAnswers = quiz.soalList.map((question) => question.jawaban);
+  const questions: QuestionWAnswerWoId[] = quiz.soalList.map((question, index) => ({
+    ...question.toQuestionWAnswer(index),
+    jawaban: -1,
+  }));
+
+  const game = new GameModel({
+    userId: user.id,
+    quizId,
+    quizTitle: quiz.name,
+    questions: questions,
+    isInteractive,
+    isPlaying: true,
+    correctAnswers,
+  } as GameDB);
+
+  await game.save();
+  return game.toGame()
 }
 
-async function validateGameStarted(session: Session) {
-  const permainan = await getUserGame(session);
-  if (permainan) return permainan;
-  throw new EError(...E.E401_PERMAINAN_NOT_STARTED);
+async function getGameInternal(id: string) {
+  return await GameModel.findOne({ _id: id });
 }
 
-export async function startGame(session: Session, soalPaketID, interaktif) {
-  const currentPermainan = await getUserGame(session);
-  if (currentPermainan) throw new EError(...E.E402_PERMAINAN_NOT_FINISHED);
-
-  const paketSoal = await QuizService.getPackageDocument(soalPaketID);
-
-  const { soalList } = paketSoal;
-
-  const mdPermainan = new GameModel({
-    user: session.user.id,
-    soalPaketID,
-    soalList,
-    interaktif,
-    jawabanList: [].fill(null, 0, soalList.length),
-  } as Game);
-
-  return mdPermainan.save();
+export async function getGame(id: string) {
+  return (await getGameInternal(id)).toGame()
 }
 
-export async function getAllQuiz(session: Session) {
-  const permainan = await validateGameStarted(session);
+export async function getAllQuestion(session: Session, gameId: string) {
+  const game = await getGameInternal(gameId);
+  await validateUserId(session, game.userId)
 
-  return permainan.soalList.map((val, index) => val.toQuestion(index))
+  return game.questions.map((val, index) => val.toQuestionWAnswer(index));
 }
 
-export async function getQuiz(session: Session, index) {
-  const permainan = await validateGameStarted(session);
-  const soal = permainan.soalList[index];
+export async function putAnswer(
+  session: Session,
+  gameId: string,
+  questionIndex: number,
+  questionAnswer: number
+): Promise<AnswerQuizResult> {
+  const game = await getGameInternal(gameId);
+  await validateUserId(session, game.userId)
 
-  if (!soal) throw new EError(...E.E403_PERMAINAN_SOAL_NOT_FOUND);
-
-  return soal.toQuestion(index);
-}
-
-export async function putAnswer(session: Session, index, jawaban): Promise<AnswerQuizResult> {
-  const currentPermainan = await validateGameStarted(session);
-  const soalCount = currentPermainan.soalList.length;
-
-  if (index < 0 || index >= soalCount) {
+  if (questionIndex < 0 || questionIndex >= game.questions.length) {
     throw new EError(...E.E403_PERMAINAN_SOAL_NOT_FOUND);
   }
 
-  currentPermainan.jawabanList.set(index, jawaban);
+  game.questions[questionIndex].jawaban = questionAnswer
 
-  await currentPermainan.save();
+  await game.save();
 
-  if (currentPermainan.interaktif) {
-    const benar = currentPermainan.soalList[index].jawaban === jawaban;
+  if (game.isInteractive) {
+    const benar = game.correctAnswers[questionIndex] === questionAnswer;
     return {
-      benar
+      benar,
     };
   }
 
   return {};
 }
 
-export async function stopGame(session: Session) {
-  const permainan = await validateGameStarted(session);
-  const { soalList, jawabanList } = permainan;
+export async function finishGame(session: Session, gameId: string) {
+  const game = await getGameInternal(gameId)
+  await validateUserId(session, game.userId)
+  const { questions, correctAnswers } = game;
   const result: GameResult = {
     tidakDiJawab: 0,
     benar: 0,
     salah: 0,
   };
 
-  soalList.forEach((soal, index) => {
-    const actualJawaban = soal.jawaban;
-    const userJawaban = jawabanList[index];
+  questions.forEach((soal, index) => {
+    const actualAnswer = correctAnswers[index]
+    const userAnswer = soal.jawaban
 
-    if (userJawaban == null) result.tidakDiJawab += 1;
-    else if (userJawaban === actualJawaban) result.benar += 1;
+    if (userAnswer == -1) result.tidakDiJawab += 1;
+    else if (userAnswer === actualAnswer) result.benar += 1;
     else result.salah += 1;
   });
 
-  await permainan.remove();
-  return result;
+  game.isPlaying = false
+  game.result = result
+  await game.save()
 }

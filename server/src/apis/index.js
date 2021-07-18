@@ -9,6 +9,6 @@ route.get('/test', (req, res) => {
 
 route.use('/quiz', require('./quiz').default);
 route.use('/user', require('./user'));
-route.use('/permainan', require('./permainan'));
+route.use('/permainan', require('./game').default);
 
 module.exports = route;

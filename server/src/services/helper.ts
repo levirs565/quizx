@@ -11,3 +11,9 @@ export async function validateUserIsAdmin(session: Session) {
   if (!user.isAdmin) throw new EError(...E.E306_USER_IS_NOT_ADMIN);
   return user;
 }
+
+export async function validateUserId(session: Session, id: string) {
+  const user = await validateUserLoggedIn(session)
+  if (user.id != id) throw new EError(...E.E307_ACCESS_DENIED)
+  return user;
+}

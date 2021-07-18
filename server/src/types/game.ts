@@ -13,3 +13,12 @@ export interface GameState {
     jawabanCount: number;
   }
 }
+
+export interface Game {
+  id: string;
+  quizId: number;
+  quizTitle: string;
+  isPlaying: boolean;
+  isInteractive: boolean;
+  result?: GameResult;
+}

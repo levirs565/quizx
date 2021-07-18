@@ -1,43 +1,73 @@
 import { Schema, model, Types, Document } from 'mongoose';
-import { QuestionDocument, QuestionSchema } from "./question";
+import { QuestionDocument, QuestionSchema } from './question';
 import { QuestionWAnswerWoId } from '../types/quiz';
+import { GameResult, Game } from '../types/game';
 
-export interface Game {
-  user: string
-  soalPaketID: number
-  interaktif: Boolean
-  soalList: Array<QuestionWAnswerWoId>
-  jawabanList: Array<number>
+export interface GameDB extends Omit<Game, 'id'> {
+  userId: string;
+  questions: Array<QuestionWAnswerWoId>;
+  correctAnswers: Array<number>;
 }
 
-interface GameDocument extends Game, Document {
-  soalList: Types.Array<QuestionDocument>
-  jawabanList: Types.Array<number>
+interface GameDocument extends GameDB, Document {
+  questions: Types.Array<QuestionDocument>;
+  correctAnswers: Types.Array<number>;
+  toGame(): Game
 }
 
 const gameScheme = new Schema<GameDocument>(
   {
-    user: {
+    userId: {
       type: String,
       required: true,
-      unique: true
     },
-    soalPaketID: {
+    quizId: {
       type: Number,
-      required: true
+      required: true,
     },
-    interaktif: {
+    quizTitle: {
+      type: String,
+      required: true,
+    },
+    isPlaying: {
       type: Boolean,
       required: true,
-      default: false
+      default: true,
     },
-    soalList: [QuestionSchema],
-    jawabanList: [Number]
+    isInteractive: {
+      type: Boolean,
+      required: true,
+      default: false,
+    },
+    questions: {
+      type: [QuestionSchema],
+      required: true,
+    },
+    correctAnswers: {
+      type: [Number],
+      required: true,
+    },
+    result: {
+      tidakDiJawab: Number,
+      benar: Number,
+      salah: Number,
+    },
   },
   {
-    collection: 'permaianan'
+    collection: 'permaianan',
   }
 );
+
+gameScheme.methods.toGame = function (): Game {
+  return {
+    id: String(this._id),
+    quizId: this.quizId,
+    quizTitle: this.quizTitle,
+    isPlaying: this.isPlaying,
+    isInteractive: this.isInteractive,
+    result: this.result
+  }
+}
 
 const GameModel = model<GameDocument>('Permainan', gameScheme);
 
