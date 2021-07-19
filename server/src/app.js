@@ -1,6 +1,6 @@
 const express = require('express');
 const cors = require('cors');
-const session = require('./configs/session');
+const sessionMiddleware = require('./middleware/session').default;
 const errorMiddleware = require('./middleware/error').default
 
 const app = express();
@@ -12,7 +12,7 @@ app.use(
   })
 );
 app.use(express.json());
-app.use(session.savedSession);
+app.use(sessionMiddleware);
 
 app.use('/api', require('./routes').default);
 
