@@ -64,8 +64,8 @@ export default {
       );
     },
     renameQuiz(name) {
-      Quiz.renameQuizTitle(this.quiz_id, { name }).then(val => {
-        this.quiz = val;
+      Quiz.renameQuizTitle(this.quiz_id, { name }).then(() => {
+        this.quiz.name = name
       });
     },
     newQuestion() {
@@ -80,10 +80,10 @@ export default {
       let result;
       if (question.id == "new") {
         result = await Quiz.addQuestion(this.quiz_id, question)
+        this.$set(this.quiz.soalList, index, result)
       } else {
         result = await Quiz.editQuestion(this.quiz_id, question.id, question)
       }
-      this.$set(this.quiz.soalList, index, result)
       finish()
     },
     async deleteQuestion(index, question, finish) {
