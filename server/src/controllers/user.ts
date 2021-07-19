@@ -1,40 +1,22 @@
-import { Request, Response, NextFunction } from 'express';
 import * as UserService from '../services/user';
+import { actionHandler, jsonHandler } from './helper';
 
-export function signup(req: Request, res: Response, next: NextFunction) {
+export const signup = actionHandler(async (req) => {
   const { id, name, password } = req.body;
 
-  UserService.signup(id, name, password)
-    .then(() => {
-      res.json({
-        msg: 'user registered'
-      });
-    })
-    .catch(next);
-}
+  await UserService.signup(id, name, password)
+})
 
-export function login(req: Request, res: Response, next: NextFunction) {
+export const login = actionHandler(async req => {
   const { id, password } = req.body;
 
-  UserService.login(id, password, req.session)
-    .then(() => {
-      res.json({
-        msg: 'user logged in'
-      });
-    })
-    .catch(next);
-}
+  await UserService.login(id, password, req.session)
+})
 
-export function logout(req: Request, res: Response, next: NextFunction) {
-  UserService.logout(req.session)
-    .then(() => {
-      res.json({
-        msg: 'user logged out'
-      });
-    })
-    .catch(next);
-}
+export const logout = actionHandler(async req => {
+  await UserService.logout(req.session)
+})
 
-export function state(req: Request, res: Response, next: NextFunction) {
-  res.json(UserService.getState(req.session))
-}
+export const state = jsonHandler(async req => {
+  return UserService.getState(req.session)
+})

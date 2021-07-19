@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from 'express';
-
+import { jsonHandler, actionHandler } from './helper';
 import * as QuizService from '../services/quiz';
 
 function quizIdFromRequest(req: Request) {
@@ -14,86 +14,61 @@ function questionIdFromRequest(req: Request) {
   }
 }
 
-export function getQuizList(_req: Request, res: Response, next: NextFunction) {
-  return QuizService.getQuizList()
-    .then((list) => res.json({ list }))
-    .catch(next);
-}
+export const getQuizList = jsonHandler(async req => {
+  return {
+    list: await QuizService.getQuizList()
+  }
+})
 
-export function getQuiz(req: Request, res: Response, next: NextFunction) {
+export const getQuiz = jsonHandler(async req => {
   const id = parseInt(req.params.id);
 
-  QuizService.getQuiz(id)
-    .then((val) => {
-      res.json({
-        ...val,
-      });
-    })
-    .catch(next);
-}
+  return QuizService.getQuiz(id)
+})
 
-export function answerQuestion(req: Request, res: Response, next: NextFunction) {
+export const answerQuestion = jsonHandler(async req => {
   const { quizId, questionId } = questionIdFromRequest(req)
   const { jawaban } = req.body;
 
-  QuizService.answerQuestion(quizId, questionId, jawaban)
-    .then((val) => {
-      res.json(val);
-    })
-    .catch(next);
-}
+  return QuizService.answerQuestion(quizId, questionId, jawaban)
+})
 
-
-export function createQuiz(req: Request, res: Response, next: NextFunction) {
+export const createQuiz = jsonHandler(async req => {
   return QuizService.createQuiz(req.session, req.body.name)
-    .then((val) => res.json(val))
-    .catch(next);
-}
+})
 
-export function getQuizForEditor(req: Request, res: Response, next: NextFunction) {
+export const getQuizForEditor = jsonHandler(async req => {
   const id = quizIdFromRequest(req)
 
-  QuizService.getQuizForEditor(req.session, id)
-    .then((val) => res.json(val))
-    .catch(next);
-}
+  return QuizService.getQuizForEditor(req.session, id)
+})
 
-export function renameQuizTitle(req: Request, res: Response, next: NextFunction) {
+export const renameQuizTitle = actionHandler(async req => {
   const id = quizIdFromRequest(req)
 
-  QuizService.renameQuizTitle(req.session, id, req.body.name)
-    .then((val) => res.json(val))
-    .catch(next);
-}
+  return QuizService.renameQuizTitle(req.session, id, req.body.name)
+})
 
-export function deleteQuiz(req: Request, res: Response, next: NextFunction) {
+export const deleteQuiz = actionHandler(async req => {
   const id = quizIdFromRequest(req)
 
-  QuizService.deleteQuiz(req.session, id)
-    .then(() => res.json({ msg: 'paket is removed' }))
-    .catch(next);
-}
+  return QuizService.deleteQuiz(req.session, id)
+})
 
-export function addQuestion(req: Request, res: Response, next: NextFunction) {
+export const addQuestion = jsonHandler(async req => {
   const { quizId } = questionIdFromRequest(req);
 
-  QuizService.addQuestion(req.session, quizId, req.body)
-    .then((val) => res.json(val))
-    .catch(next);
-}
+  return QuizService.addQuestion(req.session, quizId, req.body)
+})
 
-export function editQuestion(req: Request, res: Response, next: NextFunction) {
+export const editQuestion = actionHandler(async req => {
   const { quizId, questionId } = questionIdFromRequest(req);
 
-  QuizService.editQuestion(req.session, quizId, questionId, req.body)
-    .then((val) => res.json(val))
-    .catch(next);
-}
+  return QuizService.editQuestion(req.session, quizId, questionId, req.body)
+})
 
-export function deleteQuestion(req: Request, res: Response, next: NextFunction) {
+export const deleteQuestion = actionHandler(async req => {
   const { quizId, questionId } = questionIdFromRequest(req);
 
-  QuizService.deleteQuestion(req.session, quizId, questionId)
-    .then((val) => res.json({ msg: 'soal is removed' }))
-    .catch(next);
-}
+  return QuizService.deleteQuestion(req.session, quizId, questionId)
+})

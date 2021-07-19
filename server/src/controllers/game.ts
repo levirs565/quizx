@@ -1,38 +1,28 @@
-import { Request, Response, NextFunction } from 'express';
+import { jsonHandler, actionHandler } from './helper';
 import * as GameService from '../services/game';
 
-export function playGame(req: Request, res: Response, next: NextFunction) {
+export const playGame = jsonHandler(async req => {
   const { soalId, interaktif } = req.body;
 
-  GameService.playGame(req.session, soalId, interaktif)
-    .then(game => res.json(game))
-    .catch(next);
-}
+  return GameService.playGame(req.session, soalId, interaktif)
+})
 
-export function getGame(req: Request, res: Response, next: NextFunction) {
-  GameService.getGame(req.params.id)
-    .then(game => res.json(game))
-    .catch(next)
-}
+export const getGame = jsonHandler(async req => {
+  return GameService.getGame(req.params.id)
+})
 
-export function getAllQuestion(req: Request, res: Response, next: NextFunction) {
-  GameService.getAllQuestion(req.session, req.params.gameId)
-    .then(questions => res.json(questions))
-    .catch(next);
-}
+export const getAllQuestion = jsonHandler(async req => {
+  return GameService.getAllQuestion(req.session, req.params.gameId)
+})
 
-export function putAnswer(req: Request, res: Response, next: NextFunction) {
+export const putAnswer = jsonHandler(async req => {
   const { gameId, questionIndex: questionIndexStr } = req.params;
   const questionIndex = parseInt(questionIndexStr)
   const { jawaban } = req.body;
 
-  GameService.putAnswer(req.session, gameId, questionIndex, jawaban)
-    .then(result => res.json({ ...result, msg: 'jawaban is saved' }))
-    .catch(next);
-}
+  return GameService.putAnswer(req.session, gameId, questionIndex, jawaban)
+})
 
-export function finishGame(req: Request, res: Response, next: NextFunction) {
-  GameService.finishGame(req.session, req.params.id)
-    .then(() => res.json({ msg: 'finished' }))
-    .catch(next);
-}
+export const finishGame = actionHandler(async req => {
+  return GameService.finishGame(req.session, req.params.id)
+})

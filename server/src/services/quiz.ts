@@ -61,13 +61,12 @@ export async function renameQuizTitle(session: Session, id: number, newTitle: st
   const paketDB = await getPackageDocument(id);
   paketDB.name = newTitle;
   await paketDB.save();
-  return paketDB.toQuiz();
 }
 
 export async function deleteQuiz(session: Session, id: number) {
   await validateUserIsAdmin(session);
   const paketDB = await getPackageDocument(id);
-  return await paketDB.remove();
+  await paketDB.remove();
 }
 
 export async function addQuestion(session: Session, paketID: number, soal) {
@@ -97,7 +96,6 @@ export async function editQuestion(session: Session, paketID: number, soalID: nu
   });
 
   await paketDB.save();
-  return paketDB.soalList[soalID].toQuestionWAnswer(soalID)
 }
 
 export async function deleteQuestion(session: Session, paketID: number, soalID: number) {
@@ -108,5 +106,5 @@ export async function deleteQuestion(session: Session, paketID: number, soalID: 
   if (!soal) throw new EError(...E.E202_SOAL_NOT_FOUND);
 
   paketDB.soalList.remove(soal);
-  return await paketDB.save();
+  await paketDB.save();
 }
