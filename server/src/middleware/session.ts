@@ -1,11 +1,11 @@
-import * as session from 'express-session';
-import * as ConnectMongo from 'connect-mongo';
+import session from 'express-session';
+import MongoStore from 'connect-mongo';
 import { connection } from 'mongoose';
 
-const MongoStore = ConnectMongo(session);
+
 const savedSession = session({
   store: new MongoStore({
-    mongooseConnection: connection
+    client: connection.getClient()
   }),
   secret: process.env.SESSION_SECRET,
   resave: true,
