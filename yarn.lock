@@ -1673,6 +1673,7 @@ __metadata:
   resolution: "@quizx/server@workspace:server"
   dependencies:
     "@types/bcrypt": ^5.0.0
+    "@types/cors": ^2.8.12
     "@types/express": ^4.17.13
     "@types/express-session": ^1.17.4
     "@types/mongoose": ^5.11.97
@@ -2170,6 +2171,13 @@ __metadata:
   dependencies:
     "@types/node": "*"
   checksum: 4b04cae4bc8e0d0637240b0303e5e6c5a081f85873bb338a02dae95bdfcad5c178be03e41d47f8194675cea0c67ffbfce1530b6633040b908d20139745cb338f
+  languageName: node
+  linkType: hard
+
+"@types/cors@npm:^2.8.12":
+  version: 2.8.12
+  resolution: "@types/cors@npm:2.8.12"
+  checksum: f3b62196df42c286282b9dbda26e24d2264211d932e7d9c2240f361e27ef693a5cb03790daeb3610fd958a0690f4d31d45ef7848b0df7a0dd2afc698a4f9df76
   languageName: node
   linkType: hard
 

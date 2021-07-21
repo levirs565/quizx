@@ -41,7 +41,7 @@ paketScheme.methods.toQuiz = function (): Quiz {
   return {
     id: this._id,
     name: this.name,
-    soalList: this.soalList.map((item, idx) => item.toQuestion(idx)),
+    soalList: this.soalList.map((item, idx) => item.toQuestion!(idx)),
   } as Quiz;
 };
 
@@ -49,7 +49,7 @@ paketScheme.methods.toQuizWAnswer = function (): QuizWAnswer {
   return {
     id: this._id,
     name: this.name,
-    soalList: this.soalList.map((item, idx) => item.toQuestionWAnswer(idx)),
+    soalList: this.soalList.map((item, idx) => item.toQuestionWAnswer!(idx)),
   };
 };
 

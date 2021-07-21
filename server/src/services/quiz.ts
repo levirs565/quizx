@@ -1,6 +1,6 @@
 import QuizModel from '../models/quiz';
 import { EError, E } from '../error';
-import { AnswerQuizResult } from "../types/quiz"
+import { AnswerQuizResult, QuestionWAnswerWoId, QuestionWAnswer } from "../types/quiz"
 import Session from '../types/session'
 import { validateUserIsAdmin } from './helper';
 
@@ -69,22 +69,22 @@ export async function deleteQuiz(session: Session, id: number) {
   await paketDB.remove();
 }
 
-export async function addQuestion(session: Session, paketID: number, soal) {
+export async function addQuestion(session: Session, paketID: number, question: QuestionWAnswerWoId) {
   await validateUserIsAdmin(session);
   const paketDB = await getPackageDocument(paketID);
   paketDB.soalList.push({
-    soal: soal.soal,
-    pilihan: soal.pilihan,
-    jawaban: soal.jawaban,
+    soal: question.soal,
+    pilihan: question.pilihan,
+    jawaban: question.jawaban,
   });
 
   await paketDB.save();
   const id = paketDB.soalList.length - 1;
 
-  return paketDB.soalList[id].toQuestionWAnswer(id)
+  return paketDB.soalList[id].toQuestionWAnswer!(id)
 }
 
-export async function editQuestion(session: Session, paketID: number, soalID: number, soal) {
+export async function editQuestion(session: Session, paketID: number, soalID: number, soal: QuestionWAnswer) {
   await validateUserIsAdmin(session);
   const paketDB = await getPackageDocument(paketID);
   if (soalID < 0 || soalID >= paketDB.soalList.length) throw new EError(...E.E202_SOAL_NOT_FOUND);

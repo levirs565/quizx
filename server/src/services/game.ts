@@ -15,7 +15,7 @@ export async function playGame(session: Session, quizId: number, isInteractive: 
 
   const correctAnswers = quiz.soalList.map((question) => question.jawaban);
   const questions: QuestionWAnswerWoId[] = quiz.soalList.map((question, index) => ({
-    ...question.toQuestionWAnswer(index),
+    ...question.toQuestionWAnswer!(index),
     jawaban: -1,
   }));
 
@@ -34,7 +34,12 @@ export async function playGame(session: Session, quizId: number, isInteractive: 
 }
 
 async function getGameInternal(id: string) {
-  return await GameModel.findOne({ _id: id });
+  const game = await GameModel.findOne({ _id: id });
+
+  if (game)
+    return game
+
+  throw new EError(...E.E404_GAME_NOT_FOUND)
 }
 
 export async function getGame(id: string) {
@@ -45,7 +50,7 @@ export async function getAllQuestion(session: Session, gameId: string) {
   const game = await getGameInternal(gameId);
   await validateUserId(session, game.userId)
 
-  return game.questions.map((val, index) => val.toQuestionWAnswer(index));
+  return game.questions.map((val, index) => val.toQuestionWAnswer!(index));
 }
 
 export async function putAnswer(
