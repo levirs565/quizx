@@ -1,15 +1,12 @@
-import dotenv from 'dotenv';
+import config from './config';
 import { connect } from 'mongoose';
 import { MSG_SERVER_READY } from './consts';
 
 async function run() {
-  dotenv.config();
+  await connect(config.dbUri);
 
-  await connect(process.env.DB_URI);
-
-  const port = process.env.SERVER_PORT;
   const app = (await import('./app')).default
-  app.listen(port, () => {
+  app.listen(config.serverPort, () => {
     console.log(MSG_SERVER_READY);
   });
 }
