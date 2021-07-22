@@ -79,7 +79,11 @@ export default {
     async saveQuestion(index, question, finish) {
       let result;
       if (question.id == "new") {
-        result = await Quiz.addQuestion(this.quiz_id, question)
+        const newQuestion = {
+          ...question,
+          id: undefined
+        }
+        result = await Quiz.addQuestion(this.quiz_id, newQuestion)
         this.$set(this.quiz.soalList, index, result)
       } else {
         result = await Quiz.editQuestion(this.quiz_id, question.id, question)
