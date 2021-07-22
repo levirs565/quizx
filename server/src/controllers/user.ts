@@ -1,13 +1,14 @@
 import * as UserService from '../services/user';
-import { actionHandler, jsonHandler } from './helper';
+import { SignupRequestBodySchema, LoginRequestBodySchema } from '../types/schema/user';
+import { actionHandler, jsonHandler, actionHandlerSchema } from './helper';
 
-export const signup = actionHandler(async (req) => {
+export const signup = actionHandlerSchema(SignupRequestBodySchema, async (req) => {
   const { id, name, password } = req.body;
 
   await UserService.signup(id, name, password)
 })
 
-export const login = actionHandler(async req => {
+export const login = actionHandlerSchema(LoginRequestBodySchema, async req => {
   const { id, password } = req.body;
 
   await UserService.login(id, password, req.session)

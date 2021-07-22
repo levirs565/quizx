@@ -1,5 +1,6 @@
-import { EError } from '../error';
+import { EError, BodyValidationError } from '../error';
 import { Request, Response, NextFunction, ErrorRequestHandler } from 'express';
+import { ErrorResponse } from '../types/base';
 
 const handler: ErrorRequestHandler = function (
   err: Error,
@@ -7,21 +8,22 @@ const handler: ErrorRequestHandler = function (
   res: Response,
   next: NextFunction
 ) {
-  const message = String(err.message);
-  let code: number;
+  const error: ErrorResponse = {
+    message: String(err.message),
+    code: 0,
+  }
   if (err instanceof EError) {
-    code = err.code;
+    error.code = err.code;
+  } else if (err instanceof BodyValidationError) {
+    error.code = 101
+    error.message = "Request body invalid"
+    error.validationMessages = err.errors.map(e => e.message!)
   } else {
     console.log('%O', err);
-    code = 100;
+    error.code = 100;
   }
 
-  res.json({
-    error: {
-      message,
-      code,
-    },
-  });
+  res.json(error);
 };
 
 export default handler;

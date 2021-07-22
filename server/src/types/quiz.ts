@@ -2,6 +2,14 @@ export interface AnswerQuizResult {
   benar?: boolean; 
 }
 
+export interface AnswerQuestionRequestBody {
+  jawaban: number
+}
+
+export interface CreateRenameQuizRequestBody {
+  name: string 
+}
+
 export interface Question {
   id: number;
   soal: string;

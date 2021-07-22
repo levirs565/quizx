@@ -1,3 +1,8 @@
+export interface PlayGameRequestBody {
+  soalId: number;
+  interaktif: boolean;
+}
+
 export interface GameResult {
   tidakDiJawab: number;
   benar: number;

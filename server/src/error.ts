@@ -1,3 +1,5 @@
+import { ErrorObject } from 'ajv';
+
 export class EError extends Error {
   code: number
 
@@ -7,6 +9,16 @@ export class EError extends Error {
     this.message = msg;
     this.code = code;
     this.stack = new Error().stack;
+  }
+}
+
+export class BodyValidationError extends Error {
+  errors: ErrorObject[]
+
+  constructor(errors: ErrorObject[]) {
+    super()
+    this.name = "BodyValidationError"
+    this.errors = errors
   }
 }
 
