@@ -5,7 +5,7 @@
 
     <div class="field">
       <label>ID Paket Soal</label>
-      <input type="number" class="input w-full" v-model="quizId" />
+      <input class="input w-full" v-model="quizId" />
     </div>
 
     <div class="field">
@@ -28,19 +28,18 @@ import { Game } from "@/api";
 export default {
   data() {
     return {
-      quizId: 0,
+      quizId: "",
       interactive: false
     };
   },
   computed: {
     valid() {
-      return !isNaN(this.quizId);
+      return this.quizId.length > 0
     }
   },
   methods: {
     updateConfig() {
-      if (!isNaN(this.$route.query.id))
-        this.quizId = Number(this.$route.query.id);
+      this.quizId = this.$route.query.id;
     },
     start() {
       Game.playGame(this.quizId, this.interactive).then((game) => {
