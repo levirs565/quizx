@@ -9,14 +9,14 @@ import {
 import * as QuizService from '../services/quiz';
 
 function quizIdFromRequest(req: Request) {
-  return parseInt(req.params.id);
+  return req.params.id;
 }
 
 function questionIdFromRequest(req: Request) {
   const { quizId, questionId } = req.params;
   return {
-    quizId: parseInt(quizId),
-    questionId: parseInt(questionId),
+    quizId: quizId,
+    questionId: questionId,
   };
 }
 
@@ -27,7 +27,7 @@ export const getQuizList = jsonHandler(async (req) => {
 });
 
 export const getQuiz = jsonHandler(async (req) => {
-  const id = parseInt(req.params.id);
+  const id = req.params.id;
 
   return QuizService.getQuiz(id);
 });

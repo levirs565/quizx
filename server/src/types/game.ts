@@ -1,5 +1,5 @@
 export interface PlayGameRequestBody {
-  soalId: number;
+  soalId: string;
   interaktif: boolean;
 }
 
@@ -21,7 +21,7 @@ export interface GameState {
 
 export interface Game {
   id: string;
-  quizId: number;
+  quizId: string;
   quizTitle: string;
   isPlaying: boolean;
   isInteractive: boolean;

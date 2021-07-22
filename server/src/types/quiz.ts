@@ -11,7 +11,7 @@ export interface CreateRenameQuizRequestBody {
 }
 
 export interface Question {
-  id: number;
+  id: string;
   soal: string;
   pilihan: Array<string>
 }
@@ -24,7 +24,7 @@ export type QuestionWAnswerWoId = Omit<QuestionWAnswer, 'id'>
 
 
 interface BaseQuiz {
-  id: number;
+  id: string;
   name: string;
 }
 

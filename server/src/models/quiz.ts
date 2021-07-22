@@ -3,21 +3,19 @@ import { QuestionSchema, QuestionDocument } from './question';
 import { Quiz, QuizSummary, QuizWAnswer, QuestionWAnswerWoId } from '../types/quiz';
 
 interface QuizDB {
-  _id: number;
   name: string;
   soalList: Array<QuestionWAnswerWoId>;
 }
 
-export interface QuizDocument extends QuizDB, Omit<Document, '_id'> {
-  soalList: Types.Array<QuestionDocument>;
+export interface QuizDocument extends QuizDB, Document {
+  soalList: Types.DocumentArray<QuestionDocument>;
   toSummary(): QuizSummary;
   toQuiz(): Quiz;
   toQuizWAnswer(): QuizWAnswer;
 }
 
-const paketScheme = new Schema<QuizDocument>(
+const quizSchema = new Schema<QuizDocument>(
   {
-    _id: Number,
     name: {
       type: String,
       required: true,
@@ -29,7 +27,7 @@ const paketScheme = new Schema<QuizDocument>(
   }
 );
 
-paketScheme.methods.toSummary = function (): QuizSummary {
+quizSchema.methods.toSummary = function (): QuizSummary {
   return {
     id: this._id,
     name: this.name,
@@ -37,22 +35,22 @@ paketScheme.methods.toSummary = function (): QuizSummary {
   };
 };
 
-paketScheme.methods.toQuiz = function (): Quiz {
+quizSchema.methods.toQuiz = function (): Quiz {
   return {
     id: this._id,
     name: this.name,
-    soalList: this.soalList.map((item, idx) => item.toQuestion!(idx)),
+    soalList: this.soalList.map((item, idx) => item.toQuestion!()),
   } as Quiz;
 };
 
-paketScheme.methods.toQuizWAnswer = function (): QuizWAnswer {
+quizSchema.methods.toQuizWAnswer = function (): QuizWAnswer {
   return {
     id: this._id,
     name: this.name,
-    soalList: this.soalList.map((item, idx) => item.toQuestionWAnswer!(idx)),
+    soalList: this.soalList.map((item, idx) => item.toQuestionWAnswer!()),
   };
 };
 
-const QuizModel = model<QuizDocument>('Soal', paketScheme);
+const QuizModel = model<QuizDocument>('Soal', quizSchema);
 
 export default QuizModel;

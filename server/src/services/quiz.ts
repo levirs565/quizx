@@ -10,7 +10,7 @@ export async function getQuizList() {
   return list.map((val) => val.toSummary());
 }
 
-export async function getPackageDocument(id: number) {
+export async function getPackageDocument(id: string) {
   const quizPackage = await QuizModel.findById(id);
 
   if (!quizPackage) throw new EError(...E.E201_SOAL_PAKET_NOT_FOUND);
@@ -18,20 +18,20 @@ export async function getPackageDocument(id: number) {
   return quizPackage;
 }
 
-export async function getQuiz(id: number) {
+export async function getQuiz(id: string) {
   const quizPackage = await getPackageDocument(id);
 
   return quizPackage.toQuiz();
 }
 
-export async function getQuestionDocument(quizId: number, questionId: number) {
+export async function getQuestionDocument(quizId: string, questionId: string) {
   const quizPackage = await getPackageDocument(quizId);
-  const item = quizPackage.soalList[questionId];
+  const item = quizPackage.soalList.id(questionId)
   if (!item) throw new EError(...E.E202_SOAL_NOT_FOUND);
   return item;
 }
 
-export async function answerQuestion(quizId: number, questionId: number, answer: number): Promise<AnswerQuizResult> {
+export async function answerQuestion(quizId: string, questionId: string, answer: number): Promise<AnswerQuizResult> {
   const item = await getQuestionDocument(quizId, questionId);
   return {
     benar: item.jawaban == answer
@@ -40,9 +40,7 @@ export async function answerQuestion(quizId: number, questionId: number, answer:
 
 export async function createQuiz(session: Session, title: string) {
   await validateUserIsAdmin(session);
-  const id = await QuizModel.estimatedDocumentCount();
   const paketDb = new QuizModel({
-    _id: id,
     name: title,
   });
 
@@ -50,28 +48,28 @@ export async function createQuiz(session: Session, title: string) {
   return paketDb.toQuizWAnswer();
 }
 
-export async function getQuizForEditor(session: Session, id: number) {
+export async function getQuizForEditor(session: Session, id: string) {
   await validateUserIsAdmin(session);
   const doc = await getPackageDocument(id)
   return doc.toQuizWAnswer()
 }
 
-export async function renameQuizTitle(session: Session, id: number, newTitle: string) {
+export async function renameQuizTitle(session: Session, id: string, newTitle: string) {
   await validateUserIsAdmin(session);
   const paketDB = await getPackageDocument(id);
   paketDB.name = newTitle;
   await paketDB.save();
 }
 
-export async function deleteQuiz(session: Session, id: number) {
+export async function deleteQuiz(session: Session, id: string) {
   await validateUserIsAdmin(session);
   const paketDB = await getPackageDocument(id);
   await paketDB.remove();
 }
 
-export async function addQuestion(session: Session, paketID: number, question: QuestionWAnswerWoId) {
+export async function addQuestion(session: Session, quizId: string, question: QuestionWAnswerWoId) {
   await validateUserIsAdmin(session);
-  const paketDB = await getPackageDocument(paketID);
+  const paketDB = await getPackageDocument(quizId);
   paketDB.soalList.push({
     soal: question.soal,
     pilihan: question.pilihan,
@@ -81,30 +79,28 @@ export async function addQuestion(session: Session, paketID: number, question: Q
   await paketDB.save();
   const id = paketDB.soalList.length - 1;
 
-  return paketDB.soalList[id].toQuestionWAnswer!(id)
+  return paketDB.soalList[id].toQuestionWAnswer!()
 }
 
-export async function editQuestion(session: Session, paketID: number, soalID: number, soal: QuestionWAnswer) {
+export async function editQuestion(session: Session, quizId: string, questionId: string, soal: QuestionWAnswer) {
   await validateUserIsAdmin(session);
-  const paketDB = await getPackageDocument(paketID);
-  if (soalID < 0 || soalID >= paketDB.soalList.length) throw new EError(...E.E202_SOAL_NOT_FOUND);
+  const quizDocument = await getPackageDocument(quizId);
+  const questionDocument = quizDocument.soalList.id(questionId)
 
-  paketDB.soalList.set(soalID, {
-    soal: soal.soal,
-    pilihan: soal.pilihan,
-    jawaban: soal.jawaban,
-  });
-
-  await paketDB.save();
+  if (!questionDocument) throw new EError(...E.E202_SOAL_NOT_FOUND);
+  
+  questionDocument.set(soal)
+  
+  await quizDocument.save()
 }
 
-export async function deleteQuestion(session: Session, paketID: number, soalID: number) {
+export async function deleteQuestion(session: Session, quizId: string, questionId: string) {
   await validateUserIsAdmin(session);
-  const paketDB = await getPackageDocument(paketID);
-  const soal = paketDB.soalList[soalID];
+  const quizDocument = await getPackageDocument(quizId);
+  const questionDocument = quizDocument.soalList.id(questionId)
 
-  if (!soal) throw new EError(...E.E202_SOAL_NOT_FOUND);
+  if (!questionDocument) throw new EError(...E.E202_SOAL_NOT_FOUND);
 
-  paketDB.soalList.remove(soal);
-  await paketDB.save();
+  await questionDocument.remove()
+  await quizDocument.save()
 }

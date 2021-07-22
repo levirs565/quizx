@@ -18,11 +18,10 @@ export const getAllQuestion = jsonHandler(async req => {
 })
 
 export const putAnswer = jsonHandlerSchema(AnswerQuestionRequestBodySchema, async req => {
-  const { gameId, questionIndex: questionIndexStr } = req.params;
-  const questionIndex = parseInt(questionIndexStr)
+  const { gameId, questionId } = req.params;
   const { jawaban } = req.body;
 
-  return GameService.putAnswer(req.session, gameId, questionIndex, jawaban)
+  return GameService.putAnswer(req.session, gameId, questionId, jawaban)
 })
 
 export const finishGame = actionHandler(async req => {

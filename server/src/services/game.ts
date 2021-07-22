@@ -6,7 +6,7 @@ import { GameResult } from '../types/game';
 import { AnswerQuizResult, QuestionWAnswerWoId } from '../types/quiz';
 import { validateUserLoggedIn, validateUserId } from './helper';
 
-export async function playGame(session: Session, quizId: number, isInteractive: boolean) {
+export async function playGame(session: Session, quizId: string, isInteractive: boolean) {
   const user = await validateUserLoggedIn(session)
   const playedGame = await GameModel.findOne({ userId: user.id, isPlaying: true })
   if (playedGame) throw new EError(...E.E402_PERMAINAN_NOT_FINISHED);
@@ -14,8 +14,8 @@ export async function playGame(session: Session, quizId: number, isInteractive: 
   const quiz = await QuizService.getPackageDocument(quizId);
 
   const correctAnswers = quiz.soalList.map((question) => question.jawaban);
-  const questions: QuestionWAnswerWoId[] = quiz.soalList.map((question, index) => ({
-    ...question.toQuestionWAnswer!(index),
+  const questions: QuestionWAnswerWoId[] = quiz.soalList.map((question) => ({
+    ...question.toQuestionWAnswer!(),
     jawaban: -1,
   }));
 
@@ -50,28 +50,30 @@ export async function getAllQuestion(session: Session, gameId: string) {
   const game = await getGameInternal(gameId);
   await validateUserId(session, game.userId)
 
-  return game.questions.map((val, index) => val.toQuestionWAnswer!(index));
+  return game.questions.map((val, index) => val.toQuestionWAnswer!());
 }
 
 export async function putAnswer(
   session: Session,
   gameId: string,
-  questionIndex: number,
+  questionId: string,
   questionAnswer: number
 ): Promise<AnswerQuizResult> {
   const game = await getGameInternal(gameId);
   await validateUserId(session, game.userId)
 
-  if (questionIndex < 0 || questionIndex >= game.questions.length) {
+  const questionDocument = game.questions.id(questionId)
+  if (!questionDocument) {
     throw new EError(...E.E403_PERMAINAN_SOAL_NOT_FOUND);
   }
 
-  game.questions[questionIndex].jawaban = questionAnswer
+  questionDocument.jawaban = questionAnswer
 
   await game.save();
 
   if (game.isInteractive) {
-    const benar = game.correctAnswers[questionIndex] === questionAnswer;
+    const index = game.questions.indexOf(questionDocument)
+    const benar = game.correctAnswers[index] === questionAnswer;
     return {
       benar,
     };

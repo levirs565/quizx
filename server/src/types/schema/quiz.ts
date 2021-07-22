@@ -33,7 +33,7 @@ export const QuestionWAnswerSchema: JSONSchemaType<QuestionWAnswer> = {
   properties: {
     ...QuestionWAnswerWoIdSchema.properties!,
     id: {
-      type: 'number',
+      type: 'string',
     },
   },
 };

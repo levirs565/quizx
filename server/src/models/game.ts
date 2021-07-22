@@ -10,7 +10,7 @@ export interface GameDB extends Omit<Game, 'id'> {
 }
 
 interface GameDocument extends GameDB, Document {
-  questions: Types.Array<QuestionDocument>;
+  questions: Types.DocumentArray<QuestionDocument>;
   correctAnswers: Types.Array<number>;
   toGame(): Game
 }
@@ -22,7 +22,7 @@ const gameScheme = new Schema<GameDocument>(
       required: true,
     },
     quizId: {
-      type: Number,
+      type: String,
       required: true,
     },
     quizTitle: {
