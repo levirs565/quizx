@@ -15,7 +15,7 @@ interface GameDocument extends GameDB, Document {
   toGame(): Game
 }
 
-const gameScheme = new Schema<GameDocument>(
+const gameSchema = new Schema<GameDocument>(
   {
     userId: {
       type: String,
@@ -54,11 +54,11 @@ const gameScheme = new Schema<GameDocument>(
     },
   },
   {
-    collection: 'permaianan',
+    collection: 'game',
   }
 );
 
-gameScheme.methods.toGame = function (): Game {
+gameSchema.methods.toGame = function (): Game {
   return {
     id: String(this._id),
     quizId: this.quizId,
@@ -69,6 +69,6 @@ gameScheme.methods.toGame = function (): Game {
   }
 }
 
-const GameModel = model<GameDocument>('Permainan', gameScheme);
+const GameModel = model<GameDocument>('Game', gameSchema);
 
 export default GameModel;

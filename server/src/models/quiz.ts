@@ -23,7 +23,7 @@ const quizSchema = new Schema<QuizDocument>(
     soalList: [QuestionSchema],
   },
   {
-    collection: 'soal',
+    collection: 'quiz',
   }
 );
 
@@ -51,6 +51,6 @@ quizSchema.methods.toQuizWAnswer = function (): QuizWAnswer {
   };
 };
 
-const QuizModel = model<QuizDocument>('Soal', quizSchema);
+const QuizModel = model<QuizDocument>('Quiz', quizSchema);
 
 export default QuizModel;
