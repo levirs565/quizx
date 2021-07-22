@@ -5,7 +5,9 @@ export interface ActionSuccessResponse {
 }
 
 export interface ErrorResponse {
-  code: number
-  message: string,
-  validationMessages?: string[]
+  error: {
+    code: number
+    message: string,
+    validationMessages?: string[]
+  }
 }

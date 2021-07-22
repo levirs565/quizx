@@ -8,22 +8,24 @@ const handler: ErrorRequestHandler = function (
   res: Response,
   next: NextFunction
 ) {
-  const error: ErrorResponse = {
-    message: String(err.message),
-    code: 0,
+  const response: ErrorResponse = {
+    error: {
+      message: String(err.message),
+      code: 0,
+    }
   }
   if (err instanceof EError) {
-    error.code = err.code;
+    response.error.code = err.code;
   } else if (err instanceof BodyValidationError) {
-    error.code = 101
-    error.message = "Request body invalid"
-    error.validationMessages = err.errors.map(e => e.message!)
+    response.error.code = 101
+    response.error.message = "Request body invalid"
+    response.error.validationMessages = err.errors.map(e => e.message!)
   } else {
     console.log('%O', err);
-    error.code = 100;
+    response.error.code = 100;
   }
 
-  res.json(error);
+  res.json(response);
 };
 
 export default handler;
