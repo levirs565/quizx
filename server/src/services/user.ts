@@ -44,7 +44,7 @@ export async function login(id: string, password: string, session: Session) {
     throw new EError(...E.E302_USER_NOT_REGISTERED);
   }
 
-  const matched = compare(password, user.password);
+  const matched = await compare(password, user.password);
 
   if (!matched) throw new EError(...E.E305_USER_PASSWORD_NOT_MATCH);
 
