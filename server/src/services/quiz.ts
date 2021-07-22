@@ -1,6 +1,6 @@
 import QuizModel from '../models/quiz';
 import { EError, E } from '../error';
-import { AnswerQuizResult, QuestionWAnswerWoId, QuestionWAnswer } from "../types/quiz"
+import { AnswerQuestionResult, QuestionWAnswerWoId, QuestionWAnswer } from "../types/quiz"
 import Session from '../types/session'
 import { validateUserIsAdmin } from './helper';
 
@@ -26,22 +26,22 @@ export async function getQuiz(id: string) {
 
 export async function getQuestionDocument(quizId: string, questionId: string) {
   const quizPackage = await getPackageDocument(quizId);
-  const item = quizPackage.soalList.id(questionId)
+  const item = quizPackage.questions.id(questionId)
   if (!item) throw new EError(...E.E202_SOAL_NOT_FOUND);
   return item;
 }
 
-export async function answerQuestion(quizId: string, questionId: string, answer: number): Promise<AnswerQuizResult> {
+export async function answerQuestion(quizId: string, questionId: string, answer: number): Promise<AnswerQuestionResult> {
   const item = await getQuestionDocument(quizId, questionId);
   return {
-    benar: item.jawaban == answer
+    correct: item.answer == answer
   };
 }
 
 export async function createQuiz(session: Session, title: string) {
   await validateUserIsAdmin(session);
   const paketDb = new QuizModel({
-    name: title,
+    title,
   });
 
   await paketDb.save();
@@ -57,7 +57,7 @@ export async function getQuizForEditor(session: Session, id: string) {
 export async function renameQuizTitle(session: Session, id: string, newTitle: string) {
   await validateUserIsAdmin(session);
   const paketDB = await getPackageDocument(id);
-  paketDB.name = newTitle;
+  paketDB.title = newTitle;
   await paketDB.save();
 }
 
@@ -70,22 +70,22 @@ export async function deleteQuiz(session: Session, id: string) {
 export async function addQuestion(session: Session, quizId: string, question: QuestionWAnswerWoId) {
   await validateUserIsAdmin(session);
   const paketDB = await getPackageDocument(quizId);
-  paketDB.soalList.push({
-    soal: question.soal,
-    pilihan: question.pilihan,
-    jawaban: question.jawaban,
+  paketDB.questions.push({
+    question: question.question,
+    choices: question.choices,
+    answer: question.answer,
   });
 
   await paketDB.save();
-  const id = paketDB.soalList.length - 1;
+  const id = paketDB.questions.length - 1;
 
-  return paketDB.soalList[id].toQuestionWAnswer!()
+  return paketDB.questions[id].toQuestionWAnswer!()
 }
 
 export async function editQuestion(session: Session, quizId: string, questionId: string, soal: QuestionWAnswer) {
   await validateUserIsAdmin(session);
   const quizDocument = await getPackageDocument(quizId);
-  const questionDocument = quizDocument.soalList.id(questionId)
+  const questionDocument = quizDocument.questions.id(questionId)
 
   if (!questionDocument) throw new EError(...E.E202_SOAL_NOT_FOUND);
   
@@ -97,7 +97,7 @@ export async function editQuestion(session: Session, quizId: string, questionId:
 export async function deleteQuestion(session: Session, quizId: string, questionId: string) {
   await validateUserIsAdmin(session);
   const quizDocument = await getPackageDocument(quizId);
-  const questionDocument = quizDocument.soalList.id(questionId)
+  const questionDocument = quizDocument.questions.id(questionId)
 
   if (!questionDocument) throw new EError(...E.E202_SOAL_NOT_FOUND);
 

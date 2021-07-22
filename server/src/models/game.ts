@@ -1,7 +1,7 @@
 import { Schema, model, Types, Document } from 'mongoose';
 import { QuestionDocument, QuestionSchema } from './question';
 import { QuestionWAnswerWoId } from '../types/quiz';
-import { GameResult, Game } from '../types/game';
+import { Game } from '../types/game';
 
 export interface GameDB extends Omit<Game, 'id'> {
   userId: string;
@@ -48,9 +48,9 @@ const gameSchema = new Schema<GameDocument>(
       required: true,
     },
     result: {
-      tidakDiJawab: Number,
-      benar: Number,
-      salah: Number,
+      notAnswered: Number,
+      correct: Number,
+      wrong: Number,
     },
   },
   {

@@ -1,23 +1,23 @@
-export interface AnswerQuizResult {
-  benar?: boolean; 
+export interface AnswerQuestionResult {
+  correct?: boolean; 
 }
 
 export interface AnswerQuestionRequestBody {
-  jawaban: number
+  answer: number
 }
 
 export interface CreateRenameQuizRequestBody {
-  name: string 
+  title: string 
 }
 
 export interface Question {
   id: string;
-  soal: string;
-  pilihan: Array<string>
+  question: string;
+  choices: Array<string>
 }
 
 export interface QuestionWAnswer extends Question {
-  jawaban: number
+  answer: number
 }
 
 export type QuestionWAnswerWoId = Omit<QuestionWAnswer, 'id'>
@@ -25,17 +25,17 @@ export type QuestionWAnswerWoId = Omit<QuestionWAnswer, 'id'>
 
 interface BaseQuiz {
   id: string;
-  name: string;
+  title: string;
 }
 
 export interface QuizSummary extends BaseQuiz {
-  soalCount: number;
+  questionCount: number;
 }
 
 export interface Quiz extends BaseQuiz {
-  soalList: Array<Question>;
+  questions: Array<Question>;
 }
 
 export interface QuizWAnswer extends BaseQuiz {
-  soalList: Array<QuestionWAnswer>;
+  questions: Array<QuestionWAnswer>;
 }

@@ -8,19 +8,19 @@ import {
 
 export const QuestionWAnswerWoIdSchema: JSONSchemaType<QuestionWAnswerWoId> = {
   type: 'object',
-  required: ['soal', 'pilihan', 'jawaban'],
+  required: ['question', 'choices', 'answer'],
   additionalProperties: false,
   properties: {
-    soal: {
+    question: {
       type: 'string',
     },
-    pilihan: {
+    choices: {
       type: 'array',
       items: {
         type: 'string',
       },
     },
-    jawaban: {
+    answer: {
       type: 'number',
     },
   },
@@ -40,10 +40,10 @@ export const QuestionWAnswerSchema: JSONSchemaType<QuestionWAnswer> = {
 
 export const AnswerQuestionRequestBodySchema: JSONSchemaType<AnswerQuestionRequestBody> = {
   type: 'object',
-  required: ['jawaban'],
+  required: ['answer'],
   additionalProperties: false,
   properties: {
-    jawaban: {
+    answer: {
       type: 'number',
     },
   },
@@ -51,10 +51,10 @@ export const AnswerQuestionRequestBodySchema: JSONSchemaType<AnswerQuestionReque
 
 export const CreateRenameQuizRequestBodySchema: JSONSchemaType<CreateRenameQuizRequestBody> = {
   type: 'object',
-  required: ['name'],
+  required: ['title'],
   additionalProperties: false,
   properties: {
-    name: {
+    title: {
       type: 'string'
     }
   }

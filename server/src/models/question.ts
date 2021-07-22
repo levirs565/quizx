@@ -7,15 +7,15 @@ export interface QuestionDocument extends QuestionWAnswerWoId, Types.Subdocument
 }
 
 export const QuestionSchema = new Schema<QuestionDocument>({
-  soal: {
+  question: {
     type: String,
     required: true,
   },
-  pilihan: {
+  choices: {
     type: Array,
     required: true,
   },
-  jawaban: {
+  answer: {
     type: Number,
     required: true,
   },
@@ -24,16 +24,16 @@ export const QuestionSchema = new Schema<QuestionDocument>({
 QuestionSchema.methods.toQuestion = function (): Question {
   return {
     id: this._id,
-    soal: this.soal,
-    pilihan: this.pilihan
+    question: this.question,
+    choices: this.choices
   }
 }
 
 QuestionSchema.methods.toQuestionWAnswer = function (id): QuestionWAnswer {
   return {
     id: this._id,
-    soal: this.soal,
-    pilihan: this.pilihan,
-    jawaban: this.jawaban
+    question: this.question,
+    choices: this.choices,
+    answer: this.answer
   } 
 }

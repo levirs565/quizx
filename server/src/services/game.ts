@@ -3,7 +3,7 @@ import * as QuizService from './quiz';
 import Session from '../types/session';
 import { EError, E } from '../error';
 import { GameResult } from '../types/game';
-import { AnswerQuizResult, QuestionWAnswerWoId } from '../types/quiz';
+import { AnswerQuestionResult, QuestionWAnswerWoId } from '../types/quiz';
 import { validateUserLoggedIn, validateUserId } from './helper';
 
 export async function playGame(session: Session, quizId: string, isInteractive: boolean) {
@@ -13,8 +13,8 @@ export async function playGame(session: Session, quizId: string, isInteractive: 
 
   const quiz = await QuizService.getPackageDocument(quizId);
 
-  const correctAnswers = quiz.soalList.map((question) => question.jawaban);
-  const questions: QuestionWAnswerWoId[] = quiz.soalList.map((question) => ({
+  const correctAnswers = quiz.questions.map((question) => question.answer);
+  const questions: QuestionWAnswerWoId[] = quiz.questions.map((question) => ({
     ...question.toQuestionWAnswer!(),
     jawaban: -1,
   }));
@@ -22,7 +22,7 @@ export async function playGame(session: Session, quizId: string, isInteractive: 
   const game = new GameModel({
     userId: user.id,
     quizId,
-    quizTitle: quiz.name,
+    quizTitle: quiz.title,
     questions: questions,
     isInteractive,
     isPlaying: true,
@@ -58,7 +58,7 @@ export async function putAnswer(
   gameId: string,
   questionId: string,
   questionAnswer: number
-): Promise<AnswerQuizResult> {
+): Promise<AnswerQuestionResult> {
   const game = await getGameInternal(gameId);
   await validateUserId(session, game.userId)
 
@@ -67,15 +67,15 @@ export async function putAnswer(
     throw new EError(...E.E403_PERMAINAN_SOAL_NOT_FOUND);
   }
 
-  questionDocument.jawaban = questionAnswer
+  questionDocument.answer = questionAnswer
 
   await game.save();
 
   if (game.isInteractive) {
     const index = game.questions.indexOf(questionDocument)
-    const benar = game.correctAnswers[index] === questionAnswer;
+    const correct = game.correctAnswers[index] === questionAnswer;
     return {
-      benar,
+      correct,
     };
   }
 
@@ -87,18 +87,18 @@ export async function finishGame(session: Session, gameId: string) {
   await validateUserId(session, game.userId)
   const { questions, correctAnswers } = game;
   const result: GameResult = {
-    tidakDiJawab: 0,
-    benar: 0,
-    salah: 0,
+    notAnswered: 0,
+    correct: 0,
+    wrong: 0,
   };
 
   questions.forEach((soal, index) => {
     const actualAnswer = correctAnswers[index]
-    const userAnswer = soal.jawaban
+    const userAnswer = soal.answer
 
-    if (userAnswer == -1) result.tidakDiJawab += 1;
-    else if (userAnswer === actualAnswer) result.benar += 1;
-    else result.salah += 1;
+    if (userAnswer == -1) result.notAnswered += 1;
+    else if (userAnswer === actualAnswer) result.correct += 1;
+    else result.wrong += 1;
   });
 
   game.isPlaying = false

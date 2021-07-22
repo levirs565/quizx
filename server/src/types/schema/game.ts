@@ -3,13 +3,13 @@ import { PlayGameRequestBody } from '../game';
 
 export const PlayGameRequestBodySchema: JSONSchemaType<PlayGameRequestBody> = {
   type: 'object',
-  required: ['interaktif', 'soalId'],
+  required: ['isInteractive', 'quizId'],
   additionalProperties: false,
   properties: {
-    soalId: {
+    quizId: {
       type: 'string'
     },
-    interaktif: {
+    isInteractive: {
       type: 'boolean'
     }
   }

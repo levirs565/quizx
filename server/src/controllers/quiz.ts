@@ -34,13 +34,13 @@ export const getQuiz = jsonHandler(async (req) => {
 
 export const answerQuestion = jsonHandlerSchema(AnswerQuestionRequestBodySchema, async (req) => {
   const { quizId, questionId } = questionIdFromRequest(req);
-  const { jawaban } = req.body;
+  const { answer } = req.body;
 
-  return QuizService.answerQuestion(quizId, questionId, jawaban);
+  return QuizService.answerQuestion(quizId, questionId, answer);
 });
 
 export const createQuiz = jsonHandlerSchema(CreateRenameQuizRequestBodySchema, async (req) => {
-  return QuizService.createQuiz(req.session, req.body.name);
+  return QuizService.createQuiz(req.session, req.body.title);
 });
 
 export const getQuizForEditor = jsonHandler(async (req) => {
@@ -52,7 +52,7 @@ export const getQuizForEditor = jsonHandler(async (req) => {
 export const renameQuizTitle = actionHandlerSchema(CreateRenameQuizRequestBodySchema, async (req) => {
   const id = quizIdFromRequest(req);
 
-  return QuizService.renameQuizTitle(req.session, id, req.body.name);
+  return QuizService.renameQuizTitle(req.session, id, req.body.title);
 });
 
 export const deleteQuiz = actionHandler(async (req) => {

@@ -1,22 +1,12 @@
 export interface PlayGameRequestBody {
-  soalId: string;
-  interaktif: boolean;
+  quizId: string;
+  isInteractive: boolean;
 }
 
 export interface GameResult {
-  tidakDiJawab: number;
-  benar: number;
-  salah: number;
-}
-
-export interface GameState {
-  permainanStarted: boolean;
-  permainan?: {
-    soalPaketID: number;
-    interaktif: boolean;
-    soalCount: number;
-    jawabanCount: number;
-  }
+  notAnswered: number;
+  correct: number;
+  wrong: number;
 }
 
 export interface Game {
