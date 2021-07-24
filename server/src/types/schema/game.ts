@@ -1,7 +1,7 @@
-import { JSONSchemaType } from 'ajv';
+import { JSONSchema } from './base';
 import { PlayGameRequestBody } from '../game';
 
-export const PlayGameRequestBodySchema: JSONSchemaType<PlayGameRequestBody> = {
+export const PlayGameRequestBodySchema: JSONSchema<PlayGameRequestBody> = {
   type: 'object',
   required: ['isInteractive', 'quizId'],
   additionalProperties: false,

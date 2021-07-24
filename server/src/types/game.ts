@@ -1,3 +1,4 @@
+// WARNING: Change schema if change this interface
 export interface PlayGameRequestBody {
   quizId: string;
   isInteractive: boolean;

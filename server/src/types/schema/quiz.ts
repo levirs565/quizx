@@ -1,4 +1,4 @@
-import { JSONSchemaType } from 'ajv';
+import { JSONSchema } from './base';
 import {
   QuestionWAnswerWoId,
   QuestionWAnswer,
@@ -6,7 +6,7 @@ import {
   CreateRenameQuizRequestBody,
 } from '../quiz';
 
-export const QuestionWAnswerWoIdSchema: JSONSchemaType<QuestionWAnswerWoId> = {
+export const QuestionWAnswerWoIdSchema: JSONSchema<QuestionWAnswerWoId> = {
   type: 'object',
   required: ['question', 'choices', 'answer'],
   additionalProperties: false,
@@ -26,7 +26,7 @@ export const QuestionWAnswerWoIdSchema: JSONSchemaType<QuestionWAnswerWoId> = {
   },
 };
 
-export const QuestionWAnswerSchema: JSONSchemaType<QuestionWAnswer> = {
+export const QuestionWAnswerSchema: JSONSchema<QuestionWAnswer> = {
   type: 'object',
   required: [...QuestionWAnswerWoIdSchema.required, 'id'],
   additionalProperties: false,
@@ -38,7 +38,7 @@ export const QuestionWAnswerSchema: JSONSchemaType<QuestionWAnswer> = {
   },
 };
 
-export const AnswerQuestionRequestBodySchema: JSONSchemaType<AnswerQuestionRequestBody> = {
+export const AnswerQuestionRequestBodySchema: JSONSchema<AnswerQuestionRequestBody> = {
   type: 'object',
   required: ['answer'],
   additionalProperties: false,
@@ -49,7 +49,7 @@ export const AnswerQuestionRequestBodySchema: JSONSchemaType<AnswerQuestionReque
   },
 };
 
-export const CreateRenameQuizRequestBodySchema: JSONSchemaType<CreateRenameQuizRequestBody> = {
+export const CreateRenameQuizRequestBodySchema: JSONSchema<CreateRenameQuizRequestBody> = {
   type: 'object',
   required: ['title'],
   additionalProperties: false,

@@ -2,24 +2,29 @@ export interface AnswerQuestionResult {
   correct?: boolean; 
 }
 
+// WARNING: Change schema if change this interface
 export interface AnswerQuestionRequestBody {
   answer: number
 }
 
+// WARNING: Change schema if change this interface
 export interface CreateRenameQuizRequestBody {
   title: string 
 }
 
+// WARNING: Change schema if change this interface
 export interface Question {
   id: string;
   question: string;
   choices: Array<string>
 }
 
+// WARNING: Change schema if change this interface
 export interface QuestionWAnswer extends Question {
   answer: number
 }
 
+// WARNING: Change schema if change this interface
 export type QuestionWAnswerWoId = Omit<QuestionWAnswer, 'id'>
 
 

@@ -1,5 +1,6 @@
 import { Response, Request, NextFunction } from 'express';
-import Ajv, { JSONSchemaType } from 'ajv';
+import Ajv from 'ajv';
+import { JSONSchema } from '../types/schema/base';
 import { ActionSuccessResponse } from '../types/base';
 import { BodyValidationError } from '../error';
 
@@ -25,7 +26,7 @@ const ajv = new Ajv({
 });
 
 export function jsonHandlerSchema<Body, Result>(
-  bodySchema: JSONSchemaType<Body>,
+  bodySchema: JSONSchema<Body>,
   fn: (req: Request<any, any, Body>) => Promise<Result>
 ) {
   const validate = ajv.compile(bodySchema);
@@ -40,7 +41,7 @@ export function jsonHandlerSchema<Body, Result>(
 }
 
 export function actionHandlerSchema<T>(
-  bodySchema: JSONSchemaType<T>,
+  bodySchema: JSONSchema<T>,
   fn: (req: Request<{}, any, T>) => Promise<void>
 ) {
   const validate = ajv.compile(bodySchema);

@@ -1,7 +1,7 @@
-import { JSONSchemaType } from 'ajv';
+import { JSONSchema } from './base';
 import { LoginRequestBody, SignupRequestBody } from '../user';
 
-export const LoginRequestBodySchema: JSONSchemaType<LoginRequestBody> = {
+export const LoginRequestBodySchema: JSONSchema<LoginRequestBody> = {
   type: 'object',
   required: ['id', 'password'],
   additionalProperties: false,
@@ -15,7 +15,7 @@ export const LoginRequestBodySchema: JSONSchemaType<LoginRequestBody> = {
   }
 }
 
-export const SignupRequestBodySchema: JSONSchemaType<SignupRequestBody> = {
+export const SignupRequestBodySchema: JSONSchema<SignupRequestBody> = {
   type: 'object',
   required: [...LoginRequestBodySchema.required, 'name'],
   additionalProperties: false,

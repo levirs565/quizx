@@ -8,11 +8,13 @@ export interface UserData {
   isAdmin: boolean
 }
 
+// WARNING: Change schema if change this interface
 export interface LoginRequestBody {
   id: string
   password: string
 }
 
+// WARNING: Change schema if change this interface
 export interface SignupRequestBody extends LoginRequestBody {
   name: string
 }
