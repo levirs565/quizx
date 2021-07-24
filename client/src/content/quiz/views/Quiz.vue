@@ -13,6 +13,12 @@
           <font-awesome icon="play"></font-awesome>
           <span>Mainkan</span>
         </router-link>
+        <router-link 
+          v-if="$store.state.core.user.id == quiz.userId" 
+          :to="`/quiz/${quiz_id}/edit`" 
+          class="button primary">
+          Edit
+        </router-link>
       </div>
     </div>
 

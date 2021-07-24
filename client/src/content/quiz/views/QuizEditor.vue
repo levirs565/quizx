@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="container flex-col">
     <div>
       <h1 class="title inline-block">
         {{ quiz.title }}
@@ -15,7 +15,7 @@
     <ul>
       <li v-for="(question, index) in quiz.questions"
           :key="question.id">
-        <question-admin :index="index" :question="question" @save="saveQuestion" @delete="deleteQuestion"/>
+        <question-editor :index="index" :question="question" @save="saveQuestion" @delete="deleteQuestion"/>
       </li>
     </ul>
     <button
@@ -30,15 +30,15 @@
 <script>
 import { Quiz } from "@/api";
 import ModalEditQuiz from "../components/ModalEditQuiz";
-import QuestionAdmin from "../components/QuestionAdmin.vue";
-import showModal from "@/admin/modal/bus";
+import QuestionEditor from "../components/QuestionEditor.vue";
+import showModal from "@/content/modal/bus";
 
 export default {
   props: {
     quiz_id: String
   },
   components: {
-    QuestionAdmin
+    QuestionEditor
   },
   data() {
     return {
@@ -53,7 +53,7 @@ export default {
     },
     deleteQuiz() {
       Quiz.deleteQuiz(this.quiz_id).then(() => {
-        this.$router.replace("/admin/quiz");
+        this.$router.replace("/quiz");
       });
     },
     showEditQuiz() {
