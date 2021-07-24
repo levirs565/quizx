@@ -2,7 +2,8 @@ import { Document, Schema, model, Types } from 'mongoose';
 import { QuestionSchema, QuestionDocument } from './question';
 import { Quiz, QuizSummary, QuizWAnswer, QuestionWAnswerWoId } from '../types/quiz';
 
-interface QuizDB {
+export interface QuizDB {
+  userId: string;
   title: string;
   questions: Array<QuestionWAnswerWoId>;
 }
@@ -16,6 +17,10 @@ export interface QuizDocument extends QuizDB, Document {
 
 const quizSchema = new Schema<QuizDocument>(
   {
+    userId: {
+      type: String,
+      required: true,
+    },
     title: {
       type: String,
       required: true,
@@ -30,6 +35,7 @@ const quizSchema = new Schema<QuizDocument>(
 quizSchema.methods.toSummary = function (): QuizSummary {
   return {
     id: this._id,
+    userId: this.userId,
     title: this.title,
     questionCount: this.questions.length,
   };
@@ -46,6 +52,7 @@ quizSchema.methods.toQuiz = function (): Quiz {
 quizSchema.methods.toQuizWAnswer = function (): QuizWAnswer {
   return {
     id: this._id,
+    userId: this.userId,
     title: this.title,
     questions: this.questions.map((item, idx) => item.toQuestionWAnswer!()),
   };

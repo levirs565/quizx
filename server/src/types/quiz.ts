@@ -30,6 +30,7 @@ export type QuestionWAnswerWoId = Omit<QuestionWAnswer, 'id'>
 
 interface BaseQuiz {
   id: string;
+  userId: string;
   title: string;
 }
 

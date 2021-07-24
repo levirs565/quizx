@@ -11,7 +11,7 @@ export async function playGame(session: Session, quizId: string, isInteractive: 
   const playedGame = await GameModel.findOne({ userId: user.id, isPlaying: true })
   if (playedGame) throw new EError(...E.E402_PERMAINAN_NOT_FINISHED);
 
-  const quiz = await QuizService.getPackageDocument(quizId);
+  const quiz = await QuizService.getQuizDocument(quizId);
 
   const correctAnswers = quiz.questions.map((question) => question.answer);
   const questions: QuestionWAnswerWoId[] = quiz.questions.map((question) => ({
