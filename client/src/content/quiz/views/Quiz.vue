@@ -1,8 +1,8 @@
 <template>
   <div class="container">
     <div class="box mb-8">
-      <h1 class="title" v-text="quiz.name"></h1>
-      <p class="subtext">{{ quiz.soalList.length }} Soal</p>
+      <h1 class="title" v-text="quiz.title"></h1>
+      <p class="subtext">{{ quiz.questions.length }} Soal</p>
       <hr class="hr" />
 
       <div v-if="$store.state.core.user" class="mb-2">
@@ -18,7 +18,7 @@
 
     <ul>
       <li
-        v-for="question in quiz.soalList"
+        v-for="question in quiz.questions"
         :key="question.id"
       >
         <question class="box my-4" :question="question" @submit="checkAnswer" v-slot="props">
@@ -31,8 +31,8 @@
           </button>
           <span v-if="answerResults[props.question.id]"
             class="ml-4"
-            :class="answerResults[props.question.id].benar ? 'text-green-600' : 'text-red-600'">
-            Jawaban anda {{ answerResults[props.question.id].benar ? "benar" : "salah coba lagi." }}
+            :class="answerResults[props.question.id].correct ? 'text-green-600' : 'text-red-600'">
+            Jawaban anda {{ answerResults[props.question.id].correct ? "benar" : "salah coba lagi." }}
           </span>
         </question>
       </li>
@@ -55,8 +55,8 @@ export default {
     return {
       answerResults: {},
       quiz: {
-        name: "undefined",
-        soalList: []
+        title: "undefined",
+        questions: []
       }
     };
   },

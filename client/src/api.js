@@ -29,7 +29,7 @@ class QuizApi {
   }
   async checkQuestionAnswer(quizId, questionId, answer) {
     const res = await instance.post(`${this.path}/${quizId}/${questionId}/check`, { 
-      jawaban: answer 
+      answer 
     });
     return throwError(res);
   }
@@ -84,10 +84,10 @@ export const User = {
 };
 
 export const Game = {
-  async playGame(quizId, interactive) {
+  async playGame(quizId, isInteractive) {
     const res = await instance.post('/permainan/play', {
-      soalId: quizId,
-      interaktif: interactive,
+      quizId,
+      isInteractive,
     });
     return throwError(res);
   },
@@ -99,8 +99,8 @@ export const Game = {
     const res = await instance.get(`/permainan/${gameId}/question/`);
     return throwError(res);
   },
-  async putAnswer(gameId, questionIndex, jawaban) {
-    const res = await instance.put(`/permainan/${gameId}/question/${questionIndex}`, { jawaban });
+  async putAnswer(gameId, questionIndex, answer) {
+    const res = await instance.put(`/permainan/${gameId}/question/${questionIndex}`, { answer });
     return throwError(res);
   },
   async finishGame(gameId) {

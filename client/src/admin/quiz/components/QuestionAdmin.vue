@@ -8,7 +8,7 @@
       <button class="button primary float-right" @click="toEditMode" v-show="!isEditMode">
         Edit
       </button>
-      <button class="button primary float-right" @click="saveQuestion" v-show="isEditMode" :disabled="question.soal.length == 0">
+      <button class="button primary float-right" @click="saveQuestion" v-show="isEditMode" :disabled="question.question.length == 0">
         Save
       </button>
     </div>
@@ -16,27 +16,27 @@
     <question
       v-if="!isEditMode"
       :question="question"
-      :initialAnswer="question.jawaban"
+      :initialAnswer="question.answer"
       :radioEnabled="false"
     >
     </question>
     <form v-else class="overflow-auto edit-view">
       <textarea
         class="input w-full"
-        v-model="question.soal"
+        v-model="question.question"
         @input="expandInput"
         tabindex="1"
       />
       <div
-        v-for="(entry, index) in question.pilihan"
+        v-for="(entry, index) in question.choices"
         :key="index"
-        class="flex flex-row items-center pilihan"
+        class="flex flex-row items-center choices"
       >
         <input
           type="radio"
-          name="pilihan"
+          name="choices"
           :value="index"
-          v-model="question.jawaban"
+          v-model="question.answer"
         />
         <textarea
           v-text="entry"
@@ -109,13 +109,13 @@ export default {
       });
     },
     setChoiceText(index, val) {
-      this.$set(this.question.pilihan, index, val);
+      this.$set(this.question.choices, index, val);
     },
     deleteChoice(index) {
-      this.$delete(this.question.pilihan, index);
+      this.$delete(this.question.choices, index);
     },
     newChoice() {
-      this.question.pilihan.push("");
+      this.question.choices.push("");
     },
   }
 };

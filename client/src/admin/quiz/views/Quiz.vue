@@ -2,18 +2,18 @@
   <div>
     <div>
       <h1 class="title inline-block">
-        {{ quiz.name }}
+        {{ quiz.title }}
         <font-awesome
           icon="edit"
           class="ml-2 cursor-pointer"
           @click="showEditQuiz"
         ></font-awesome>
       </h1>
-      <button class="button danger float-right" @click="deletePaket">Hapus</button>
+      <button class="button danger float-right" @click="deleteQuiz">Hapus</button>
     </div>
     <hr class="hr" />
     <ul>
-      <li v-for="(question, index) in quiz.soalList"
+      <li v-for="(question, index) in quiz.questions"
           :key="question.id">
         <question-admin :index="index" :question="question" @save="saveQuestion" @delete="deleteQuestion"/>
       </li>
@@ -51,7 +51,7 @@ export default {
         this.quiz = val;
       });
     },
-    deletePaket() {
+    deleteQuiz() {
       Quiz.deleteQuiz(this.quiz_id).then(() => {
         this.$router.replace("/admin/quiz");
       });
@@ -59,21 +59,21 @@ export default {
     showEditQuiz() {
       showModal(
         ModalEditQuiz,
-        { currentName: this.quiz.name },
+        { currentName: this.quiz.title },
         this.renameQuiz
       );
     },
-    renameQuiz(name) {
-      Quiz.renameQuizTitle(this.quiz_id, { name }).then(() => {
-        this.quiz.name = name
+    renameQuiz(title) {
+      Quiz.renameQuizTitle(this.quiz_id, { title }).then(() => {
+        this.quiz.title = title
       });
     },
     newQuestion() {
-      this.quiz.soalList.push({
+      this.quiz.questions.push({
         id: "new",
-        soal: "",
-        pilihan: ["", "", "", ""],
-        jawaban: 0
+        question: "",
+        choices: ["", "", "", ""],
+        answer: 0
       })
     },
     async saveQuestion(index, question, finish) {
@@ -84,7 +84,7 @@ export default {
           id: undefined
         }
         result = await Quiz.addQuestion(this.quiz_id, newQuestion)
-        this.$set(this.quiz.soalList, index, result)
+        this.$set(this.quiz.questions, index, result)
       } else {
         result = await Quiz.editQuestion(this.quiz_id, question.id, question)
       }
@@ -92,7 +92,7 @@ export default {
     },
     async deleteQuestion(index, question, finish) {
       await Quiz.deleteQuestion(this.quiz_id, question.id)
-      this.$delete(this.quiz.soalList, index)
+      this.$delete(this.quiz.questions, index)
       // TODO: When id is not index dependent below code are redundant
       this.refresh()
       finish()

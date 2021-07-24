@@ -14,7 +14,7 @@
           :to="`/admin/quiz/${quiz.id}`"
           tag="li"
         >
-          <p class="text" v-text="quiz.name"></p>
+          <p class="text" v-text="quiz.title"></p>
           <p class="subtext">{{ quiz.soalCount }} Soal</p>
         </router-link>
       </ul>
@@ -42,8 +42,8 @@ export default {
     showNewQuiz() {
       showModal(ModalNewQuiz, {}, this.createQuiz);
     },
-    createQuiz(name) {
-      Quiz.createQuiz({ name }).then(this.refresh);
+    createQuiz(title) {
+      Quiz.createQuiz({ title }).then(this.refresh);
     }
   },
   mounted() {

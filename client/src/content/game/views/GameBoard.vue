@@ -13,7 +13,7 @@
       <li v-for="question in questions" :key="question.id">
         <question
           :question="question"
-          :initialAnswer="question.jawaban"
+          :initialAnswer="question.answer"
           @change="answerChanged"
         >
           <p
@@ -59,10 +59,10 @@ export default {
           // TODO: Untuk permainan interaktif
           // Contoh khan academeny
           // Hanya 2 Soal saja yang tampil
-          this.lastQuestionResult = val.benar ? 2 : 1;
+          this.lastQuestionResult = val.correct ? 2 : 1;
           setTimeout(() => {
             this.lastQuestionResult = 0;
-            if (val.benar) {
+            if (val.correct) {
               // TODO: seperti di tatas
               this.nextSoal();
             }

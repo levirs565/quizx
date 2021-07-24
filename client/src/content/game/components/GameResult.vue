@@ -20,19 +20,19 @@ export default {
       return [
         {
           prop: "Benar",
-          val: this.results.benar,
+          val: this.results.correct,
           color: "text-green-600",
           icon: "check"
         },
         {
           prop: "Salah",
-          val: this.results.salah,
+          val: this.results.wrong,
           color: "text-red-600",
           icon: "times"
         },
         {
           prop: "Tidak Di Jawab",
-          val: this.results.tidakDiJawab,
+          val: this.results.notAnswered,
           color: "text-yellow-600",
           icon: "exclamation"
         }

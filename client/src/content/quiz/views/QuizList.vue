@@ -10,7 +10,7 @@
         :to="`/quiz/${quiz.id}`"
         class="list-item"
       >
-        <p class="text" v-text="quiz.name"></p>
+        <p class="text" v-text="quiz.title"></p>
         <p class="subtext">{{ quiz.soalCount }} Soal</p>
       </router-link>
     </ul>

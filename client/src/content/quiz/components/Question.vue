@@ -1,7 +1,7 @@
 <template>
   <form>
-    <p v-html="question.soal"></p>
-    <label v-for="(entry, index) in question.pilihan" :key="index" class="block">
+    <p v-html="question.question"></p>
+    <label v-for="(entry, index) in question.choices" :key="index" class="block">
       <input
         type="radio"
         name="choices"
