@@ -44,9 +44,10 @@ quizSchema.methods.toSummary = function (): QuizSummary {
 quizSchema.methods.toQuiz = function (): Quiz {
   return {
     id: this._id,
+    userId: this.userId,
     title: this.title,
     questions: this.questions.map((item, idx) => item.toQuestion!()),
-  } as Quiz;
+  };
 };
 
 quizSchema.methods.toQuizWAnswer = function (): QuizWAnswer {
