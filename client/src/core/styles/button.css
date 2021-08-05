@@ -1,6 +1,8 @@
 .button {
-  @apply py-2 px-4 cursor-pointer select-none;
-  @apply bg-white text-black shadow font-semibold border border-gray-100;
+  @apply px-4 h-9 cursor-pointer select-none;
+  @apply bg-gray-300 text-black font-medium text-sm;
+  font-family: Roboto;
+  letter-spacing: 1.25px;
 }
 
 .button + .button {
@@ -12,11 +14,11 @@
 }
 
 .button:hover {
-  @apply bg-gray-100;
+  @apply bg-gray-400;
 }
 
 .button:active {
-  @apply bg-gray-200;
+  @apply bg-gray-500;
 }
 
 .button > svg + span {
@@ -24,7 +26,7 @@
 }
 
 .button.primary {
-  @apply bg-green-500 text-white border-green-600;
+  @apply bg-green-500;
 }
 
 .button.primary:hover {
@@ -36,7 +38,7 @@
 }
 
 .button.danger {
-  @apply bg-red-500 text-white border-red-600;
+  @apply bg-red-500;
 }
 
 .button.danger:hover {
@@ -47,14 +49,37 @@
   @apply bg-red-700;
 }
 
-.button.info {
-  @apply bg-blue-500 text-white border-blue-600;
+.button.outlined {
+  @apply bg-transparent border border-gray-500;
 }
 
-.button.info:hover {
-  @apply bg-blue-600;
+.button.outlined:hover {
+  @apply bg-gray-100;
 }
 
-.button.info:active {
-  @apply bg-blue-700;
+.button.outlined:active {
+  @apply bg-gray-200;
+}
+
+.button-icon {
+  @apply h-12 w-12 p-3 rounded-full;
+  @apply hover:bg-gray-100;
+}
+
+.button-icon:active {
+  @apply bg-gray-200;
+}
+
+.fab {
+  @apply w-14 h-14 p-4 rounded-full;
+  @apply bg-green-500;
+  @apply hover:bg-green-600;
+}
+
+.fab:active {
+  @apply bg-green-700;
+}
+
+.button-icon,.fab > .material-icons {
+  @apply text-2xl leading-none;
 }
