@@ -1,3 +1,25 @@
+<template>
+  <label class="radio">
+    <span class="radio-button">
+      <input 
+        type="radio" 
+        :value="thisValue" 
+        @change="$emit('input', thisValue)" 
+        :checked="thisValue == value" 
+        :name="name">
+      <span></span>
+    </span>
+    <slot></slot>
+  </label>
+</template>
+
+<script>
+export default {
+  props: ["name", "thisValue", "value"]
+}
+</script>
+
+<style>
 .radio-button {
   @apply inline-block w-12 h-12;
 }
@@ -49,13 +71,10 @@
 }
 
 .radio {
-  @apply flex flex-row items-center;
+  @apply flex flex-row items-center font-roboto text-body1;
 }
 
 .radio > .radio-button {
   @apply mr-2 self-start;
 }
-
-.radio-text {
-  @apply font-roboto text-body1;
-}
+</style>
