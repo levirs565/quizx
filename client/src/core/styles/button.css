@@ -1,8 +1,7 @@
 .button {
   @apply px-4 h-9 cursor-pointer select-none;
-  @apply bg-gray-300 text-black font-medium text-sm;
-  font-family: Roboto;
-  letter-spacing: 1.25px;
+  @apply bg-gray-300 text-black ;
+  @apply font-roboto font-medium text-button;
 }
 
 .button + .button {

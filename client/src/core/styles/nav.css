@@ -8,6 +8,7 @@
 
 .nav-item > .item-title {
   @apply leading-normal align-top;
+  @apply font-roboto font-medium text-button;
 }
 
 .nav-item::after {
