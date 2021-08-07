@@ -1,7 +1,38 @@
+<template>
+  <button
+    v-if="!href"
+    class="button"
+    :class="type"
+    @click="$emit('click', $event)"
+  >
+    <slot></slot>
+  </button>
+  <a
+    v-else
+    class="button"
+    :class="type"
+    :href="href"
+    @click="$emit('click', $event)"
+    ><slot></slot
+  ></a>
+</template>
+<script>
+export default {
+  props: {
+    type: {
+      type: String,
+    },
+    href: {
+      type: String,
+    },
+  },
+};
+</script>
+<style>
 .button {
-  @apply px-4 h-9 cursor-pointer select-none;
-  @apply bg-gray-300 text-black ;
-  @apply font-roboto font-medium text-button;
+  @apply inline-block align-middle px-4 h-9 cursor-pointer select-none;
+  @apply bg-gray-300 text-black;
+  @apply font-roboto font-medium text-button leading-9;
 }
 
 .button + .button {
@@ -18,10 +49,6 @@
 
 .button:active {
   @apply bg-gray-500;
-}
-
-.button > svg + span {
-  @apply ml-2;
 }
 
 .button.primary {
@@ -59,26 +86,4 @@
 .button.outlined:active {
   @apply bg-gray-200;
 }
-
-.button-icon {
-  @apply h-12 w-12 p-3 rounded-full;
-  @apply hover:bg-gray-100;
-}
-
-.button-icon:active {
-  @apply bg-gray-200;
-}
-
-.fab {
-  @apply w-14 h-14 p-4 rounded-full;
-  @apply bg-green-500;
-  @apply hover:bg-green-600;
-}
-
-.fab:active {
-  @apply bg-green-700;
-}
-
-.button-icon,.fab > .material-icons {
-  @apply text-2xl leading-none;
-}
+</style>
