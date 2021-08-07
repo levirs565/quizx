@@ -1,9 +1,3 @@
-.text-area {
-  @apply border border-gray-500 p-4 h-12;
-  @apply font-roboto text-body1 leading-none;
-  min-height: theme("spacing.12");
-}
-
 .radio-button {
   @apply inline-block w-12 h-12;
 }

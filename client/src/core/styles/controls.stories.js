@@ -2,16 +2,6 @@ export default {
   title: "Controls"
 }
 
-export const textInput = () => 
-`
-<input type="text" class="text-area">
-`
-
-export const textArea = () => 
-`
-<textarea class="text-area"></textarea>
-`
-
 export const radio = () =>
 `
 <div>
