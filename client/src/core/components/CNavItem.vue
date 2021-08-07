@@ -1,3 +1,21 @@
+<template>
+  <li class="nav-item" :class="{'active': active}">
+    <slot></slot>
+  </li>
+</template>
+
+<script>
+export default {
+  props: {
+    'active': {
+      type: Boolean,
+      default: false
+    }
+  }
+}
+</script>
+
+<style>
 .nav-item {
   @apply h-12 px-4 py-3 cursor-pointer select-none relative;
 }
@@ -6,7 +24,8 @@
   @apply mr-6 w-6 h-6;
 }
 
-.nav-item > .item-title {
+.nav-item > .material-icons + span {
+   /* TODO: make line-height bigger  */
   @apply leading-normal align-top;
   @apply font-roboto font-medium text-button;
 }
@@ -24,3 +43,4 @@
 .nav-item.active {
   @apply text-green-500;
 }
+</style>
