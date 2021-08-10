@@ -1,22 +1,21 @@
 <template>
   <div class="flex flex-col">
     <modal></modal>
-    <navigation></navigation>
+    <app-bar></app-bar>
     <router-view></router-view>
   </div>
 </template>
 
 <script>
-import Navigation from "./navigation/Navigation";
+import AppBar from "./navigation/CAppBar.vue";
 import Modal from "./modal/Modal";
 
 export default {
   components: {
-    Navigation,
-    Modal
-  }
+    AppBar,
+    Modal,
+  },
 };
 </script>
 
-<style>
-</style>
+<style></style>
