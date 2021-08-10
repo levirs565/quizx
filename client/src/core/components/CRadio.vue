@@ -1,12 +1,13 @@
 <template>
-  <label class="radio">
-    <span class="radio-button">
-      <input 
-        type="radio" 
-        :value="thisValue" 
-        @change="$emit('input', thisValue)" 
-        :checked="thisValue == value" 
-        :name="name">
+  <label class="control">
+    <span class="control-button radio-button">
+      <input
+        type="radio"
+        :value="thisValue"
+        @change="$emit('input', thisValue)"
+        :checked="thisValue == value"
+        :name="name"
+      />
       <span></span>
     </span>
     <slot></slot>
@@ -15,8 +16,8 @@
 
 <script>
 export default {
-  props: ["name", "thisValue", "value"]
-}
+  props: ["name", "thisValue", "value"],
+};
 </script>
 
 <style>
@@ -41,7 +42,6 @@ export default {
   @apply hover:bg-green-100;
 }
 
-
 .radio-button > input:checked + span:active {
   @apply bg-green-200;
 }
@@ -51,12 +51,13 @@ export default {
 }
 
 .radio-button > input:checked + span::after {
-  @apply bg-current; 
+  @apply bg-current;
 }
 
-.radio-button > span::before, .radio-button > span::after {
+.radio-button > span::before,
+.radio-button > span::after {
   @apply inline-block rounded-full absolute;
-  content: '';
+  content: "";
   left: 50%;
   top: 50%;
   transform: translate(-50%, -50%);
@@ -68,13 +69,5 @@ export default {
 
 .radio-button > span::after {
   @apply w-3 h-3 bg-transparent;
-}
-
-.radio {
-  @apply flex flex-row items-center font-roboto text-body1;
-}
-
-.radio > .radio-button {
-  @apply mr-2 self-start;
 }
 </style>
