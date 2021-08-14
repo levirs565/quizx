@@ -5,14 +5,14 @@
     <nav class="absolute w-64 h-full pt-14 text-center bg-white">
       <c-button type="primary m-4">Create Quiz</c-button>
       <ul class="text-left">
-        <c-nav-item>
+        <c-nav-link to="/">
           <c-icon>home</c-icon>
           <span>Home</span>
-        </c-nav-item>
-        <c-nav-item>
+        </c-nav-link>
+        <c-nav-link to="/quiz">
           <c-icon>description</c-icon>
           <span>My Quiz</span>
-        </c-nav-item>
+        </c-nav-link>
         <c-nav-item>
           <c-icon>info</c-icon>
           <span>About</span>
@@ -29,12 +29,14 @@
 import AppBar from "../components/CAppBar.vue";
 import Modal from "./modal/Modal";
 import CNavItem from "@/components/CNavItem.vue";
+import CNavLink from "@/components/CNavLink.vue";
 
 export default {
   components: {
     AppBar,
     Modal,
     CNavItem,
+    CNavLink,
   },
 };
 </script>

@@ -1,5 +1,9 @@
 <template>
-  <li class="nav-item" :class="{'active': active}">
+  <li
+    class="nav-item"
+    :class="{ active: active }"
+    @click="$emit('click', $event)"
+  >
     <slot></slot>
   </li>
 </template>
@@ -7,12 +11,12 @@
 <script>
 export default {
   props: {
-    'active': {
+    active: {
       type: Boolean,
-      default: false
-    }
-  }
-}
+      default: false,
+    },
+  },
+};
 </script>
 
 <style>
@@ -25,18 +29,19 @@ export default {
 }
 
 .nav-item > .material-icons + span {
-   /* TODO: make line-height bigger  */
+  /* TODO: make line-height bigger  */
   @apply leading-normal align-top;
   @apply font-roboto font-medium text-button;
 }
 
 .nav-item::after {
   @apply inline-block top-0 right-0 absolute;
-  @apply  w-0.5 h-full;
-  content: '';
+  @apply w-0.5 h-full;
+  content: "";
 }
 
-.nav-item:hover::after, .nav-item.active::after  {
+.nav-item:hover::after,
+.nav-item.active::after {
   @apply bg-current;
 }
 
