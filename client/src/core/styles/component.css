@@ -10,6 +10,15 @@
   @apply bg-white mx-auto p-4 shadow-lg;
 }
 
+.card {
+  @apply bg-white p-4 transition-shadow;
+  @apply hover:shadow-md;
+}
+
+.card:active {
+  @apply bg-gray-50;
+}
+
 .form {
   @apply max-w-md w-full m-auto;
 }

@@ -17,10 +17,22 @@ module.exports = {
             letterSpacing: "0.5px",
           },
         ],
+        caption: [
+          "0.75rem",
+          {
+            letterSpacing: "0.4px",
+          },
+        ],
         headline6: [
           "1.25rem",
           {
             letterSpacing: "0.15px",
+          },
+        ],
+        headline5: [
+          "1.5rem",
+          {
+            letterSpacing: "0",
           },
         ],
       },

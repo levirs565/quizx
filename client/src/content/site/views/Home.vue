@@ -1,16 +1,41 @@
 <template>
-  <div>
-    <div class="bg-green-500 h-64 text-white py-4 text-center">
-      <h1 class="text-4xl font-semibold">SoalKU</h1>
-      <p class="text-2xl">Proyek Pembelajaran Interaktif</p>
-      <router-link to="/quiz" class="button mt-16 inline-block">Jelajahi Paket Soal</router-link>
-    </div>
+  <div class="container p-4">
+    <h1 class="fonts-roboto text-headline5 mb-4">Explore Quiz</h1>
+
+    <ul>
+      <router-link
+        :to="`/quiz/${quiz.id}`"
+        v-for="quiz in quizList"
+        :key="quiz.id"
+        tag="li"
+        v-slot="{ navigate }"
+      >
+        <quiz-summary-card :quiz="quiz" @click="navigate" />
+      </router-link>
+    </ul>
   </div>
 </template>
 
 <script>
-export default {};
+import { Quiz } from "@/api.js";
+import QuizSummaryCard from "../../components/QuizSummaryCard.vue";
+
+export default {
+  components: {
+    QuizSummaryCard,
+  },
+  data() {
+    return {
+      quizList: [],
+    };
+  },
+
+  mounted() {
+    Quiz.getQuizList().then((val) => {
+      this.quizList = val.list;
+    });
+  },
+};
 </script>
 
-<style>
-</style>
+<style></style>
