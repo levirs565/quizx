@@ -31,9 +31,7 @@
 </template>
 
 <script>
-import CIconButton from "../../core/components/CIconButton.vue";
 export default {
-  components: { CIconButton },
   data() {
     return {
       burgerActive: false,

@@ -26,9 +26,9 @@
 </template>
 
 <script>
-import AppBar from "./navigation/CAppBar.vue";
+import AppBar from "../components/CAppBar.vue";
 import Modal from "./modal/Modal";
-import CNavItem from "@/core/components/CNavItem.vue";
+import CNavItem from "@/components/CNavItem.vue";
 
 export default {
   components: {

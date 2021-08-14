@@ -17,9 +17,9 @@ import {
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 import vClickOutside from "v-click-outside";
 import "@/style.css";
-import CButton from "@/core/components/CButton.vue";
-import CIcon from "@/core/components/CIcon.vue";
-import CIconButton from "@/core/components/CIconButton.vue";
+import CButton from "@/components/CButton.vue";
+import CIcon from "@/components/CIcon.vue";
+import CIconButton from "@/components/CIconButton.vue";
 
 library.add(
   faCheck,
