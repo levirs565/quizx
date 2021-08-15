@@ -29,6 +29,12 @@ module.exports = {
             letterSpacing: "0.4px",
           },
         ],
+        overline: [
+          "0.625rem",
+          {
+            letterSpacing: "1.5px",
+          },
+        ],
         headline6: [
           "1.25rem",
           {
