@@ -9,6 +9,7 @@
         :key="quiz.id"
         tag="li"
         v-slot="{ navigate }"
+        class="mb-2"
       >
         <quiz-summary-card :quiz="quiz" @click="navigate" />
       </router-link>

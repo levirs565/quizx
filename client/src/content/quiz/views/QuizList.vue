@@ -9,6 +9,7 @@
         :key="quiz.id"
         tag="li"
         v-slot="{ navigate }"
+        class="mb-2"
       >
         <quiz-summary-card :quiz="quiz" @click="navigate" />
       </router-link>
@@ -43,7 +44,7 @@ export default {
     },
     async createQuiz(title) {
       const quiz = await Quiz.createQuiz({ title });
-      this.$router.push(`/quiz/${quiz.id}`)
+      this.$router.push(`/quiz/${quiz.id}`);
     },
   },
   mounted() {
