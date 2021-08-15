@@ -17,6 +17,12 @@ module.exports = {
             letterSpacing: "0.5px",
           },
         ],
+        body2: [
+          "0.875rem",
+          {
+            letterSpacing: "0.25px",
+          },
+        ],
         caption: [
           "0.75rem",
           {
