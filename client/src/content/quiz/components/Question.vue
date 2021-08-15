@@ -1,51 +1,62 @@
 <template>
-  <form>
-    <p v-html="question.question"></p>
-    <label v-for="(entry, index) in question.choices" :key="index" class="block">
-      <input
-        type="radio"
-        name="choices"
-        :value="index"
-        v-model="answer"
-        @click="radioClicked"
-      />
-      <p class="inline-block ml-2" v-html="entry"></p>
-    </label>
-    <slot v-bind:answer="answer" v-bind:question="question"></slot>
-  </form>
+  <c-card>
+    <c-card-overline>Question {{ index }}</c-card-overline>
+    <p class="w-full mb-4" v-html="question.question"></p>
+
+    <c-radio
+      v-for="(entry, index) in question.choices"
+      :key="index"
+      v-model="answer"
+      name="choices"
+      :thisValue="index"
+      class="w-full"
+    >
+      <p v-html="entry"></p>
+    </c-radio>
+
+    <c-card-buttons>
+      <c-button @click="checkAnswer" v-if="answer != -1" type="primary"
+        >Check Answer</c-button
+      >
+      <span
+        v-if="answerResult"
+        class="ml-4 text-body2"
+        :class="answerResult.correct ? 'text-green-600' : 'text-red-600'"
+      >
+        Jawaban anda
+        {{ answerResult.correct ? "benar" : "salah coba lagi." }}
+      </span>
+    </c-card-buttons>
+  </c-card>
 </template>
 
 <script>
+import CCardOverline from "@/components/card/CCardOverline.vue";
+import CCard from "@/components/card/CCard.vue";
+import CRadio from "@/components/CRadio.vue";
+import CCardButtons from "@/components/card/CCardButtons.vue";
 export default {
+  components: { CCardOverline, CCard, CRadio, CCardButtons },
   props: {
     question: Object,
     initialAnswer: {
       type: Number,
       default: -1,
     },
-    radioEnabled: {
-      type: Boolean,
-      default: true
-    }
+    index: Number,
   },
   data() {
     return {
-      answer: this.initialAnswer
-    }
+      answer: this.initialAnswer,
+      answerResult: null,
+    };
   },
   methods: {
-    radioClicked(e) {
-      if (!this.radioEnabled)
-        e.preventDefault()
-    }
+    checkAnswer() {
+      this.$emit("answer", this);
+    },
   },
-  watch: {
-    answer() {
-      this.$emit("change", this)
-    }
-  }
 };
 </script>
 
-<style scoped>
-</style>
+<style scoped></style>
