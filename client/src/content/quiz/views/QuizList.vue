@@ -1,8 +1,8 @@
 <template>
-  <div class="container p-4">
+  <div class="container p-4 mb-14">
     <h1 class="fonts-roboto text-headline5 mb-4">My Quiz</h1>
 
-    <ul>
+    <ul class="mb-4">
       <router-link
         :to="`/quiz/${quiz.id}`"
         v-for="quiz in quizList"
@@ -15,7 +15,7 @@
       </router-link>
     </ul>
 
-    <c-fab class="absolute right-4 bottom-4" @click="showCreateQuiz">
+    <c-fab class="fixed right-4 bottom-4" @click="showCreateQuiz">
       <c-icon>add</c-icon>
     </c-fab>
   </div>

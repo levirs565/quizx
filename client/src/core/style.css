@@ -1,3 +1,6 @@
-@import 'styles/layout.css';
-@import 'styles/text.css';
-@import 'styles/component.css';
+@import "styles/text.css";
+@import "styles/component.css";
+
+body {
+  @apply bg-gray-100;
+}

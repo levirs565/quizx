@@ -2,7 +2,7 @@
   <div class="flex flex-col">
     <modal></modal>
     <app-bar class="z-20"></app-bar>
-    <nav class="absolute w-64 h-full pt-14 text-center bg-white">
+    <nav class="fixed w-64 h-full top-14 text-center bg-white">
       <c-button type="primary m-4">Create Quiz</c-button>
       <ul class="text-left">
         <c-nav-link to="/">
@@ -19,7 +19,7 @@
         </c-nav-item>
       </ul>
     </nav>
-    <div class="ml-64">
+    <div class="ml-64 mt-14">
       <router-view></router-view>
     </div>
   </div>

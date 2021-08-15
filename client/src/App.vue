@@ -1,12 +1,12 @@
 <template>
-  <router-view class="bg-gray-100 h-screen"></router-view>
+  <router-view></router-view>
 </template>
 
 <script>
 export default {
   mounted() {
     this.$store.dispatch("updateUser");
-  }
+  },
 };
 </script>
 
