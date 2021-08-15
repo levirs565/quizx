@@ -25,7 +25,7 @@
 import { Quiz } from "@/api.js";
 import QuizSummaryCard from "@/content/components/QuizSummaryCard.vue";
 import CFab from "@/components/CFab.vue";
-import ModalNewQuiz from "../components/ModalNewQuiz.vue";
+import ModalNewQuiz from "../components/DialogCreateQuiz.vue";
 import showModal from "@/content/modal/bus";
 
 export default {
