@@ -1,128 +1,99 @@
 <template>
-  <div class="box my-4">
-    <div class="overflow-auto mb-4">
-      <span v-text="questionTitle" />
-      <button class="button danger ml-4 float-right" @click="deleteQuestion" v-show="question.id != 'new'">
-        Hapus
-      </button>
-      <button class="button primary float-right" @click="toEditMode" v-show="!isEditMode">
-        Edit
-      </button>
-      <button class="button primary float-right" @click="saveQuestion" v-show="isEditMode" :disabled="question.question.length == 0">
-        Save
-      </button>
-    </div>
+  <c-card>
+    <c-card-overline>Question {{ index + 1 }}</c-card-overline>
+    <c-text-input
+      class="w-full mb-2"
+      v-model="question.question"
+      multiLine
+      ref="questionInput"
+    ></c-text-input>
 
-    <question
-      v-if="!isEditMode"
-      :question="question"
-      :initialAnswer="question.answer"
-      :radioEnabled="false"
+    <c-radio
+      v-for="(entry, index) in question.choices"
+      :key="index"
+      v-model="question.answer"
+      name="choices"
+      :thisValue="index"
+      class="w-full mb-2"
     >
-    </question>
-    <form v-else class="overflow-auto edit-view">
-      <textarea
-        class="input w-full"
-        v-model="question.question"
-        @input="expandInput"
-        tabindex="1"
+      <c-text-input
+        class="w-full"
+        :value="entry"
+        ref="choicesInput"
+        @input="updateChoice(index, $event)"
+        multiLine
       />
-      <div
-        v-for="(entry, index) in question.choices"
-        :key="index"
-        class="flex flex-row items-center choices"
-      >
-        <input
-          type="radio"
-          name="choices"
-          :value="index"
-          v-model="question.answer"
-        />
-        <textarea
-          v-text="entry"
-          @change="setChoiceText(index, $event.target.value)"
-          @input="expandInput"
-          class="input flex-grow"
-          :tabindex="index + 2"
-        />
-        <button class="button danger" @click="deleteChoice(index)">
-          <font-awesome icon="trash"/>
-        </button>
-      </div>
+    </c-radio>
 
-      <button class="button primary float-right" @click="newChoice">Pilihan Baru</button>
-    </form>
-  </div>
+    <c-card-buttons>
+      <c-button
+        type="primary"
+        @click="$emit('save', index, question)"
+        :disabled="question.question.length == 0"
+      >
+        Save
+      </c-button>
+    </c-card-buttons>
+    <c-card-buttons right>
+      <c-icon-button
+        v-show="question.id != 'new'"
+        @click="$emit('delete', index, question)"
+      >
+        <c-icon>delete</c-icon>
+      </c-icon-button>
+    </c-card-buttons>
+  </c-card>
 </template>
 
 <script>
-import Question from "@/content/quiz/components/Question.vue";
-
+import CCardOverline from "@/components/card/CCardOverline.vue";
+import CCard from "@/components/card/CCard.vue";
+import CRadio from "@/components/CRadio.vue";
+import CCardButtons from "@/components/card/CCardButtons.vue";
+import CTextInput from "@/components/CTextInput.vue";
+import CButton from "@/components/CButton.vue";
 export default {
   components: {
-    Question
+    CCardOverline,
+    CCard,
+    CRadio,
+    CCardButtons,
+    CTextInput,
+    CButton,
   },
   props: {
     question: Object,
-    index: Number
+    index: Number,
   },
   data() {
     return {
-      isEditMode: this.question.id == "new"
+      answerResult: null,
     };
   },
-  computed: {
-    questionTitle() {
-      return "Soal " + (this.question.id == "new" ? "Baru" : `ke ${this.index + 1}`);
-    }
-  },
   methods: {
-    async saveQuestion() {
-      await new Promise((resolve) => {
-        this.$emit("save", this.index, this.question, resolve)
-      })
-      this.isEditMode = false
-    },
-    async deleteQuestion() {
-      await new Promise((resolve) => {
-        this.$emit("delete", this.index, this.question, resolve)
-      })
-    },
-    toEditMode() {
-      this.isEditMode = true
-      this.refreshTextArea()
-    },
-    expandInput(event) {
-      const el = event.target;
+    expandInput(com) {
+      const el = com.$el;
       el.style.height = "3rem";
       const height = el.offsetHeight - el.clientHeight + el.scrollHeight;
       el.style.height = height + "px";
     },
-    refreshTextArea() {
-      this.$nextTick(() => {
-        const arr = this.$el.getElementsByTagName("textarea");
-        for (let i = 0; i < arr.length; i++) {
-          const target = arr[i];
-
-          this.expandInput({ target });
-        }
-      });
+    updateChoice(index, text) {
+      this.$set(this.question.choices, index, text);
+      this.expandInput(this.$refs.choicesInput[index]);
     },
-    setChoiceText(index, val) {
-      this.$set(this.question.choices, index, val);
+  },
+  watch: {
+    "question.question"() {
+      this.expandInput(this.$refs.questionInput);
     },
-    deleteChoice(index) {
-      this.$delete(this.question.choices, index);
-    },
-    newChoice() {
-      this.question.choices.push("");
-    },
-  }
+  },
+  mounted() {
+    this.expandInput(this.$refs.questionInput);
+    for (const com of this.$refs.choicesInput) {
+      this.expandInput(com);
+    }
+  },
 };
 </script>
 
-<style scoped>
-.edit-view > * {
-  @apply mb-2;
-}
-</style>
+<style scoped></style>

@@ -1,12 +1,20 @@
 <template>
   <c-card class="quiz-summary items-center">
-    <c-card-overline>Quiz</c-card-overline>
+    <c-card-overline class="w-full">Quiz</c-card-overline>
 
-    <p class="w-full leading-none text-headline5 mb-2">{{ quiz.title }}</p>
+    <p v-if="!editor" class="w-full leading-none text-headline5">
+      {{ quiz.title }}
+    </p>
+    <template v-else>
+      <c-text-input class="flex-grow mr-2" v-model="quiz.title" />
+      <c-icon-button @click="$emit('rename', quiz.title)"
+        ><c-icon>save</c-icon></c-icon-button
+      >
+    </template>
     <quiz-information
       :userId="quiz.userId"
       :questionCount="quiz.questions.length"
-      class="w-full"
+      class="w-full mt-2"
     ></quiz-information>
 
     <c-card-buttons>
@@ -19,11 +27,22 @@ import CCard from "@/components/card/CCard.vue";
 import CCardOverline from "@/components/card/CCardOverline.vue";
 import CCardButtons from "@/components/card/CCardButtons.vue";
 import QuizInformation from "@/content/components/QuizInformation.vue";
+import CTextInput from "@/components/CTextInput.vue";
 
 export default {
-  components: { CCard, CCardOverline, CCardButtons, QuizInformation },
+  components: {
+    CCard,
+    CCardOverline,
+    CCardButtons,
+    QuizInformation,
+    CTextInput,
+  },
   props: {
     quiz: Object,
+    editor: {
+      type: Boolean,
+      default: false,
+    },
   },
 };
 </script>

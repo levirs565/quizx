@@ -1,71 +1,73 @@
 <template>
-  <div class="container flex-col">
-    <div>
-      <h1 class="title inline-block">
-        {{ quiz.title }}
-        <font-awesome
-          icon="edit"
-          class="ml-2 cursor-pointer"
-          @click="showEditQuiz"
-        ></font-awesome>
-      </h1>
-      <button class="button danger float-right" @click="deleteQuiz">Hapus</button>
-    </div>
-    <hr class="hr" />
+  <div class="container p-4 mb-20">
+    <quiz-summary :quiz="quiz" editor @rename="renameQuiz">
+      <c-button type="danger" @click="showDeleteQuizDialog"
+        >Delete Quiz</c-button
+      >
+    </quiz-summary>
+
+    <p class="font-medium text-headline6 font-roboto my-4">Questions</p>
+
     <ul>
-      <li v-for="(question, index) in quiz.questions"
-          :key="question.id">
-        <question-editor :index="index" :question="question" @save="saveQuestion" @delete="deleteQuestion"/>
+      <li
+        v-for="(question, index) in quiz.questions"
+        :key="question.id"
+        class="mb-2"
+      >
+        <question-editor
+          :index="index"
+          :question="question"
+          @save="saveQuestion"
+          @delete="deleteQuestion"
+        />
       </li>
     </ul>
-    <button
-      class="button primary float-right"
-      @click="newQuestion"
-      >
-      Soal Baru
-    </button>
+
+    <c-fab class="fixed right-4 bottom-4" @click="newQuestion">
+      <c-icon>add</c-icon>
+    </c-fab>
   </div>
 </template>
 
 <script>
 import { Quiz } from "@/api";
-import ModalEditQuiz from "../components/ModalEditQuiz";
-import QuestionEditor from "../components/QuestionEditor.vue";
 import showModal from "@/content/modal/bus";
+import QuestionEditor from "../components/QuestionEditor.vue";
+import QuizSummary from "../components/QuizSummary.vue";
+import CFab from "@/components/CFab.vue";
+import DialogDeleteQuiz from "../components/DialogDeleteQuiz.vue";
 
 export default {
   props: {
-    quiz_id: String
+    quiz_id: String,
   },
   components: {
-    QuestionEditor
+    QuestionEditor,
+    QuizSummary,
+    CFab,
   },
   data() {
     return {
-      quiz: {}
+      quiz: {},
     };
   },
   methods: {
     refresh() {
-      Quiz.getQuizForEditor(this.quiz_id).then(val => {
+      Quiz.getQuizForEditor(this.quiz_id).then((val) => {
         this.quiz = val;
       });
+    },
+    showDeleteQuizDialog() {
+      showModal(DialogDeleteQuiz, {}, this.deleteQuiz);
     },
     deleteQuiz() {
       Quiz.deleteQuiz(this.quiz_id).then(() => {
         this.$router.replace("/quiz");
       });
     },
-    showEditQuiz() {
-      showModal(
-        ModalEditQuiz,
-        { currentName: this.quiz.title },
-        this.renameQuiz
-      );
-    },
     renameQuiz(title) {
       Quiz.renameQuizTitle(this.quiz_id, { title }).then(() => {
-        this.quiz.title = title
+        this.quiz.title = title;
       });
     },
     newQuestion() {
@@ -73,56 +75,34 @@ export default {
         id: "new",
         question: "",
         choices: ["", "", "", ""],
-        answer: 0
-      })
+        answer: 0,
+      });
     },
-    async saveQuestion(index, question, finish) {
+    async saveQuestion(index, question) {
       let result;
       if (question.id == "new") {
         const newQuestion = {
           ...question,
-          id: undefined
-        }
-        result = await Quiz.addQuestion(this.quiz_id, newQuestion)
-        this.$set(this.quiz.questions, index, result)
+          id: undefined,
+        };
+        result = await Quiz.addQuestion(this.quiz_id, newQuestion);
+        this.$set(this.quiz.questions, index, result);
       } else {
-        result = await Quiz.editQuestion(this.quiz_id, question.id, question)
+        result = await Quiz.editQuestion(this.quiz_id, question.id, question);
       }
-      finish()
     },
-    async deleteQuestion(index, question, finish) {
-      await Quiz.deleteQuestion(this.quiz_id, question.id)
-      this.$delete(this.quiz.questions, index)
-      // TODO: When id is not index dependent below code are redundant
-      this.refresh()
-      finish()
-    }
-  },
-  computed: {
-    quizURI() {
-      return `/admin/quiz/${this.quiz.id}`;
-    }
+    async deleteQuestion(index, question) {
+      await Quiz.deleteQuestion(this.quiz_id, question.id);
+      this.$delete(this.quiz.questions, index);
+    },
   },
   watch: {
     quiz_id() {
       this.refresh();
-    }
+    },
   },
   mounted() {
     this.refresh();
-  }
+  },
 };
 </script>
-
-<style src="../styles/list.css" scoped>
-</style>
-<style lang="postcss" scoped>
-.container {
-  @apply flex;
-}
-
-.container > * {
-  @apply flex-grow;
-  min-width: calc(50% - 1rem);
-}
-</style>
