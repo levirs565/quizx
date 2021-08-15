@@ -1,30 +1,22 @@
 <template>
   <div
-    class="card h-16 py-0 flex flex-row flex-wrap items-center content-center font-roboto quiz-summary-card cursor-pointer"
+    class="card h-16 py-0 flex flex-col justify-center font-roboto quiz-summary-card cursor-pointer"
     @click="$emit('click', $event)"
   >
-    <p class="text-body1  w-full">{{ quiz.title }}</p>
-    <c-icon>person</c-icon>
-    <span class="text-caption">{{ quiz.userId }}</span>
-    <c-icon class="ml-2">quiz</c-icon>
-    <span class="text-caption">{{ quiz.questionCount }} Questions</span>
+    <p class="text-body1 leading-none  w-full">{{ quiz.title }}</p>
+    <quiz-information
+      :userId="quiz.userId"
+      :questionCount="quiz.questionCount"
+    ></quiz-information>
   </div>
 </template>
 
 <script>
+import QuizInformation from "./QuizInformation.vue";
 export default {
+  components: { QuizInformation },
   props: {
     quiz: Object,
   },
 };
 </script>
-
-<style scoped>
-.quiz-summary-card >>> * {
-  @apply leading-none;
-}
-
-.quiz-summary-card >>> .material-icons {
-  @apply text-base leading-none mr-2;
-}
-</style>
