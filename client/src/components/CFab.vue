@@ -1,13 +1,11 @@
 <template>
-  <button class="fab">
+  <button class="fab" @click="$emit('click', $event)">
     <slot></slot>
-  </button>  
+  </button>
 </template>
 
 <script>
-export default {
-
-}
+export default {};
 </script>
 
 <style>
