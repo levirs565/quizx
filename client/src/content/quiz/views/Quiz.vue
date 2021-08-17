@@ -26,8 +26,15 @@
           class="my-2"
           :index="index"
           :question="question"
-          @answer="checkAnswer"
+          v-slot="{ component }"
         >
+          <c-button
+            @click="checkAnswer(component)"
+            v-if="component.answer != -1"
+            type="primary"
+            >Check Answer</c-button
+          >
+          <answer-result :result="component.extraData.result"></answer-result>
         </question>
       </li>
     </ul>
@@ -40,18 +47,19 @@ import { Quiz, Game } from "@/api.js";
 import showModal from "@/content/modal/bus";
 import QuizSummary from "../components/QuizSummary.vue";
 import DialogPlayQuiz from "../components/DialogPlayQuiz.vue";
+import AnswerResult from "../components/AnswerResult.vue";
 
 export default {
   components: {
     Question,
     QuizSummary,
+    AnswerResult,
   },
   props: {
     quiz_id: String,
   },
   data() {
     return {
-      answerResults: {},
       quiz: {
         id: undefined,
         title: "undefined",
@@ -77,7 +85,7 @@ export default {
       const id = questionComponent.question.id;
       const answer = questionComponent.answer;
       Quiz.checkQuestionAnswer(this.quiz_id, id, answer).then((val) => {
-        questionComponent.answerResult = val;
+        this.$set(questionComponent.extraData, "result", val);
       });
     },
     showPlayDialog() {

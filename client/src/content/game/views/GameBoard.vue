@@ -12,17 +12,8 @@
           :index="index"
           :question="question"
           :initialAnswer="question.answer"
-          @change="answerChanged"
+          @answerChanged="answerChanged"
         >
-          <p
-            v-if="game.isInteractive"
-            v-show="lastQuestionResult > 0"
-            class="mb-4 text-white font-semibold p-4"
-            :class="lastQuestionResult == 2 ? 'bg-green-500' : 'bg-red-500'"
-          >
-            Jawaban anda
-            {{ lastQuestionResult == 2 ? "benar" : "salah coba lagi." }}
-          </p>
         </question>
       </li>
     </ul>

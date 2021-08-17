@@ -15,17 +15,7 @@
     </c-radio>
 
     <c-card-buttons>
-      <c-button @click="checkAnswer" v-if="answer != -1" type="primary"
-        >Check Answer</c-button
-      >
-      <span
-        v-if="answerResult"
-        class="ml-4 text-body2"
-        :class="answerResult.correct ? 'text-green-600' : 'text-red-600'"
-      >
-        Jawaban anda
-        {{ answerResult.correct ? "benar" : "salah coba lagi." }}
-      </span>
+      <slot v-bind:component="this"></slot>
     </c-card-buttons>
   </c-card>
 </template>
@@ -48,12 +38,13 @@ export default {
   data() {
     return {
       answer: this.initialAnswer,
-      answerResult: null,
+      extraData: {},
     };
   },
-  methods: {
-    checkAnswer() {
-      this.$emit("answer", this);
+  methods: {},
+  watch: {
+    answer() {
+      this.$emit("answerChanged", this);
     },
   },
 };
