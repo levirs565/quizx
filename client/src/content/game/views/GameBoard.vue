@@ -1,17 +1,15 @@
 <template>
-  <div class="box container">
-    <div>
-      <button @click="stop()" class="button danger w-full mb-2">
-        Hentikan Permainan
-      </button>
-      <jumper
-        :total="questions.length"
-        :value="1"
-      ></jumper>
-    </div>
+  <div class="container p-4">
+    <h1 class="fonts-roboto text-headline5 mb-4">{{ game.quizTitle }}</h1>
+
     <ul>
-      <li v-for="question in questions" :key="question.id">
+      <li
+        v-for="(question, index) in questions"
+        :key="question.id"
+        class="mb-2"
+      >
         <question
+          :index="index"
           :question="question"
           :initialAnswer="question.answer"
           @change="answerChanged"
@@ -22,39 +20,44 @@
             class="mb-4 text-white font-semibold p-4"
             :class="lastQuestionResult == 2 ? 'bg-green-500' : 'bg-red-500'"
           >
-            Jawaban anda {{ lastQuestionResult == 2 ? "benar" : "salah coba lagi." }}
+            Jawaban anda
+            {{ lastQuestionResult == 2 ? "benar" : "salah coba lagi." }}
           </p>
         </question>
       </li>
     </ul>
+
+    <c-button @click="showFinishDialog" type="danger" class="mt-4 block ml-auto"
+      >Finish</c-button
+    >
   </div>
 </template>
 
 <script>
 import { Game } from "@/api.js";
 import Question from "../../quiz/components/Question.vue";
-import Jumper from "../components/Jumper.vue";
+import showModal from "@/content/modal/bus";
+import DialogFinishGame from "../components/DialogFinishGame.vue";
 
 export default {
   components: {
     Question,
-    Jumper
   },
   props: {
-    game_id: String
+    game_id: String,
   },
   data() {
     return {
       game: {},
       lastQuestionResult: 0,
-      questions: []
+      questions: [],
     };
   },
   methods: {
     answerChanged(data) {
       let answer = data.answer;
       let id = data.question.id;
-      Game.putAnswer(this.game_id, id, answer).then(val => {
+      Game.putAnswer(this.game_id, id, answer).then((val) => {
         if (this.game.isInteractive) {
           // TODO: Untuk permainan interaktif
           // Contoh khan academeny
@@ -67,33 +70,37 @@ export default {
               this.nextSoal();
             }
           }, 1000);
-        }       
+        }
       });
     },
     updateState() {
-      Game.getGame(this.game_id).then(val => {
-        this.game = val
+      Game.getGame(this.game_id)
+        .then((val) => {
+          this.game = val;
 
-        if (this.game.isPlaying) {
-          return Game.getAllQuestion(this.game_id);
-        }
-        
-        return Promise.resolve([])
-      }).then(val => {
-        this.questions = val
-      });
+          if (this.game.isPlaying) {
+            return Game.getAllQuestion(this.game_id);
+          }
+
+          return Promise.resolve([]);
+        })
+        .then((val) => {
+          this.questions = val;
+        });
     },
-    stop() {
+    showFinishDialog() {
+      showModal(DialogFinishGame, {}, this.finish);
+    },
+    finish() {
       Game.finishGame(this.game_id).then(() => {
         this.$router.push(`/permainan/${this.game_id}/`);
       });
-    }
+    },
   },
   mounted() {
     this.updateState();
-  }
+  },
 };
 </script>
 
-<style>
-</style>
+<style></style>
