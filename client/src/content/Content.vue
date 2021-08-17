@@ -1,7 +1,7 @@
 <template>
   <div class="flex flex-col">
     <modal></modal>
-    <app-bar class="z-20"></app-bar>
+    <app-bar></app-bar>
     <nav class="fixed w-64 h-full top-14 text-center bg-white">
       <c-button type="primary m-4">Create Quiz</c-button>
       <ul class="text-left">

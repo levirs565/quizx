@@ -1,6 +1,6 @@
 <template>
   <header
-    class="fixed top-0 w-full p-4 h-14 bg-green-500 flex flex-row items-center"
+    class="fixed top-0 w-full p-4 h-14 bg-green-500 flex flex-row items-center z-20"
   >
     <span class="text-headline6 font-medium">QuizX</span>
     <div class="flex-grow"></div>
