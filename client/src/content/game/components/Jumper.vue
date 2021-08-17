@@ -1,38 +1,25 @@
 <template>
   <div class="jumper">
-    <button
-      v-for="index in total"
+    <c-button
+      v-for="(type, index) in buttons"
       :key="index"
       @click="jumpClick(index)"
-      :class="{
-        info: current == index
-      }"
+      :type="type"
       class="button no-margin"
     >
-      {{ index }}
-    </button>
+      {{ index + 1 }}
+    </c-button>
   </div>
 </template>
 
 <script>
 export default {
-  props: ["total", "value"],
-  data() {
-    return {
-      current: this.value
-    };
-  },
+  props: ["buttons"],
   methods: {
     jumpClick(id) {
-      this.current = id;
-      this.$emit("input", this.current);
-    }
+      this.$emit("click", id);
+    },
   },
-  watch: {
-    value() {
-      this.current = this.value;
-    }
-  }
 };
 </script>
 
