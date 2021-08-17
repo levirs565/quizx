@@ -4,11 +4,11 @@
     <p class="w-full mb-4" v-html="question.question"></p>
 
     <c-radio
-      v-for="(entry, index) in question.choices"
-      :key="index"
+      v-for="(entry, choiceIndex) in question.choices"
+      :key="choiceIndex"
       v-model="answer"
-      name="choices"
-      :thisValue="index"
+      :name="`choices-${index}`"
+      :thisValue="choiceIndex"
       class="w-full"
     >
       <p v-html="entry"></p>

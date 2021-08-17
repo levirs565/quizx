@@ -9,18 +9,18 @@
     ></c-text-input>
 
     <c-radio
-      v-for="(entry, index) in question.choices"
-      :key="index"
+      v-for="(entry, choiceIndex) in question.choices"
+      :key="choiceIndex"
       v-model="question.answer"
-      name="choices"
-      :thisValue="index"
+      :name="`choices-${index}`"
+      :thisValue="choiceIndex"
       class="w-full mb-2"
     >
       <c-text-input
         class="w-full"
         :value="entry"
         ref="choicesInput"
-        @input="updateChoice(index, $event)"
+        @input="updateChoice(choiceIndex, $event)"
         multiLine
       />
     </c-radio>
