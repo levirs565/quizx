@@ -1,9 +1,16 @@
 <template>
   <div class="container p-4">
     <quiz-summary :quiz="quiz">
-      <c-button type="primary">Play</c-button>
+      <c-button
+        v-if="$store.state.core.user"
+        type="primary"
+        @click="showPlayDialog"
+        >Play</c-button
+      >
       <router-link
-        v-if="$store.state.core.user && $store.state.core.user.id == quiz.userId"
+        v-if="
+          $store.state.core.user && $store.state.core.user.id == quiz.userId
+        "
         :to="`/quiz/${quiz_id}/edit`"
         v-slot="{ navigate, href }"
       >
@@ -29,8 +36,10 @@
 
 <script>
 import Question from "../components/Question";
-import { Quiz } from "@/api.js";
+import { Quiz, Game } from "@/api.js";
+import showModal from "@/content/modal/bus";
 import QuizSummary from "../components/QuizSummary.vue";
+import DialogPlayQuiz from "../components/DialogPlayQuiz.vue";
 
 export default {
   components: {
@@ -69,6 +78,14 @@ export default {
       const answer = questionComponent.answer;
       Quiz.checkQuestionAnswer(this.quiz_id, id, answer).then((val) => {
         questionComponent.answerResult = val;
+      });
+    },
+    showPlayDialog() {
+      showModal(DialogPlayQuiz, {}, this.playGame);
+    },
+    playGame(interactive) {
+      Game.playGame(this.quiz.id, interactive).then((game) => {
+        this.$router.push(`/permainan/${game.id}/board`);
       });
     },
   },
