@@ -1,32 +1,58 @@
 <template>
-  <form class="box form" action="none" @submit.prevent="start">
-    <h1 class="title">Hasil Permainan</h1>
-    <hr class="hr">
-    <game-result :results="result"></game-result>
-  </form>
+  <div class="container p-4">
+    <c-card>
+      <c-card-overline>Game</c-card-overline>
+      <p class="w-full leading-none text-headline5 mb-2">
+        {{ game.quizTitle }}
+      </p>
+
+      <table class="text-body2 table-auto game-result-table">
+        <tr>
+          <td>Score</td>
+          <td>N/A</td>
+        </tr>
+        <tr>
+          <td>Correct</td>
+          <td>{{ game.result.correct }}</td>
+        </tr>
+        <tr>
+          <td>Wrong</td>
+          <td>{{ game.result.wrong }}</td>
+        </tr>
+        <tr>
+          <td>Unanswered</td>
+          <td>{{ game.result.notAnswered }}</td>
+        </tr>
+      </table>
+    </c-card>
+  </div>
 </template>
 
 <script>
-import GameResult from "../components/GameResult.vue";
 import { Game } from "@/api";
+import CCard from "@/components/card/CCard.vue";
+import CCardOverline from "@/components/card/CCardOverline.vue";
 
 export default {
-  components: { GameResult },
+  components: { CCard, CCardOverline },
   props: {
-    game_id: String
+    game_id: String,
   },
   data() {
     return {
-      result: undefined
+      game: undefined,
     };
   },
   mounted() {
-    Game.getGame(this.game_id).then(game => {
-      this.result = game.result
-    })
-  }
+    Game.getGame(this.game_id).then((game) => {
+      this.game = game;
+    });
+  },
 };
 </script>
 
-<style>
+<style scoped>
+.game-result-table >>> tr > td + td {
+  @apply pl-4;
+}
 </style>
