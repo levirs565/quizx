@@ -84,7 +84,7 @@ export default {
     },
     finish() {
       Game.finishGame(this.game_id).then(() => {
-        this.$router.push(`/permainan/${this.game_id}/`);
+        this.$router.replace(`/permainan/${this.game_id}/`);
       });
     },
   },
