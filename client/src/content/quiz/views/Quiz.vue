@@ -3,7 +3,7 @@
     <quiz-summary :quiz="quiz">
       <c-button type="primary">Play</c-button>
       <router-link
-        v-if="$store.state.core.user.id == quiz.userId"
+        v-if="$store.state.core.user && $store.state.core.user.id == quiz.userId"
         :to="`/quiz/${quiz_id}/edit`"
         v-slot="{ navigate, href }"
       >
@@ -44,6 +44,7 @@ export default {
     return {
       answerResults: {},
       quiz: {
+        id: undefined,
         title: "undefined",
         questions: [],
       },
