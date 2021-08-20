@@ -1,5 +1,5 @@
 <template>
-  <div class="container p-4 mb-20">
+  <div class="container mb-20">
     <quiz-summary :quiz="quiz" editor @rename="renameQuiz">
       <c-button type="danger" @click="showDeleteQuizDialog"
         >Delete Quiz</c-button

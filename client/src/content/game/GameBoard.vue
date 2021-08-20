@@ -45,12 +45,12 @@
 
 <script>
 import { Game } from "@/api.js";
-import Question from "../../quiz/components/Question.vue";
+import Question from "../quiz/components/Question.vue";
 import showModal from "@/content/modal/bus";
-import DialogFinishGame from "../components/DialogFinishGame.vue";
+import DialogFinishGame from "./components/DialogFinishGame.vue";
 import CAppBar from "@/components/CAppBar.vue";
 import Modal from "@/content/modal/Modal.vue";
-import Jumper from "../components/Jumper.vue";
+import Jumper from "./components/Jumper.vue";
 import CCard from "@/components/card/CCard.vue";
 
 export default {

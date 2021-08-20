@@ -1,5 +1,5 @@
 <template>
-  <div class="container p-4">
+  <div class="container">
     <c-card>
       <c-card-overline>Game</c-card-overline>
       <p class="w-full leading-none text-headline5 mb-2">

@@ -1,5 +1,5 @@
 <template>
-  <div class="container p-4 mb-14">
+  <div class="container mb-14">
     <h1 class="fonts-roboto text-headline5 mb-4">My Quiz</h1>
 
     <ul class="mb-4">

@@ -42,12 +42,12 @@
 </template>
 
 <script>
-import Question from "../components/Question";
+import Question from "./components/Question";
 import { Quiz, Game } from "@/api.js";
 import showModal from "@/content/modal/bus";
-import QuizSummary from "../components/QuizSummary.vue";
-import DialogPlayQuiz from "../components/DialogPlayQuiz.vue";
-import AnswerResult from "../components/AnswerResult.vue";
+import QuizSummary from "./components/QuizSummary.vue";
+import DialogPlayQuiz from "./components/DialogPlayQuiz.vue";
+import AnswerResult from "./components/AnswerResult.vue";
 
 export default {
   components: {
