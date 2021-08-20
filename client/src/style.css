@@ -7,3 +7,7 @@
 .container {
   @apply p-4;
 }
+
+.page-title {
+  @apply font-roboto text-headline5 mb-4;
+}

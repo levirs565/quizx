@@ -13,7 +13,7 @@
     </nav>
     <div class="ml-80 mt-14">
       <div class="container " ref="container">
-        <h1 class="fonts-roboto text-headline5 mb-4">{{ game.quizTitle }}</h1>
+        <h1 class="page-title">{{ game.quizTitle }}</h1>
 
         <ul>
           <li
