@@ -18,7 +18,7 @@
       </router-link>
     </quiz-summary>
 
-    <p class="font-medium text-headline6 font-roboto my-4">Questions</p>
+    <p class="page-title2">Questions</p>
 
     <ul>
       <li v-for="(question, index) in quiz.questions" :key="question.id">
