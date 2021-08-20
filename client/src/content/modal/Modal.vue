@@ -1,13 +1,18 @@
 <template>
-  <div class="modal-container" :class="{
-    'active': haveContent
-  }" v-show="haveContent">
+  <div
+    class="modal-container"
+    :class="{
+      active: haveContent,
+    }"
+    v-show="haveContent"
+  >
     <component
       class="m-auto"
       v-if="haveContent"
       :is="component"
       v-bind="props"
       v-click-outside="hideModal"
+      @hide="hideModal"
       @submit="performSubmit"
     ></component>
   </div>
@@ -22,7 +27,7 @@ export default {
       haveContent: false,
       component: undefined,
       props: undefined,
-      submitCallback: undefined
+      submitCallback: undefined,
     };
   },
   methods: {
@@ -43,14 +48,14 @@ export default {
       const cb = this.submitCallback;
       this.hideModal();
       cb(e);
-    }
+    },
   },
   mounted() {
     bus.$on(event, this.showModal);
   },
   beforeDestroy() {
     bus.$off(event, this.showModal);
-  }
+  },
 };
 </script>
 

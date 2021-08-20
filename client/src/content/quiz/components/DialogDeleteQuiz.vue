@@ -3,7 +3,7 @@
     <c-dialog-title>Delete Quiz?</c-dialog-title>
     <c-dialog-text>This action is permanent.</c-dialog-text>
     <c-dialog-buttons>
-      <c-button @click.prevent="">Cancel</c-button>
+      <c-button @click.prevent="$emit('hide')">Cancel</c-button>
       <c-button type="danger">Delete</c-button>
     </c-dialog-buttons>
   </c-dialog>

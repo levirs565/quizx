@@ -5,7 +5,7 @@
       >Make sure all questions are answered correctly.
     </c-dialog-text>
     <c-dialog-buttons>
-      <c-button @click.prevent="">Cancel</c-button>
+      <c-button @click.prevent="$emit('hide')">Cancel</c-button>
       <c-button type="danger">Finish</c-button>
     </c-dialog-buttons>
   </c-dialog>
