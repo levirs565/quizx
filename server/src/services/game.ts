@@ -16,7 +16,7 @@ export async function playGame(session: Session, quizId: string, isInteractive: 
   const correctAnswers = quiz.questions.map((question) => question.answer);
   const questions: QuestionWAnswerWoId[] = quiz.questions.map((question) => ({
     ...question.toQuestionWAnswer!(),
-    jawaban: -1,
+    answer: -1
   }));
 
   const game = new GameModel({
