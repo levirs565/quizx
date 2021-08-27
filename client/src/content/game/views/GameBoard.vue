@@ -117,7 +117,7 @@ export default {
     },
     finish() {
       Game.finishGame(this.game_id).then(() => {
-        this.$router.replace(`/permainan/${this.game_id}/`);
+        this.$router.replace(`/game/${this.game_id}/`);
       });
     },
     getElementTop(el) {

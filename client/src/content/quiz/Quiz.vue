@@ -93,7 +93,7 @@ export default {
     },
     playGame(interactive) {
       Game.playGame(this.quiz.id, interactive).then((game) => {
-        this.$router.push(`/permainan/${game.id}/board`);
+        this.$router.push(`/game/${game.id}/board`);
       });
     },
   },

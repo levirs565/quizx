@@ -85,26 +85,26 @@ export const User = {
 
 export const Game = {
   async playGame(quizId, isInteractive) {
-    const res = await instance.post('/permainan/play', {
+    const res = await instance.post('/game/play', {
       quizId,
       isInteractive,
     });
     return throwError(res);
   },
   async getGame(id) {
-    const res = await instance.get(`/permainan/${id}`)
+    const res = await instance.get(`/game/${id}`)
     return throwError(res)
   },
   async getAllQuestion(gameId) {
-    const res = await instance.get(`/permainan/${gameId}/question/`);
+    const res = await instance.get(`/game/${gameId}/question/`);
     return throwError(res);
   },
   async putAnswer(gameId, questionIndex, answer) {
-    const res = await instance.put(`/permainan/${gameId}/question/${questionIndex}`, { answer });
+    const res = await instance.put(`/game/${gameId}/question/${questionIndex}`, { answer });
     return throwError(res);
   },
   async finishGame(gameId) {
-    const res = await instance.post(`/permainan/${gameId}/finish`);
+    const res = await instance.post(`/game/${gameId}/finish`);
     return throwError(res);
   },
 };

@@ -13,6 +13,6 @@ route.get('/test', (_req: Request, res: Response) => {
 
 route.use('/quiz', QuizRoutes);
 route.use('/user', UserRoutes);
-route.use('/permainan', GameRoutes);
+route.use('/game', GameRoutes);
 
 export default route;

@@ -32,14 +32,14 @@ export default [
         component: QuizEditor,
       },
       {
-        path: "permainan/:game_id",
+        path: "game/:game_id",
         component: GameResult,
         props: true,
       },
     ],
   },
   {
-    path: "/permainan/:game_id/board",
+    path: "/game/:game_id/board",
     props: true,
     component: GameBoard,
   },
