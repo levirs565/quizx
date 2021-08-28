@@ -32,9 +32,16 @@ export default {
   },
 
   mounted() {
-    Quiz.getQuizList().then((val) => {
-      this.quizList = val.list;
-    });
+    Quiz.getQuizList()
+      .then((val) => {
+        this.quizList = val.list;
+      })
+      .catch(() => {
+        this.$buefy.toast.open({
+          message: "Cannot load Quiz",
+          type: "is-danger",
+        });
+      });
   },
 };
 </script>

@@ -49,9 +49,16 @@ export default {
   },
   mounted() {
     // Only show current user quiz
-    Quiz.getQuizList().then((val) => {
-      this.quizList = val.list;
-    });
+    Quiz.getQuizList()
+      .then((val) => {
+        this.quizList = val.list;
+      })
+      .catch(() => {
+        this.$buefy.toast.open({
+          message: "Cannot load Quiz list",
+          type: "is-danger",
+        });
+      });
   },
 };
 </script>

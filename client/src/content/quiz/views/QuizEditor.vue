@@ -53,9 +53,16 @@ export default {
   },
   methods: {
     refresh() {
-      Quiz.getQuizForEditor(this.quiz_id).then((val) => {
-        this.quiz = val;
-      });
+      Quiz.getQuizForEditor(this.quiz_id)
+        .then((val) => {
+          this.quiz = val;
+        })
+        .catch(() => {
+          this.$buefy.toast.open({
+            message: "Cannot load quiz for editing",
+            type: "is-danger",
+          });
+        });
     },
     showDeleteQuizDialog() {
       showModal(DialogDeleteQuiz, {}, this.deleteQuiz);

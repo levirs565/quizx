@@ -77,9 +77,16 @@ export default {
   },
   methods: {
     updateQuiz() {
-      Quiz.getQuiz(this.quiz_id).then((val) => {
-        this.quiz = val;
-      });
+      Quiz.getQuiz(this.quiz_id)
+        .then((val) => {
+          this.quiz = val;
+        })
+        .catch(() => {
+          this.$buefy.toast.open({
+            message: "Cannot load Quiz",
+            type: "is-danger",
+          });
+        });
     },
     checkAnswer(questionComponent) {
       const id = questionComponent.question.id;
