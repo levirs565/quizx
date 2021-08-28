@@ -1,29 +1,34 @@
 <template>
   <c-card>
     <c-card-overline>Question {{ index + 1 }}</c-card-overline>
-    <c-text-input
-      class="w-full mb-2"
-      v-model="question.question"
-      multiLine
-      ref="questionInput"
-    ></c-text-input>
+    <b-field class="w-full">
+      <b-input
+        class="mb-2"
+        expanded
+        v-model="question.question"
+        type="textarea"
+        ref="questionInput"
+      ></b-input>
+    </b-field>
 
-    <c-radio
+    <b-field
       v-for="(entry, choiceIndex) in question.choices"
       :key="choiceIndex"
-      v-model="question.answer"
-      :name="`choices-${index}`"
-      :thisValue="choiceIndex"
-      class="w-full mb-2"
+      class="w-full"
     >
-      <c-text-input
-        class="w-full"
+      <b-radio
+        v-model="question.answer"
+        :native-value="choiceIndex"
+        type="is-success"
+      />
+      <b-input
         :value="entry"
         ref="choicesInput"
+        expanded
         @input="updateChoice(choiceIndex, $event)"
-        multiLine
-      />
-    </c-radio>
+        type="textarea"
+      ></b-input>
+    </b-field>
 
     <c-card-buttons>
       <c-button
@@ -47,17 +52,13 @@
 <script>
 import CCardOverline from "@/components/card/CCardOverline.vue";
 import CCard from "@/components/card/CCard.vue";
-import CRadio from "@/components/CRadio.vue";
 import CCardButtons from "@/components/card/CCardButtons.vue";
-import CTextInput from "@/components/CTextInput.vue";
 import CButton from "@/components/CButton.vue";
 export default {
   components: {
     CCardOverline,
     CCard,
-    CRadio,
     CCardButtons,
-    CTextInput,
     CButton,
   },
   props: {
@@ -71,7 +72,7 @@ export default {
   },
   methods: {
     expandInput(com) {
-      const el = com.$el;
+      const el = com.$el.getElementsByTagName("textarea")[0];
       el.style.height = "3rem";
       const height = el.offsetHeight - el.clientHeight + el.scrollHeight;
       el.style.height = height + "px";
