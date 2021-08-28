@@ -10,11 +10,11 @@
       </router-link>
 
       <template v-else>
-        <c-icon-button
+        <b-button
           class="w-10 h-10 p-0 text-center rounded-full bg-white"
           @click="toggleUserBox"
-          ><c-icon class="leading-10">person</c-icon></c-icon-button
-        >
+          icon-right="account"
+        />
 
         <div
           ref="userbox"
@@ -22,7 +22,7 @@
           v-show="showUserBox"
           v-click-outside="hideUserBox"
         >
-          <c-icon class="text-6xl">person</c-icon>
+          <b-icon size="is-large" class="text-6xl" icon="account" />
           <p v-text="username.name" class="font-semibold mb-4"></p>
 
           <c-button type="danger" @click="userLogout">Logout</c-button>

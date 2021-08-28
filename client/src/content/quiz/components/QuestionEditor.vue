@@ -35,12 +35,11 @@
       </c-button>
     </c-card-buttons>
     <c-card-buttons right>
-      <c-icon-button
+      <b-button
         v-show="question.id != 'new'"
+        icon-right="delete"
         @click="$emit('delete', index, question)"
-      >
-        <c-icon>delete</c-icon>
-      </c-icon-button>
+      />
     </c-card-buttons>
   </c-card>
 </template>

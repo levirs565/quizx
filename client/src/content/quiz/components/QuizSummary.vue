@@ -7,9 +7,10 @@
     </p>
     <template v-else>
       <c-text-input class="flex-grow mr-2" v-model="quiz.title" />
-      <c-icon-button @click="$emit('rename', quiz.title)"
-        ><c-icon>save</c-icon></c-icon-button
-      >
+      <b-button
+        icon-right="content-save"
+        @click="$emit('rename', quiz.title)"
+      />
     </template>
     <quiz-information
       :userId="quiz.userId"

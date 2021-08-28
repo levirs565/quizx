@@ -16,7 +16,7 @@
     </ul>
 
     <c-fab class="fixed right-4 bottom-4" @click="showCreateQuiz">
-      <c-icon>add</c-icon>
+      <b-icon icon="plus" />
     </c-fab>
   </div>
 </template>

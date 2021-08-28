@@ -6,15 +6,15 @@
       <c-button type="primary m-4">Create Quiz</c-button>
       <ul class="text-left">
         <c-nav-link to="/">
-          <c-icon>home</c-icon>
+          <b-icon icon="home" />
           <span>Home</span>
         </c-nav-link>
         <c-nav-link to="/quiz">
-          <c-icon>description</c-icon>
+          <b-icon icon="file-document" />
           <span>My Quiz</span>
         </c-nav-link>
         <c-nav-item>
-          <c-icon>info</c-icon>
+          <b-icon icon="information" />
           <span>About</span>
         </c-nav-item>
       </ul>
