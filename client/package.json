@@ -9,7 +9,9 @@
     "sb": "start-storybook"
   },
   "dependencies": {
+    "@mdi/font": "^5.9.55",
     "axios": "^0.21.1",
+    "buefy": "^0.9.10",
     "bulma": "^0.7.4",
     "core-js": "^3.6.5",
     "v-click-outside": "^3.0.0",

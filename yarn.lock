@@ -1830,6 +1830,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@mdi/font@npm:^5.9.55":
+  version: 5.9.55
+  resolution: "@mdi/font@npm:5.9.55"
+  checksum: 6f1880b19bba583580abb23b2187fc31793efb3778f4bef304dcc61b571696e7b53dc4582e9393d033962f0b487b6f7b815208353cd236148fdc8f07d96fbd5c
+  languageName: node
+  linkType: hard
+
 "@mdx-js/mdx@npm:^1.6.22":
   version: 1.6.22
   resolution: "@mdx-js/mdx@npm:1.6.22"
@@ -1930,6 +1937,7 @@ __metadata:
   resolution: "@quizx/client@workspace:client"
   dependencies:
     "@babel/core": ^7.14.8
+    "@mdi/font": ^5.9.55
     "@storybook/vue": ^6.3.5
     "@vue/cli-plugin-babel": ~4.5.13
     "@vue/cli-plugin-eslint": ~4.5.13
@@ -1938,6 +1946,7 @@ __metadata:
     babel-eslint: ^10.1.0
     babel-loader: ^8.0.6
     babel-preset-vue: ^2.0.2
+    buefy: ^0.9.10
     bulma: ^0.7.4
     core-js: ^3.6.5
     eslint: ^6.7.2
@@ -5106,6 +5115,17 @@ __metadata:
   languageName: node
   linkType: hard
 
+"buefy@npm:^0.9.10":
+  version: 0.9.10
+  resolution: "buefy@npm:0.9.10"
+  dependencies:
+    bulma: 0.9.3
+  peerDependencies:
+    vue: ^2.6.11
+  checksum: 804f311d298785f799d16b15ad007521fccbdd9ce3d8cc0dd26a7df44c81cc84510dfbb30cf20be11fcf545611567628d834a8ec76a0a2fa1d858a241bc85fa1
+  languageName: node
+  linkType: hard
+
 "buffer-from@npm:^1.0.0":
   version: 1.1.1
   resolution: "buffer-from@npm:1.1.1"
@@ -5149,6 +5169,13 @@ __metadata:
   version: 3.0.0
   resolution: "builtin-status-codes@npm:3.0.0"
   checksum: 8e2872a69ae05c6a24adc3b6dd4c340f077ea842fc8115ab5b4896f3ab68cf38f56438d430273efd152def59313fd8ca3a35bdad4c3e88b8bb88ba4a371b3866
+  languageName: node
+  linkType: hard
+
+"bulma@npm:0.9.3":
+  version: 0.9.3
+  resolution: "bulma@npm:0.9.3"
+  checksum: 75cb093c5c0747de1b8e1f637f542fb3833340f6873d7d68b3925b75b884e7b66c18005f6526675b4c76ac2c60fbd5e183b6b0504df493d42c39923033bbb768
   languageName: node
   linkType: hard
 
