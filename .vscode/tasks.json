@@ -1,0 +1,26 @@
+{
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"type": "typescript",
+			"tsconfig": "server/tsconfig.json",
+			"problemMatcher": [
+				"$tsc"
+			],
+			"group": "build",
+			"label": "Build Server"
+		},
+		{
+			"command": "node ./dist/main.js",
+			"type": "shell",
+			"label": "Run server",
+			"dependsOn": [
+				"Build Server"
+			],
+			"problemMatcher": [],
+			"options": {
+				"cwd": "${workspaceFolder}/server"
+			}
+		}
+	]
+}

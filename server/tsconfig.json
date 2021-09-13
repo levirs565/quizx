@@ -7,5 +7,6 @@
     "module": "commonjs",
     "esModuleInterop": true,
     "strict": true,
+    "incremental": true
   }
 }
