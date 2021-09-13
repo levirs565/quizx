@@ -4,6 +4,7 @@ import {
   QuestionWAnswer,
   AnswerQuestionRequestBody,
   CreateRenameQuizRequestBody,
+  QuizWAnswer
 } from '../quiz';
 
 export const QuestionWAnswerWoIdSchema: JSONSchema<QuestionWAnswerWoId> = {
@@ -12,18 +13,18 @@ export const QuestionWAnswerWoIdSchema: JSONSchema<QuestionWAnswerWoId> = {
   additionalProperties: false,
   properties: {
     question: {
-      type: 'string',
+      type: 'string'
     },
     choices: {
       type: 'array',
       items: {
-        type: 'string',
-      },
+        type: 'string'
+      }
     },
     answer: {
-      type: 'number',
-    },
-  },
+      type: 'number'
+    }
+  }
 };
 
 export const QuestionWAnswerSchema: JSONSchema<QuestionWAnswer> = {
@@ -33,9 +34,32 @@ export const QuestionWAnswerSchema: JSONSchema<QuestionWAnswer> = {
   properties: {
     ...QuestionWAnswerWoIdSchema.properties!,
     id: {
-      type: 'string',
+      type: 'string'
+    }
+  }
+};
+
+export const QuizWAnswerSchema: JSONSchema<QuizWAnswer> = {
+  properties: {
+    id: {
+      type: 'string'
     },
+    questions: {
+      items: {
+        ...QuestionWAnswerSchema
+      },
+      type: 'array'
+    },
+    title: {
+      type: 'string'
+    },
+    userId: {
+      type: 'string'
+    }
   },
+  type: 'object',
+  required: ["id", "questions", "title", "userId"],
+  additionalProperties: false
 };
 
 export const AnswerQuestionRequestBodySchema: JSONSchema<AnswerQuestionRequestBody> = {
@@ -44,9 +68,9 @@ export const AnswerQuestionRequestBodySchema: JSONSchema<AnswerQuestionRequestBo
   additionalProperties: false,
   properties: {
     answer: {
-      type: 'number',
-    },
-  },
+      type: 'number'
+    }
+  }
 };
 
 export const CreateRenameQuizRequestBodySchema: JSONSchema<CreateRenameQuizRequestBody> = {
@@ -58,4 +82,4 @@ export const CreateRenameQuizRequestBodySchema: JSONSchema<CreateRenameQuizReque
       type: 'string'
     }
   }
-}
+};

@@ -45,3 +45,9 @@ export interface Quiz extends BaseQuiz {
 export interface QuizWAnswer extends BaseQuiz {
   questions: Array<QuestionWAnswer>;
 }
+
+export interface SaveQuizResult {
+  newQuestionsId: {
+    [oldId: string]: string
+  }
+}

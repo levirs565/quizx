@@ -1,10 +1,9 @@
 import { Request, Response, NextFunction } from 'express';
-import { jsonHandler, jsonHandlerSchema, actionHandler, actionHandlerSchema } from './helper';
+import { jsonHandler, actionHandler, actionHandlerSchema, jsonHandlerSchema } from './helper';
 import {
-  QuestionWAnswerWoIdSchema,
-  QuestionWAnswerSchema,
   AnswerQuestionRequestBodySchema,
-  CreateRenameQuizRequestBodySchema
+  CreateRenameQuizRequestBodySchema,
+  QuizWAnswerSchema
 } from '../types/schema/quiz';
 import * as QuizService from '../services/quiz';
 
@@ -49,32 +48,14 @@ export const getQuizForEditor = jsonHandler(async (req) => {
   return QuizService.getQuizForEditor(req.session, id);
 });
 
-export const renameQuizTitle = actionHandlerSchema(CreateRenameQuizRequestBodySchema, async (req) => {
-  const id = quizIdFromRequest(req);
 
-  return QuizService.renameQuizTitle(req.session, id, req.body.title);
-});
+export const saveQuiz = jsonHandlerSchema(QuizWAnswerSchema, async (req) => {
+  const id = quizIdFromRequest(req)
+  return QuizService.saveQuiz(req.session, id, req.body)
+})
 
 export const deleteQuiz = actionHandler(async (req) => {
   const id = quizIdFromRequest(req);
 
   return QuizService.deleteQuiz(req.session, id);
-});
-
-export const addQuestion = jsonHandlerSchema(QuestionWAnswerWoIdSchema, async (req) => {
-  const { quizId } = questionIdFromRequest(req);
-
-  return QuizService.addQuestion(req.session, quizId, req.body);
-});
-
-export const editQuestion = actionHandlerSchema(QuestionWAnswerSchema, async (req) => {
-  const { quizId, questionId } = questionIdFromRequest(req);
-
-  return QuizService.editQuestion(req.session, quizId, questionId, req.body);
-});
-
-export const deleteQuestion = actionHandler(async (req) => {
-  const { quizId, questionId } = questionIdFromRequest(req);
-
-  return QuizService.deleteQuestion(req.session, quizId, questionId);
 });

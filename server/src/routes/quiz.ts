@@ -5,11 +5,8 @@ import {
   answerQuestion,
   createQuiz,
   getQuizForEditor,
-  renameQuizTitle,
   deleteQuiz,
-  addQuestion,
-  editQuestion,
-  deleteQuestion,
+  saveQuiz
 } from '../controllers/quiz';
 
 const route = Router();
@@ -17,11 +14,8 @@ route.get('/', getQuizList);
 route.post('/', createQuiz);
 route.get('/:id', getQuiz);
 route.delete('/:id', deleteQuiz);
-route.post('/:quizId', addQuestion);
 route.get('/:id/edit', getQuizForEditor);
-route.put('/:id/rename', renameQuizTitle);
-route.put('/:quizId/:questionId', editQuestion);
-route.delete('/:quizId/:questionId', deleteQuestion);
+route.put('/:id/edit/', saveQuiz)
 route.post('/:quizId/:questionId/check', answerQuestion);
 
 export default route;
