@@ -2,13 +2,15 @@
   <div>
     <c-app-bar></c-app-bar>
     <nav class="fixed left-4 mt-7 top-1/2 transform -translate-y-1/2">
-      <c-card class="w-72">
-        <jumper
-          :buttons="jumperButtons"
-          class="w-full"
-          @click="goToQuestion"
-        ></jumper>
-      </c-card>
+      <div class="card w-72">
+        <div class="card-content">
+          <jumper
+            :buttons="jumperButtons"
+            class="w-full"
+            @click="goToQuestion"
+          ></jumper>
+        </div>
+      </div>
     </nav>
     <div class="ml-80 mt-14">
       <div class="container " ref="container">
@@ -47,14 +49,12 @@ import { Game } from "@/api.js";
 import Question from "../../quiz/components/Question.vue";
 import CAppBar from "@/components/CAppBar.vue";
 import Jumper from "../components/Jumper.vue";
-import CCard from "@/components/card/CCard.vue";
 
 export default {
   components: {
     Question,
     CAppBar,
     Jumper,
-    CCard,
   },
   props: {
     game_id: String,

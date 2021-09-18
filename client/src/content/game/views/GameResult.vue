@@ -1,40 +1,42 @@
 <template>
   <div class="container">
-    <c-card>
-      <c-card-overline>Game</c-card-overline>
-      <p class="w-full leading-none text-headline5 mb-2">
-        {{ game.quizTitle }}
-      </p>
+    <div class="card">
+      <header class="card-header">
+        <p class="card-header-title">Game</p>
+      </header>
 
-      <table class="text-body2 table-auto game-result-table">
-        <tr>
-          <td>Score</td>
-          <td>N/A</td>
-        </tr>
-        <tr>
-          <td>Correct</td>
-          <td>{{ game.result.correct }}</td>
-        </tr>
-        <tr>
-          <td>Wrong</td>
-          <td>{{ game.result.wrong }}</td>
-        </tr>
-        <tr>
-          <td>Unanswered</td>
-          <td>{{ game.result.notAnswered }}</td>
-        </tr>
-      </table>
-    </c-card>
+      <div class="card-content">
+        <p class="leading-none text-headline5 mb-2">
+          {{ game.quizTitle }}
+        </p>
+
+        <table class="text-body2 table-auto game-result-table">
+          <tr>
+            <td>Score</td>
+            <td>N/A</td>
+          </tr>
+          <tr>
+            <td>Correct</td>
+            <td>{{ game.result.correct }}</td>
+          </tr>
+          <tr>
+            <td>Wrong</td>
+            <td>{{ game.result.wrong }}</td>
+          </tr>
+          <tr>
+            <td>Unanswered</td>
+            <td>{{ game.result.notAnswered }}</td>
+          </tr>
+        </table>
+      </div>
+    </div>
   </div>
 </template>
 
 <script>
 import { Game } from "@/api";
-import CCard from "@/components/card/CCard.vue";
-import CCardOverline from "@/components/card/CCardOverline.vue";
 
 export default {
-  components: { CCard, CCardOverline },
   props: {
     game_id: String,
   },

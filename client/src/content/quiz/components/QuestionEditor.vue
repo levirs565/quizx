@@ -1,55 +1,52 @@
 <template>
-  <c-card>
-    <c-card-overline>Question {{ index + 1 }}</c-card-overline>
-    <b-field class="w-full">
-      <b-input
-        class="mb-2"
-        expanded
-        v-model="question.question"
-        type="textarea"
-        ref="questionInput"
-      ></b-input>
-    </b-field>
+  <div class="card">
+    <header class="card-header">
+      <p class="card-header-title">Question {{ index + 1 }}</p>
+    </header>
+    <div class="card-content">
+      <b-field>
+        <b-input
+          expanded
+          v-model="question.question"
+          type="textarea"
+          ref="questionInput"
+        ></b-input>
+      </b-field>
 
-    <b-field
-      v-for="(entry, choiceIndex) in question.choices"
-      :key="choiceIndex"
-      class="w-full"
-    >
-      <b-radio
-        v-model="question.answer"
-        :native-value="choiceIndex"
-        type="is-success"
-      />
-      <b-input
-        :value="entry"
-        ref="choicesInput"
-        expanded
-        @input="updateChoice(choiceIndex, $event)"
-        type="textarea"
-      ></b-input>
-    </b-field>
+      <b-field
+        v-for="(entry, choiceIndex) in question.choices"
+        :key="choiceIndex"
+      >
+        <b-radio
+          v-model="question.answer"
+          :native-value="choiceIndex"
+          type="is-success"
+        />
+        <b-input
+          :value="entry"
+          ref="choicesInput"
+          expanded
+          @input="updateChoice(choiceIndex, $event)"
+          type="textarea"
+        ></b-input>
+      </b-field>
+    </div>
 
-    <c-card-buttons right>
-      <b-button
-        v-show="question.id != 'new'"
-        icon-right="delete"
-        @click="$emit('delete', index)"
-      />
-    </c-card-buttons>
-  </c-card>
+    <footer class="card-footer level">
+      <div class="card-footer-item level-left buttons"></div>
+      <div class="card-footer-item level-right buttons">
+        <b-button
+          v-show="question.id != 'new'"
+          icon-right="delete"
+          @click="$emit('delete', index)"
+        />
+      </div>
+    </footer>
+  </div>
 </template>
 
 <script>
-import CCardOverline from "@/components/card/CCardOverline.vue";
-import CCard from "@/components/card/CCard.vue";
-import CCardButtons from "@/components/card/CCardButtons.vue";
 export default {
-  components: {
-    CCardOverline,
-    CCard,
-    CCardButtons,
-  },
   props: {
     question: Object,
     index: Number,

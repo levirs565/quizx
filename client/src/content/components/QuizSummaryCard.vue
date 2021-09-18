@@ -1,13 +1,12 @@
 <template>
-  <div
-    class="card h-16 py-0 flex flex-col justify-center font-roboto quiz-summary-card cursor-pointer"
-    @click="$emit('click', $event)"
-  >
-    <p class="text-body1 leading-none  w-full">{{ quiz.title }}</p>
-    <quiz-information
-      :userId="quiz.userId"
-      :questionCount="quiz.questionCount"
-    ></quiz-information>
+  <div class="card" @click="$emit('click', $event)">
+    <div class="card-content">
+      <p class="title is-6 mb-1">{{ quiz.title }}</p>
+      <quiz-information
+        :userId="quiz.userId"
+        :questionCount="quiz.questionCount"
+      ></quiz-information>
+    </div>
   </div>
 </template>
 

@@ -1,35 +1,36 @@
 <template>
-  <form class="box form" action="none" @submit.prevent="register">
-    <h1 class="title">Register</h1>
-    <p class="subtext">
-      <i>
-        Punya akun?&nbsp;
-        <router-link to="/auth/login">Login</router-link>
-      </i>
-    </p>
-    <hr class="hr">
+  <form class="card mx-auto" action="none" @submit.prevent="register">
+    <div class="card-content">
+      <h1 class="title">Register</h1>
+      <p class="subtext">
+        <i>
+          Punya akun?&nbsp;
+          <router-link to="/auth/login">Login</router-link>
+        </i>
+      </p>
 
-    <div class="field">
-      <label>ID</label>
-      <input class="input" type="text" v-model="userID">
+      <b-field label="ID">
+        <b-input type="text" v-model="userID" />
+      </b-field>
+
+      <b-field label="Name">
+        <b-input type="text" v-model="userName" />
+      </b-field>
+
+      <b-field label="Password">
+        <b-input type="password" v-model="userPassword" />
+      </b-field>
+
+      <b-field label="Retry Password">
+        <b-input type="password" v-model="userPassword2" />
+      </b-field>
     </div>
 
-    <div class="field">
-      <label>Name</label>
-      <input class="input" type="text" v-model="userName">
-    </div>
-
-    <div class="field">
-      <label>Password</label>
-      <input class="input" type="password" v-model="userPassword">
-    </div>
-
-    <div class="field">
-      <label>Retry Password</label>
-      <input class="input" type="password" v-model="userPassword2">
-    </div>
-
-    <input class="button primary submit" type="submit" value="Register" :disabled="!valid">
+    <footer class="card-footer level">
+      <div class="card-footer-item level-left buttons">
+        <b-button type="is-primary" :disabled="!valid">Register</b-button>
+      </div>
+    </footer>
   </form>
 </template>
 
@@ -42,7 +43,7 @@ export default {
       userID: "",
       userName: "",
       userPassword: "",
-      userPassword2: ""
+      userPassword2: "",
     };
   },
   computed: {
@@ -54,17 +55,16 @@ export default {
       if (this.userPassword.length == 0) return false;
       if (this.userPassword != this.userPassword2) return false;
       return true;
-    }
+    },
   },
   methods: {
     register() {
       User.signup(this.userID, this.userName, this.userPassword).then(() => {
         this.$router.push("/auth/login");
       });
-    }
-  }
+    },
+  },
 };
 </script>
 
-<style>
-</style>
+<style></style>

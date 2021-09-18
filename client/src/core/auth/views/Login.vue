@@ -1,25 +1,30 @@
 <template>
-  <form class="box form m-auto" action="none" @submit.prevent="login">
-    <p class="title">Login</p>
-    <p class="subtext">
-      <i>
-        Tidak punya akun?&nbsp;
-        <router-link to="/auth/register">Register</router-link>
-      </i>
-    </p>
-    <hr class="hr">
+  <form class="card mx-auto" action="none" @submit.prevent="login">
+    <div class="card-content">
+      <p class="title">Login</p>
+      <p class="subtext">
+        <i>
+          Tidak punya akun?&nbsp;
+          <router-link to="/auth/register">Register</router-link>
+        </i>
+      </p>
 
-    <div class="field">
-      <label class="font-sans">ID</label>
-      <input class="input" type="text" v-model="userID">
+      <b-field label="ID">
+        <b-input type="text" v-model="userID" />
+      </b-field>
+
+      <b-field label="Password">
+        <b-input type="password" v-model="userPassword" />
+      </b-field>
     </div>
 
-    <div class="field">
-      <label>Password</label>
-      <input class="input" type="password" v-model="userPassword">
-    </div>
-
-    <input class="button primary submit" type="submit" value="Login" :disabled="!valid">
+    <footer class="card-footer level">
+      <div class="card-footer-item level-left buttons">
+        <b-button type="is-primary" :disabled="!valid" @click="login"
+          >Login</b-button
+        >
+      </div>
+    </footer>
   </form>
 </template>
 
@@ -30,13 +35,13 @@ export default {
   data() {
     return {
       userID: "",
-      userPassword: ""
+      userPassword: "",
     };
   },
   computed: {
     valid() {
       return this.userID.length > 0 && this.userPassword.length > 0;
-    }
+    },
   },
   methods: {
     login() {
@@ -44,10 +49,9 @@ export default {
         this.$store.dispatch("updateUser");
         this.$router.push("/");
       });
-    }
-  }
+    },
+  },
 };
 </script>
 
-<style>
-</style>
+<style></style>

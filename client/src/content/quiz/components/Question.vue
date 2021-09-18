@@ -1,30 +1,33 @@
 <template>
-  <c-card>
-    <c-card-overline>Question {{ index }}</c-card-overline>
-    <p class="w-full mb-4" v-html="question.question"></p>
+  <div class="card">
+    <header class="card-header">
+      <p class="card-header-title">Question {{ index }}</p>
+    </header>
+    <div class="card-content">
+      <div class="content">
+        <p v-html="question.question"></p>
+      </div>
 
-    <b-field
-      v-for="(entry, choiceIndex) in question.choices"
-      :key="choiceIndex"
-      class="w-full"
-    >
-      <b-radio v-model="answer" :native-value="choiceIndex" type="is-success">
-        <p v-html="entry"></p>
-      </b-radio>
-    </b-field>
+      <b-field
+        v-for="(entry, choiceIndex) in question.choices"
+        :key="choiceIndex"
+      >
+        <b-radio v-model="answer" :native-value="choiceIndex" type="is-success">
+          <p v-html="entry"></p>
+        </b-radio>
+      </b-field>
+    </div>
 
-    <c-card-buttons>
-      <slot v-bind:component="this"></slot>
-    </c-card-buttons>
-  </c-card>
+    <footer class="card-footer level">
+      <div class="card-footer-item level-left buttons">
+        <slot v-bind:component="this"></slot>
+      </div>
+    </footer>
+  </div>
 </template>
 
 <script>
-import CCardOverline from "@/components/card/CCardOverline.vue";
-import CCard from "@/components/card/CCard.vue";
-import CCardButtons from "@/components/card/CCardButtons.vue";
 export default {
-  components: { CCardOverline, CCard, CCardButtons },
   props: {
     question: Object,
     initialAnswer: {
