@@ -1,22 +1,5 @@
-.control {
-  @apply flex flex-row items-center font-roboto text-body1;
-}
-
-.control > .control-button {
-  @apply mr-2 self-start;
-}
-
 .box {
   @apply bg-white mx-auto p-4 shadow-lg;
-}
-
-.card {
-  @apply bg-white p-4 transition-shadow;
-  @apply hover:shadow-md;
-}
-
-.card:active {
-  @apply bg-gray-50;
 }
 
 .form {
@@ -37,12 +20,4 @@
 
 .input {
   @apply block border-solid border py-2 px-4 shadow;
-}
-
-.list-item {
-  @apply px-4 py-2 border-solid border-b border-gray-300 cursor-pointer;
-}
-
-.list-item:hover {
-  @apply bg-gray-100;
 }
