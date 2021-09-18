@@ -30,20 +30,11 @@
       ></b-input>
     </b-field>
 
-    <c-card-buttons>
-      <c-button
-        type="primary"
-        @click="$emit('save', index, question)"
-        :disabled="question.question.length == 0"
-      >
-        Save
-      </c-button>
-    </c-card-buttons>
     <c-card-buttons right>
       <b-button
         v-show="question.id != 'new'"
         icon-right="delete"
-        @click="$emit('delete', index, question)"
+        @click="$emit('delete', index)"
       />
     </c-card-buttons>
   </c-card>
@@ -53,13 +44,11 @@
 import CCardOverline from "@/components/card/CCardOverline.vue";
 import CCard from "@/components/card/CCard.vue";
 import CCardButtons from "@/components/card/CCardButtons.vue";
-import CButton from "@/components/CButton.vue";
 export default {
   components: {
     CCardOverline,
     CCard,
     CCardButtons,
-    CButton,
   },
   props: {
     question: Object,

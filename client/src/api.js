@@ -41,24 +41,12 @@ class QuizApi {
     const res = await instance.get(`${this.path}/${id}/edit`);
     return throwError(res);
   }
-  async renameQuizTitle(id, data) {
-    const res = await instance.put(`${this.path}/${id}/rename`, data);
-    return throwError(res);
+  async saveQuiz(id, quiz) {
+    const res = await instance.put(`${this.path}/${id}/edit`, quiz)
+    return throwError(res)
   }
   async deleteQuiz(id) {
     const res = await instance.delete(`${this.path}/${id}`);
-    return throwError(res);
-  }
-  async addQuestion(quizId, data) {
-    const res = await instance.post(`${this.path}/${quizId}`, data);
-    return throwError(res);
-  }
-  async editQuestion(quizId, questionId, data) {
-    const res = await instance.put(`${this.path}/${quizId}/${questionId}`, data);
-    return throwError(res);
-  }
-  async deleteQuestion(quizId, questionId) {
-    const res = await instance.delete(`${this.path}/${quizId}/${questionId}`);
     return throwError(res);
   }
 }

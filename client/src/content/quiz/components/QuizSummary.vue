@@ -5,13 +5,7 @@
     <p v-if="!editor" class="w-full leading-none text-headline5">
       {{ quiz.title }}
     </p>
-    <template v-else>
-      <c-text-input class="flex-grow mr-2" v-model="quiz.title" />
-      <b-button
-        icon-right="content-save"
-        @click="$emit('rename', quiz.title)"
-      />
-    </template>
+    <c-text-input v-else class="flex-grow mr-2" v-model="quiz.title" />
     <quiz-information
       :userId="quiz.userId"
       :questionCount="quiz.questions.length"

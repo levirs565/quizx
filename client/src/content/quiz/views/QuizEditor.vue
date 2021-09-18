@@ -1,9 +1,10 @@
 <template>
   <div class="container mb-20">
-    <quiz-summary :quiz="quiz" editor @rename="renameQuiz">
+    <quiz-summary :quiz="quiz" editor>
       <c-button type="danger" @click="showDeleteQuizDialog"
         >Delete Quiz</c-button
       >
+      <b-button type="primary" @click="saveQuiz">Save</b-button>
     </quiz-summary>
 
     <p class="page-title2">Questions</p>
@@ -17,7 +18,6 @@
         <question-editor
           :index="index"
           :question="question"
-          @save="saveQuestion"
           @delete="deleteQuestion"
         />
       </li>
@@ -72,34 +72,36 @@ export default {
         this.$router.replace("/quiz");
       });
     },
-    renameQuiz(title) {
-      Quiz.renameQuizTitle(this.quiz_id, { title }).then(() => {
-        this.quiz.title = title;
-      });
-    },
     newQuestion() {
       this.quiz.questions.push({
-        id: "new",
+        id: "new-" + Math.random().toString(36).substr(2),
         question: "",
         choices: ["", "", "", ""],
         answer: 0,
       });
     },
-    async saveQuestion(index, question) {
-      let result;
-      if (question.id == "new") {
-        const newQuestion = {
-          ...question,
-          id: undefined,
-        };
-        result = await Quiz.addQuestion(this.quiz_id, newQuestion);
-        this.$set(this.quiz.questions, index, result);
-      } else {
-        result = await Quiz.editQuestion(this.quiz_id, question.id, question);
+    async saveQuiz() {
+      try {
+        const result = await Quiz.saveQuiz(this.quiz_id, this.quiz);
+        const newIdsMap = result.newQuestionsId
+        for (const question of this.quiz.questions) {
+          if (question.id in newIdsMap) {
+            question.id = newIdsMap[question.id]
+          } 
+        }
+        this.$buefy.toast.open({
+          message: "Quiz saved",
+          type: "is-success",
+        });
+      } catch (e) {
+        console.error(e);
+        this.$buefy.toast.open({
+          message: "Cannot save quiz",
+          type: "is-danger",
+        });
       }
     },
-    async deleteQuestion(index, question) {
-      await Quiz.deleteQuestion(this.quiz_id, question.id);
+    async deleteQuestion(index) {
       this.$delete(this.quiz.questions, index);
     },
   },
