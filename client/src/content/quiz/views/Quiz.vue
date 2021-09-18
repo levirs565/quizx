@@ -1,11 +1,11 @@
 <template>
   <div class="container">
     <quiz-summary :quiz="quiz">
-      <c-button
+      <b-button
         v-if="$store.state.core.user"
-        type="primary"
+        type="is-primary"
         @click="showPlayDialog"
-        >Play</c-button
+        >Play</b-button
       >
       <router-link
         v-if="
@@ -14,7 +14,7 @@
         :to="`/quiz/${quiz_id}/edit`"
         v-slot="{ navigate, href }"
       >
-        <c-button :href="href" @click="navigate">Edit</c-button>
+        <b-button :href="href" @click="navigate">Edit</b-button>
       </router-link>
     </quiz-summary>
 
@@ -28,11 +28,11 @@
           :question="question"
           v-slot="{ component }"
         >
-          <c-button
+          <b-button
             @click="checkAnswer(component)"
             v-if="component.answer != -1"
-            type="primary"
-            >Check Answer</c-button
+            type="is-primary"
+            >Check Answer</b-button
           >
           <answer-result :result="component.extraData.result"></answer-result>
         </question>

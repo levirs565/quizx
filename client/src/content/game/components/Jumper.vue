@@ -1,6 +1,6 @@
 <template>
   <div class="jumper">
-    <c-button
+    <b-button
       v-for="(type, index) in buttons"
       :key="index"
       @click="jumpClick(index)"
@@ -8,7 +8,7 @@
       class="button no-margin"
     >
       {{ index + 1 }}
-    </c-button>
+    </b-button>
   </div>
 </template>
 

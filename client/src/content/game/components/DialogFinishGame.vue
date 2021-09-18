@@ -5,8 +5,8 @@
       >Make sure all questions are answered correctly.
     </c-dialog-text>
     <c-dialog-buttons>
-      <c-button @click.prevent="$emit('hide')">Cancel</c-button>
-      <c-button type="danger">Finish</c-button>
+      <b-button @click.prevent="$emit('hide')">Cancel</b-button>
+      <b-button type="is-danger">Finish</b-button>
     </c-dialog-buttons>
   </c-dialog>
 </template>
@@ -15,9 +15,8 @@ import CDialog from "@/components/dialog/CDialog.vue";
 import CDialogTitle from "@/components/dialog/CDialogTitle.vue";
 import CDialogText from "@/components/dialog/CDialogText.vue";
 import CDialogButtons from "@/components/dialog/CDialogButtons.vue";
-import CButton from "@/components/CButton.vue";
 export default {
-  components: { CDialog, CDialogTitle, CDialogText, CDialogButtons, CButton },
+  components: { CDialog, CDialogTitle, CDialogText, CDialogButtons },
 };
 </script>
 CDialog

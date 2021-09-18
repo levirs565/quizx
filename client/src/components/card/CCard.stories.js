@@ -21,8 +21,8 @@ export const standar = () => ({
     <c-card-overline>Overline</c-card-overline>
     <p class="w-full">Test 1</p>
     <c-card-buttons>
-      <c-button type="primary">Button 1</c-button>
-      <c-button>Button 2</c-button>
+      <b-button type="is-primary">Button 1</b-button>
+      <b-button>Button 2</b-button>
     </c-card-buttons>
   </c-card>`,
 });
@@ -42,8 +42,8 @@ export const extended = () => ({
     <c-card-overline right>Overline Right</c-card-overline>
     <p class="w-full">Test 1</p>
     <c-card-buttons>
-      <c-button type="primary">Button 1</c-button>
-      <c-button>Button 2</c-button>
+      <b-button type="is-primary">Button 1</b-button>
+      <b-button>Button 2</b-button>
     </c-card-buttons>
     <c-card-buttons right>
       <c-icon-button><c-icon>delete</c-icon></c-icon-button>

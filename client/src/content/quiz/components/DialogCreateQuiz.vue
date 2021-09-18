@@ -6,9 +6,9 @@
     <c-text-input class="w-full" v-model="quizName" />
 
     <c-dialog-buttons>
-      <c-button @click.prevent="$emit('hide')">Cancel</c-button>
-      <c-button type="primary" :disabled="quizName.length == 0"
-        >Create</c-button
+      <b-button @click.prevent="$emit('hide')">Cancel</b-button>
+      <b-button type="is-primary" :disabled="quizName.length == 0"
+        >Create</b-button
       >
     </c-dialog-buttons>
   </c-dialog>

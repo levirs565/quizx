@@ -15,8 +15,8 @@ export const standar = () => ({
       <c-dialog-title>Dialog Title</c-dialog-title>
       <c-dialog-text>This is text of dialog</c-dialog-text>
       <c-dialog-buttons>
-        <c-button>Cancel</c-button>
-        <c-button type="primary">Submit</c-button>
+        <b-button>Cancel</b-button>
+        <b-button type="is-primary">Submit</b-button>
       </c-dialog-buttons>
     </c-dialog> 
   `,

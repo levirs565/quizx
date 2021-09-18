@@ -32,11 +32,11 @@
           </li>
         </ul>
 
-        <c-button
+        <b-button
           @click="showFinishDialog"
-          type="danger"
+          type="is-danger"
           class="mt-4 block ml-auto"
-          >Finish</c-button
+          >Finish</b-button
         >
       </div>
     </div>

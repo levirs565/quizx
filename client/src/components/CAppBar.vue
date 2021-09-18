@@ -6,7 +6,7 @@
     <div class="flex-grow"></div>
     <div>
       <router-link v-if="!username" to="/auth/login" v-slot="{ href }">
-        <c-button :href="href">Login</c-button>
+        <b-button :href="href">Login</b-button>
       </router-link>
 
       <template v-else>
@@ -25,7 +25,7 @@
           <b-icon size="is-large" class="text-6xl" icon="account" />
           <p v-text="username.name" class="font-semibold mb-4"></p>
 
-          <c-button type="danger" @click="userLogout">Logout</c-button>
+          <b-button type="is-danger" @click="userLogout">Logout</b-button>
         </div>
       </template>
     </div>

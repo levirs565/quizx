@@ -3,8 +3,8 @@
     <c-dialog-title>Play Game</c-dialog-title>
     <c-switch v-model="isInteractive">Interactive Game</c-switch>
     <c-dialog-buttons>
-      <c-button @click.prevent="$emit('hide')">Cancel</c-button>
-      <c-button type="primary">Play Now</c-button>
+      <b-button @click.prevent="$emit('hide')">Cancel</b-button>
+      <b-button type="is-primary">Play Now</b-button>
     </c-dialog-buttons>
   </c-dialog>
 </template>

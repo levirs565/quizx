@@ -1,10 +1,10 @@
 <template>
   <div class="container mb-20">
     <quiz-summary :quiz="quiz" editor>
-      <c-button type="danger" @click="showDeleteQuizDialog"
-        >Delete Quiz</c-button
+      <b-button type="is-danger" @click="showDeleteQuizDialog"
+        >Delete Quiz</b-button
       >
-      <b-button type="primary" @click="saveQuiz">Save</b-button>
+      <b-button type="is-primary" @click="saveQuiz">Save</b-button>
     </quiz-summary>
 
     <p class="page-title2">Questions</p>
@@ -74,7 +74,11 @@ export default {
     },
     newQuestion() {
       this.quiz.questions.push({
-        id: "new-" + Math.random().toString(36).substr(2),
+        id:
+          "new-" +
+          Math.random()
+            .toString(36)
+            .substr(2),
         question: "",
         choices: ["", "", "", ""],
         answer: 0,
@@ -83,11 +87,11 @@ export default {
     async saveQuiz() {
       try {
         const result = await Quiz.saveQuiz(this.quiz_id, this.quiz);
-        const newIdsMap = result.newQuestionsId
+        const newIdsMap = result.newQuestionsId;
         for (const question of this.quiz.questions) {
           if (question.id in newIdsMap) {
-            question.id = newIdsMap[question.id]
-          } 
+            question.id = newIdsMap[question.id];
+          }
         }
         this.$buefy.toast.open({
           message: "Quiz saved",

@@ -3,7 +3,7 @@
     <modal></modal>
     <app-bar></app-bar>
     <nav class="fixed w-64 h-full top-14 text-center bg-white">
-      <c-button type="primary m-4">Create Quiz</c-button>
+      <b-button type="is-primary" class="m-4">Create Quiz</b-button>
       <ul class="text-left">
         <c-nav-link to="/">
           <b-icon icon="home" />
