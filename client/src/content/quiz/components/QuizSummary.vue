@@ -5,7 +5,9 @@
     <p v-if="!editor" class="w-full leading-none text-headline5">
       {{ quiz.title }}
     </p>
-    <c-text-input v-else class="flex-grow mr-2" v-model="quiz.title" />
+    <b-field class="w-full" v-else>
+      <b-input class="flex-grow mr-2" v-model="quiz.title" />
+    </b-field>
     <quiz-information
       :userId="quiz.userId"
       :questionCount="quiz.questions.length"
@@ -22,7 +24,6 @@ import CCard from "@/components/card/CCard.vue";
 import CCardOverline from "@/components/card/CCardOverline.vue";
 import CCardButtons from "@/components/card/CCardButtons.vue";
 import QuizInformation from "@/content/components/QuizInformation.vue";
-import CTextInput from "@/components/CTextInput.vue";
 
 export default {
   components: {
@@ -30,7 +31,6 @@ export default {
     CCardOverline,
     CCardButtons,
     QuizInformation,
-    CTextInput,
   },
   props: {
     quiz: Object,
