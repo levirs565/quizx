@@ -38,13 +38,28 @@
         </question>
       </li>
     </ul>
+
+    <b-modal
+      v-model="isPlayDialogShow"
+      :destroy-on-hide="false"
+      has-modal-card
+      trap-focus
+      :can-cancel="['escape', 'outside']"
+      custom-class="dialog"
+    >
+      <template #default="props">
+        <dialog-play-quiz
+          @close="props.close"
+          @play="playGame"
+        ></dialog-play-quiz>
+      </template>
+    </b-modal>
   </div>
 </template>
 
 <script>
 import Question from "../components/Question";
 import { Quiz, Game } from "@/api.js";
-import showModal from "@/content/modal/bus";
 import QuizSummary from "../components/QuizSummary.vue";
 import DialogPlayQuiz from "../components/DialogPlayQuiz.vue";
 import AnswerResult from "../components/AnswerResult.vue";
@@ -54,6 +69,7 @@ export default {
     Question,
     QuizSummary,
     AnswerResult,
+    DialogPlayQuiz,
   },
   props: {
     quiz_id: String,
@@ -65,6 +81,7 @@ export default {
         title: "undefined",
         questions: [],
       },
+      isPlayDialogShow: false,
     };
   },
   mounted() {
@@ -96,7 +113,7 @@ export default {
       });
     },
     showPlayDialog() {
-      showModal(DialogPlayQuiz, {}, this.playGame);
+      this.isPlayDialogShow = true;
     },
     playGame(interactive) {
       Game.playGame(this.quiz.id, interactive).then((game) => {

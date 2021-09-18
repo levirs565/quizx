@@ -1,6 +1,5 @@
 <template>
   <div>
-    <modal></modal>
     <c-app-bar></c-app-bar>
     <nav class="fixed left-4 mt-7 top-1/2 transform -translate-y-1/2">
       <c-card class="w-72">
@@ -46,10 +45,7 @@
 <script>
 import { Game } from "@/api.js";
 import Question from "../../quiz/components/Question.vue";
-import showModal from "@/content/modal/bus";
-import DialogFinishGame from "../components/DialogFinishGame.vue";
 import CAppBar from "@/components/CAppBar.vue";
-import Modal from "@/content/modal/Modal.vue";
 import Jumper from "../components/Jumper.vue";
 import CCard from "@/components/card/CCard.vue";
 
@@ -57,7 +53,6 @@ export default {
   components: {
     Question,
     CAppBar,
-    Modal,
     Jumper,
     CCard,
   },
@@ -113,7 +108,13 @@ export default {
         });
     },
     showFinishDialog() {
-      showModal(DialogFinishGame, {}, this.finish);
+      this.$buefy.dialog.confirm({
+        title: "Finish Game?",
+        message: "Make sure all questions are answered correctly.",
+        type: "is-danger",
+        confirmText: "Finish",
+        onConfirm: () => this.finish(),
+      });
     },
     finish() {
       Game.finishGame(this.game_id).then(() => {

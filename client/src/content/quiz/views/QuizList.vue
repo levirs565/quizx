@@ -25,8 +25,6 @@
 import { Quiz } from "@/api.js";
 import QuizSummaryCard from "@/content/components/QuizSummaryCard.vue";
 import CFab from "@/components/CFab.vue";
-import ModalNewQuiz from "../components/DialogCreateQuiz.vue";
-import showModal from "@/content/modal/bus";
 
 export default {
   components: {
@@ -40,7 +38,13 @@ export default {
   },
   methods: {
     showCreateQuiz() {
-      showModal(ModalNewQuiz, {}, this.createQuiz);
+      this.$buefy.dialog.prompt({
+        title: "Create Quiz",
+        message: "Title",
+        trapFocus: true,
+        confirmText: "Create",
+        onConfirm: (title) => this.createQuiz(title),
+      });
     },
     async createQuiz(title) {
       const quiz = await Quiz.createQuiz({ title });

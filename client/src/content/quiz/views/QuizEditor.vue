@@ -31,11 +31,9 @@
 
 <script>
 import { Quiz } from "@/api";
-import showModal from "@/content/modal/bus";
 import QuestionEditor from "../components/QuestionEditor.vue";
 import QuizSummary from "../components/QuizSummary.vue";
 import CFab from "@/components/CFab.vue";
-import DialogDeleteQuiz from "../components/DialogDeleteQuiz.vue";
 
 export default {
   props: {
@@ -65,7 +63,13 @@ export default {
         });
     },
     showDeleteQuizDialog() {
-      showModal(DialogDeleteQuiz, {}, this.deleteQuiz);
+      this.$buefy.dialog.confirm({
+        title: "Delete Quiz?",
+        message: "This action is permanent.",
+        type: "is-danger",
+        confirmText: "Delete",
+        onConfirm: () => this.deleteQuiz(),
+      });
     },
     deleteQuiz() {
       Quiz.deleteQuiz(this.quiz_id).then(() => {
