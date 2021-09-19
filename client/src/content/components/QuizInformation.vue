@@ -1,10 +1,27 @@
 <template>
-  <div class="quiz-information leading-none">
-    <b-icon size="is-small" icon="account" />
-    <span class="text-caption">{{ userId }}</span>
-    <b-icon size="is-small" icon="help-box" class="ml-2" />
-    <span class="text-caption">{{ questionCount }} Questions</span>
-  </div>
+  <b-field class="mb-0" grouped>
+    <div class="control">
+      <b-taglist attached>
+        <b-tag type="is-primary">
+          <b-icon size="is-small" icon="account" />
+        </b-tag>
+        <b-tag>
+          {{ userId }}
+        </b-tag>
+      </b-taglist>
+    </div>
+
+    <div class="control">
+      <b-taglist attached>
+        <b-tag type="is-primary">
+          <b-icon size="is-small" icon="help-box" />
+        </b-tag>
+        <b-tag>
+          {{ questionCount }}
+        </b-tag>
+      </b-taglist>
+    </div>
+  </b-field>
 </template>
 <script>
 export default {
@@ -14,12 +31,4 @@ export default {
   },
 };
 </script>
-<style scoped>
-.quiz-information >>> span {
-  @apply leading-4 align-middle;
-}
-
-.quiz-information >>> .icon {
-  @apply mr-2;
-}
-</style>
+<style scoped></style>
