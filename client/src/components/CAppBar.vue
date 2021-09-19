@@ -1,35 +1,28 @@
 <template>
-  <header
-    class="fixed top-0 w-full p-4 h-14 bg-green-500 flex flex-row items-center z-20"
-  >
-    <span class="text-headline6 font-medium">QuizX</span>
-    <div class="flex-grow"></div>
-    <div>
+  <b-navbar fixed-top type="is-primary" transparent>
+    <template #brand>
+      <b-navbar-item tag="p">QuizX</b-navbar-item>
+    </template>
+    <template #end>
       <router-link v-if="!username" to="/auth/login" v-slot="{ href }">
-        <b-button :href="href">Login</b-button>
+        <b-navbar-item tag="div" :href="href">
+          <b-button tag="a" :href="href">Login</b-button>
+        </b-navbar-item>
       </router-link>
+      <b-navbar-dropdown arrowless right boxed v-else>
+        <template #label>
+          <b-button icon-right="account" class="rounded-full"></b-button>
+        </template>
 
-      <template v-else>
-        <b-button
-          class="w-10 h-10 p-0 text-center rounded-full bg-white"
-          @click="toggleUserBox"
-          icon-right="account"
-        />
-
-        <div
-          ref="userbox"
-          class="box absolute right-4 top-14 text-center"
-          v-show="showUserBox"
-          v-click-outside="hideUserBox"
-        >
-          <b-icon size="is-large" class="text-6xl" icon="account" />
-          <p v-text="username.name" class="font-semibold mb-4"></p>
+        <div class="w-48 p-4 has-text-black has-text-centered">
+          <b-icon size="is-large" icon="account" />
+          <p v-text="username.name" class="title is-6"></p>
 
           <b-button type="is-danger" @click="userLogout">Logout</b-button>
         </div>
-      </template>
-    </div>
-  </header>
+      </b-navbar-dropdown>
+    </template>
+  </b-navbar>
 </template>
 
 <script>
