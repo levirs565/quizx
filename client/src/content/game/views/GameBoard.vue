@@ -71,7 +71,7 @@ export default {
     answerChanged(data) {
       let answer = data.answer;
       let id = data.question.id;
-      this.$set(this.jumperButtons, data.index, "primary");
+      this.$set(this.jumperButtons, data.index, "is-primary");
       Game.putAnswer(this.game_id, id, answer).then((val) => {
         if (this.game.isInteractive) {
           // TODO: Untuk permainan interaktif
@@ -102,7 +102,7 @@ export default {
         .then((val) => {
           this.questions = val;
           this.jumperButtons = this.questions.map((question) => {
-            if (question.answer != -1) return "primary";
+            if (question.answer != -1) return "is-primary";
             return "";
           });
         });
