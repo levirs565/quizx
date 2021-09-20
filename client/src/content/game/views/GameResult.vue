@@ -6,7 +6,7 @@
       </header>
 
       <div class="card-content">
-        <p class="leading-none text-headline5 mb-2">
+        <p class="title">
           {{ game.quizTitle }}
         </p>
 

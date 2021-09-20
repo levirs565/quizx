@@ -14,7 +14,7 @@
     </nav>
     <div class="main-layout">
       <div class="container p-4" ref="container">
-        <h1 class="page-title">{{ game.quizTitle }}</h1>
+        <h1 class="title">{{ game.quizTitle }}</h1>
 
         <ul>
           <li

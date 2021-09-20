@@ -5,7 +5,7 @@
     </header>
 
     <div class="card-content">
-      <p v-if="!editor" class="leading-none text-headline5">
+      <p v-if="!editor" class="title">
         {{ quiz.title }}
       </p>
       <b-field v-else>

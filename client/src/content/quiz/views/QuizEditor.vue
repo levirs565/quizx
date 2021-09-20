@@ -7,7 +7,7 @@
       <b-button type="is-primary" @click="saveQuiz">Save</b-button>
     </quiz-summary>
 
-    <p class="page-title2">Questions</p>
+    <p class="subtitle">Questions</p>
 
     <ul>
       <li

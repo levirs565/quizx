@@ -1,6 +1,6 @@
 <template>
   <div class="container">
-    <h1 class="page-title">Explore Quiz</h1>
+    <h1 class="title">Explore Quiz</h1>
 
     <ul>
       <router-link

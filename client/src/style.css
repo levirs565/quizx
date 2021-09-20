@@ -19,11 +19,3 @@
 .page .sidebar-layout .b-sidebar {
   height: calc(100vh - var(--app-bar-height));
 }
-
-.page-title {
-  @apply font-roboto text-headline5 mb-4;
-}
-
-.page-title2 {
-  @apply font-medium text-headline6 font-roboto my-4;
-}
