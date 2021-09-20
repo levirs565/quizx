@@ -1,5 +1,5 @@
 <template>
-  <div class="container">
+  <div>
     <h1 class="title">Explore Quiz</h1>
 
     <ul>
