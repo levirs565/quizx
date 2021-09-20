@@ -56,18 +56,4 @@ export default {
 </script>
 
 <style>
-/* 56px come from bulma */
-.page .sidebar-layout {
-  position: fixed;
-  top: 56px;
-}
-
-/* 260px is come from bulma */
-.page .main-layout {
-  margin-left: 260px;
-}
-
-.page .sidebar-layout .b-sidebar {
-  height: calc(100vh - 56px);
-}
 </style>

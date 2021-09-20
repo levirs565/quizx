@@ -1,5 +1,25 @@
 @import "core/style.css";
 
+/* 260px and 56px is come from bulma */
+.page {
+  --app-bar-height: 56px;
+  --sidebar-width: 260px;
+}
+
+.page .sidebar-layout {
+  position: fixed;
+  top: var(--app-bar-height);
+  width: var(--sidebar-width);
+}
+
+.page .main-layout {
+  margin-left: var(--sidebar-width);
+}
+
+.page .sidebar-layout .b-sidebar {
+  height: calc(100vh - var(--app-bar-height));
+}
+
 .page-title {
   @apply font-roboto text-headline5 mb-4;
 }

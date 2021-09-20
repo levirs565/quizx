@@ -1,8 +1,8 @@
 <template>
-  <div>
+  <div class="page" style="--sidebar-width: 288px">
     <c-app-bar></c-app-bar>
-    <nav class="fixed left-4 mt-7 top-1/2 transform -translate-y-1/2">
-      <div class="card w-72">
+    <nav class="sidebar-layout p-4">
+      <div class="card">
         <div class="card-content">
           <jumper
             :buttons="jumperButtons"
@@ -12,8 +12,8 @@
         </div>
       </div>
     </nav>
-    <div class="ml-80 mt-14">
-      <div class="container " ref="container">
+    <div class="main-layout">
+      <div class="container p-4" ref="container">
         <h1 class="page-title">{{ game.quizTitle }}</h1>
 
         <ul>
