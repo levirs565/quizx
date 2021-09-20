@@ -1,5 +1,5 @@
 <template>
-  <div class="container mb-20">
+  <div class="mb-20">
     <quiz-summary :quiz="quiz" editor>
       <b-button type="is-danger" @click="showDeleteQuizDialog"
         >Delete Quiz</b-button

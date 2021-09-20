@@ -1,5 +1,5 @@
 <template>
-  <div class="container mb-14">
+  <div class="mb-14">
     <h1 class="page-title">My Quiz</h1>
 
     <ul class="mb-4">

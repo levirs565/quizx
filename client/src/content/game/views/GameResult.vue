@@ -1,5 +1,5 @@
 <template>
-  <div class="container">
+  <div>
     <div class="card">
       <header class="card-header">
         <p class="card-header-title">Game</p>

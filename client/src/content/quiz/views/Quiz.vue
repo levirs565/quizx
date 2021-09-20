@@ -1,5 +1,5 @@
 <template>
-  <div class="container">
+  <div>
     <quiz-summary :quiz="quiz">
       <b-button
         v-if="$store.state.core.user"

@@ -25,7 +25,7 @@
         </div>
       </b-sidebar>
     </section>
-    <router-view class="main-layout"></router-view>
+    <router-view class="main-layout container p-4"></router-view>
   </div>
 </template>
 
