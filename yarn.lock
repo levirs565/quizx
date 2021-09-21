@@ -1939,6 +1939,7 @@ __metadata:
     "@babel/core": ^7.14.8
     "@mdi/font": ^5.9.55
     "@storybook/vue": ^6.3.5
+    "@toast-ui/vue-editor": ^3.1.0
     "@vue/cli-plugin-babel": ~4.5.13
     "@vue/cli-plugin-eslint": ~4.5.13
     "@vue/cli-service": ~4.5.13
@@ -2676,6 +2677,32 @@ __metadata:
   dependencies:
     defer-to-connect: ^1.0.1
   checksum: a46ec854231194dd1ab924a5ea0d8f0afa2b7133754a3def099cc5749e34802d8668a7d7ee3583327048354b9dc621113843d8546387e06ff57e6763cbb558d9
+  languageName: node
+  linkType: hard
+
+"@toast-ui/editor@npm:^3.1.0":
+  version: 3.1.0
+  resolution: "@toast-ui/editor@npm:3.1.0"
+  dependencies:
+    prosemirror-commands: ^1.1.9
+    prosemirror-history: ^1.1.3
+    prosemirror-inputrules: ^1.1.3
+    prosemirror-keymap: ^1.1.4
+    prosemirror-model: ^1.14.1
+    prosemirror-state: ^1.3.4
+    prosemirror-view: ^1.18.7
+  checksum: 73a54c4b60efe722b00b2c1b0dffcaea2cbc6af0ac2a4e7ce33b93ac51e4e4f3aea1a2efbc5ff62044eb4421a5ba589453734424c6e62ae42f1dbde47b0c98b4
+  languageName: node
+  linkType: hard
+
+"@toast-ui/vue-editor@npm:^3.1.0":
+  version: 3.1.0
+  resolution: "@toast-ui/vue-editor@npm:3.1.0"
+  dependencies:
+    "@toast-ui/editor": ^3.1.0
+  peerDependencies:
+    vue: ^2.5.0
+  checksum: 4ca4b4a27e4daa2b49c4ac59b8957ad65687b9979de081f6b6a5907a81b8a1ecd75b0ea2a376d3ae04ac6f23fc0589998ad06fff61d8da62c5ec2a12b4a12973
   languageName: node
   linkType: hard
 
@@ -12785,6 +12812,13 @@ fsevents@~2.3.2:
   languageName: node
   linkType: hard
 
+"orderedmap@npm:^1.1.0":
+  version: 1.1.1
+  resolution: "orderedmap@npm:1.1.1"
+  checksum: d4e485755304ded3ac35edaa485cf8b1f90a02232ef32ab47bb62ea64a5716da2312672ef697113fa3b51a7911215a836fe31a7518702f6c45685b58910e313f
+  languageName: node
+  linkType: hard
+
 "original@npm:^1.0.0":
   version: 1.0.2
   resolution: "original@npm:1.0.2"
@@ -14111,6 +14145,87 @@ fsevents@~2.3.2:
   languageName: node
   linkType: hard
 
+"prosemirror-commands@npm:^1.1.9":
+  version: 1.1.10
+  resolution: "prosemirror-commands@npm:1.1.10"
+  dependencies:
+    prosemirror-model: ^1.0.0
+    prosemirror-state: ^1.0.0
+    prosemirror-transform: ^1.0.0
+  checksum: 2838811d24e2ad78f6c45d934e621629152c96bea77c7cb68d802bc32a20f9f44ddc37109d73a308d090ad32bd1b51aa9381e22d0b13b0c78fd3d3ba906ce849
+  languageName: node
+  linkType: hard
+
+"prosemirror-history@npm:^1.1.3":
+  version: 1.2.0
+  resolution: "prosemirror-history@npm:1.2.0"
+  dependencies:
+    prosemirror-state: ^1.2.2
+    prosemirror-transform: ^1.0.0
+    rope-sequence: ^1.3.0
+  checksum: d7bf10e2612605b361ffca38740deed00bc1ef1d795cb36bed7b4214a1275824d6cf39948c3813f917ffbf959241d11775983aa9dfdb0044d8da93e48e6d188f
+  languageName: node
+  linkType: hard
+
+"prosemirror-inputrules@npm:^1.1.3":
+  version: 1.1.3
+  resolution: "prosemirror-inputrules@npm:1.1.3"
+  dependencies:
+    prosemirror-state: ^1.0.0
+    prosemirror-transform: ^1.0.0
+  checksum: fddaf86ae43ed5fbf3505b5488afe0174e7078fbda2020f6b379baf9e1b9ed475de6f93b41f67ab5cf74e3349f576a37b52f10a9c60da55405f5551022e5f602
+  languageName: node
+  linkType: hard
+
+"prosemirror-keymap@npm:^1.1.4":
+  version: 1.1.4
+  resolution: "prosemirror-keymap@npm:1.1.4"
+  dependencies:
+    prosemirror-state: ^1.0.0
+    w3c-keyname: ^2.2.0
+  checksum: 761162efd171e179d5ba4f51a1483406fd72ec5a147939417a1d641f42dd740ee0740bf9ac8840e00e11e82bfebeb5e0479c95123ba3bf0d2ca0830a83a7d06d
+  languageName: node
+  linkType: hard
+
+"prosemirror-model@npm:^1.0.0, prosemirror-model@npm:^1.14.1, prosemirror-model@npm:^1.14.3":
+  version: 1.14.3
+  resolution: "prosemirror-model@npm:1.14.3"
+  dependencies:
+    orderedmap: ^1.1.0
+  checksum: 21935d7680956620628d558d9457ec58abeb84487410f8ccc109effcadbab6d1fe1984b3c4684ce22ef836cfeae0be2b0f1b9bb5373169ce15ff4692214e9d7c
+  languageName: node
+  linkType: hard
+
+"prosemirror-state@npm:^1.0.0, prosemirror-state@npm:^1.2.2, prosemirror-state@npm:^1.3.4":
+  version: 1.3.4
+  resolution: "prosemirror-state@npm:1.3.4"
+  dependencies:
+    prosemirror-model: ^1.0.0
+    prosemirror-transform: ^1.0.0
+  checksum: b15af9acab0db2212b1cb06a57be4a9d98dcd362cfa8e78bfd7bf9b47b19ac2742221de8165c5e60c4cd21d9b56b42b5730e2736a3302a07a6baba91bc3bc416
+  languageName: node
+  linkType: hard
+
+"prosemirror-transform@npm:^1.0.0, prosemirror-transform@npm:^1.1.0":
+  version: 1.3.2
+  resolution: "prosemirror-transform@npm:1.3.2"
+  dependencies:
+    prosemirror-model: ^1.0.0
+  checksum: 84bfe8c13a01832db9de69a71ebc86d27be07af2a843ba95d7de03368f4f24db23395d248a71f3cc587618cffe1a2f6972df093e6b56c06de0fab98d28e1fa05
+  languageName: node
+  linkType: hard
+
+"prosemirror-view@npm:^1.18.7":
+  version: 1.20.1
+  resolution: "prosemirror-view@npm:1.20.1"
+  dependencies:
+    prosemirror-model: ^1.14.3
+    prosemirror-state: ^1.0.0
+    prosemirror-transform: ^1.1.0
+  checksum: 6d21c902a6ccb9f59b63e9cd691d914d58178fc201d5b9af6c8de20411ec51f20169e7e3bc10df536bdc1c985cca450dd56dc8d86b4281aa9e01544c3a65b469
+  languageName: node
+  linkType: hard
+
 "proxy-addr@npm:~2.0.5":
   version: 2.0.7
   resolution: "proxy-addr@npm:2.0.7"
@@ -15298,6 +15413,13 @@ fsevents@~2.3.2:
     hash-base: ^3.0.0
     inherits: ^2.0.1
   checksum: e0370fbe779b1f15d74c3e7dffc0ce40b57b845fc7e431fab8a571958d5fd9c91eb0038a252604600e20786d117badea0cc4cf8816b8a6be6b9166b565ad6797
+  languageName: node
+  linkType: hard
+
+"rope-sequence@npm:^1.3.0":
+  version: 1.3.2
+  resolution: "rope-sequence@npm:1.3.2"
+  checksum: a4ab3040457b196a18bb9cef5218a4dab86e7bf15eae58f40b61291eb007661db1060b82cf347c1620c7729fb97fcd9e96ccb7e4f92c2796756a783c75ebb810
   languageName: node
   linkType: hard
 
@@ -17863,6 +17985,13 @@ typescript@~4.2.3:
   peerDependencies:
     vue: ^2.0.0
   checksum: baa9a1206439520105da67f40ea8cab19ccc792e73c8e5e3a42bd424255d99a1019cc90f8cecd3aeb0c177fa9cf1ec6b907b652761e3d9f4c6471e4cc63ac00a
+  languageName: node
+  linkType: hard
+
+"w3c-keyname@npm:^2.2.0":
+  version: 2.2.4
+  resolution: "w3c-keyname@npm:2.2.4"
+  checksum: b711eaa9867030e5702131dfd434620125f1a337b98a473a4d60254fd4912559b16f2b8642975b881d6ec9387bf378b9bf838873151fd036b9ba8c356b4e42aa
   languageName: node
   linkType: hard
 

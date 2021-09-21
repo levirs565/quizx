@@ -4,16 +4,14 @@
       <p class="card-header-title">Question {{ index }}</p>
     </header>
     <div class="card-content">
-      <div class="content">
-        <p v-html="question.question"></p>
-      </div>
+      <markdown-viewer :value="question.question" />
 
       <b-field
         v-for="(entry, choiceIndex) in question.choices"
         :key="choiceIndex"
       >
         <b-radio v-model="answer" :native-value="choiceIndex" type="is-success">
-          <p v-html="entry"></p>
+          <markdown-viewer :value="entry" />
         </b-radio>
       </b-field>
     </div>
@@ -27,6 +25,8 @@
 </template>
 
 <script>
+import MarkdownViewer from '@/markdown/MarkdownViewer.vue';
+
 export default {
   props: {
     question: Object,
@@ -35,6 +35,9 @@ export default {
       default: -1,
     },
     index: Number,
+  },
+  components: {
+    MarkdownViewer,
   },
   data() {
     return {

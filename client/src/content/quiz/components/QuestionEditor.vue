@@ -4,14 +4,7 @@
       <p class="card-header-title">Question {{ index + 1 }}</p>
     </header>
     <div class="card-content">
-      <b-field>
-        <b-input
-          expanded
-          v-model="question.question"
-          type="textarea"
-          ref="questionInput"
-        ></b-input>
-      </b-field>
+      <markdown-editor v-model="question.question" />
 
       <b-field
         v-for="(entry, choiceIndex) in question.choices"
@@ -22,13 +15,11 @@
           :native-value="choiceIndex"
           type="is-success"
         />
-        <b-input
+        <markdown-editor
+          class="choice-editor"
           :value="entry"
-          ref="choicesInput"
-          expanded
-          @input="updateChoice(choiceIndex, $event)"
-          type="textarea"
-        ></b-input>
+          @input="onChoiceInput(choiceIndex, $event)"
+        ></markdown-editor>
       </b-field>
     </div>
 
@@ -46,10 +37,15 @@
 </template>
 
 <script>
+import MarkdownEditor from "@/markdown/MarkdownEditor.vue";
+
 export default {
   props: {
     question: Object,
     index: Number,
+  },
+  components: {
+    MarkdownEditor,
   },
   data() {
     return {
@@ -57,29 +53,15 @@ export default {
     };
   },
   methods: {
-    expandInput(com) {
-      const el = com.$el.getElementsByTagName("textarea")[0];
-      el.style.height = "3rem";
-      const height = el.offsetHeight - el.clientHeight + el.scrollHeight;
-      el.style.height = height + "px";
+    onChoiceInput(index, value) {
+      this.$set(this.question.choices, index, value);
     },
-    updateChoice(index, text) {
-      this.$set(this.question.choices, index, text);
-      this.expandInput(this.$refs.choicesInput[index]);
-    },
-  },
-  watch: {
-    "question.question"() {
-      this.expandInput(this.$refs.questionInput);
-    },
-  },
-  mounted() {
-    this.expandInput(this.$refs.questionInput);
-    for (const com of this.$refs.choicesInput) {
-      this.expandInput(com);
-    }
   },
 };
 </script>
 
-<style scoped></style>
+<style scoped>
+.choice-editor {
+  width: 100%;
+}
+</style>
