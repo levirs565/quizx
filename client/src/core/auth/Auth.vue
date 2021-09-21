@@ -1,6 +1,6 @@
 <template>
-  <div class="flex flex-col">
-    <router-view></router-view>
+  <div class="auth-layout">
+    <router-view class="auth-content"></router-view>
   </div>
 </template>
 
@@ -8,5 +8,17 @@
 export default {};
 </script>
 
-<style>
+<style scoped>
+.auth-layout {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+}
+
+.auth-layout >>> .auth-content {
+  max-width: 384px;
+  width: 100%;
+}
 </style>

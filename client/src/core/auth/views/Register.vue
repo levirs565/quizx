@@ -1,5 +1,5 @@
 <template>
-  <form class="card mx-auto" action="none" @submit.prevent="register">
+  <form class="card" action="none" @submit.prevent="register">
     <div class="card-content">
       <h1 class="title">Register</h1>
       <p class="subtext">

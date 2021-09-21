@@ -1,5 +1,5 @@
 <template>
-  <form class="card mx-auto" action="none" @submit.prevent="login">
+  <form class="card" action="none" @submit.prevent="login">
     <div class="card-content">
       <p class="title">Login</p>
       <p class="subtext">
