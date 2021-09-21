@@ -11,10 +11,10 @@
       </router-link>
       <b-navbar-dropdown arrowless right boxed v-else>
         <template #label>
-          <b-button icon-right="account" class="rounded-full"></b-button>
+          <b-button icon-right="account" class="is-rounded-full"></b-button>
         </template>
 
-        <div class="w-48 p-4 has-text-black has-text-centered">
+        <div class="user-card p-4 has-text-black has-text-centered">
           <b-icon size="is-large" icon="account" />
           <p v-text="username.name" class="title is-6"></p>
 
@@ -55,4 +55,8 @@ export default {
 };
 </script>
 
-<style></style>
+<style scoped>
+.user-card {
+  min-width: 192px;
+}
+</style>

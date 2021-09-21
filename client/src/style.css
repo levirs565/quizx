@@ -35,3 +35,7 @@
   height: var(--fab-size);
   font-size: 1.25rem;
 }
+
+.is-rounded-full {
+  border-radius: 100% !important;
+}
