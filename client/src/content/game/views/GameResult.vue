@@ -10,7 +10,7 @@
           {{ game.quizTitle }}
         </p>
 
-        <table class="text-body2 table-auto game-result-table">
+        <table class="table game-result-table">
           <tr>
             <td>Score</td>
             <td>N/A</td>
@@ -54,7 +54,13 @@ export default {
 </script>
 
 <style scoped>
-.game-result-table >>> tr > td + td {
-  @apply pl-4;
+.game-result-table >>> tr > td {
+  border: 0;
+  padding-top: 0;
+  padding-bottom: 0;
+}
+
+.game-result-table >>> tr > td:first-child {
+  padding-left: 0;
 }
 </style>
