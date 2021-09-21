@@ -13,7 +13,7 @@
       <li
         v-for="(question, index) in quiz.questions"
         :key="question.id"
-        class="mb-2"
+        class="block"
       >
         <question-editor
           :index="index"

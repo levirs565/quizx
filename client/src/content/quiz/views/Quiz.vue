@@ -21,13 +21,12 @@
     <p class="subtitle">Questions</p>
 
     <ul>
-      <li v-for="(question, index) in quiz.questions" :key="question.id">
-        <question
-          class="my-2"
-          :index="index"
-          :question="question"
-          v-slot="{ component }"
-        >
+      <li
+        v-for="(question, index) in quiz.questions"
+        :key="question.id"
+        class="block"
+      >
+        <question :index="index" :question="question" v-slot="{ component }">
           <b-button
             @click="checkAnswer(component)"
             v-if="component.answer != -1"

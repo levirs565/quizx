@@ -2,14 +2,14 @@
   <div class="has-fab">
     <h1 class="title">My Quiz</h1>
 
-    <ul class="mb-4">
+    <ul>
       <router-link
         :to="`/quiz/${quiz.id}`"
         v-for="quiz in quizList"
         :key="quiz.id"
         tag="li"
         v-slot="{ navigate }"
-        class="mb-2"
+        class="block"
       >
         <quiz-summary-card :quiz="quiz" @click="navigate" />
       </router-link>
