@@ -1,5 +1,5 @@
 <template>
-  <div class="mb-20">
+  <div class="has-fab">
     <quiz-summary :quiz="quiz" editor>
       <b-button type="is-danger" @click="showDeleteQuizDialog"
         >Delete Quiz</b-button
@@ -23,9 +23,13 @@
       </li>
     </ul>
 
-    <c-fab class="fixed right-4 bottom-4" @click="newQuestion">
-      <b-icon icon="plus" />
-    </c-fab>
+    <b-button
+      size="is-medium"
+      type="is-primary"
+      class="is-fab"
+      icon-right="plus"
+      @click="newQuestion"
+    />
   </div>
 </template>
 
@@ -33,7 +37,6 @@
 import { Quiz } from "@/api";
 import QuestionEditor from "../components/QuestionEditor.vue";
 import QuizSummary from "../components/QuizSummary.vue";
-import CFab from "@/components/CFab.vue";
 
 export default {
   props: {
@@ -42,7 +45,6 @@ export default {
   components: {
     QuestionEditor,
     QuizSummary,
-    CFab,
   },
   data() {
     return {

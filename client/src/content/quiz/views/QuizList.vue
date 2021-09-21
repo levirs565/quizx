@@ -1,5 +1,5 @@
 <template>
-  <div class="mb-14">
+  <div class="has-fab">
     <h1 class="title">My Quiz</h1>
 
     <ul class="mb-4">
@@ -15,21 +15,22 @@
       </router-link>
     </ul>
 
-    <c-fab class="fixed right-4 bottom-4" @click="showCreateQuiz">
-      <b-icon icon="plus" />
-    </c-fab>
+    <b-button
+      type="is-primary"
+      class="is-fab"
+      icon-right="plus"
+      @click="showCreateQuiz"
+    />
   </div>
 </template>
 
 <script>
 import { Quiz } from "@/api.js";
 import QuizSummaryCard from "@/content/components/QuizSummaryCard.vue";
-import CFab from "@/components/CFab.vue";
 
 export default {
   components: {
     QuizSummaryCard,
-    CFab,
   },
   data() {
     return {

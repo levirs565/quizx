@@ -19,3 +19,19 @@
 .page .sidebar-layout .b-sidebar {
   height: calc(100vh - var(--app-bar-height));
 }
+
+.has-fab {
+  --fab-size: 3.5rem;
+  --fab-spacing: 1rem;
+  margin-bottom: calc(var(--fab-size) + var(--fab-spacing)) !important;
+}
+
+.has-fab .is-fab {
+  position: fixed;
+  right: var(--fab-spacing);
+  bottom: var(--fab-spacing);
+  border-radius: 100%;
+  width: var(--fab-size);
+  height: var(--fab-size);
+  font-size: 1.25rem;
+}
