@@ -1,21 +1,17 @@
-import { Schema, model, Types, Document } from 'mongoose';
-import { QuestionDocument, QuestionSchema } from './question';
-import { QuestionWAnswerWoId } from '../types/quiz';
+import { Schema, model } from 'mongoose';
+import { configureQuestionDiscriminators, createQuestionSchema } from './question';
+import { QuestionOptionalAnswer } from '../types/quiz';
 import { Game } from '../types/game';
+import { BaseModel, BaseModelSchema, configureBaseModelSchema } from './helper';
 
-export interface GameDB extends Omit<Game, 'id'> {
+export interface GameDB extends Game {
   userId: string;
-  questions: Array<QuestionWAnswerWoId>;
+  questions: Array<QuestionOptionalAnswer>;
   correctAnswers: Array<number>;
 }
 
-interface GameDocument extends GameDB, Document {
-  questions: Types.DocumentArray<QuestionDocument>;
-  correctAnswers: Types.Array<number>;
-  toGame(): Game
-}
-
-const gameSchema = new Schema<GameDocument>(
+const questionSchema = createQuestionSchema(false)
+const gameSchema: BaseModelSchema<GameDB> = new Schema(
   {
     userId: {
       type: String,
@@ -40,11 +36,11 @@ const gameSchema = new Schema<GameDocument>(
       default: false,
     },
     questions: {
-      type: [QuestionSchema],
+      type: [questionSchema.root],
       required: true,
     },
     correctAnswers: {
-      type: [Number],
+      type: [Schema.Types.Mixed],
       required: true,
     },
     result: {
@@ -58,17 +54,10 @@ const gameSchema = new Schema<GameDocument>(
   }
 );
 
-gameSchema.methods.toGame = function (): Game {
-  return {
-    id: String(this._id),
-    quizId: this.quizId,
-    quizTitle: this.quizTitle,
-    isPlaying: this.isPlaying,
-    isInteractive: this.isInteractive,
-    result: this.result
-  }
-}
 
-const GameModel = model<GameDocument>('Game', gameSchema);
+configureQuestionDiscriminators(gameSchema, 'questions', questionSchema)
+configureBaseModelSchema(gameSchema)
+
+const GameModel: BaseModel<GameDB> = model('Game', gameSchema);
 
 export default GameModel;

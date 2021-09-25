@@ -1,4 +1,5 @@
-import { Schema, Model, model } from 'mongoose';
+import { Schema, model } from 'mongoose';
+import { BaseModelSchema, BaseModel, configureBaseModelSchema } from './helper';
 
 // TODO: Rename id to _id
 
@@ -10,7 +11,7 @@ export interface User {
   registerDate: Date
 }
 
-const userScheme = new Schema<User>(
+const userScheme: BaseModelSchema<User> = new Schema(
   {
     id: {
       type: String,
@@ -44,6 +45,8 @@ const userScheme = new Schema<User>(
   }
 );
 
-const UserModel: Model<User> = model<User>('User', userScheme);
+configureBaseModelSchema(userScheme)
+
+const UserModel: BaseModel<User> = model('User', userScheme);
 
 export default UserModel;

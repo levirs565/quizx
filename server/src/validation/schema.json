@@ -146,7 +146,11 @@
       "type": "object",
       "properties": {
         "answer": {
-          "type": "number"
+          "type": [
+            "null",
+            "string",
+            "number"
+          ]
         }
       },
       "additionalProperties": false,
@@ -167,96 +171,118 @@
       ]
     },
     "Question": {
-      "type": "object",
-      "properties": {
-        "id": {
-          "type": "string"
+      "anyOf": [
+        {
+          "$ref": "#/definitions/OmitAnswer<MultipleChoiceQuestion>"
         },
-        "question": {
-          "type": "string"
+        {
+          "$ref": "#/definitions/OmitAnswer<ShortTextQuestion>"
         },
-        "choices": {
-          "type": "array",
-          "items": {
-            "type": "string"
-          }
+        {
+          "$ref": "#/definitions/OmitAnswer<NumberQuestion>"
         }
-      },
-      "additionalProperties": false,
-      "required": [
-        "choices",
-        "id",
-        "question"
       ]
     },
     "QuestionWAnswer": {
-      "type": "object",
-      "properties": {
-        "answer": {
-          "type": "number"
+      "anyOf": [
+        {
+          "$ref": "#/definitions/MultipleChoiceQuestion"
         },
-        "id": {
-          "type": "string"
+        {
+          "$ref": "#/definitions/ShortTextQuestion"
         },
-        "question": {
-          "type": "string"
-        },
-        "choices": {
-          "type": "array",
-          "items": {
-            "type": "string"
-          }
+        {
+          "$ref": "#/definitions/NumberQuestion"
         }
-      },
-      "additionalProperties": false,
-      "required": [
-        "answer",
-        "choices",
-        "id",
-        "question"
       ]
     },
-    "QuestionWAnswerWoId": {
-      "type": "object",
-      "properties": {
-        "answer": {
-          "type": "number"
+    "QuestionOptionalAnswer": {
+      "anyOf": [
+        {
+          "additionalProperties": false,
+          "type": "object",
+          "properties": {
+            "type": {
+              "type": "string",
+              "enum": [
+                "multiple-choice"
+              ]
+            },
+            "choices": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "id": {
+              "type": "string"
+            },
+            "question": {
+              "type": "string"
+            },
+            "answer": {
+              "type": "number"
+            }
+          },
+          "required": [
+            "choices",
+            "id",
+            "question",
+            "type"
+          ]
         },
-        "question": {
-          "type": "string"
+        {
+          "additionalProperties": false,
+          "type": "object",
+          "properties": {
+            "type": {
+              "type": "string",
+              "enum": [
+                "short-text"
+              ]
+            },
+            "id": {
+              "type": "string"
+            },
+            "question": {
+              "type": "string"
+            },
+            "answer": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "id",
+            "question",
+            "type"
+          ]
         },
-        "choices": {
-          "type": "array",
-          "items": {
-            "type": "string"
-          }
+        {
+          "additionalProperties": false,
+          "type": "object",
+          "properties": {
+            "type": {
+              "type": "string",
+              "enum": [
+                "number"
+              ]
+            },
+            "id": {
+              "type": "string"
+            },
+            "question": {
+              "type": "string"
+            },
+            "answer": {
+              "type": "number"
+            }
+          },
+          "required": [
+            "id",
+            "question",
+            "type"
+          ]
         }
-      },
-      "additionalProperties": false,
-      "required": [
-        "answer",
-        "choices",
-        "question"
-      ]
-    },
-    "BaseQuiz": {
-      "type": "object",
-      "properties": {
-        "id": {
-          "type": "string"
-        },
-        "userId": {
-          "type": "string"
-        },
-        "title": {
-          "type": "string"
-        }
-      },
-      "additionalProperties": false,
-      "required": [
-        "id",
-        "title",
-        "userId"
       ]
     },
     "QuizSummary": {
@@ -289,7 +315,17 @@
         "questions": {
           "type": "array",
           "items": {
-            "$ref": "#/definitions/Question"
+            "anyOf": [
+              {
+                "$ref": "#/definitions/OmitAnswer<MultipleChoiceQuestion>"
+              },
+              {
+                "$ref": "#/definitions/OmitAnswer<ShortTextQuestion>"
+              },
+              {
+                "$ref": "#/definitions/OmitAnswer<NumberQuestion>"
+              }
+            ]
           }
         },
         "id": {
@@ -316,7 +352,17 @@
         "questions": {
           "type": "array",
           "items": {
-            "$ref": "#/definitions/QuestionWAnswer"
+            "anyOf": [
+              {
+                "$ref": "#/definitions/MultipleChoiceQuestion"
+              },
+              {
+                "$ref": "#/definitions/ShortTextQuestion"
+              },
+              {
+                "$ref": "#/definitions/NumberQuestion"
+              }
+            ]
           }
         },
         "id": {
@@ -350,6 +396,170 @@
       "additionalProperties": false,
       "required": [
         "newQuestionsId"
+      ]
+    },
+    "OmitAnswer<MultipleChoiceQuestion>": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": [
+            "multiple-choice"
+          ]
+        },
+        "choices": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "id": {
+          "type": "string"
+        },
+        "question": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false,
+      "required": [
+        "choices",
+        "id",
+        "question",
+        "type"
+      ]
+    },
+    "OmitAnswer<ShortTextQuestion>": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": [
+            "short-text"
+          ]
+        },
+        "id": {
+          "type": "string"
+        },
+        "question": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "question",
+        "type"
+      ]
+    },
+    "OmitAnswer<NumberQuestion>": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": [
+            "number"
+          ]
+        },
+        "id": {
+          "type": "string"
+        },
+        "question": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "question",
+        "type"
+      ]
+    },
+    "MultipleChoiceQuestion": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": [
+            "multiple-choice"
+          ]
+        },
+        "choices": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "answer": {
+          "type": "number"
+        },
+        "id": {
+          "type": "string"
+        },
+        "question": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false,
+      "required": [
+        "answer",
+        "choices",
+        "id",
+        "question",
+        "type"
+      ]
+    },
+    "ShortTextQuestion": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": [
+            "short-text"
+          ]
+        },
+        "answer": {
+          "type": "string"
+        },
+        "id": {
+          "type": "string"
+        },
+        "question": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false,
+      "required": [
+        "answer",
+        "id",
+        "question",
+        "type"
+      ]
+    },
+    "NumberQuestion": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": [
+            "number"
+          ]
+        },
+        "answer": {
+          "type": "number"
+        },
+        "id": {
+          "type": "string"
+        },
+        "question": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false,
+      "required": [
+        "answer",
+        "id",
+        "question",
+        "type"
       ]
     }
   }

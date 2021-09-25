@@ -1,39 +1,60 @@
-import { Schema, Types } from 'mongoose';
-import { Question, QuestionWAnswer, QuestionWAnswerWoId } from '../types/quiz'
+import { Schema } from 'mongoose';
 
-export interface QuestionDocument extends QuestionWAnswerWoId, Types.Subdocument {
-  toQuestion?(): Question
-  toQuestionWAnswer?(): QuestionWAnswer;
+interface QuestionSchemaContainer {
+  readonly root: Schema<any, any, any, any>;
+  readonly discriminators: {
+    [name: string]: Schema<any, any, any, any>;
+  };
 }
 
-export const QuestionSchema = new Schema<QuestionDocument>({
-  question: {
-    type: String,
-    required: true,
-  },
-  choices: {
-    type: Array,
-    required: true,
-  },
-  answer: {
-    type: Number,
-    required: true,
-  },
-});
-
-QuestionSchema.methods.toQuestion = function (): Question {
+export function createQuestionSchema(answerRequired: Boolean): QuestionSchemaContainer {
   return {
-    id: this._id,
-    question: this.question,
-    choices: this.choices
+    root: new Schema(
+      {
+        question: {
+          type: String,
+          required: true
+        }
+      },
+      {
+        discriminatorKey: 'type'
+      }
+    ),
+    discriminators: {
+      'multiple-choice': new Schema({
+        choices: {
+          type: Array,
+          required: true
+        },
+        answer: {
+          type: Number,
+          required: answerRequired
+        }
+      }),
+      'short-text': new Schema({
+        answer: {
+          type: String,
+          required: answerRequired
+        }
+      }),
+      number: new Schema({
+        answer: {
+          type: Number,
+          required: answerRequired
+        }
+      })
+    }
+  };
+}
+
+export function configureQuestionDiscriminators(
+  schema: Schema<any, any, any, any>,
+  path: string,
+  container: QuestionSchemaContainer
+) {
+  const questionSchema = schema.path<Schema.Types.DocumentArray>(path);
+  for (const name in container.discriminators) {
+    const schema = container.discriminators[name]
+    questionSchema.discriminator(name, schema)
   }
-}
-
-QuestionSchema.methods.toQuestionWAnswer = function (id): QuestionWAnswer {
-  return {
-    id: this._id,
-    question: this.question,
-    choices: this.choices,
-    answer: this.answer
-  } 
 }

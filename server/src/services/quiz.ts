@@ -1,14 +1,21 @@
-import { Types } from "mongoose"
-import QuizModel, { QuizDB } from '../models/quiz';
+import { Types } from 'mongoose';
+import QuizModel from '../models/quiz';
 import { EError, E } from '../error';
-import { AnswerQuestionResult, QuizWAnswer, SaveQuizResult } from '../types/quiz';
+import {
+  AnswerQuestionResult,
+  Quiz,
+  QuizSummary,
+  QuizWAnswer,
+  SaveQuizResult
+} from '../types/quiz';
 import Session from '../types/session';
-import { validateUserId } from './helper';
+import { validateQuestionAnswerDataType, validateUserId } from './helper';
+import { QuizWAnswerMapper } from '../types/mapper';
 
-export async function getQuizList() {
+export async function getQuizList(): Promise<QuizSummary[]> {
   const list = await QuizModel.find();
 
-  return list.map(val => val.toSummary());
+  return list.map(val => QuizWAnswerMapper.toQuizSummary(val.toPlain()));
 }
 
 export async function getQuizDocument(id: string) {
@@ -19,15 +26,15 @@ export async function getQuizDocument(id: string) {
   return quizPackage;
 }
 
-export async function getQuiz(id: string) {
+export async function getQuiz(id: string): Promise<Quiz> {
   const quizPackage = await getQuizDocument(id);
 
-  return quizPackage.toQuiz();
+  return QuizWAnswerMapper.toQuiz(quizPackage.toPlain());
 }
 
 export async function getQuestionDocument(quizId: string, questionId: string) {
   const quizPackage = await getQuizDocument(quizId);
-  const item = quizPackage.questions.id(questionId);
+  const item = quizPackage.questions.find(item => item.id == questionId);
   if (!item) throw new EError(...E.E202_SOAL_NOT_FOUND);
   return item;
 }
@@ -35,28 +42,29 @@ export async function getQuestionDocument(quizId: string, questionId: string) {
 export async function answerQuestion(
   quizId: string,
   questionId: string,
-  answer: number
+  answer: number | string | null
 ): Promise<AnswerQuestionResult> {
   const item = await getQuestionDocument(quizId, questionId);
+  validateQuestionAnswerDataType(item.answer, answer);
   return {
     correct: item.answer == answer
   };
 }
 
-export async function createQuiz(session: Session, title: string) {
+export async function createQuiz(session: Session, title: string): Promise<QuizWAnswer> {
   const paketDb = new QuizModel({
     userId: session.user!.id,
     title
-  } as QuizDB);
+  } as QuizWAnswer);
 
   await paketDb.save();
-  return paketDb.toQuizWAnswer();
+  return paketDb.toPlain();
 }
 
-export async function getQuizForEditor(session: Session, id: string) {
+export async function getQuizForEditor(session: Session, id: string): Promise<QuizWAnswer> {
   const doc = await getQuizDocument(id);
   await validateUserId(session, doc.userId);
-  return doc.toQuizWAnswer();
+  return doc.toPlain();
 }
 
 export async function deleteQuiz(session: Session, id: string) {
@@ -65,7 +73,11 @@ export async function deleteQuiz(session: Session, id: string) {
   await doc.remove();
 }
 
-export async function saveQuiz(session: Session, id: string, quiz: QuizWAnswer) {
+export async function saveQuiz(
+  session: Session,
+  id: string,
+  quiz: QuizWAnswer
+): Promise<SaveQuizResult> {
   const doc = await getQuizDocument(id);
   await validateUserId(session, doc.userId);
 
@@ -76,12 +88,12 @@ export async function saveQuiz(session: Session, id: string, quiz: QuizWAnswer) 
   doc.set(
     'questions',
     quiz.questions.map(question => {
-      let id = question.id
+      let id = question.id;
 
-      if (id.startsWith("new-")) {
-        const oldId = id
-        id = new Types.ObjectId().toHexString()
-        result.newQuestionsId[oldId] = id
+      if (id.startsWith('new-')) {
+        const oldId = id;
+        id = new Types.ObjectId().toHexString();
+        result.newQuestionsId[oldId] = id;
       }
 
       return {
@@ -92,5 +104,5 @@ export async function saveQuiz(session: Session, id: string, quiz: QuizWAnswer) 
   );
 
   await doc.save();
-  return result
+  return result;
 }

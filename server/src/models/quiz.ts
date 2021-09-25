@@ -1,21 +1,10 @@
-import { Document, Schema, model, Types } from 'mongoose';
-import { QuestionSchema, QuestionDocument } from './question';
-import { Quiz, QuizSummary, QuizWAnswer, QuestionWAnswerWoId } from '../types/quiz';
+import { Schema, model } from 'mongoose';
+import { configureQuestionDiscriminators, createQuestionSchema } from './question';
+import { QuizWAnswer } from '../types/quiz';
+import { BaseModel, BaseModelSchema, configureBaseModelSchema } from "./helper"
 
-export interface QuizDB {
-  userId: string;
-  title: string;
-  questions: Array<QuestionWAnswerWoId>;
-}
-
-export interface QuizDocument extends QuizDB, Document {
-  questions: Types.DocumentArray<QuestionDocument>;
-  toSummary(): QuizSummary;
-  toQuiz(): Quiz;
-  toQuizWAnswer(): QuizWAnswer;
-}
-
-const quizSchema = new Schema<QuizDocument>(
+const questionSchema = createQuestionSchema(true)
+const quizSchema: BaseModelSchema<QuizWAnswer> = new Schema(
   {
     userId: {
       type: String,
@@ -25,40 +14,16 @@ const quizSchema = new Schema<QuizDocument>(
       type: String,
       required: true,
     },
-    questions: [QuestionSchema],
+    questions: [questionSchema.root],
   },
   {
     collection: 'quiz',
   }
 );
 
-quizSchema.methods.toSummary = function (): QuizSummary {
-  return {
-    id: this._id,
-    userId: this.userId,
-    title: this.title,
-    questionCount: this.questions.length,
-  };
-};
+configureQuestionDiscriminators(quizSchema, 'questions', questionSchema)
+configureBaseModelSchema(quizSchema)
 
-quizSchema.methods.toQuiz = function (): Quiz {
-  return {
-    id: this._id,
-    userId: this.userId,
-    title: this.title,
-    questions: this.questions.map((item, idx) => item.toQuestion!()),
-  };
-};
-
-quizSchema.methods.toQuizWAnswer = function (): QuizWAnswer {
-  return {
-    id: this._id,
-    userId: this.userId,
-    title: this.title,
-    questions: this.questions.map((item, idx) => item.toQuestionWAnswer!()),
-  };
-};
-
-const QuizModel = model<QuizDocument>('Quiz', quizSchema);
+const QuizModel: BaseModel<QuizWAnswer> = model('Quiz', quizSchema);
 
 export default QuizModel;
