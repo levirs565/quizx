@@ -1,10 +1,10 @@
 import { Request, Response, NextFunction } from 'express';
 import { jsonHandler, actionHandler, actionHandlerSchema, jsonHandlerSchema } from './helper';
 import {
-  AnswerQuestionRequestBodySchema,
-  CreateRenameQuizRequestBodySchema,
-  QuizWAnswerSchema
-} from '../types/schema/quiz';
+  AnswerQuestionRequestBody,
+  CreateRenameQuizRequestBody,
+  QuizWAnswer
+} from '../types/quiz';
 import * as QuizService from '../services/quiz';
 
 function quizIdFromRequest(req: Request) {
@@ -31,14 +31,14 @@ export const getQuiz = jsonHandler(async (req) => {
   return QuizService.getQuiz(id);
 });
 
-export const answerQuestion = jsonHandlerSchema(AnswerQuestionRequestBodySchema, async (req) => {
+export const answerQuestion = jsonHandlerSchema(AnswerQuestionRequestBody, async (req) => {
   const { quizId, questionId } = questionIdFromRequest(req);
   const { answer } = req.body;
 
   return QuizService.answerQuestion(quizId, questionId, answer);
 });
 
-export const createQuiz = jsonHandlerSchema(CreateRenameQuizRequestBodySchema, async (req) => {
+export const createQuiz = jsonHandlerSchema(CreateRenameQuizRequestBody, async (req) => {
   return QuizService.createQuiz(req.session, req.body.title);
 });
 
@@ -49,7 +49,7 @@ export const getQuizForEditor = jsonHandler(async (req) => {
 });
 
 
-export const saveQuiz = jsonHandlerSchema(QuizWAnswerSchema, async (req) => {
+export const saveQuiz = jsonHandlerSchema(QuizWAnswer, async (req) => {
   const id = quizIdFromRequest(req)
   return QuizService.saveQuiz(req.session, id, req.body)
 })

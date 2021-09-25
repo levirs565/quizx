@@ -2,7 +2,8 @@
   "name": "@quizx/server",
   "scripts": {
     "serve": "node index.js",
-    "dev": "nodemon -e js,ts --watch './src/**/*' --exec 'yarn ts-node' src/main.ts"
+    "dev": "nodemon -e js,ts --watch './src/**/*' --exec 'yarn ts-node' src/main.ts",
+    "generate-schema": "ts-node scripts/schema_generator.ts"
   },
   "dependencies": {
     "@types/bcrypt": "^5.0.0",

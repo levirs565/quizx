@@ -1,4 +1,5 @@
-// WARNING: Change schema if change this interface
+import { SchemaDefinition } from "./base"
+
 export interface PlayGameRequestBody {
   quizId: string;
   isInteractive: boolean;
@@ -18,3 +19,15 @@ export interface Game {
   isInteractive: boolean;
   result?: GameResult;
 }
+
+// Begin Generated Schema Definition
+export const PlayGameRequestBody: SchemaDefinition<PlayGameRequestBody> = {
+  name: "PlayGameRequestBody"
+}
+export const GameResult: SchemaDefinition<GameResult> = {
+  name: "GameResult"
+}
+export const Game: SchemaDefinition<Game> = {
+  name: "Game"
+}
+// End Generated Schema Definition

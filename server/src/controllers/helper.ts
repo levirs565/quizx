@@ -1,7 +1,6 @@
 import { Response, Request, NextFunction } from 'express';
-import Ajv from 'ajv';
-import { JSONSchema } from '../types/schema/base';
-import { ActionSuccessResponse } from '../types/base';
+import { ajv } from "../validation";
+import { ActionSuccessResponse, SchemaDefinition } from '../types/base';
 import { BodyValidationError } from '../error';
 
 export function jsonHandler<T>(fn: (req: Request) => Promise<T>) {
@@ -21,15 +20,11 @@ export function actionHandler(fn: (req: Request) => Promise<void>) {
   });
 }
 
-const ajv = new Ajv({
-  allErrors: true
-});
-
 export function jsonHandlerSchema<Body, Result>(
-  bodySchema: JSONSchema<Body>,
+  bodySchema: SchemaDefinition<Body>,
   fn: (req: Request<any, any, Body>) => Promise<Result>
 ) {
-  const validate = ajv.compile(bodySchema);
+  const validate = ajv.getSchema(`#/definitions/${bodySchema.name}`)!;
   return jsonHandler(async (req) => {
     const valid = validate(req.body);
     if (!valid) {
@@ -40,17 +35,9 @@ export function jsonHandlerSchema<Body, Result>(
   });
 }
 
-export function actionHandlerSchema<T>(
-  bodySchema: JSONSchema<T>,
-  fn: (req: Request<{}, any, T>) => Promise<void>
+export function actionHandlerSchema<Body>(
+  bodySchema: SchemaDefinition<Body>,
+  fn: (req: Request<{}, any, Body>) => Promise<void>
 ) {
-  const validate = ajv.compile(bodySchema);
-  return actionHandler(async (req) => {
-    const valid = validate(req.body);
-    if (!valid) {
-      throw new BodyValidationError(validate.errors!)
-    }
-
-    return await fn(req);
-  });
+  return jsonHandlerSchema(bodySchema, fn)
 }

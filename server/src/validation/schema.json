@@ -1,0 +1,356 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "definitions": {
+    "PlayGameRequestBody": {
+      "type": "object",
+      "properties": {
+        "quizId": {
+          "type": "string"
+        },
+        "isInteractive": {
+          "type": "boolean"
+        }
+      },
+      "additionalProperties": false,
+      "required": [
+        "isInteractive",
+        "quizId"
+      ]
+    },
+    "GameResult": {
+      "type": "object",
+      "properties": {
+        "notAnswered": {
+          "type": "number"
+        },
+        "correct": {
+          "type": "number"
+        },
+        "wrong": {
+          "type": "number"
+        }
+      },
+      "additionalProperties": false,
+      "required": [
+        "correct",
+        "notAnswered",
+        "wrong"
+      ]
+    },
+    "Game": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "quizId": {
+          "type": "string"
+        },
+        "quizTitle": {
+          "type": "string"
+        },
+        "isPlaying": {
+          "type": "boolean"
+        },
+        "isInteractive": {
+          "type": "boolean"
+        },
+        "result": {
+          "$ref": "#/definitions/GameResult"
+        }
+      },
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "isInteractive",
+        "isPlaying",
+        "quizId",
+        "quizTitle"
+      ]
+    },
+    "UserState": {
+      "type": "object",
+      "properties": {
+        "user": {
+          "$ref": "#/definitions/UserData"
+        }
+      },
+      "additionalProperties": false
+    },
+    "UserData": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "isAdmin": {
+          "type": "boolean"
+        }
+      },
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "isAdmin",
+        "name"
+      ]
+    },
+    "LoginRequestBody": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "password": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "password"
+      ]
+    },
+    "SignupRequestBody": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "id": {
+          "type": "string"
+        },
+        "password": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "name",
+        "password"
+      ]
+    },
+    "AnswerQuestionResult": {
+      "type": "object",
+      "properties": {
+        "correct": {
+          "type": "boolean"
+        }
+      },
+      "additionalProperties": false
+    },
+    "AnswerQuestionRequestBody": {
+      "type": "object",
+      "properties": {
+        "answer": {
+          "type": "number"
+        }
+      },
+      "additionalProperties": false,
+      "required": [
+        "answer"
+      ]
+    },
+    "CreateRenameQuizRequestBody": {
+      "type": "object",
+      "properties": {
+        "title": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false,
+      "required": [
+        "title"
+      ]
+    },
+    "Question": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "question": {
+          "type": "string"
+        },
+        "choices": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "additionalProperties": false,
+      "required": [
+        "choices",
+        "id",
+        "question"
+      ]
+    },
+    "QuestionWAnswer": {
+      "type": "object",
+      "properties": {
+        "answer": {
+          "type": "number"
+        },
+        "id": {
+          "type": "string"
+        },
+        "question": {
+          "type": "string"
+        },
+        "choices": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "additionalProperties": false,
+      "required": [
+        "answer",
+        "choices",
+        "id",
+        "question"
+      ]
+    },
+    "QuestionWAnswerWoId": {
+      "type": "object",
+      "properties": {
+        "answer": {
+          "type": "number"
+        },
+        "question": {
+          "type": "string"
+        },
+        "choices": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "additionalProperties": false,
+      "required": [
+        "answer",
+        "choices",
+        "question"
+      ]
+    },
+    "BaseQuiz": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "userId": {
+          "type": "string"
+        },
+        "title": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "title",
+        "userId"
+      ]
+    },
+    "QuizSummary": {
+      "type": "object",
+      "properties": {
+        "questionCount": {
+          "type": "number"
+        },
+        "id": {
+          "type": "string"
+        },
+        "userId": {
+          "type": "string"
+        },
+        "title": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "questionCount",
+        "title",
+        "userId"
+      ]
+    },
+    "Quiz": {
+      "type": "object",
+      "properties": {
+        "questions": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Question"
+          }
+        },
+        "id": {
+          "type": "string"
+        },
+        "userId": {
+          "type": "string"
+        },
+        "title": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "questions",
+        "title",
+        "userId"
+      ]
+    },
+    "QuizWAnswer": {
+      "type": "object",
+      "properties": {
+        "questions": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/QuestionWAnswer"
+          }
+        },
+        "id": {
+          "type": "string"
+        },
+        "userId": {
+          "type": "string"
+        },
+        "title": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "questions",
+        "title",
+        "userId"
+      ]
+    },
+    "SaveQuizResult": {
+      "type": "object",
+      "properties": {
+        "newQuestionsId": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          }
+        }
+      },
+      "additionalProperties": false,
+      "required": [
+        "newQuestionsId"
+      ]
+    }
+  }
+}
