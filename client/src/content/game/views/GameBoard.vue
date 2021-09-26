@@ -49,6 +49,7 @@ import { Game } from "@/api.js";
 import Question from "../../quiz/components/Question.vue";
 import CAppBar from "@/components/CAppBar.vue";
 import Jumper from "../components/Jumper.vue";
+import { isAnswerEmpty } from "@/content/utils";
 
 export default {
   components: {
@@ -71,7 +72,7 @@ export default {
     answerChanged(data) {
       let answer = data.answer;
       let id = data.question.id;
-      this.$set(this.jumperButtons, data.index, "is-primary");
+      this.$set(this.jumperButtons, data.index, this.getQuestionColor(answer));
       Game.putAnswer(this.game_id, id, answer).then((val) => {
         if (this.game.isInteractive) {
           // TODO: Untuk permainan interaktif
@@ -101,11 +102,14 @@ export default {
         })
         .then((val) => {
           this.questions = val;
-          this.jumperButtons = this.questions.map((question) => {
-            if (question.answer != -1) return "is-primary";
-            return "";
-          });
+          this.jumperButtons = this.questions.map((question) =>
+            this.getQuestionColor(question.answer)
+          );
         });
+    },
+    getQuestionColor(answer) {
+      if (!isAnswerEmpty(answer)) return "is-primary";
+      return "";
     },
     showFinishDialog() {
       this.$buefy.dialog.confirm({

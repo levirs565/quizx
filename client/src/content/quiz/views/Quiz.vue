@@ -29,7 +29,7 @@
         <question :index="index" :question="question" v-slot="{ component }">
           <b-button
             @click="checkAnswer(component)"
-            v-if="component.answer != -1"
+            v-if="!isAnswerEmpty(component.answer)"
             type="is-primary"
             >Check Answer</b-button
           >
@@ -62,6 +62,7 @@ import { Quiz, Game } from "@/api.js";
 import QuizSummary from "../components/QuizSummary.vue";
 import DialogPlayQuiz from "../components/DialogPlayQuiz.vue";
 import AnswerResult from "../components/AnswerResult.vue";
+import { isAnswerEmpty as isAnswerEmptyImpl } from "@/content/utils";
 
 export default {
   components: {
@@ -118,6 +119,9 @@ export default {
       Game.playGame(this.quiz.id, interactive).then((game) => {
         this.$router.push(`/game/${game.id}/board`);
       });
+    },
+    isAnswerEmpty(answer) {
+      return isAnswerEmptyImpl(answer);
     },
   },
 };

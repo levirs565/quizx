@@ -18,6 +18,7 @@
         <question-editor
           :index="index"
           :question="question"
+          @update:question="$set(quiz.questions, index, $event)"
           @delete="deleteQuestion"
         />
       </li>
@@ -85,6 +86,7 @@ export default {
           Math.random()
             .toString(36)
             .substr(2),
+        type: "multiple-choice",
         question: "",
         choices: ["", "", "", ""],
         answer: 0,
