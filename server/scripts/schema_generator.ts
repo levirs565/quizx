@@ -17,16 +17,7 @@ const generator = TJS.buildGenerator(program, tjsArgs, includedFiles);
 if (!generator) process.exit();
 
 const userSymbols = generator.getUserSymbols();
-
-console.log("Generating JSON Schema...")
-const jsonSchema = generator.getSchemaForSymbols(userSymbols)
-
-console.log("Writing JSON Schema...")
-const jsonSchemaFile = path.join(rootPath, "src/validation/schema.json")
-fs.writeFileSync(jsonSchemaFile, JSON.stringify(jsonSchema, null, 2))
-
-console.log('Generating schema definition for types files...');
-
+const exportedSymbols: Array<string> = []
 const filesSchemaDefinition = new Map<string, Array<string>>();
 
 for (const symbolName of userSymbols) {
@@ -44,8 +35,18 @@ for (const symbolName of userSymbols) {
       `export const ${symbol.name}: SchemaDefinition<${symbol.name}> = {\n  name: "${symbol.name}"\n}`
     );
     filesSchemaDefinition.set(parentSymbol.name, schemaDefinition);
+    exportedSymbols.push(symbolName)
   }
 }
+
+console.log("Generating JSON Schema...")
+const jsonSchema = generator.getSchemaForSymbols(exportedSymbols)
+
+console.log("Writing JSON Schema...")
+const jsonSchemaFile = path.join(rootPath, "src/validation/schema.json")
+fs.writeFileSync(jsonSchemaFile, JSON.stringify(jsonSchema, null, 2))
+
+console.log('Generating schema definition for types files...');
 
 console.log('Writing schema definition for types files...');
 
