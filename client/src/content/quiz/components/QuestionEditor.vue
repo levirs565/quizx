@@ -4,7 +4,7 @@
       <p class="card-header-title">Question {{ index + 1 }}</p>
     </header>
     <div class="card-content">
-      <markdown-editor v-model="question.question" />
+      <text-editor class="field" v-model="question.question" />
 
       <b-field grouped position="is-right">
         <b-select :value="question.type" @input="changeType">
@@ -24,11 +24,11 @@
             :native-value="choiceIndex"
             type="is-success"
           />
-          <markdown-editor
+          <text-editor
             class="choice-editor"
             :value="entry"
             @input="onChoiceInput(choiceIndex, $event)"
-          ></markdown-editor>
+          ></text-editor>
         </b-field>
       </template>
       <b-field v-else-if="question.type == 'short-text'">
@@ -53,7 +53,7 @@
 </template>
 
 <script>
-import MarkdownEditor from "@/markdown/MarkdownEditor.vue";
+import TextEditor from "@/components/TextEditor.vue";
 
 export default {
   props: {
@@ -61,7 +61,7 @@ export default {
     index: Number,
   },
   components: {
-    MarkdownEditor,
+    TextEditor,
   },
   data() {
     return {

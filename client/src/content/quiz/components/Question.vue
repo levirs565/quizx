@@ -4,7 +4,7 @@
       <p class="card-header-title">Question {{ index }}</p>
     </header>
     <div class="card-content">
-      <markdown-viewer :value="question.question" />
+      <text-editor class="field" :value="question.question" :editable="false" />
 
       <template v-if="question.type === 'multiple-choice'">
         <b-field
@@ -16,7 +16,7 @@
             :native-value="choiceIndex"
             type="is-success"
           >
-            <markdown-viewer :value="entry" />
+            <text-editor :value="entry" :editable="false" />
           </b-radio>
         </b-field>
       </template>
@@ -37,7 +37,7 @@
 </template>
 
 <script>
-import MarkdownViewer from "@/markdown/MarkdownViewer.vue";
+import TextEditor from "@/components/TextEditor.vue";
 
 export default {
   props: {
@@ -46,7 +46,7 @@ export default {
     index: Number,
   },
   components: {
-    MarkdownViewer,
+    TextEditor,
   },
   data() {
     return {
