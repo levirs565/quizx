@@ -1,5 +1,11 @@
 <template>
-  <math-field @input="$emit('input', $el.value)" />
+  <math-field
+    @input="$emit('input', $el.value)"
+    :class="{
+      'bordered-math-field': bordered,
+      input: bordered,
+    }"
+  />
 </template>
 <script>
 import "mathlive";
@@ -10,6 +16,10 @@ export default {
     value: {
       type: String,
       default: "",
+    },
+    bordered: {
+      type: Boolean,
+      default: false,
     },
   },
   mounted() {
@@ -22,8 +32,13 @@ export default {
       if (value == this.$el.value) return;
 
       this.$el.value = value;
-      console.log(value);
     },
   },
 };
 </script>
+<style scoped>
+.bordered-math-field {
+  display: block;
+  height: auto;
+}
+</style>

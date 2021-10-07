@@ -16,3 +16,16 @@ export const mathField = () => ({
     <b-input type="textarea" v-model="text"/>
   </div>`,
 });
+
+export const mathFieldBordered = () => ({
+  components: { MathField },
+  data() {
+    return {
+      text: "x^2+y^2=r^2",
+    };
+  },
+  template: `<div>
+    <math-field v-model="text" bordered virtual-keyboard-mode="manual"></math-field>
+    <b-input type="textarea" v-model="text"/>
+  </div>`,
+});

@@ -37,6 +37,12 @@
       <b-field v-else-if="question.type == 'number'">
         <b-numberinput :controls="false" v-model="question.answer" />
       </b-field>
+      <math-field
+        bordered
+        v-else-if="question.type == 'math'"
+        v-model="question.answer"
+        virtual-keyboard-mode="manual"
+      />
     </div>
 
     <footer class="card-footer level">
@@ -54,6 +60,7 @@
 
 <script>
 import TextEditor from "@/components/TextEditor.vue";
+import MathField from "@/components/MathField.vue";
 
 export default {
   props: {
@@ -62,6 +69,7 @@ export default {
   },
   components: {
     TextEditor,
+    MathField,
   },
   data() {
     return {
@@ -70,6 +78,7 @@ export default {
         "multiple-choice": "Multiple Choice",
         "short-text": "Short Text",
         number: "Number",
+        math: "Math",
       },
     };
   },
@@ -98,6 +107,11 @@ export default {
         newQuestion = {
           ...newQuestion,
           answer: 0,
+        };
+      } else if (type == "math") {
+        newQuestion = {
+          ...newQuestion,
+          answer: "",
         };
       }
       this.$emit("update:question", newQuestion);

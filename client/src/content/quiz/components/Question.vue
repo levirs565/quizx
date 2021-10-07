@@ -26,6 +26,12 @@
       <b-field v-else-if="question.type == 'number'">
         <b-numberinput :controls="false" v-model="answer" />
       </b-field>
+      <math-field
+        v-else-if="question.type == 'math'"
+        bordered
+        v-model="answer"
+        virtual-keyboard-mode="manual"
+      />
     </div>
 
     <footer class="card-footer level">
@@ -38,6 +44,7 @@
 
 <script>
 import TextEditor from "@/components/TextEditor.vue";
+import MathField from "@/components/MathField.vue";
 
 export default {
   props: {
@@ -47,6 +54,7 @@ export default {
   },
   components: {
     TextEditor,
+    MathField,
   },
   data() {
     return {
