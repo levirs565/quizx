@@ -50,7 +50,8 @@ export default {
 </script>
 
 <style>
-.ProseMirror {
+.ProseMirror.textarea {
   height: auto !important;
+  max-height: 100% !important;
 }
 </style>
