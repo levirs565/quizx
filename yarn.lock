@@ -1618,6 +1618,16 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@cortex-js/compute-engine@npm:^0.4.2":
+  version: 0.4.2
+  resolution: "@cortex-js/compute-engine@npm:0.4.2"
+  dependencies:
+    complex.js: ^2.0.13
+    decimal.js: ^10.2.1
+  checksum: 207f8a910d0121c540d2dc30be82bb390c7f45b51817b5680a81f61f131e26b44ff71efd63b31f17c72c4803747127fe7026cc464b4a5805049f0b6926d2fb22
+  languageName: node
+  linkType: hard
+
 "@emotion/cache@npm:^10.0.27":
   version: 10.0.29
   resolution: "@emotion/cache@npm:10.0.29"
@@ -1961,6 +1971,7 @@ __metadata:
     eslint: ^6.7.2
     eslint-loader: ^3.0.2
     eslint-plugin-vue: ^6.2.2
+    mathlive: ^0.69.7
     v-click-outside: ^3.0.0
     vue: ^2.6.10
     vue-loader: ^15.7.1
@@ -6342,6 +6353,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"complex.js@npm:^2.0.13":
+  version: 2.0.15
+  resolution: "complex.js@npm:2.0.15"
+  checksum: 848def0794251de8fd822478265a091426ad18408150ee00ab5cc900ce8d317a812e1b84c97249dcc4f9c7a0773933d40d739df5d04cce5a7862f0ae2e3cfd62
+  languageName: node
+  linkType: hard
+
 "component-emitter@npm:^1.2.1":
   version: 1.3.0
   resolution: "component-emitter@npm:1.3.0"
@@ -7121,6 +7139,13 @@ __metadata:
   version: 1.2.0
   resolution: "decamelize@npm:1.2.0"
   checksum: 8ca9d03ea8ac07920f4504e219d18edff2491bdd0a3e05a1e5ca2e9a0bf6333564231de3528b01d5e76c40a38c37bbc1e09cb5a0424714f53dd615ed78ced464
+  languageName: node
+  linkType: hard
+
+"decimal.js@npm:^10.2.1":
+  version: 10.3.1
+  resolution: "decimal.js@npm:10.3.1"
+  checksum: e042c676c7a934e5a2c4e02f2562e0e0d752c6cd8f933f4030f8540dd4c7074ba035e329df46c0cc46f0c9190d1804c366d0be46ea6f94af64e0096d2730b22b
   languageName: node
   linkType: hard
 
@@ -11877,6 +11902,15 @@ fsevents@~2.3.2:
   peerDependencies:
     react: ">= 0.14.0"
   checksum: db5580aa747e78fd729a210d4a57ae4d3bdb31d2b3cbe513c449e46a2d779019d254ed745d7f9963ea490878c87460fda519f3d468173b765007b50c840bf52f
+  languageName: node
+  linkType: hard
+
+"mathlive@npm:^0.69.7":
+  version: 0.69.7
+  resolution: "mathlive@npm:0.69.7"
+  dependencies:
+    "@cortex-js/compute-engine": ^0.4.2
+  checksum: 382b73dd7d313622411ae88d3008decda8c99f32984288fb1ddd86adf06875dff251a21cd5edf22e6e00fdbba00e2e03ba092ca36aec45cd4a048703be4a4db2
   languageName: node
   linkType: hard
 
