@@ -42,6 +42,12 @@ export function createQuestionSchema(answerRequired: Boolean): QuestionSchemaCon
           type: Number,
           required: answerRequired
         }
+      }),
+      math: new Schema({
+        answer: {
+          type: String,
+          required: answerRequired
+        }
       })
     }
   };

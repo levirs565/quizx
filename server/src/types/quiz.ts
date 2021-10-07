@@ -33,6 +33,11 @@ interface NumberQuestion extends BaseQuestion {
   answer: number;
 }
 
+interface MathQuestion extends BaseQuestion {
+  type: 'math';
+  answer: string;
+}
+
 type OmitAnswer<K> = Omit<K, 'answer'>;
 
 type OptionalAnswer<K extends { answer: any }> = Omit<K, 'answer'> & Partial<Pick<K, 'answer'>>;
@@ -40,14 +45,16 @@ type OptionalAnswer<K extends { answer: any }> = Omit<K, 'answer'> & Partial<Pic
 export type Question =
   | OmitAnswer<MultipleChoiceQuestion>
   | OmitAnswer<ShortTextQuestion>
-  | OmitAnswer<NumberQuestion>;
+  | OmitAnswer<NumberQuestion>
+  | OmitAnswer<MathQuestion>;
 
-export type QuestionWAnswer = MultipleChoiceQuestion | ShortTextQuestion | NumberQuestion;
+export type QuestionWAnswer = MultipleChoiceQuestion | ShortTextQuestion | NumberQuestion | MathQuestion;
 
 export type QuestionOptionalAnswer =
   | OptionalAnswer<MultipleChoiceQuestion>
   | OptionalAnswer<ShortTextQuestion>
-  | OptionalAnswer<NumberQuestion>;
+  | OptionalAnswer<NumberQuestion>
+  | OptionalAnswer<MathQuestion>;
 
 interface BaseQuiz {
   id: string;

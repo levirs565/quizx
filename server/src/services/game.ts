@@ -3,11 +3,13 @@ import * as QuizService from './quiz';
 import Session from '../types/session';
 import { EError, E } from '../error';
 import { Game, GameResult } from '../types/game';
+import { AnswerQuestionResult, QuestionOptionalAnswer } from '../types/quiz';
 import {
-  AnswerQuestionResult,
-  QuestionOptionalAnswer,
-} from '../types/quiz';
-import { validateUserLoggedIn, validateUserId, validateQuestionAnswerDataType } from './helper';
+  validateUserLoggedIn,
+  validateUserId,
+  validateQuestionAnswerDataType,
+  checkQuestionAnswer
+} from './helper';
 import { GameDBMapper, QuestionWAnswerMapper } from '../types/mapper';
 
 export async function playGame(
@@ -64,7 +66,7 @@ export async function putAnswer(
   session: Session,
   gameId: string,
   questionId: string,
-  questionAnswer: number | string | null,
+  questionAnswer: number | string | null
 ): Promise<AnswerQuestionResult> {
   const game = await getGameInternal(gameId);
   await validateUserId(session, game.userId);
@@ -84,9 +86,8 @@ export async function putAnswer(
   await game.save();
 
   if (game.isInteractive) {
-    const correct = correctAnswer === questionAnswer;
     return {
-      correct
+      correct: checkQuestionAnswer(questionDocument, correctAnswer, questionAnswer)
     };
   }
 
@@ -103,12 +104,12 @@ export async function finishGame(session: Session, gameId: string) {
     wrong: 0
   };
 
-  questions.forEach((soal, index) => {
+  questions.forEach((question, index) => {
     const actualAnswer = correctAnswers[index];
-    const userAnswer = soal.answer;
+    const userAnswer = question.answer;
 
     if (userAnswer === undefined) result.notAnswered += 1;
-    else if (userAnswer === actualAnswer) result.correct += 1;
+    else if (checkQuestionAnswer(question, actualAnswer, userAnswer)) result.correct += 1;
     else result.wrong += 1;
   });
 

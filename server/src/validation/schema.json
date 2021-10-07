@@ -180,6 +180,9 @@
         },
         {
           "$ref": "#/definitions/OmitAnswer<NumberQuestion>"
+        },
+        {
+          "$ref": "#/definitions/OmitAnswer<MathQuestion>"
         }
       ]
     },
@@ -193,6 +196,9 @@
         },
         {
           "$ref": "#/definitions/NumberQuestion"
+        },
+        {
+          "$ref": "#/definitions/MathQuestion"
         }
       ]
     },
@@ -282,6 +288,32 @@
             "question",
             "type"
           ]
+        },
+        {
+          "additionalProperties": false,
+          "type": "object",
+          "properties": {
+            "type": {
+              "type": "string",
+              "enum": [
+                "math"
+              ]
+            },
+            "id": {
+              "type": "string"
+            },
+            "question": {
+              "type": "string"
+            },
+            "answer": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "id",
+            "question",
+            "type"
+          ]
         }
       ]
     },
@@ -324,6 +356,9 @@
               },
               {
                 "$ref": "#/definitions/OmitAnswer<NumberQuestion>"
+              },
+              {
+                "$ref": "#/definitions/OmitAnswer<MathQuestion>"
               }
             ]
           }
@@ -361,6 +396,9 @@
               },
               {
                 "$ref": "#/definitions/NumberQuestion"
+              },
+              {
+                "$ref": "#/definitions/MathQuestion"
               }
             ]
           }
@@ -474,6 +512,29 @@
         "type"
       ]
     },
+    "OmitAnswer<MathQuestion>": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": [
+            "math"
+          ]
+        },
+        "id": {
+          "type": "string"
+        },
+        "question": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "question",
+        "type"
+      ]
+    },
     "MultipleChoiceQuestion": {
       "type": "object",
       "properties": {
@@ -546,6 +607,33 @@
         },
         "answer": {
           "type": "number"
+        },
+        "id": {
+          "type": "string"
+        },
+        "question": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false,
+      "required": [
+        "answer",
+        "id",
+        "question",
+        "type"
+      ]
+    },
+    "MathQuestion": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": [
+            "math"
+          ]
+        },
+        "answer": {
+          "type": "string"
         },
         "id": {
           "type": "string"

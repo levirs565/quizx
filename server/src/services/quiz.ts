@@ -9,7 +9,7 @@ import {
   SaveQuizResult
 } from '../types/quiz';
 import Session from '../types/session';
-import { validateQuestionAnswerDataType, validateUserId } from './helper';
+import { checkQuestionAnswer, validateQuestionAnswerDataType, validateUserId } from './helper';
 import { QuizWAnswerMapper } from '../types/mapper';
 
 export async function getQuizList(): Promise<QuizSummary[]> {
@@ -47,7 +47,7 @@ export async function answerQuestion(
   const item = await getQuestionDocument(quizId, questionId);
   validateQuestionAnswerDataType(item.answer, answer);
   return {
-    correct: item.answer == answer
+    correct: checkQuestionAnswer(item, item.answer, answer)
   };
 }
 
