@@ -12,7 +12,12 @@ import {
   SaveQuizResult
 } from '../types/quiz';
 import Session from '../types/session';
-import { checkQuestionAnswer, validateQuestionAnswerDataType, validateUserId } from './helper';
+import {
+  checkQuestionAnswer,
+  validateQuestionAnswerDataType,
+  validateUserId,
+  validateUserLoggedIn
+} from './helper';
 import { QuizWAnswerMapper } from '../types/mapper';
 
 export async function getQuizList(): Promise<QuizSummary[]> {
@@ -59,6 +64,7 @@ export async function createQuiz(
   title: string,
   questions?: Array<QuestionWAnswerWoId>
 ): Promise<CreateQuizResult> {
+  await validateUserLoggedIn(session);
   const paketDb = new QuizModel({
     userId: session.user!.id,
     title,
