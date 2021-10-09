@@ -21,35 +21,54 @@
       icon-right="plus"
       @click="showCreateQuiz"
     />
+
+    <b-modal
+      v-model="isCreateDialogShow"
+      has-modal-card
+      trap-focus
+      :can-cancel="['escape', 'outside']"
+      custom-class="dialog"
+    >
+      <template #default="props">
+        <dialog-create-quiz @close="props.close" @create="createQuiz" />
+      </template>
+    </b-modal>
   </div>
 </template>
 
 <script>
 import { Quiz } from "@/api.js";
 import QuizSummaryCard from "@/content/components/QuizSummaryCard.vue";
+import DialogCreateQuiz from "../components/DialogCreateQuiz.vue";
 
 export default {
   components: {
     QuizSummaryCard,
+    DialogCreateQuiz,
   },
   data() {
     return {
       quizList: [],
+      isCreateDialogShow: false,
     };
   },
   methods: {
     showCreateQuiz() {
-      this.$buefy.dialog.prompt({
-        title: "Create Quiz",
-        message: "Title",
-        trapFocus: true,
-        confirmText: "Create",
-        onConfirm: (title) => this.createQuiz(title),
-      });
+      this.isCreateDialogShow = true;
     },
-    async createQuiz(title) {
-      const quiz = await Quiz.createQuiz({ title });
-      this.$router.push(`/quiz/${quiz.id}`);
+    async createQuiz(quiz) {
+      try {
+        const quizResult = await Quiz.createQuiz(quiz);
+        this.$router.push(`/quiz/${quizResult.id}`);
+      } catch (e) {
+        console.error(e);
+        let message = "Cannot create Quiz: ";
+        if (e.message) message += " " + e.message;
+        this.$buefy.toast.open({
+          message: message,
+          type: "is-danger",
+        });
+      }
     },
   },
   mounted() {
