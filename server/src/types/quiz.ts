@@ -8,8 +8,13 @@ export interface AnswerQuestionRequestBody {
   answer: number | string | null;
 }
 
-export interface CreateRenameQuizRequestBody {
+export interface CreateQuizRequestBody {
   title: string;
+  questions?: Array<QuestionWAnswerWoId>;
+}
+
+export interface CreateQuizResult {
+  id: string;
 }
 
 interface BaseQuestion {
@@ -38,6 +43,8 @@ interface MathQuestion extends BaseQuestion {
   answer: string;
 }
 
+type OmitId<K> = Omit<K, 'id'>;
+
 type OmitAnswer<K> = Omit<K, 'answer'>;
 
 type OptionalAnswer<K extends { answer: any }> = Omit<K, 'answer'> & Partial<Pick<K, 'answer'>>;
@@ -48,7 +55,17 @@ export type Question =
   | OmitAnswer<NumberQuestion>
   | OmitAnswer<MathQuestion>;
 
-export type QuestionWAnswer = MultipleChoiceQuestion | ShortTextQuestion | NumberQuestion | MathQuestion;
+export type QuestionWAnswer =
+  | MultipleChoiceQuestion
+  | ShortTextQuestion
+  | NumberQuestion
+  | MathQuestion;
+
+export type QuestionWAnswerWoId =
+  | OmitId<MultipleChoiceQuestion>
+  | OmitId<ShortTextQuestion>
+  | OmitId<NumberQuestion>
+  | OmitId<MathQuestion>;
 
 export type QuestionOptionalAnswer =
   | OptionalAnswer<MultipleChoiceQuestion>
@@ -86,14 +103,20 @@ export const AnswerQuestionResult: SchemaDefinition<AnswerQuestionResult> = {
 export const AnswerQuestionRequestBody: SchemaDefinition<AnswerQuestionRequestBody> = {
   name: "AnswerQuestionRequestBody"
 }
-export const CreateRenameQuizRequestBody: SchemaDefinition<CreateRenameQuizRequestBody> = {
-  name: "CreateRenameQuizRequestBody"
+export const CreateQuizRequestBody: SchemaDefinition<CreateQuizRequestBody> = {
+  name: "CreateQuizRequestBody"
+}
+export const CreateQuizResult: SchemaDefinition<CreateQuizResult> = {
+  name: "CreateQuizResult"
 }
 export const Question: SchemaDefinition<Question> = {
   name: "Question"
 }
 export const QuestionWAnswer: SchemaDefinition<QuestionWAnswer> = {
   name: "QuestionWAnswer"
+}
+export const QuestionWAnswerWoId: SchemaDefinition<QuestionWAnswerWoId> = {
+  name: "QuestionWAnswerWoId"
 }
 export const QuestionOptionalAnswer: SchemaDefinition<QuestionOptionalAnswer> = {
   name: "QuestionOptionalAnswer"

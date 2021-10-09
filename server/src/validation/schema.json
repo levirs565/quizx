@@ -158,16 +158,47 @@
         "answer"
       ]
     },
-    "CreateRenameQuizRequestBody": {
+    "CreateQuizRequestBody": {
       "type": "object",
       "properties": {
         "title": {
           "type": "string"
+        },
+        "questions": {
+          "type": "array",
+          "items": {
+            "anyOf": [
+              {
+                "$ref": "#/definitions/OmitId<MultipleChoiceQuestion>"
+              },
+              {
+                "$ref": "#/definitions/OmitId<ShortTextQuestion>"
+              },
+              {
+                "$ref": "#/definitions/OmitId<NumberQuestion>"
+              },
+              {
+                "$ref": "#/definitions/OmitId<MathQuestion>"
+              }
+            ]
+          }
         }
       },
       "additionalProperties": false,
       "required": [
         "title"
+      ]
+    },
+    "CreateQuizResult": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false,
+      "required": [
+        "id"
       ]
     },
     "Question": {
@@ -202,12 +233,31 @@
         }
       ]
     },
+    "QuestionWAnswerWoId": {
+      "anyOf": [
+        {
+          "$ref": "#/definitions/OmitId<MultipleChoiceQuestion>"
+        },
+        {
+          "$ref": "#/definitions/OmitId<ShortTextQuestion>"
+        },
+        {
+          "$ref": "#/definitions/OmitId<NumberQuestion>"
+        },
+        {
+          "$ref": "#/definitions/OmitId<MathQuestion>"
+        }
+      ]
+    },
     "QuestionOptionalAnswer": {
       "anyOf": [
         {
           "additionalProperties": false,
           "type": "object",
           "properties": {
+            "id": {
+              "type": "string"
+            },
             "type": {
               "type": "string",
               "enum": [
@@ -219,9 +269,6 @@
               "items": {
                 "type": "string"
               }
-            },
-            "id": {
-              "type": "string"
             },
             "question": {
               "type": "string"
@@ -241,14 +288,14 @@
           "additionalProperties": false,
           "type": "object",
           "properties": {
+            "id": {
+              "type": "string"
+            },
             "type": {
               "type": "string",
               "enum": [
                 "short-text"
               ]
-            },
-            "id": {
-              "type": "string"
             },
             "question": {
               "type": "string"
@@ -267,14 +314,14 @@
           "additionalProperties": false,
           "type": "object",
           "properties": {
+            "id": {
+              "type": "string"
+            },
             "type": {
               "type": "string",
               "enum": [
                 "number"
               ]
-            },
-            "id": {
-              "type": "string"
             },
             "question": {
               "type": "string"
@@ -293,14 +340,14 @@
           "additionalProperties": false,
           "type": "object",
           "properties": {
+            "id": {
+              "type": "string"
+            },
             "type": {
               "type": "string",
               "enum": [
                 "math"
               ]
-            },
-            "id": {
-              "type": "string"
             },
             "question": {
               "type": "string"
@@ -436,9 +483,12 @@
         "newQuestionsId"
       ]
     },
-    "OmitAnswer<MultipleChoiceQuestion>": {
+    "OmitId<MultipleChoiceQuestion>": {
       "type": "object",
       "properties": {
+        "answer": {
+          "type": "number"
+        },
         "type": {
           "type": "string",
           "enum": [
@@ -451,8 +501,104 @@
             "type": "string"
           }
         },
+        "question": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false,
+      "required": [
+        "answer",
+        "choices",
+        "question",
+        "type"
+      ]
+    },
+    "OmitId<ShortTextQuestion>": {
+      "type": "object",
+      "properties": {
+        "answer": {
+          "type": "string"
+        },
+        "type": {
+          "type": "string",
+          "enum": [
+            "short-text"
+          ]
+        },
+        "question": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false,
+      "required": [
+        "answer",
+        "question",
+        "type"
+      ]
+    },
+    "OmitId<NumberQuestion>": {
+      "type": "object",
+      "properties": {
+        "answer": {
+          "type": "number"
+        },
+        "type": {
+          "type": "string",
+          "enum": [
+            "number"
+          ]
+        },
+        "question": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false,
+      "required": [
+        "answer",
+        "question",
+        "type"
+      ]
+    },
+    "OmitId<MathQuestion>": {
+      "type": "object",
+      "properties": {
+        "answer": {
+          "type": "string"
+        },
+        "type": {
+          "type": "string",
+          "enum": [
+            "math"
+          ]
+        },
+        "question": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false,
+      "required": [
+        "answer",
+        "question",
+        "type"
+      ]
+    },
+    "OmitAnswer<MultipleChoiceQuestion>": {
+      "type": "object",
+      "properties": {
         "id": {
           "type": "string"
+        },
+        "type": {
+          "type": "string",
+          "enum": [
+            "multiple-choice"
+          ]
+        },
+        "choices": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
         },
         "question": {
           "type": "string"
@@ -469,14 +615,14 @@
     "OmitAnswer<ShortTextQuestion>": {
       "type": "object",
       "properties": {
+        "id": {
+          "type": "string"
+        },
         "type": {
           "type": "string",
           "enum": [
             "short-text"
           ]
-        },
-        "id": {
-          "type": "string"
         },
         "question": {
           "type": "string"
@@ -492,14 +638,14 @@
     "OmitAnswer<NumberQuestion>": {
       "type": "object",
       "properties": {
+        "id": {
+          "type": "string"
+        },
         "type": {
           "type": "string",
           "enum": [
             "number"
           ]
-        },
-        "id": {
-          "type": "string"
         },
         "question": {
           "type": "string"
@@ -515,14 +661,14 @@
     "OmitAnswer<MathQuestion>": {
       "type": "object",
       "properties": {
+        "id": {
+          "type": "string"
+        },
         "type": {
           "type": "string",
           "enum": [
             "math"
           ]
-        },
-        "id": {
-          "type": "string"
         },
         "question": {
           "type": "string"

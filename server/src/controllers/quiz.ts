@@ -2,7 +2,7 @@ import { Request, Response, NextFunction } from 'express';
 import { jsonHandler, actionHandler, actionHandlerSchema, jsonHandlerSchema } from './helper';
 import {
   AnswerQuestionRequestBody,
-  CreateRenameQuizRequestBody,
+  CreateQuizRequestBody,
   QuizWAnswer
 } from '../types/quiz';
 import * as QuizService from '../services/quiz';
@@ -38,8 +38,8 @@ export const answerQuestion = jsonHandlerSchema(AnswerQuestionRequestBody, async
   return QuizService.answerQuestion(quizId, questionId, answer);
 });
 
-export const createQuiz = jsonHandlerSchema(CreateRenameQuizRequestBody, async (req) => {
-  return QuizService.createQuiz(req.session, req.body.title);
+export const createQuiz = jsonHandlerSchema(CreateQuizRequestBody, async (req) => {
+  return QuizService.createQuiz(req.session, req.body.title, req.body.questions);
 });
 
 export const getQuizForEditor = jsonHandler(async (req) => {

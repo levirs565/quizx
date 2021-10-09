@@ -3,6 +3,9 @@ import QuizModel from '../models/quiz';
 import { EError, E } from '../error';
 import {
   AnswerQuestionResult,
+  CreateQuizResult,
+  QuestionWAnswer,
+  QuestionWAnswerWoId,
   Quiz,
   QuizSummary,
   QuizWAnswer,
@@ -51,14 +54,21 @@ export async function answerQuestion(
   };
 }
 
-export async function createQuiz(session: Session, title: string): Promise<QuizWAnswer> {
+export async function createQuiz(
+  session: Session,
+  title: string,
+  questions?: Array<QuestionWAnswerWoId>
+): Promise<CreateQuizResult> {
   const paketDb = new QuizModel({
     userId: session.user!.id,
-    title
+    title,
+    questions
   } as QuizWAnswer);
 
   await paketDb.save();
-  return paketDb.toPlain();
+  return {
+    id: paketDb.id
+  };
 }
 
 export async function getQuizForEditor(session: Session, id: string): Promise<QuizWAnswer> {
