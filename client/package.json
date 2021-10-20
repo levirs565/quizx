@@ -10,8 +10,8 @@
   },
   "dependencies": {
     "@mdi/font": "^5.9.55",
-    "@tiptap/starter-kit": "^2.0.0-beta.117",
-    "@tiptap/vue-2": "^2.0.0-beta.57",
+    "@tiptap/starter-kit": "latest",
+    "@tiptap/vue-2": "latest",
     "axios": "^0.21.1",
     "buefy": "^0.9.10",
     "bulma": "^0.7.4",
