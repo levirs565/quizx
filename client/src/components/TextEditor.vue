@@ -6,6 +6,7 @@
 import { Editor, EditorContent } from "@tiptap/vue-2";
 import StarterKit from "@tiptap/starter-kit";
 import { MathBlock, MathInline } from "./extensions/Math";
+import { CursorTracker } from "./extensions/CursorTracker";
 
 export default {
   components: {
@@ -31,7 +32,7 @@ export default {
     this.editor = new Editor({
       editable: this.editable,
       content: this.value,
-      extensions: [StarterKit, MathBlock, MathInline],
+      extensions: [StarterKit, CursorTracker, MathBlock, MathInline],
       editorProps: {
         attributes: {
           class: editorClass,

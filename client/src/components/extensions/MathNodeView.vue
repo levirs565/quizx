@@ -24,6 +24,9 @@
         :default-mode="defaultMode"
         @focus.native="toggleTooltip(true)"
         @blur.native="toggleTooltip(false)"
+        @move-out.native="mathMoveOut"
+        @focus-out.native.prevent="mathMoveOut"
+        @keystroke.native="mathKeyStroke"
       />
     </b-tooltip>
   </node-view-wrapper>
@@ -31,6 +34,9 @@
 <script>
 import MathField from "../MathField.vue";
 import { NodeViewWrapper, nodeViewProps } from "@tiptap/vue-2";
+import { Selection } from "prosemirror-state";
+import { getPrevCursorPos } from "./CursorTracker";
+
 export default {
   components: { NodeViewWrapper, MathField },
   props: nodeViewProps,
@@ -46,6 +52,13 @@ export default {
       defaultMode,
     };
   },
+  mounted() {
+    if (this.editor.state.selection.from === this.getPos()) {
+      this.$nextTick(() => {
+        this.focusMathField();
+      });
+    }
+  },
   computed: {
     src: {
       get() {
@@ -58,8 +71,28 @@ export default {
       },
     },
   },
+  watch: {
+    selected(value) {
+      if (value) {
+        const nodePos = this.getPos();
+        const prevPos = getPrevCursorPos(this.editor.state);
+        const mathField = this.$refs.mathField.$el;
+        if (prevPos <= nodePos) {
+          mathField.position = 0;
+        } else {
+          mathField.position = mathField.lastOffset;
+        }
+        this.focusMathField();
+      }
+    },
+  },
   methods: {
-    updateSrc() {},
+    focusMathField() {
+      const field = this.$refs.mathField.$el;
+      if (!field.hasFocus()) {
+        field.focus();
+      }
+    },
     toggleTooltip(state) {
       if (this.readOnly) return;
       this.isShowTooltip = state;
@@ -74,6 +107,25 @@ export default {
     },
     toggleKeyboard() {
       this.$refs.mathField.$el.executeCommand(["toggleVirtualKeyboard"]);
+    },
+    moveOutNode(isForward) {
+      const view = this.editor.view;
+      const targetPos = this.getPos() + (isForward ? this.node.nodeSize : 0);
+      const resolvedTargetPos = view.state.doc.resolve(targetPos);
+      const selection = Selection.near(resolvedTargetPos);
+      view.dispatch(view.state.tr.setSelection(selection).scrollIntoView());
+      view.focus();
+    },
+    mathMoveOut($event) {
+      const isForward = $event.detail.direction === "forward";
+      this.moveOutNode(isForward);
+    },
+    mathKeyStroke($event) {
+      if ($event.detail.keystroke === "[Backspace]" && this.src === "") {
+        this.moveOutNode(false);
+        this.deleteNode();
+        $event.preventDefault();
+      }
     },
   },
 };
