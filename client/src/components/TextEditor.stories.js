@@ -19,6 +19,86 @@ const text = `
 
 <p>Below is block math.</p>
 <math-block src="\\sum_{i=0}^n \\frac{a_i}{1+x}"></math-block>
+
+<p>Below is table.</p>
+<table class="table is-bordered">
+  <tbody>
+    <tr>
+      <th colspan="1" rowspan="1">
+        <p>No</p>
+      </th>
+      <th colspan="1" rowspan="1">
+        <p>Name</p>
+      </th>
+      <th colspan="1" rowspan="1">
+        <p>Amount</p>
+      </th>
+    </tr>
+    <tr>
+      <td colspan="1" rowspan="1">
+        <p>1</p>
+      </td>
+      <td colspan="1" rowspan="1">
+        <p>Girindra</p>
+      </td>
+      <td colspan="1" rowspan="1">
+        <p>10</p>
+      </td>
+    </tr>
+    <tr>
+      <td colspan="1" rowspan="1">
+        <p>2</p>
+      </td>
+      <td colspan="1" rowspan="1">
+        <p>Numin</p>
+      </td>
+      <td colspan="1" rowspan="1">
+        <p>10</p>
+      </td>
+    </tr>
+    <tr>
+      <td colspan="1" rowspan="1">
+        <p>3</p>
+      </td>
+      <td colspan="1" rowspan="1">
+        <p>Suwiyo</p>
+      </td>
+      <td colspan="1" rowspan="1">
+        <p>10</p>
+      </td>
+    </tr>
+    <tr>
+      <td colspan="1" rowspan="1">
+        <p>4</p>
+      </td>
+      <td colspan="1" rowspan="1">
+        <p>Ganang</p>
+      </td>
+      <td colspan="1" rowspan="1">
+        <p>10</p>
+      </td>
+    </tr>
+    <tr>
+      <td colspan="1" rowspan="1">
+        <p>5</p>
+      </td>
+      <td colspan="1" rowspan="1">
+        <p>Hendrik</p>
+      </td>
+      <td colspan="1" rowspan="1">
+        <p>10</p>
+      </td>
+    </tr>
+    <tr>
+      <td colspan="2" rowspan="1">
+        <p>Total</p>
+      </td>
+      <td colspan="1" rowspan="1">
+        <p>50</p>
+      </td>
+    </tr>
+  </tbody>
+</table>
 `;
 
 export const editor = () => ({
@@ -32,7 +112,7 @@ export const editor = () => ({
   },
   template: `
   <div>
-    <text-editor v-model="text"></text-editor>
+    <text-editor v-model="text" hasMenu></text-editor>
     <pre><code>{{ text }}</code></pre>
   </div>`,
 });

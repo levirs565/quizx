@@ -4,7 +4,7 @@
       <p class="card-header-title">Question {{ index + 1 }}</p>
     </header>
     <div class="card-content">
-      <text-editor class="field" v-model="question.question" />
+      <text-editor hasMenu class="field" v-model="question.question" />
 
       <b-field grouped position="is-right">
         <b-select :value="question.type" @input="changeType">
@@ -25,6 +25,7 @@
             type="is-success"
           />
           <text-editor
+            hasMenu
             class="choice-editor"
             :value="entry"
             @input="onChoiceInput(choiceIndex, $event)"

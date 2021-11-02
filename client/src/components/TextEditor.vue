@@ -1,22 +1,38 @@
 <template>
-  <editor-content :editor="editor" />
+  <div>
+    <text-editor-menu :editor="editor" v-if="hasMenu" />
+    <text-editor-bubble-menu :editor="editor" v-if="hasMenu" />
+    <editor-content :editor="editor" />
+  </div>
 </template>
 
 <script>
 import { Editor, EditorContent } from "@tiptap/vue-2";
 import StarterKit from "@tiptap/starter-kit";
+import ExtendedTable from "./extensions/ExtendedTable";
+import TableRow from "@tiptap/extension-table-row";
+import TableCell from "@tiptap/extension-table-cell";
+import TableHeader from "@tiptap/extension-table-header";
 import { MathBlock, MathInline } from "./extensions/Math";
 import { CursorTracker } from "./extensions/CursorTracker";
+import TextEditorMenu from "./TextEditorMenu.vue";
+import TextEditorBubbleMenu from './TextEditorBubbleMenu.vue';
 
 export default {
   components: {
     EditorContent,
+    TextEditorMenu,
+    TextEditorBubbleMenu,
   },
   props: {
     value: String,
     editable: {
       type: Boolean,
       default: true,
+    },
+    hasMenu: {
+      type: Boolean,
+      default: false,
     },
   },
   data() {
@@ -32,7 +48,16 @@ export default {
     this.editor = new Editor({
       editable: this.editable,
       content: this.value,
-      extensions: [StarterKit, CursorTracker, MathBlock, MathInline],
+      extensions: [
+        StarterKit,
+        ExtendedTable,
+        TableRow,
+        TableHeader,
+        TableCell,
+        CursorTracker,
+        MathBlock,
+        MathInline,
+      ],
       editorProps: {
         attributes: {
           class: editorClass,
