@@ -5,7 +5,7 @@ import { SymbolFlags } from 'typescript';
 
 const rootPath = path.join(__dirname, '..');
 const configPath = path.join(rootPath, '/tsconfig.json');
-const includedFiles = ['src/types/game.ts', 'src/types/user.ts', 'src/types/quiz.ts'];
+const includedFiles = ['src/types/user.ts', 'src/types/quiz.ts', 'src/types/game.ts'];
 const program = TJS.programFromConfig(configPath, includedFiles);
 const typeChecker = program.getTypeChecker();
 const tjsArgs: TJS.PartialArgs = {
