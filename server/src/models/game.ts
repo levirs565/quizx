@@ -1,17 +1,10 @@
 import { Schema, model } from 'mongoose';
 import { configureQuestionDiscriminators, createQuestionSchema } from './question';
-import { QuestionOptionalAnswer } from '../types/quiz';
-import { Game } from '../types/game';
 import { BaseModel, BaseModelSchema, configureBaseModelSchema } from './helper';
-
-export interface GameDB extends Game {
-  userId: string;
-  questions: Array<QuestionOptionalAnswer>;
-  correctAnswers: Array<number>;
-}
+import { Game, QuestionState } from '../types/game';
 
 const questionSchema = createQuestionSchema(false);
-const gameSchema: BaseModelSchema<GameDB> = new Schema(
+const gameSchema: BaseModelSchema<Game> = new Schema(
   {
     userId: {
       type: String,
@@ -49,9 +42,18 @@ const gameSchema: BaseModelSchema<GameDB> = new Schema(
       required: true
     },
     result: {
-      notAnswered: Number,
-      correct: Number,
-      wrong: Number
+      required: false,
+      type: {
+        notAnswered: Number,
+        correct: Number,
+        wrong: Number,
+        questionsState: [
+          {
+            type: Number,
+            enum: QuestionState
+          }
+        ]
+      }
     }
   },
   {
@@ -62,6 +64,6 @@ const gameSchema: BaseModelSchema<GameDB> = new Schema(
 configureQuestionDiscriminators(gameSchema, 'questions', questionSchema);
 configureBaseModelSchema(gameSchema);
 
-const GameModel: BaseModel<GameDB> = model('Game', gameSchema);
+const GameModel: BaseModel<Game> = model('Game', gameSchema);
 
 export default GameModel;

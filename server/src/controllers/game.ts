@@ -4,17 +4,13 @@ import { AnswerQuestionRequestBody } from '../types/quiz';
 import * as GameService from '../services/game';
 
 export const playGame = jsonHandlerSchema(PlayGameRequestBody, async req => {
-  const { quizId, isInteractive, ...preference } = req.body;
+  const { quizId, ...preference } = req.body;
 
-  return GameService.playGame(req.session, quizId, isInteractive, preference);
+  return GameService.playGame(req.session, quizId, preference);
 });
 
 export const getGame = jsonHandler(async req => {
   return GameService.getGame(req.params.id);
-});
-
-export const getAllQuestion = jsonHandler(async req => {
-  return GameService.getAllQuestion(req.session, req.params.gameId);
 });
 
 export const putAnswer = jsonHandlerSchema(AnswerQuestionRequestBody, async req => {

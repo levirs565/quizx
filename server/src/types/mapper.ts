@@ -1,5 +1,4 @@
-import { GameDB } from '../models/game';
-import { Game } from './game';
+import { GameSummary, Game } from './game';
 import { QuestionWAnswer, QuizSummary, QuizWAnswer, Question, Quiz } from './quiz';
 
 export namespace QuestionWAnswerMapper {
@@ -27,9 +26,9 @@ export namespace QuizWAnswerMapper {
   }
 }
 
-export namespace GameDBMapper {
-  export function toGame(gameDb: GameDB): Game {
-    const { userId, questions, correctAnswers, ...rest } = gameDb
+export namespace GameMapper {
+  export function toGameSummary(gameDb: Game): GameSummary {
+    const { questions, correctAnswers, ...rest } = gameDb
     return rest
   }
 }

@@ -1,8 +1,8 @@
-import GameModel, { GameDB } from '../models/game';
+import GameModel from '../models/game';
 import * as QuizService from './quiz';
 import Session from '../types/session';
 import { EError, E } from '../error';
-import { Game, GamePreference, GameResult } from '../types/game';
+import { GameSummary, GamePreference, GameResult, Game, QuestionState } from '../types/game';
 import { AnswerQuestionResult, QuestionOptionalAnswer } from '../types/quiz';
 import {
   validateUserLoggedIn,
@@ -10,24 +10,22 @@ import {
   validateQuestionAnswerDataType,
   checkQuestionAnswer
 } from './helper';
-import { GameDBMapper, QuestionWAnswerMapper } from '../types/mapper';
-import shuffle from "just-shuffle"
+import { GameMapper, QuestionWAnswerMapper } from '../types/mapper';
+import shuffle from 'just-shuffle';
 
 export async function playGame(
   session: Session,
   quizId: string,
-  isInteractive: boolean,
   preference: GamePreference
-): Promise<Game> {
+): Promise<GameSummary> {
   const user = await validateUserLoggedIn(session);
   const playedGame = await GameModel.findOne({ userId: user.id, isPlaying: true });
   if (playedGame) throw new EError(...E.E402_PERMAINAN_NOT_FINISHED);
 
   const quiz = await (await QuizService.getQuizDocument(quizId)).toPlain();
 
-  let sourceQuestions = quiz.questions
-  if (preference.shuffleQuestions)
-    sourceQuestions = shuffle(sourceQuestions)
+  let sourceQuestions = quiz.questions;
+  if (preference.shuffleQuestions) sourceQuestions = shuffle(sourceQuestions);
   const correctAnswers = sourceQuestions.map(question => question.answer);
   const questions: QuestionOptionalAnswer[] = sourceQuestions.map(QuestionWAnswerMapper.toQuestion);
 
@@ -36,14 +34,13 @@ export async function playGame(
     quizId,
     quizTitle: quiz.title,
     questions: questions,
-    isInteractive,
-    shuffleQuestions: preference.shuffleQuestions,
     isPlaying: true,
-    correctAnswers
-  } as GameDB);
+    correctAnswers,
+    ...preference
+  } as Game);
 
   await game.save();
-  return GameDBMapper.toGame(game.toPlain());
+  return GameMapper.toGameSummary(game.toPlain());
 }
 
 async function getGameInternal(id: string) {
@@ -54,18 +51,11 @@ async function getGameInternal(id: string) {
   throw new EError(...E.E404_GAME_NOT_FOUND);
 }
 
-export async function getGame(id: string): Promise<Game> {
-  return GameDBMapper.toGame((await getGameInternal(id)).toPlain());
-}
+export async function getGame(id: string): Promise<GameSummary> {
+  const game = (await getGameInternal(id)).toPlain();
+  if (game.isPlaying) game.correctAnswers = undefined;
 
-export async function getAllQuestion(
-  session: Session,
-  gameId: string
-): Promise<QuestionOptionalAnswer[]> {
-  const game = await getGameInternal(gameId);
-  await validateUserId(session, game.userId);
-
-  return game.toPlain().questions;
+  return game;
 }
 
 export async function putAnswer(
@@ -84,7 +74,7 @@ export async function putAnswer(
   }
 
   const questionDocument = game.questions[questionDocumentIndex];
-  const correctAnswer = game.correctAnswers[questionDocumentIndex];
+  const correctAnswer = game.correctAnswers![questionDocumentIndex];
 
   validateQuestionAnswerDataType(correctAnswer, questionAnswer);
   questionDocument.answer = questionAnswer ?? undefined;
@@ -107,16 +97,26 @@ export async function finishGame(session: Session, gameId: string) {
   const result: GameResult = {
     notAnswered: 0,
     correct: 0,
-    wrong: 0
+    wrong: 0,
+    questionsState: []
   };
 
   questions.forEach((question, index) => {
-    const actualAnswer = correctAnswers[index];
+    const actualAnswer = correctAnswers![index];
     const userAnswer = question.answer;
+    let state: QuestionState;
 
-    if (userAnswer === undefined) result.notAnswered += 1;
-    else if (checkQuestionAnswer(question, actualAnswer, userAnswer)) result.correct += 1;
-    else result.wrong += 1;
+    if (userAnswer === undefined) {
+      result.notAnswered += 1;
+      state = QuestionState.Unanswered;
+    } else if (checkQuestionAnswer(question, actualAnswer, userAnswer)) {
+      result.correct += 1;
+      state = QuestionState.Correct
+    } else {
+      result.wrong += 1;
+      state = QuestionState.Incorrect
+    }
+    result.questionsState.push(state);
   });
 
   game.isPlaying = false;
