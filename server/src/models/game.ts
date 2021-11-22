@@ -44,7 +44,7 @@ const gameSchema: BaseModelSchema<Game> = new Schema(
     result: {
       required: false,
       type: {
-        notAnswered: Number,
+        unanswered: Number,
         correct: Number,
         wrong: Number,
         questionsState: [

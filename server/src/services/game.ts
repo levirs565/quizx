@@ -95,7 +95,7 @@ export async function finishGame(session: Session, gameId: string) {
   await validateUserId(session, game.userId);
   const { questions, correctAnswers } = game;
   const result: GameResult = {
-    notAnswered: 0,
+    unanswered: 0,
     correct: 0,
     wrong: 0,
     questionsState: []
@@ -107,7 +107,7 @@ export async function finishGame(session: Session, gameId: string) {
     let state: QuestionState;
 
     if (userAnswer === undefined) {
-      result.notAnswered += 1;
+      result.unanswered += 1;
       state = QuestionState.Unanswered;
     } else if (checkQuestionAnswer(question, actualAnswer, userAnswer)) {
       result.correct += 1;

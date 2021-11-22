@@ -17,7 +17,7 @@ export enum QuestionState {
 }
 
 export interface GameResult {
-  notAnswered: number;
+  unanswered: number;
   correct: number;
   wrong: number;
   questionsState: Array<QuestionState>;

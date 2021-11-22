@@ -40,7 +40,7 @@
     "GameResult": {
       "type": "object",
       "properties": {
-        "notAnswered": {
+        "unanswered": {
           "type": "number"
         },
         "correct": {
@@ -59,8 +59,8 @@
       "additionalProperties": false,
       "required": [
         "correct",
-        "notAnswered",
         "questionsState",
+        "unanswered",
         "wrong"
       ]
     },
