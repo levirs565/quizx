@@ -25,7 +25,7 @@
           </tr>
           <tr>
             <td>Unanswered</td>
-            <td>{{ game.result.notAnswered }}</td>
+            <td>{{ game.result.unanswered }}</td>
           </tr>
         </table>
       </div>
