@@ -90,22 +90,16 @@ export default {
       });
     },
     updateState() {
-      Game.getGame(this.game_id)
-        .then((val) => {
-          this.game = val;
+      Game.getGame(this.game_id).then((val) => {
+        this.game = val;
 
-          if (this.game.isPlaying) {
-            return Game.getAllQuestion(this.game_id);
-          }
+        if (!this.game.isPlaying) return;
 
-          return Promise.resolve([]);
-        })
-        .then((val) => {
-          this.questions = val;
-          this.jumperButtons = this.questions.map((question) =>
-            this.getQuestionColor(question.answer)
-          );
-        });
+        this.questions = val.questions;
+        this.jumperButtons = this.questions.map((question) =>
+          this.getQuestionColor(question.answer)
+        );
+      });
     },
     getQuestionColor(answer) {
       if (!isAnswerEmpty(answer)) return "is-primary";

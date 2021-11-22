@@ -83,10 +83,6 @@ export const Game = {
     const res = await instance.get(`/game/${id}`)
     return throwError(res)
   },
-  async getAllQuestion(gameId) {
-    const res = await instance.get(`/game/${gameId}/question/`);
-    return throwError(res);
-  },
   async putAnswer(gameId, questionIndex, answer) {
     const res = await instance.put(`/game/${gameId}/question/${questionIndex}`, { answer });
     return throwError(res);
