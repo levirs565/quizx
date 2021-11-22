@@ -5,7 +5,12 @@
     </header>
     <section class="modal-card-body">
       <b-field>
-        <b-switch v-model="isInteractive">Interactive Game</b-switch>
+        <b-switch v-model="preference.isInteractive">Interactive Game</b-switch>
+      </b-field>
+      <b-field>
+        <b-switch v-model="preference.shuffleQuestions"
+          >Shuffle Questions</b-switch
+        >
       </b-field>
     </section>
     <footer class="modal-card-foot">
@@ -18,12 +23,15 @@
 export default {
   data() {
     return {
-      isInteractive: false,
+      preference: {
+        isInteractive: false,
+        shuffleQuestions: false,
+      },
     };
   },
   methods: {
     submit() {
-      this.$emit("play", this.isInteractive);
+      this.$emit("play", this.preference);
     },
   },
 };

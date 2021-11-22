@@ -115,8 +115,8 @@ export default {
     showPlayDialog() {
       this.isPlayDialogShow = true;
     },
-    playGame(interactive) {
-      Game.playGame(this.quiz.id, interactive).then((game) => {
+    playGame(preference) {
+      Game.playGame(this.quiz.id, preference).then((game) => {
         this.$router.push(`/game/${game.id}/board`);
       });
     },

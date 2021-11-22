@@ -72,10 +72,10 @@ export const User = {
 };
 
 export const Game = {
-  async playGame(quizId, isInteractive) {
+  async playGame(quizId, preference) {
     const res = await instance.post('/game/play', {
       quizId,
-      isInteractive,
+      ...preference,
     });
     return throwError(res);
   },
