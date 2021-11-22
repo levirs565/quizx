@@ -1,6 +1,10 @@
 import { SchemaDefinition } from "./base"
 
-export interface PlayGameRequestBody {
+export interface GamePreference {
+  shuffleQuestions: boolean;
+}
+
+export interface PlayGameRequestBody extends GamePreference {
   quizId: string;
   isInteractive: boolean;
 }
@@ -11,7 +15,7 @@ export interface GameResult {
   wrong: number;
 }
 
-export interface Game {
+export interface Game extends GamePreference {
   id: string;
   quizId: string;
   quizTitle: string;

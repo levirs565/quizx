@@ -2,7 +2,7 @@ import GameModel, { GameDB } from '../models/game';
 import * as QuizService from './quiz';
 import Session from '../types/session';
 import { EError, E } from '../error';
-import { Game, GameResult } from '../types/game';
+import { Game, GamePreference, GameResult } from '../types/game';
 import { AnswerQuestionResult, QuestionOptionalAnswer } from '../types/quiz';
 import {
   validateUserLoggedIn,
@@ -11,11 +11,13 @@ import {
   checkQuestionAnswer
 } from './helper';
 import { GameDBMapper, QuestionWAnswerMapper } from '../types/mapper';
+import shuffle from "just-shuffle"
 
 export async function playGame(
   session: Session,
   quizId: string,
-  isInteractive: boolean
+  isInteractive: boolean,
+  preference: GamePreference
 ): Promise<Game> {
   const user = await validateUserLoggedIn(session);
   const playedGame = await GameModel.findOne({ userId: user.id, isPlaying: true });
@@ -23,8 +25,11 @@ export async function playGame(
 
   const quiz = await (await QuizService.getQuizDocument(quizId)).toPlain();
 
-  const correctAnswers = quiz.questions.map(question => question.answer);
-  const questions: QuestionOptionalAnswer[] = quiz.questions.map(QuestionWAnswerMapper.toQuestion);
+  let sourceQuestions = quiz.questions
+  if (preference.shuffleQuestions)
+    sourceQuestions = shuffle(sourceQuestions)
+  const correctAnswers = sourceQuestions.map(question => question.answer);
+  const questions: QuestionOptionalAnswer[] = sourceQuestions.map(QuestionWAnswerMapper.toQuestion);
 
   const game = new GameModel({
     userId: user.id,
@@ -32,6 +37,7 @@ export async function playGame(
     quizTitle: quiz.title,
     questions: questions,
     isInteractive,
+    shuffleQuestions: preference.shuffleQuestions,
     isPlaying: true,
     correctAnswers
   } as GameDB);

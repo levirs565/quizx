@@ -19,6 +19,7 @@
     "dotenv": "^10.0.0",
     "express": "^4.17.1",
     "express-session": "^1.17.2",
+    "just-shuffle": "^4.0.1",
     "mongoose": "^5.13.3",
     "typescript-json-schema": "^0.50.1"
   },

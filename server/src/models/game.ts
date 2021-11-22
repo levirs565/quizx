@@ -10,53 +10,57 @@ export interface GameDB extends Game {
   correctAnswers: Array<number>;
 }
 
-const questionSchema = createQuestionSchema(false)
+const questionSchema = createQuestionSchema(false);
 const gameSchema: BaseModelSchema<GameDB> = new Schema(
   {
     userId: {
       type: String,
-      required: true,
+      required: true
     },
     quizId: {
       type: String,
-      required: true,
+      required: true
     },
     quizTitle: {
       type: String,
-      required: true,
+      required: true
     },
     isPlaying: {
       type: Boolean,
       required: true,
-      default: true,
+      default: true
     },
     isInteractive: {
       type: Boolean,
       required: true,
-      default: false,
+      default: false
+    },
+    shuffleQuestions: {
+      type: Boolean,
+      required: true,
+      default: false
     },
     questions: {
       type: [questionSchema.root],
-      required: true,
+      required: true
     },
     correctAnswers: {
       type: [Schema.Types.Mixed],
-      required: true,
+      required: true
     },
     result: {
       notAnswered: Number,
       correct: Number,
-      wrong: Number,
-    },
+      wrong: Number
+    }
   },
   {
-    collection: 'game',
+    collection: 'game'
   }
 );
 
-
-configureQuestionDiscriminators(gameSchema, 'questions', questionSchema)
-configureBaseModelSchema(gameSchema)
+configureQuestionDiscriminators(gameSchema, 'questions', questionSchema);
+configureBaseModelSchema(gameSchema);
 
 const GameModel: BaseModel<GameDB> = model('Game', gameSchema);
 

@@ -9,12 +9,16 @@
         },
         "isInteractive": {
           "type": "boolean"
+        },
+        "shuffleQuestions": {
+          "type": "boolean"
         }
       },
       "additionalProperties": false,
       "required": [
         "isInteractive",
-        "quizId"
+        "quizId",
+        "shuffleQuestions"
       ]
     },
     "GameResult": {
@@ -57,6 +61,9 @@
         },
         "result": {
           "$ref": "#/definitions/GameResult"
+        },
+        "shuffleQuestions": {
+          "type": "boolean"
         }
       },
       "additionalProperties": false,
@@ -65,7 +72,8 @@
         "isInteractive",
         "isPlaying",
         "quizId",
-        "quizTitle"
+        "quizTitle",
+        "shuffleQuestions"
       ]
     },
     "UserState": {

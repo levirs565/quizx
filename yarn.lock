@@ -2010,6 +2010,7 @@ __metadata:
     eslint-plugin-prettier: ^3.0.1
     express: ^4.17.1
     express-session: ^1.17.2
+    just-shuffle: ^4.0.1
     mongoose: ^5.13.3
     nodemon: 2.0.7
     prettier: ^1.17.0
@@ -11425,6 +11426,13 @@ fsevents@~2.3.2:
   version: 3.1.0
   resolution: "junk@npm:3.1.0"
   checksum: fedb1a2eab7f90e3c833211fecf1e1659cf995594981fb657b4215bae86883e7ec39074215a3a92cb0657fa46b0da87db121c6f12b125cc19c7911119db9c452
+  languageName: node
+  linkType: hard
+
+"just-shuffle@npm:^4.0.1":
+  version: 4.0.1
+  resolution: "just-shuffle@npm:4.0.1"
+  checksum: 60cd91f379746f06d4eaf33f0177cda51c6291df4ba9d944f82a100e4a1c0ef324d2cf1108bd75980e1a49aacc75fdfb32d29b798d9a16cc4e5f3acb2f98c789
   languageName: node
   linkType: hard
 
