@@ -1,6 +1,7 @@
 import * as TJS from 'typescript-json-schema';
 import fs from 'fs';
 import path from 'path';
+import { SymbolFlags } from 'typescript';
 
 const rootPath = path.join(__dirname, '..');
 const configPath = path.join(rootPath, '/tsconfig.json');
@@ -17,7 +18,7 @@ const generator = TJS.buildGenerator(program, tjsArgs, includedFiles);
 if (!generator) process.exit();
 
 const userSymbols = generator.getUserSymbols();
-const exportedSymbols: Array<string> = []
+const exportedSymbols: Array<string> = [];
 const filesSchemaDefinition = new Map<string, Array<string>>();
 
 for (const symbolName of userSymbols) {
@@ -27,6 +28,8 @@ for (const symbolName of userSymbols) {
   const parentSymbol = typeChecker.getSymbolAtLocation(parentNode)!;
   const isExported = parentSymbol.exports!.has(symbol.escapedName);
 
+  if (symbol.flags === SymbolFlags.RegularEnum) continue;
+
   if (isExported) {
     let schemaDefinition = filesSchemaDefinition.get(parentSymbol.name);
     if (!schemaDefinition) schemaDefinition = [];
@@ -35,16 +38,16 @@ for (const symbolName of userSymbols) {
       `export const ${symbol.name}: SchemaDefinition<${symbol.name}> = {\n  name: "${symbol.name}"\n}`
     );
     filesSchemaDefinition.set(parentSymbol.name, schemaDefinition);
-    exportedSymbols.push(symbolName)
+    exportedSymbols.push(symbolName);
   }
 }
 
-console.log("Generating JSON Schema...")
-const jsonSchema = generator.getSchemaForSymbols(exportedSymbols)
+console.log('Generating JSON Schema...');
+const jsonSchema = generator.getSchemaForSymbols(exportedSymbols);
 
-console.log("Writing JSON Schema...")
-const jsonSchemaFile = path.join(rootPath, "src/validation/schema.json")
-fs.writeFileSync(jsonSchemaFile, JSON.stringify(jsonSchema, null, 2))
+console.log('Writing JSON Schema...');
+const jsonSchemaFile = path.join(rootPath, 'src/validation/schema.json');
+fs.writeFileSync(jsonSchemaFile, JSON.stringify(jsonSchema, null, 2));
 
 console.log('Generating schema definition for types files...');
 
