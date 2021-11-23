@@ -24,9 +24,12 @@
             :native-value="choiceIndex"
             type="is-success"
           />
+          <span class="mr-2 is-align-self-baseline"
+            >{{ getChoiceIndex(choiceIndex) }}.</span
+          >
           <text-editor
             hasMenu
-            class="choice-editor"
+            class="choice-editor is-align-self-baseline"
             :value="entry"
             @input="onChoiceInput(choiceIndex, $event)"
           ></text-editor>
@@ -62,6 +65,7 @@
 <script>
 import TextEditor from "@/components/TextEditor.vue";
 import MathField from "@/components/MathField.vue";
+import { getChoiceIndex } from "@/content/utils";
 
 export default {
   props: {
@@ -117,6 +121,7 @@ export default {
       }
       this.$emit("update:question", newQuestion);
     },
+    getChoiceIndex,
   },
 };
 </script>

@@ -55,7 +55,7 @@
                 :value="game.correctAnswers[index]"
               />
               <span class="ml-2" v-else>
-                {{ game.correctAnswers[index] }}
+                {{ getQuestionCorrectAnswerText(index) }}
               </span>
             </p>
             <p
@@ -80,6 +80,7 @@
 import { Game } from "@/api";
 import Question from "@/content/quiz/components/Question.vue";
 import MathField from "@/components/MathField.vue";
+import { getChoiceIndex } from "@/content/utils";
 
 export default {
   components: { Question, MathField },
@@ -114,6 +115,14 @@ export default {
       if (state === 0) return "success";
       else if (state === 1) return "danger";
       else return "warning-dark";
+    },
+    getQuestionCorrectAnswerText(index) {
+      const answer = this.game.correctAnswers[index];
+      if (this.game.questions[index].type === "multiple-choice") {
+        return getChoiceIndex(answer);
+      }
+
+      return answer;
     },
   },
 };

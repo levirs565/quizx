@@ -5,3 +5,8 @@ export function isAnswerEmpty(answer) {
 
   return false;
 }
+
+const CODEPOINT_A = "A".charCodeAt(0);
+export function getChoiceIndex(index) {
+  return String.fromCharCode(CODEPOINT_A + index);
+}

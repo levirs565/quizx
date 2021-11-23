@@ -15,8 +15,10 @@
             v-model="answer"
             :native-value="choiceIndex"
             type="is-success"
+            class="question-radio"
             @click.native="handleRadioClick"
           >
+            <span class="mr-2">{{ getChoiceIndex(choiceIndex) }}.</span>
             <text-editor :value="entry" :editable="false" />
           </b-radio>
         </b-field>
@@ -47,6 +49,7 @@
 <script>
 import TextEditor from "@/components/TextEditor.vue";
 import MathField from "@/components/MathField.vue";
+import { getChoiceIndex } from "@/content/utils";
 
 export default {
   props: {
@@ -73,6 +76,7 @@ export default {
       if (this.editable) return;
       e.preventDefault();
     },
+    getChoiceIndex,
   },
   watch: {
     answer() {
@@ -82,4 +86,13 @@ export default {
 };
 </script>
 
-<style scoped></style>
+<style scoped>
+.question-choice-index {
+  vertical-align: top;
+}
+.question-radio >>> .control-label {
+  display: flex;
+  flex-direction: row;
+  align-items: baseline;
+}
+</style>
