@@ -1,7 +1,7 @@
 <template>
   <div class="card">
     <header class="card-header">
-      <p class="card-header-title">Question {{ index }}</p>
+      <p class="card-header-title">Question {{ index + 1 }}</p>
     </header>
     <div class="card-content">
       <text-editor class="field" :value="question.question" :editable="false" />
