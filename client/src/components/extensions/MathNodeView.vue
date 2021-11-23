@@ -88,6 +88,7 @@ export default {
   },
   methods: {
     focusMathField() {
+      if (!this.editor.isFocused) return;
       const field = this.$refs.mathField.$el;
       if (!field.hasFocus()) {
         field.focus();
