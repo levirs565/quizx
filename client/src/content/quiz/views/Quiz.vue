@@ -27,13 +27,19 @@
         class="block"
       >
         <question :index="index" :question="question" v-slot="{ component }">
-          <b-button
-            @click="checkAnswer(component)"
+          <footer
+            class="card-footer level"
             v-if="!isAnswerEmpty(component.answer)"
-            type="is-primary"
-            >Check Answer</b-button
           >
-          <answer-result :result="component.extraData.result"></answer-result>
+            <div class="card-footer-item level-left buttons">
+              <b-button @click="checkAnswer(component)" type="is-primary"
+                >Check Answer</b-button
+              >
+              <answer-result
+                :result="component.extraData.result"
+              ></answer-result>
+            </div>
+          </footer>
         </question>
       </li>
     </ul>

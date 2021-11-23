@@ -15,30 +15,32 @@
             v-model="answer"
             :native-value="choiceIndex"
             type="is-success"
+            @click.native="handleRadioClick"
           >
             <text-editor :value="entry" :editable="false" />
           </b-radio>
         </b-field>
       </template>
       <b-field v-else-if="question.type == 'short-text'">
-        <b-input v-model="answer" type="text" />
+        <b-input v-model="answer" type="text" :readonly="!editable" />
       </b-field>
       <b-field v-else-if="question.type == 'number'">
-        <b-numberinput :controls="false" v-model="answer" />
+        <b-numberinput
+          :controls="false"
+          v-model="answer"
+          :editable="editable"
+        />
       </b-field>
       <math-field
         v-else-if="question.type == 'math'"
         bordered
         v-model="answer"
         virtual-keyboard-mode="manual"
+        :read-only="!editable"
       />
     </div>
 
-    <footer class="card-footer level">
-      <div class="card-footer-item level-left buttons">
-        <slot v-bind:component="this"></slot>
-      </div>
-    </footer>
+    <slot v-bind:component="this"></slot>
   </div>
 </template>
 
@@ -51,6 +53,10 @@ export default {
     question: Object,
     initialAnswer: [Number, String],
     index: Number,
+    editable: {
+      type: Boolean,
+      default: true,
+    },
   },
   components: {
     TextEditor,
@@ -62,7 +68,12 @@ export default {
       extraData: {},
     };
   },
-  methods: {},
+  methods: {
+    handleRadioClick(e) {
+      if (this.editable) return;
+      e.preventDefault();
+    },
+  },
   watch: {
     answer() {
       this.$emit("answerChanged", this);

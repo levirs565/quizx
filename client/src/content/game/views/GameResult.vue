@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="card">
+    <div class="card block">
       <header class="card-header">
         <p class="card-header-title">Game</p>
       </header>
@@ -30,13 +30,59 @@
         </table>
       </div>
     </div>
+
+    <p class="subtitle">Questions</p>
+
+    <ul>
+      <li
+        v-for="(question, index) in game.questions"
+        :key="question.id"
+        class="block"
+      >
+        <question
+          :index="index"
+          :question="question"
+          :editable="false"
+          :initialAnswer="question.answer"
+        >
+          <footer class="card-footer">
+            <p class="card-footer-item question-correct-answer">
+              Correct answer:
+              <math-field
+                class="is-inline-block ml-2"
+                v-if="question.type === 'math'"
+                read-only
+                :value="game.correctAnswers[index]"
+              />
+              <span class="ml-2" v-else>
+                {{ game.correctAnswers[index] }}
+              </span>
+            </p>
+            <p
+              class="card-footer-item question-state"
+              :class="'has-text-' + getQuestionStateColor(index)"
+            >
+              <b-icon
+                size="is-small"
+                class="mr-1"
+                :icon="getQuestionStateIcon(index)"
+              />
+              {{ getQuestionMessage(index) }}
+            </p>
+          </footer>
+        </question>
+      </li>
+    </ul>
   </div>
 </template>
 
 <script>
 import { Game } from "@/api";
+import Question from "@/content/quiz/components/Question.vue";
+import MathField from "@/components/MathField.vue";
 
 export default {
+  components: { Question, MathField },
   props: {
     game_id: String,
   },
@@ -50,6 +96,26 @@ export default {
       this.game = game;
     });
   },
+  methods: {
+    getQuestionMessage(index) {
+      const state = this.game.result.questionsState[index];
+      if (state == 0) return "Answer is correct";
+      else if (state == 1) return "Answer is wrong";
+      else return "Unanswered";
+    },
+    getQuestionStateIcon(index) {
+      const state = this.game.result.questionsState[index];
+      if (state === 0) return "check";
+      else if (state === 1) return "close";
+      else return "help";
+    },
+    getQuestionStateColor(index) {
+      const state = this.game.result.questionsState[index];
+      if (state === 0) return "success";
+      else if (state === 1) return "danger";
+      else return "warning-dark";
+    },
+  },
 };
 </script>
 
@@ -62,5 +128,15 @@ export default {
 
 .game-result-table >>> tr > td:first-child {
   padding-left: 0;
+}
+
+.question-state {
+  flex-basis: auto;
+  flex-grow: 0;
+}
+
+.question-correct-answer {
+  justify-content: start;
+  align-items: baseline;
 }
 </style>
