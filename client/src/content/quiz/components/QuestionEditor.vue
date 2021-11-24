@@ -4,7 +4,12 @@
       <p class="card-header-title">Question {{ index + 1 }}</p>
     </header>
     <div class="card-content">
-      <text-editor hasMenu class="field" v-model="question.question" />
+      <text-editor
+        hasMenu
+        class="field"
+        v-model="question.question"
+        :selectImageFunction="selectImageFunction"
+      />
 
       <b-field grouped position="is-right">
         <b-select :value="question.type" @input="changeType">
@@ -32,6 +37,7 @@
             class="choice-editor is-align-self-baseline"
             :value="entry"
             @input="onChoiceInput(choiceIndex, $event)"
+            :selectImageFunction="selectImageFunction"
           ></text-editor>
         </b-field>
       </template>
@@ -71,6 +77,7 @@ export default {
   props: {
     question: Object,
     index: Number,
+    selectImageFunction: Function,
   },
   components: {
     TextEditor,

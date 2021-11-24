@@ -14,6 +14,7 @@ export default {
   },
   props: {
     editor: Object,
+    selectImageFunction: Function,
   },
   data() {
     return {
@@ -24,6 +25,18 @@ export default {
             chain.insertTable({ rows: 3, cols: 3, withHeaderRow: true }),
           show: () => true,
           title: "Add Table",
+        },
+        {
+          icon: "image-plus",
+          action: async (chain) => {
+            try {
+              return chain.setImage(await this.selectImageFunction());
+            } catch (e) {
+              return chain;
+            }
+          },
+          show: () => true,
+          title: "Add Image",
         },
       ],
     };

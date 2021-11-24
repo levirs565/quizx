@@ -1958,6 +1958,7 @@ __metadata:
     "@storybook/vue": ^6.3.5
     "@tiptap/extension-bubble-menu": ^2.0.0-beta.44
     "@tiptap/extension-floating-menu": ^2.0.0-beta.36
+    "@tiptap/extension-image": ^2.0.0-beta.24
     "@tiptap/extension-table": ^2.0.0-beta.34
     "@tiptap/extension-table-cell": ^2.0.0-beta.15
     "@tiptap/extension-table-header": ^2.0.0-beta.17
@@ -2886,6 +2887,15 @@ __metadata:
   peerDependencies:
     "@tiptap/core": ^2.0.0-beta.1
   checksum: acdadf4d5ed09d7fc725de18edca6c2f2e09ad61593911da1c87557ec0d45abdfd860ca3ad71c7ac8ef6df4bda060fa9bd089c3f6cf7d912764058b355d2a8b2
+  languageName: node
+  linkType: hard
+
+"@tiptap/extension-image@npm:^2.0.0-beta.24":
+  version: 2.0.0-beta.24
+  resolution: "@tiptap/extension-image@npm:2.0.0-beta.24"
+  peerDependencies:
+    "@tiptap/core": ^2.0.0-beta.1
+  checksum: 5066c3f320b241eff951e53b517eb7ab55f15bbaedb7b81c2318f79feb5732b88947cd98c23f1fe13ba95a2602cb7a1368d711fde26965cccc4c2cbc2163c0cd
   languageName: node
   linkType: hard
 

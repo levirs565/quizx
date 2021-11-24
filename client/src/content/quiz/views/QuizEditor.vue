@@ -20,6 +20,7 @@
           :question="question"
           @update:question="$set(quiz.questions, index, $event)"
           @delete="deleteQuestion"
+          :selectImageFunction="selectImage"
         />
       </li>
     </ul>
@@ -115,6 +116,22 @@ export default {
     },
     async deleteQuestion(index) {
       this.$delete(this.quiz.questions, index);
+    },
+    selectImage() {
+      return new Promise((resolve, reject) => {
+        this.$buefy.dialog.prompt({
+          title: "Add Image",
+          message: "Image URL",
+          onConfirm(value) {
+            resolve({
+              src: value,
+            });
+          },
+          onCancel() {
+            reject();
+          },
+        });
+      });
     },
   },
   watch: {

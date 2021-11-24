@@ -1,6 +1,10 @@
 <template>
   <div>
-    <text-editor-menu :editor="editor" v-if="hasMenu" />
+    <text-editor-menu
+      :editor="editor"
+      :selectImageFunction="selectImageFunction"
+      v-if="hasMenu"
+    />
     <text-editor-bubble-menu :editor="editor" v-if="hasMenu" />
     <editor-content :editor="editor" />
   </div>
@@ -13,10 +17,11 @@ import ExtendedTable from "./extensions/ExtendedTable";
 import TableRow from "@tiptap/extension-table-row";
 import TableCell from "@tiptap/extension-table-cell";
 import TableHeader from "@tiptap/extension-table-header";
+import Image from "@tiptap/extension-image";
 import { MathBlock, MathInline } from "./extensions/Math";
 import { CursorTracker } from "./extensions/CursorTracker";
 import TextEditorMenu from "./TextEditorMenu.vue";
-import TextEditorBubbleMenu from './TextEditorBubbleMenu.vue';
+import TextEditorBubbleMenu from "./TextEditorBubbleMenu.vue";
 
 export default {
   components: {
@@ -34,6 +39,7 @@ export default {
       type: Boolean,
       default: false,
     },
+    selectImageFunction: Function,
   },
   data() {
     return {
@@ -54,6 +60,7 @@ export default {
         TableRow,
         TableHeader,
         TableCell,
+        Image,
         CursorTracker,
         MathBlock,
         MathInline,

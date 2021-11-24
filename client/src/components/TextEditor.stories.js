@@ -110,9 +110,16 @@ export const editor = () => ({
       text,
     };
   },
+  methods: {
+    selectImage() {
+      return Promise.resolve({
+        src: window.prompt("URL"),
+      });
+    },
+  },
   template: `
   <div>
-    <text-editor v-model="text" hasMenu></text-editor>
+    <text-editor v-model="text" :selectImageFunction="selectImage" hasMenu></text-editor>
     <pre><code>{{ text }}</code></pre>
   </div>`,
 });
