@@ -19,11 +19,15 @@
     "dotenv": "^10.0.0",
     "express": "^4.17.1",
     "express-session": "^1.17.2",
+    "fs-extra": "^10.0.0",
     "just-shuffle": "^4.0.1",
     "mongoose": "^5.13.3",
+    "multer": "^1.4.3",
     "typescript-json-schema": "^0.50.1"
   },
   "devDependencies": {
+    "@types/fs-extra": "^9.0.13",
+    "@types/multer": "^1.4.7",
     "eslint": "^5.16.0",
     "eslint-config-airbnb-base": "^13.1.0",
     "eslint-config-prettier": "^4.2.0",
