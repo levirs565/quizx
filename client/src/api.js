@@ -1,4 +1,4 @@
-import axios from 'axios';
+import axios from "axios";
 
 function throwError(res) {
   let data = res.data;
@@ -11,13 +11,14 @@ function throwError(res) {
   }
 }
 
+const baseURL = "http://localhost:3000/api";
 const instance = axios.create({
-  baseURL: 'http://localhost:3000/api',
+  baseURL,
   withCredentials: true,
 });
 
 class QuizApi {
-  path = "/quiz"
+  path = "/quiz";
 
   async getQuizList() {
     const res = await instance.get(this.path);
@@ -28,9 +29,12 @@ class QuizApi {
     return throwError(res);
   }
   async checkQuestionAnswer(quizId, questionId, answer) {
-    const res = await instance.post(`${this.path}/${quizId}/${questionId}/check`, { 
-      answer 
-    });
+    const res = await instance.post(
+      `${this.path}/${quizId}/${questionId}/check`,
+      {
+        answer,
+      }
+    );
     return throwError(res);
   }
   async createQuiz(data) {
@@ -42,49 +46,67 @@ class QuizApi {
     return throwError(res);
   }
   async saveQuiz(id, quiz) {
-    const res = await instance.put(`${this.path}/${id}/edit`, quiz)
-    return throwError(res)
+    const res = await instance.put(`${this.path}/${id}/edit`, quiz);
+    return throwError(res);
   }
   async deleteQuiz(id) {
     const res = await instance.delete(`${this.path}/${id}`);
     return throwError(res);
   }
+  async upload(id, file) {
+    const rootPath = `${this.path}/${id}/upload`;
+    const formData = new FormData();
+    formData.append("file", file);
+    const res = throwError(
+      await instance.post(rootPath, formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      })
+    );
+    return {
+      url: `${baseURL}${rootPath}/${res.name}`,
+    };
+  }
 }
-export const Quiz = new QuizApi()
+export const Quiz = new QuizApi();
 
 export const User = {
   async signup(id, name, password) {
-    const res = await instance.post('/user/signup', { id, name, password });
+    const res = await instance.post("/user/signup", { id, name, password });
     return throwError(res);
   },
   async login(id, password) {
-    const res = await instance.post('/user/login', { id, password });
+    const res = await instance.post("/user/login", { id, password });
     return throwError(res);
   },
   async logout() {
-    const res = await instance.post('/user/logout');
+    const res = await instance.post("/user/logout");
     return throwError(res);
   },
   async state() {
-    const res = await instance.get('/user/state');
+    const res = await instance.get("/user/state");
     return throwError(res);
   },
 };
 
 export const Game = {
   async playGame(quizId, preference) {
-    const res = await instance.post('/game/play', {
+    const res = await instance.post("/game/play", {
       quizId,
       ...preference,
     });
     return throwError(res);
   },
   async getGame(id) {
-    const res = await instance.get(`/game/${id}`)
-    return throwError(res)
+    const res = await instance.get(`/game/${id}`);
+    return throwError(res);
   },
   async putAnswer(gameId, questionIndex, answer) {
-    const res = await instance.put(`/game/${gameId}/question/${questionIndex}`, { answer });
+    const res = await instance.put(
+      `/game/${gameId}/question/${questionIndex}`,
+      { answer }
+    );
     return throwError(res);
   },
   async finishGame(gameId) {

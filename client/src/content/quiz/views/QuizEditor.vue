@@ -32,6 +32,23 @@
       icon-right="plus"
       @click="newQuestion"
     />
+
+    <b-modal
+      v-model="isSelectImageDialogShow"
+      has-modal-card
+      trap-focus
+      :can-cancel="['escape', 'outside', 'x']"
+      custom-class="dialog"
+      :on-cancel="callImageSelectCancelled"
+    >
+      <template #default="props">
+        <dialog-select-image
+          :quizId="quiz.id"
+          @close="props.close"
+          @imageSelected="callImageSelected"
+        />
+      </template>
+    </b-modal>
   </div>
 </template>
 
@@ -39,6 +56,7 @@
 import { Quiz } from "@/api";
 import QuestionEditor from "../components/QuestionEditor.vue";
 import QuizSummary from "../components/QuizSummary.vue";
+import DialogSelectImage from "../components/DialogSelectImage.vue";
 
 export default {
   props: {
@@ -47,10 +65,14 @@ export default {
   components: {
     QuestionEditor,
     QuizSummary,
+    DialogSelectImage,
   },
   data() {
     return {
       quiz: {},
+      isSelectImageDialogShow: false,
+      onImageSelected: null,
+      onImageSelectCancelled: null,
     };
   },
   methods: {
@@ -118,20 +140,25 @@ export default {
       this.$delete(this.quiz.questions, index);
     },
     selectImage() {
-      return new Promise((resolve, reject) => {
-        this.$buefy.dialog.prompt({
-          title: "Add Image",
-          message: "Image URL",
-          onConfirm(value) {
-            resolve({
-              src: value,
-            });
-          },
-          onCancel() {
-            reject();
-          },
-        });
+      return new Promise((resolve) => {
+        const unbindEvent = () => {
+          this.onImageSelected = null;
+          this.onImageSelectCancelled = null;
+        };
+        this.onImageSelected = (result) => {
+          resolve(result);
+
+          unbindEvent();
+        };
+        this.onImageSelectCancelled = unbindEvent;
+        this.isSelectImageDialogShow = true;
       });
+    },
+    callImageSelected(result) {
+      this.onImageSelected(result);
+    },
+    callImageSelectCancelled() {
+      this.onImageSelectCancelled();
     },
   },
   watch: {
