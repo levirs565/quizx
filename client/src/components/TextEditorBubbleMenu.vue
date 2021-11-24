@@ -1,25 +1,17 @@
 <template>
   <bubble-menu :editor="editor" v-if="editor" :shouldShow="shouldShow">
-    <b-field>
-      <p class="control" v-for="control in controls" :key="control.icon">
-        <b-tooltip :label="control.title">
-          <b-button
-            :icon-left="control.icon"
-            @click="runAction(control.action)"
-            v-show="control.show()"
-          />
-        </b-tooltip>
-      </p>
-    </b-field>
+    <text-editor-menu-field :controls="controls" :editor="editor" />
   </bubble-menu>
 </template>
 <script>
 import { BubbleMenu } from "@tiptap/vue-2";
 import { CellSelection } from "prosemirror-tables";
+import TextEditorMenuField from "./TextEditorMenuField.vue";
 
 export default {
   components: {
     BubbleMenu,
+    TextEditorMenuField,
   },
   props: {
     editor: Object,
@@ -90,10 +82,6 @@ export default {
       this.isColSelection = selection.isColSelection();
 
       return true;
-    },
-    runAction(action) {
-      const chain = this.editor.chain().focus();
-      action(chain).run();
     },
   },
 };
