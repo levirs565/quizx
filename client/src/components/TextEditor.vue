@@ -75,7 +75,12 @@ export default {
       },
     });
   },
-
+  watch: {
+    value(value) {
+      if (this.editor.getHTML() === value) return;
+      this.editor.commands.setContent(value, false)
+    },
+  },
   before() {
     this.editor.destroy();
   },
