@@ -39,7 +39,15 @@
             @input="onChoiceInput(choiceIndex, $event)"
             :selectImageFunction="selectImageFunction"
           ></text-editor>
+          <b-button
+            class="ml-2"
+            icon-right="close"
+            @click="removeChoice(choiceIndex)"
+          />
         </b-field>
+        <div class="has-text-right">
+          <b-button icon-left="plus" @click="addChoice">Add Choice</b-button>
+        </div>
       </template>
       <b-field v-else-if="question.type == 'short-text'">
         <b-input v-model="question.answer" type="text" />
@@ -95,6 +103,12 @@ export default {
     };
   },
   methods: {
+    addChoice() {
+      this.question.choices.push("");
+    },
+    removeChoice(index) {
+      this.$delete(this.question.choices, index);
+    },
     onChoiceInput(index, value) {
       this.$set(this.question.choices, index, value);
     },
