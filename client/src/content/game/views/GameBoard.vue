@@ -1,8 +1,8 @@
 <template>
-  <div class="page" style="--sidebar-width: 288px">
+  <div class="page">
     <c-app-bar></c-app-bar>
-    <nav class="sidebar-layout p-4">
-      <div class="card">
+    <b-sidebar mobile="hide" position="static" open fullheight>
+      <div class="card m-4">
         <div class="card-content">
           <jumper
             :buttons="jumperButtons"
@@ -11,7 +11,7 @@
           ></jumper>
         </div>
       </div>
-    </nav>
+    </b-sidebar>
     <div class="main-layout">
       <div class="container p-4" ref="container">
         <h1 class="title">{{ game.quizTitle }}</h1>
@@ -136,4 +136,10 @@ export default {
 };
 </script>
 
-<style></style>
+<style scoped>
+.page >>> .sidebar-content {
+  background: transparent;
+  box-shadow: none;
+  width: 288px;
+}
+</style>

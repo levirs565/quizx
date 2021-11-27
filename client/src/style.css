@@ -3,21 +3,23 @@
 /* 260px and 56px is come from bulma */
 .page {
   --app-bar-height: 56px;
-  --sidebar-width: 260px;
-}
-
-.page .sidebar-layout {
-  position: fixed;
-  top: var(--app-bar-height);
-  width: var(--sidebar-width);
+  display: flex;
+  flex-direction: row;
+  min-height: 100%;
 }
 
 .page .main-layout {
-  margin-left: var(--sidebar-width);
+  flex-grow: 1;
 }
 
-.page .sidebar-layout .b-sidebar {
-  height: calc(100vh - var(--app-bar-height));
+.page .b-sidebar .sidebar-content {
+  min-height: calc(100vh - var(--app-bar-height));
+}
+
+.page .b-sidebar {
+  height: 100%;
+  position: sticky;
+  top: var(--app-bar-height);
 }
 
 .has-fab {
