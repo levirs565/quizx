@@ -3,12 +3,12 @@ import { BaseModelSchema, BaseModel, configureBaseModelSchema } from './helper';
 
 // TODO: Rename id to _id
 
-export interface User {
-  id: string
-  name: string
-  password: string
-  isAdmin: boolean
-  registerDate: Date
+export class User {
+  id!: string
+  name!: string
+  password!: string
+  isAdmin!: boolean
+  registerDate!: Date
 }
 
 const userScheme: BaseModelSchema<User> = new Schema(
@@ -45,7 +45,7 @@ const userScheme: BaseModelSchema<User> = new Schema(
   }
 );
 
-configureBaseModelSchema(userScheme)
+configureBaseModelSchema(userScheme, User)
 
 const UserModel: BaseModel<User> = model('User', userScheme);
 

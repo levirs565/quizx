@@ -23,7 +23,12 @@ app.use(sessionMiddleware);
 useExpressServer(app, {
   routePrefix: '/api',
   controllers: [UserController, QuizController, GameController],
-  defaultErrorHandler: false
+  defaultErrorHandler: false,
+  validation: {
+    whitelist: true,
+    forbidNonWhitelisted: true,
+    strictGroups: true
+  }
 });
 
 app.use(errorMiddleware);

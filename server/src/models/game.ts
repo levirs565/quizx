@@ -62,7 +62,7 @@ const gameSchema: BaseModelSchema<Game> = new Schema(
 );
 
 configureQuestionDiscriminators(gameSchema, 'questions', questionSchema);
-configureBaseModelSchema(gameSchema);
+configureBaseModelSchema(gameSchema, Game);
 
 const GameModel: BaseModel<Game> = model('Game', gameSchema);
 

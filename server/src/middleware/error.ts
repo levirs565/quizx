@@ -1,8 +1,10 @@
 import { EError, BodyValidationError } from '../error';
 import { Request, Response, NextFunction, ErrorRequestHandler } from 'express';
 import { ErrorResponse } from '../types/base';
+import { ValidationError } from 'class-validator';
+import { BadRequestError } from 'routing-controllers';
 
-const handler: ErrorRequestHandler = function (
+const handler: ErrorRequestHandler = function(
   err: Error,
   req: Request,
   res: Response,
@@ -11,15 +13,14 @@ const handler: ErrorRequestHandler = function (
   const response: ErrorResponse = {
     error: {
       message: String(err.message),
-      code: 0,
+      code: 0
     }
-  }
+  };
   if (err instanceof EError) {
     response.error.code = err.code;
-  } else if (err instanceof BodyValidationError) {
-    response.error.code = 101
-    response.error.message = "Request body invalid"
-    response.error.validationMessages = err.errors.map(e => e.message!)
+  } else if (err instanceof BadRequestError) {
+    response.error.code = 101;
+    response.error.message = 'Request body invalid';
   } else {
     console.log('%O', err);
     response.error.code = 100;

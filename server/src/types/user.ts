@@ -1,5 +1,5 @@
 
-import { SchemaDefinition } from "./base"
+import { IsString } from "class-validator"
 
 export interface UserState {
     user?: UserData
@@ -11,26 +11,24 @@ export interface UserData {
   isAdmin: boolean
 }
 
-export interface LoginRequestBody {
+export class LoginRequestBody {
+  @IsString()
   id: string
+  @IsString()
   password: string
+
+  constructor(id: string, password: string) {
+    this.id = id
+    this.password = password
+  }
 }
 
-export interface SignupRequestBody extends LoginRequestBody {
+export class SignupRequestBody extends LoginRequestBody {
+  @IsString()
   name: string
-}
 
-// Begin Generated Schema Definition
-export const UserState: SchemaDefinition<UserState> = {
-  name: "UserState"
+  constructor(id: string, password: string, name: string) {
+    super(id, password)
+    this.name = name
+  }
 }
-export const UserData: SchemaDefinition<UserData> = {
-  name: "UserData"
-}
-export const LoginRequestBody: SchemaDefinition<LoginRequestBody> = {
-  name: "LoginRequestBody"
-}
-export const SignupRequestBody: SchemaDefinition<SignupRequestBody> = {
-  name: "SignupRequestBody"
-}
-// End Generated Schema Definition

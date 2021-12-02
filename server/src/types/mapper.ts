@@ -1,34 +1,16 @@
-import { GameSummary, Game } from './game';
-import { QuestionWAnswer, QuizSummary, QuizWAnswer, Question, Quiz } from './quiz';
+import { classes } from '@automapper/classes';
+import { createMapper, mapFrom } from '@automapper/core';
+import { Game, GameSummary } from './game';
+import { Quiz, QuizSummary } from './quiz';
 
-export namespace QuestionWAnswerMapper {
-  export function toQuestion(question: QuestionWAnswer): Question {
-    const { answer, ...rest } = question;
-    return rest;
-  }
-}
+export const mapper = createMapper({
+  name: 'mapper',
+  pluginInitializer: classes
+});
 
-export namespace QuizWAnswerMapper {
-  export function toQuizSummary(quiz: QuizWAnswer): QuizSummary {
-    const { questions, ...rest } = quiz;
-    return {
-      ...rest,
-      questionCount: questions.length
-    };
-  }
+mapper.createMap(Quiz, QuizSummary).forMember(
+  destination => destination.questionCount,
+  mapFrom(source => source.questions.length)
+);
 
-  export function toQuiz(quiz: QuizWAnswer): Quiz {
-    const { questions, ...rest } = quiz;
-    return {
-      ...rest,
-      questions: questions.map(item => QuestionWAnswerMapper.toQuestion(item))
-    };
-  }
-}
-
-export namespace GameMapper {
-  export function toGameSummary(gameDb: Game): GameSummary {
-    const { questions, correctAnswers, ...rest } = gameDb
-    return rest
-  }
-}
+mapper.createMap(Game, GameSummary);

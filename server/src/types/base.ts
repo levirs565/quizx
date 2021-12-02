@@ -11,7 +11,3 @@ export interface ErrorResponse {
     validationMessages?: string[]
   }
 }
-
-export interface SchemaDefinition<T> {
-  name: string
-}

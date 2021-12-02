@@ -1,6 +1,6 @@
 import Session from '../types/session';
 import { EError, E } from '../error';
-import { Question } from '../types/quiz';
+import { MathQuestion, Question } from '../types/quiz';
 import { ComputeEngine, match as mathMatch } from '@cortex-js/compute-engine';
 
 export async function validateUserLoggedIn(session: Session) {
@@ -35,7 +35,7 @@ export function checkQuestionAnswer(
   correctAnswer: string | number,
   userAnswer: string | number | null
 ): boolean {
-  if (question.type === 'math') {
+  if (question instanceof MathQuestion) {
     const ce = new ComputeEngine();
     const correctMath = ce.format(ce.parse(correctAnswer as string));
     const userMath = ce.format(ce.parse(userAnswer as string));

@@ -7,12 +7,11 @@ import { EError, E } from '../error';
 import {
   AnswerQuestionResult,
   CreateQuizResult,
-  QuestionWAnswer,
-  QuestionWAnswerWoId,
   Quiz,
   QuizSummary,
-  QuizWAnswer,
-  SaveQuizResult
+  Question,
+  SaveQuizResult,
+  CreateQuizParameters
 } from '../types/quiz';
 import Session from '../types/session';
 import {
@@ -21,13 +20,14 @@ import {
   validateUserId,
   validateUserLoggedIn
 } from './helper';
-import { QuizWAnswerMapper } from '../types/mapper';
 import config from '../config';
+import { mapper } from '../types/mapper';
+import { classToPlain, instanceToPlain } from 'class-transformer';
 
 export async function getQuizList(): Promise<QuizSummary[]> {
   const list = await QuizModel.find();
 
-  return list.map(val => QuizWAnswerMapper.toQuizSummary(val.toPlain()));
+  return list.map(val => mapper.map(val.toClass(), QuizSummary, Quiz));
 }
 
 export async function getQuizDocument(id: string) {
@@ -40,8 +40,13 @@ export async function getQuizDocument(id: string) {
 
 export async function getQuiz(id: string): Promise<Quiz> {
   const quizPackage = await getQuizDocument(id);
+  const quiz = quizPackage.toClass();
 
-  return QuizWAnswerMapper.toQuiz(quizPackage.toPlain());
+  quiz.questions.forEach(question => {
+    question.answer = undefined;
+  });
+
+  return quiz;
 }
 
 export async function getQuestionDocument(quizId: string, questionId: string) {
@@ -57,23 +62,21 @@ export async function answerQuestion(
   answer: number | string | null
 ): Promise<AnswerQuestionResult> {
   const item = await getQuestionDocument(quizId, questionId);
-  validateQuestionAnswerDataType(item.answer, answer);
+  validateQuestionAnswerDataType(item.answer!, answer);
   return {
-    correct: checkQuestionAnswer(item, item.answer, answer)
+    correct: checkQuestionAnswer(item, item.answer!, answer)
   };
 }
 
 export async function createQuiz(
   session: Session,
-  title: string,
-  questions?: Array<QuestionWAnswerWoId>
+  param: CreateQuizParameters
 ): Promise<CreateQuizResult> {
   await validateUserLoggedIn(session);
   const paketDb = new QuizModel({
     userId: session.user!.id,
-    title,
-    questions
-  } as QuizWAnswer);
+    ...instanceToPlain(param)
+  });
 
   await paketDb.save();
   return {
@@ -81,10 +84,10 @@ export async function createQuiz(
   };
 }
 
-export async function getQuizForEditor(session: Session, id: string): Promise<QuizWAnswer> {
+export async function getQuizForEditor(session: Session, id: string): Promise<Quiz> {
   const doc = await getQuizDocument(id);
   await validateUserId(session, doc.userId);
-  return doc.toPlain();
+  return doc.toClass();
 }
 
 export async function deleteQuiz(session: Session, id: string) {
@@ -93,35 +96,24 @@ export async function deleteQuiz(session: Session, id: string) {
   await doc.remove();
 }
 
-export async function saveQuiz(
-  session: Session,
-  id: string,
-  quiz: QuizWAnswer
-): Promise<SaveQuizResult> {
+export async function saveQuiz(session: Session, id: string, quiz: Quiz): Promise<SaveQuizResult> {
   const doc = await getQuizDocument(id);
   await validateUserId(session, doc.userId);
 
   const result: SaveQuizResult = {
     newQuestionsId: {}
   };
+  quiz.questions.forEach(question => {
+    const id = question.id!;
+    if (id.startsWith('new-')) {
+      question.id = new Types.ObjectId().toHexString();
+      result.newQuestionsId[id] = question.id;
+    }
+  });
+  const { questions } = instanceToPlain(quiz);
+
   doc.title = quiz.title;
-  doc.set(
-    'questions',
-    quiz.questions.map(question => {
-      let id = question.id;
-
-      if (id.startsWith('new-')) {
-        const oldId = id;
-        id = new Types.ObjectId().toHexString();
-        result.newQuestionsId[oldId] = id;
-      }
-
-      return {
-        _id: id,
-        ...question
-      };
-    })
-  );
+  doc.set('questions', questions);
 
   await doc.save();
   return result;

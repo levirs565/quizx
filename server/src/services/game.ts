@@ -3,15 +3,16 @@ import * as QuizService from './quiz';
 import Session from '../types/session';
 import { EError, E } from '../error';
 import { GameSummary, GamePreference, GameResult, Game, QuestionState } from '../types/game';
-import { AnswerQuestionResult, QuestionOptionalAnswer } from '../types/quiz';
+import { AnswerQuestionResult, Question, questionDiscriminator } from '../types/quiz';
 import {
   validateUserLoggedIn,
   validateUserId,
   validateQuestionAnswerDataType,
   checkQuestionAnswer
 } from './helper';
-import { GameMapper, QuestionWAnswerMapper } from '../types/mapper';
 import shuffle from 'just-shuffle';
+import { mapper } from '../types/mapper';
+import { instanceToPlain } from 'class-transformer';
 
 export async function playGame(
   session: Session,
@@ -22,25 +23,28 @@ export async function playGame(
   const playedGame = await GameModel.findOne({ userId: user.id, isPlaying: true });
   if (playedGame) throw new EError(...E.E402_PERMAINAN_NOT_FINISHED);
 
-  const quiz = await (await QuizService.getQuizDocument(quizId)).toPlain();
+  const quiz = await (await QuizService.getQuizDocument(quizId)).toClass();
 
-  let sourceQuestions = quiz.questions;
-  if (preference.shuffleQuestions) sourceQuestions = shuffle(sourceQuestions);
-  const correctAnswers = sourceQuestions.map(question => question.answer);
-  const questions: QuestionOptionalAnswer[] = sourceQuestions.map(QuestionWAnswerMapper.toQuestion);
+  if (preference.shuffleQuestions) quiz.questions = shuffle(quiz.questions);
 
-  const game = new GameModel({
+  const correctAnswers = quiz.questions.map(question => question.answer!);
+  quiz.questions.forEach(question => {
+    question.answer = undefined;
+  });
+
+  const gameObject: Omit<Game, 'id'> = {
     userId: user.id,
     quizId,
     quizTitle: quiz.title,
-    questions: questions,
+    questions: instanceToPlain(quiz).questions,
     isPlaying: true,
     correctAnswers,
     ...preference
-  } as Game);
+  };
+  const game = new GameModel(gameObject);
 
   await game.save();
-  return GameMapper.toGameSummary(game.toPlain());
+  return mapper.map(game.toClass(), GameSummary, Game);
 }
 
 async function getGameInternal(id: string) {
@@ -52,7 +56,7 @@ async function getGameInternal(id: string) {
 }
 
 export async function getGame(id: string): Promise<GameSummary> {
-  const game = (await getGameInternal(id)).toPlain();
+  const game = (await getGameInternal(id)).toClass();
   if (game.isPlaying) game.correctAnswers = undefined;
 
   return game;
@@ -93,7 +97,7 @@ export async function putAnswer(
 export async function finishGame(session: Session, gameId: string) {
   const game = await getGameInternal(gameId);
   await validateUserId(session, game.userId);
-  const { questions, correctAnswers } = game;
+  const { questions, correctAnswers } = game.toClass();
   const result: GameResult = {
     unanswered: 0,
     correct: 0,
@@ -111,10 +115,10 @@ export async function finishGame(session: Session, gameId: string) {
       state = QuestionState.Unanswered;
     } else if (checkQuestionAnswer(question, actualAnswer, userAnswer)) {
       result.correct += 1;
-      state = QuestionState.Correct
+      state = QuestionState.Correct;
     } else {
       result.wrong += 1;
-      state = QuestionState.Incorrect
+      state = QuestionState.Incorrect;
     }
     result.questionsState.push(state);
   });

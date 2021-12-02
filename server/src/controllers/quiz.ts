@@ -1,6 +1,11 @@
 import { Response } from 'express';
 import multer from 'multer';
-import { AnswerQuestionRequestBody, CreateQuizRequestBody, QuizWAnswer } from '../types/quiz';
+import {
+  AnswerQuestionRequestBody,
+  CreateQuizParameters,
+  Quiz,
+  QuestionValidationGroupWithoutId
+} from '../types/quiz';
 import * as QuizService from '../services/quiz';
 import SessionType from '../types/session';
 import {
@@ -12,6 +17,7 @@ import {
   Post,
   Put,
   Res,
+  ResponseClassTransformOptions,
   Session,
   UploadedFile,
   UseInterceptor
@@ -63,8 +69,16 @@ export class QuizController {
   }
 
   @Post('/')
-  createOne(@Session() session: SessionType, @Body() { title, questions }: CreateQuizRequestBody) {
-    return QuizService.createQuiz(session, title, questions);
+  async createOne(
+    @Session() session: SessionType,
+    @Body({
+      validate: {
+        groups: [QuestionValidationGroupWithoutId]
+      }
+    })
+    param: CreateQuizParameters
+  ) {
+    return QuizService.createQuiz(session, param);
   }
 
   @Get('/:id/edit')
@@ -73,7 +87,11 @@ export class QuizController {
   }
 
   @Put('/:id/edit')
-  save(@Session() session: SessionType, @Param('id') id: string, @Body() quiz: QuizWAnswer) {
+  save(
+    @Session() session: SessionType,
+    @Param('id') id: string,
+    @Body() quiz: Quiz
+  ) {
     return QuizService.saveQuiz(session, id, quiz);
   }
 
@@ -85,7 +103,7 @@ export class QuizController {
 
   @Post('/:id/upload')
   uploadAsset(@UploadedFile('file', { options: uploader }) file: Express.Multer.File) {
-    QuizService.getUploadFilename(file.filename);
+    return QuizService.getUploadResult(file.filename);
   }
 
   @Get('/:id/upload/:name')
@@ -93,10 +111,10 @@ export class QuizController {
     const fileName = QuizService.getFilePath(id, name);
     if (fileName)
       return new Promise<Response>((resolve, reject) => {
-        res.sendFile(fileName, (err) => {
-          if (err) reject(err)
+        res.sendFile(fileName, err => {
+          if (err) reject(err);
 
-          resolve(res)
+          resolve(res);
         });
       });
     else return res.sendStatus(404);

@@ -8,6 +8,7 @@ import {
   Param,
   Post,
   Put,
+  ResponseClassTransformOptions,
   Session,
   UseInterceptor
 } from 'routing-controllers';

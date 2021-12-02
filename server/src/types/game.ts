@@ -1,13 +1,18 @@
-import { SchemaDefinition } from './base';
-import { QuestionOptionalAnswer } from './quiz';
+import { AutoMap } from '@automapper/classes';
+import { Type } from 'class-transformer';
+import { IsBoolean, IsString } from 'class-validator';
+import { Question, QuestionAnswer, questionDiscriminator } from './quiz';
 
-export interface GamePreference {
-  isInteractive: boolean;
-  shuffleQuestions: boolean;
+export class GamePreference {
+  @IsBoolean()
+  isInteractive!: boolean;
+  @IsBoolean()
+  shuffleQuestions!: boolean;
 }
 
-export interface PlayGameRequestBody extends GamePreference {
-  quizId: string;
+export class PlayGameRequestBody extends GamePreference {
+  @IsString()
+  quizId!: string;
 }
 
 export enum QuestionState {
@@ -23,34 +28,25 @@ export interface GameResult {
   questionsState: Array<QuestionState>;
 }
 
-export interface GameSummary extends GamePreference {
-  id: string;
-  userId: string;
-  quizId: string;
-  quizTitle: string;
-  isPlaying: boolean;
+export class GameSummary extends GamePreference {
+  @AutoMap()
+  id!: string;
+  @AutoMap()
+  userId!: string;
+  @AutoMap()
+  quizId!: string;
+  @AutoMap()
+  quizTitle!: string;
+  @AutoMap()
+  isPlaying!: boolean;
+  @AutoMap()
   result?: GameResult;
 }
 
-export interface Game extends GameSummary {
-  questions: Array<QuestionOptionalAnswer>;
-  correctAnswers?: Array<number>;
+export class Game extends GameSummary {
+  @Type(() => Question, {
+    discriminator: questionDiscriminator
+  })
+  questions!: Array<Question>;
+  correctAnswers?: Array<QuestionAnswer>;
 }
-
-// Begin Generated Schema Definition
-export const GamePreference: SchemaDefinition<GamePreference> = {
-  name: "GamePreference"
-}
-export const PlayGameRequestBody: SchemaDefinition<PlayGameRequestBody> = {
-  name: "PlayGameRequestBody"
-}
-export const GameResult: SchemaDefinition<GameResult> = {
-  name: "GameResult"
-}
-export const GameSummary: SchemaDefinition<GameSummary> = {
-  name: "GameSummary"
-}
-export const Game: SchemaDefinition<Game> = {
-  name: "Game"
-}
-// End Generated Schema Definition

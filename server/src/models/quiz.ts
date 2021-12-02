@@ -1,10 +1,10 @@
 import { Schema, model } from 'mongoose';
 import { configureQuestionDiscriminators, createQuestionSchema } from './question';
-import { QuizWAnswer } from '../types/quiz';
+import { Quiz } from '../types/quiz';
 import { BaseModel, BaseModelSchema, configureBaseModelSchema } from "./helper"
 
 const questionSchema = createQuestionSchema(true)
-const quizSchema: BaseModelSchema<QuizWAnswer> = new Schema(
+const quizSchema: BaseModelSchema<Quiz> = new Schema(
   {
     userId: {
       type: String,
@@ -22,8 +22,8 @@ const quizSchema: BaseModelSchema<QuizWAnswer> = new Schema(
 );
 
 configureQuestionDiscriminators(quizSchema, 'questions', questionSchema)
-configureBaseModelSchema(quizSchema)
+configureBaseModelSchema(quizSchema, Quiz)
 
-const QuizModel: BaseModel<QuizWAnswer> = model('Quiz', quizSchema);
+const QuizModel: BaseModel<Quiz> = model('Quiz', quizSchema);
 
 export default QuizModel;

@@ -1,4 +1,5 @@
 import { Schema } from 'mongoose';
+import { configureSchemaIdSetter } from './helper';
 
 interface QuestionSchemaContainer {
   readonly root: Schema<any, any, any, any>;
@@ -9,16 +10,18 @@ interface QuestionSchemaContainer {
 
 export function createQuestionSchema(answerRequired: Boolean): QuestionSchemaContainer {
   return {
-    root: new Schema(
-      {
-        question: {
-          type: String,
-          required: true
+    root: configureSchemaIdSetter(
+      new Schema(
+        {
+          question: {
+            type: String,
+            required: true
+          }
+        },
+        {
+          discriminatorKey: 'type'
         }
-      },
-      {
-        discriminatorKey: 'type'
-      }
+      )
     ),
     discriminators: {
       'multiple-choice': new Schema({
@@ -60,7 +63,7 @@ export function configureQuestionDiscriminators(
 ) {
   const questionSchema = schema.path<Schema.Types.DocumentArray>(path);
   for (const name in container.discriminators) {
-    const schema = container.discriminators[name]
-    questionSchema.discriminator(name, schema)
+    const schema = container.discriminators[name];
+    questionSchema.discriminator(name, schema);
   }
 }

@@ -1,94 +1,99 @@
-import { SchemaDefinition } from './base';
+import { AutoMap } from '@automapper/classes';
+import { DiscriminatorDescriptor, Expose, Type } from 'class-transformer';
+import {
+  Equals,
+  IsArray,
+  IsEmpty,
+  IsNumber,
+  IsOptional,
+  IsString,
+  ValidateNested
+} from 'class-validator';
 
-export interface AnswerQuestionResult {
-  correct?: boolean;
+export const QuestionValidationGroupWithoutId = 'WithoutId';
+
+export type QuestionAnswer = string | number;
+
+export abstract class Question {
+  @IsString()
+  @Equals(undefined, {
+    groups: [QuestionValidationGroupWithoutId]
+  })
+  id?: string;
+  @IsString({ always: true })
+  question!: string;
+  /**
+   * Only can undefined in Game question
+   */
+  answer?: QuestionAnswer;
 }
 
-export interface AnswerQuestionRequestBody {
-  answer: number | string | null;
+export class MultipleChoiceQuestion extends Question {
+  @IsArray({ always: true })
+  choices!: Array<string>;
+  @IsNumber(undefined, { always: true })
+  answer?: number;
 }
 
-export interface CreateQuizRequestBody {
-  title: string;
-  questions?: Array<QuestionWAnswerWoId>;
+export class ShortTextQuestion extends Question {
+  @IsString({ always: true })
+  answer?: string;
 }
 
-export interface CreateQuizResult {
-  id: string;
+export class NumberQuestion extends Question {
+  @IsNumber(undefined, { always: true })
+  answer?: number;
 }
 
-interface BaseQuestion {
-  id: string;
-  question: string;
+export class MathQuestion extends Question {
+  @IsString({ always: true })
+  answer?: string;
 }
 
-interface MultipleChoiceQuestion extends BaseQuestion {
-  type: 'multiple-choice';
-  choices: Array<string>;
-  answer: number;
+export const questionDiscriminator: DiscriminatorDescriptor = {
+  property: 'type',
+  subTypes: [
+    {
+      value: MultipleChoiceQuestion,
+      name: 'multiple-choice'
+    },
+    {
+      value: ShortTextQuestion,
+      name: 'short-text'
+    },
+    {
+      value: NumberQuestion,
+      name: 'number'
+    },
+    {
+      value: MathQuestion,
+      name: 'math'
+    }
+  ]
+};
+abstract class BaseQuiz {
+  @AutoMap()
+  @IsString()
+  id!: string;
+  @AutoMap()
+  @IsString()
+  userId!: string;
+  @AutoMap()
+  @IsString()
+  title!: string;
 }
 
-interface ShortTextQuestion extends BaseQuestion {
-  type: 'short-text';
-  answer: string;
+export class QuizSummary extends BaseQuiz {
+  @IsNumber()
+  questionCount!: number;
 }
 
-interface NumberQuestion extends BaseQuestion {
-  type: 'number';
-  answer: number;
-}
-
-interface MathQuestion extends BaseQuestion {
-  type: 'math';
-  answer: string;
-}
-
-type OmitId<K> = Omit<K, 'id'>;
-
-type OmitAnswer<K> = Omit<K, 'answer'>;
-
-type OptionalAnswer<K extends { answer: any }> = Omit<K, 'answer'> & Partial<Pick<K, 'answer'>>;
-
-export type Question =
-  | OmitAnswer<MultipleChoiceQuestion>
-  | OmitAnswer<ShortTextQuestion>
-  | OmitAnswer<NumberQuestion>
-  | OmitAnswer<MathQuestion>;
-
-export type QuestionWAnswer =
-  | MultipleChoiceQuestion
-  | ShortTextQuestion
-  | NumberQuestion
-  | MathQuestion;
-
-export type QuestionWAnswerWoId =
-  | OmitId<MultipleChoiceQuestion>
-  | OmitId<ShortTextQuestion>
-  | OmitId<NumberQuestion>
-  | OmitId<MathQuestion>;
-
-export type QuestionOptionalAnswer =
-  | OptionalAnswer<MultipleChoiceQuestion>
-  | OptionalAnswer<ShortTextQuestion>
-  | OptionalAnswer<NumberQuestion>
-  | OptionalAnswer<MathQuestion>;
-
-interface BaseQuiz {
-  id: string;
-  userId: string;
-  title: string;
-}
-
-export interface QuizSummary extends BaseQuiz {
-  questionCount: number;
-}
-
-export interface Quiz extends BaseQuiz {
-  questions: Array<Question>;
-}
-
-export interface QuizWAnswer extends BaseQuiz {
-  questions: Array<QuestionWAnswer>;
+export class Quiz extends BaseQuiz {
+  @ValidateNested()
+  @Type(() => Question, {
+    discriminator: questionDiscriminator
+  })
+  questions!: Array<Question>;
 }
 
 export interface SaveQuizResult {
@@ -96,41 +101,25 @@ export interface SaveQuizResult {
     [oldId: string]: string;
   };
 }
-// Begin Generated Schema Definition
-export const AnswerQuestionResult: SchemaDefinition<AnswerQuestionResult> = {
-  name: "AnswerQuestionResult"
+
+export interface AnswerQuestionResult {
+  correct?: boolean;
 }
-export const AnswerQuestionRequestBody: SchemaDefinition<AnswerQuestionRequestBody> = {
-  name: "AnswerQuestionRequestBody"
+
+export interface AnswerQuestionRequestBody {
+  answer: QuestionAnswer | null;
 }
-export const CreateQuizRequestBody: SchemaDefinition<CreateQuizRequestBody> = {
-  name: "CreateQuizRequestBody"
+
+export class CreateQuizParameters {
+  @IsString({ always: true })
+  title!: string;
+  @ValidateNested({ always: true })
+  @Type(() => Question, {
+    discriminator: questionDiscriminator
+  })
+  questions?: Array<Question>;
 }
-export const CreateQuizResult: SchemaDefinition<CreateQuizResult> = {
-  name: "CreateQuizResult"
+
+export interface CreateQuizResult {
+  id: string;
 }
-export const Question: SchemaDefinition<Question> = {
-  name: "Question"
-}
-export const QuestionWAnswer: SchemaDefinition<QuestionWAnswer> = {
-  name: "QuestionWAnswer"
-}
-export const QuestionWAnswerWoId: SchemaDefinition<QuestionWAnswerWoId> = {
-  name: "QuestionWAnswerWoId"
-}
-export const QuestionOptionalAnswer: SchemaDefinition<QuestionOptionalAnswer> = {
-  name: "QuestionOptionalAnswer"
-}
-export const QuizSummary: SchemaDefinition<QuizSummary> = {
-  name: "QuizSummary"
-}
-export const Quiz: SchemaDefinition<Quiz> = {
-  name: "Quiz"
-}
-export const QuizWAnswer: SchemaDefinition<QuizWAnswer> = {
-  name: "QuizWAnswer"
-}
-export const SaveQuizResult: SchemaDefinition<SaveQuizResult> = {
-  name: "SaveQuizResult"
-}
-// End Generated Schema Definition
