@@ -1,23 +1,30 @@
+import { Body, Get, JsonController, Post, Session, UseInterceptor } from 'routing-controllers';
+import { ActionInterceptor } from '../interceptors/action';
 import * as UserService from '../services/user';
+import SessionType from '../types/session';
 import { SignupRequestBody, LoginRequestBody } from '../types/user';
-import { actionHandler, jsonHandler, actionHandlerSchema } from './helper';
+@JsonController('/user')
+export class UserController {
+  @Post('/signup')
+  @UseInterceptor(ActionInterceptor)
+  signup(@Session() session: SessionType, @Body() { id, name, password }: SignupRequestBody) {
+    return UserService.signup(id, name, password);
+  }
 
-export const signup = actionHandlerSchema(SignupRequestBody, async (req) => {
-  const { id, name, password } = req.body;
+  @Post('/login')
+  @UseInterceptor(ActionInterceptor)
+  login(@Session() session: SessionType, @Body() { id, password }: LoginRequestBody) {
+    return UserService.login(id, password, session);
+  }
 
-  await UserService.signup(id, name, password)
-})
+  @Post('/logout')
+  @UseInterceptor(ActionInterceptor)
+  logout(@Session() session: SessionType) {
+    return UserService.logout(session);
+  }
 
-export const login = actionHandlerSchema(LoginRequestBody, async req => {
-  const { id, password } = req.body;
-
-  await UserService.login(id, password, req.session)
-})
-
-export const logout = actionHandler(async req => {
-  await UserService.logout(req.session)
-})
-
-export const state = jsonHandler(async req => {
-  return UserService.getState(req.session)
-})
+  @Get('/state')
+  getState(@Session() session: SessionType) {
+    return UserService.getState(session);
+  }
+}

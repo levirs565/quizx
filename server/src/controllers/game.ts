@@ -1,25 +1,44 @@
-import { jsonHandler, jsonHandlerSchema, actionHandler, actionHandlerSchema } from './helper';
 import { PlayGameRequestBody } from '../types/game';
 import { AnswerQuestionRequestBody } from '../types/quiz';
 import * as GameService from '../services/game';
+import {
+  Body,
+  Get,
+  JsonController,
+  Param,
+  Post,
+  Put,
+  Session,
+  UseInterceptor
+} from 'routing-controllers';
+import SessionType from '../types/session';
+import { ActionInterceptor } from '../interceptors/action';
 
-export const playGame = jsonHandlerSchema(PlayGameRequestBody, async req => {
-  const { quizId, ...preference } = req.body;
+@JsonController('/game')
+export class GameController {
+  @Post('/play')
+  play(@Session() session: SessionType, @Body() { quizId, ...preference }: PlayGameRequestBody) {
+    return GameService.playGame(session, quizId, preference);
+  }
 
-  return GameService.playGame(req.session, quizId, preference);
-});
+  @Get('/:id')
+  get(@Param('id') id: string) {
+    return GameService.getGame(id);
+  }
 
-export const getGame = jsonHandler(async req => {
-  return GameService.getGame(req.params.id);
-});
+  @Put('/:gameId/question/:questionId')
+  putAnswer(
+    @Session() session: SessionType,
+    @Param('gameId') gameId: string,
+    @Param('questionId') questionId: string,
+    @Body() { answer }: AnswerQuestionRequestBody
+  ) {
+    return GameService.putAnswer(session, gameId, questionId, answer);
+  }
 
-export const putAnswer = jsonHandlerSchema(AnswerQuestionRequestBody, async req => {
-  const { gameId, questionId } = req.params;
-  const { answer } = req.body;
-
-  return GameService.putAnswer(req.session, gameId, questionId, answer);
-});
-
-export const finishGame = actionHandler(async req => {
-  return GameService.finishGame(req.session, req.params.id);
-});
+  @Post('/:id/finish')
+  @UseInterceptor(ActionInterceptor)
+  finish(@Session() session: SessionType, @Param('id') id: string) {
+    return GameService.finishGame(session, id);
+  }
+}

@@ -11,6 +11,8 @@
     "strict": true,
     "incremental": true,
     "resolveJsonModule": true,
-    "skipLibCheck": true
+    "skipLibCheck": true,
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true
   }
 }
