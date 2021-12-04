@@ -28,7 +28,9 @@
 
     <footer class="card-footer level">
       <div class="card-footer-item level-left buttons">
-        <b-button type="is-primary" :disabled="!valid">Register</b-button>
+        <b-button type="is-primary" :disabled="!valid" @click="register"
+          >Register</b-button
+        >
       </div>
     </footer>
   </form>
@@ -59,6 +61,7 @@ export default {
   },
   methods: {
     register() {
+      console.log("aaa");
       User.signup(this.userID, this.userName, this.userPassword).then(() => {
         this.$router.push("/auth/login");
       });
