@@ -4,31 +4,16 @@
       'inline-math-wrapper': node.isInline,
     }"
   >
-    <b-tooltip always :active="isShowTooltip" class="math-tooltip">
-      <template v-slot:content>
-        <b-field grouped v-if="isShowRawEdit">
-          <b-input v-model="src" type="textarea" class="math-raw-input" />
-          <p class="control">
-            <b-button size="is-small" @click="hideRawEdit">Close</b-button>
-          </p>
-        </b-field>
-        <template v-else>
-          <b-button size="is-small" @click="showRawEdit">Edit Source</b-button>
-          <b-button icon-right="keyboard" @click="toggleKeyboard" />
-        </template>
-      </template>
-      <math-field
-        v-model="src"
-        ref="mathField"
-        :read-only="readOnly"
-        :default-mode="defaultMode"
-        @focus.native="toggleTooltip(true)"
-        @blur.native="toggleTooltip(false)"
-        @move-out.native="mathMoveOut"
-        @focus-out.native.prevent="mathMoveOut"
-        @keystroke.native="mathKeyStroke"
-      />
-    </b-tooltip>
+    <math-field
+      v-model="src"
+      ref="mathField"
+      :read-only="readOnly"
+      :default-mode="defaultMode"
+      @move-out.native="mathMoveOut"
+      @focus-out.native.prevent="mathMoveOut"
+      @keystroke.native="mathKeyStroke"
+      virtual-keyboard-mode="manual"
+    />
   </node-view-wrapper>
 </template>
 <script>
@@ -46,8 +31,6 @@ export default {
       defaultMode = "inline-math";
     }
     return {
-      isShowTooltip: false,
-      isShowRawEdit: false,
       readOnly: !this.editor.isEditable,
       defaultMode,
     };
@@ -94,21 +77,6 @@ export default {
         field.focus();
       }
     },
-    toggleTooltip(state) {
-      if (this.readOnly) return;
-      this.isShowTooltip = state;
-    },
-    showRawEdit() {
-      this.isShowRawEdit = true;
-      this.isShowTooltip = true;
-    },
-    hideRawEdit() {
-      this.isShowRawEdit = false;
-      this.isShowTooltip = false;
-    },
-    toggleKeyboard() {
-      this.$refs.mathField.$el.executeCommand(["toggleVirtualKeyboard"]);
-    },
     moveOutNode(isForward) {
       const view = this.editor.view;
       const targetPos = this.getPos() + (isForward ? this.node.nodeSize : 0);
@@ -122,7 +90,11 @@ export default {
       this.moveOutNode(isForward);
     },
     mathKeyStroke($event) {
-      if ($event.detail.keystroke === "[Backspace]" && this.src === "") {
+      // Do not use this.src === "", because src will empty when field is in latex mode
+      if (
+        $event.detail.keystroke === "[Backspace]" &&
+        this.$refs.mathField.$el.lastOffset === 0
+      ) {
         this.moveOutNode(false);
         this.deleteNode();
         $event.preventDefault();
@@ -134,11 +106,5 @@ export default {
 <style scoped>
 .inline-math-wrapper {
   display: inline-block;
-}
-.math-raw-input {
-  min-width: 256px;
-}
-.math-tooltip {
-  width: 100%;
 }
 </style>
