@@ -2012,7 +2012,6 @@ __metadata:
     eslint-loader: ^3.0.2
     eslint-plugin-vue: ^6.2.2
     mathlive: ^0.69.7
-    v-click-outside: ^3.0.0
     vue: ^2.6.10
     vue-loader: ^15.7.1
     vue-router: ^3.0.6
@@ -18717,13 +18716,6 @@ typescript@^4.3.5:
   bin:
     uuid: ./bin/uuid
   checksum: 1ce3f37e214d6d0dc94a6a9663a0365013ace66bc3fd5b203e6f5d2eeb978aaee1192367222386345d30b4c6a447928c501121aa84c637724bf105ef57284949
-  languageName: node
-  linkType: hard
-
-"v-click-outside@npm:^3.0.0":
-  version: 3.1.2
-  resolution: "v-click-outside@npm:3.1.2"
-  checksum: 01ce2dea3d3ebee4786fbfa159e7e33f0421ce763a92be1716ec7e590962379b176dc2e58dd945381842649cc471b465fa9abe8cb07ea884f43287b399ef6ca7
   languageName: node
   linkType: hard
 
