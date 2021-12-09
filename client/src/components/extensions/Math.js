@@ -1,4 +1,4 @@
-import { Node, InputRule } from "@tiptap/core";
+import { Node, InputRule, PasteRule } from "@tiptap/core";
 import { VueNodeViewRenderer } from "@tiptap/vue-2";
 import { TextSelection } from "prosemirror-state";
 import MathNodeView from "./MathNodeView.vue";
@@ -18,6 +18,24 @@ function mathInputRule(character, type) {
       state.tr.replaceWith(start, end, type.create());
       const selection = TextSelection.near(state.tr.doc.resolve(selectPos));
       state.tr.setSelection(selection).scrollIntoView();
+    },
+  });
+}
+
+const PASTE_RULE_INLINE = /(?:^|\s)(\$([^\$]+))\$/g; // eslint-disable-line
+const PASTE_RULE_BLOCK = /(?:^|\s)(\$\$([^\$]+)\$\$)/g; // eslint-disable-line
+
+function mathPasteRule(regex, type) {
+  return new PasteRule({
+    find: regex,
+    handler: ({ range, match, state }) => {
+      const src = match[2];
+      const matchOffset = match[0].lastIndexOf(match[1]);
+      let start = range.from + matchOffset;
+      let end = range.to;
+      if (start > end) start = end;
+
+      state.tr.replaceRangeWith(start, end, type.create({ src }));
     },
   });
 }
@@ -53,6 +71,10 @@ export const MathBlock = Node.create({
   addInputRules() {
     return [mathInputRule("\\$\\$", this.type)];
   },
+
+  addPasteRules() {
+    return [mathPasteRule(PASTE_RULE_BLOCK, this.type)];
+  },
 });
 
 export const MathInline = Node.create({
@@ -86,5 +108,9 @@ export const MathInline = Node.create({
 
   addInputRules() {
     return [mathInputRule("\\$", this.type)];
+  },
+
+  addPasteRules() {
+    return [mathPasteRule(PASTE_RULE_INLINE, this.type)];
   },
 });
