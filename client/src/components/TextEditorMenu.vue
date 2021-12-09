@@ -1,5 +1,5 @@
 <template>
-  <floating-menu :editor="editor" v-if="editor">
+  <floating-menu :shouldShow="shouldShow" :editor="editor" v-if="editor">
     <text-editor-menu-field :editor="editor" :controls="controls" />
   </floating-menu>
 </template>
@@ -40,6 +40,23 @@ export default {
         },
       ],
     };
+  },
+  methods: {
+    shouldShow({ state }) {
+      const { selection } = state;
+      const { $anchor, empty: isSelectionEmpty } = selection;
+      const isParagraph = $anchor.parent.type.name === "paragraph";
+      const isEmptyParagraph =
+        $anchor.parent.isTextblock &&
+        !$anchor.parent.type.spec.code &&
+        !$anchor.parent.childCount;
+
+      if (isSelectionEmpty && isParagraph && isEmptyParagraph) {
+        return true;
+      }
+
+      return false;
+    },
   },
 };
 </script>
