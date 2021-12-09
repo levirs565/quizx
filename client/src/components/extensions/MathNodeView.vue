@@ -1,9 +1,5 @@
 <template>
-  <node-view-wrapper
-    :class="{
-      'inline-math-wrapper': node.isInline,
-    }"
-  >
+  <node-view-wrapper :class="node.isInline ? 'inline-math-wrapper' : 'block'">
     <math-field
       v-model="src"
       ref="mathField"
