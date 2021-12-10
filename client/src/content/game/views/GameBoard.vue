@@ -45,7 +45,7 @@
 </template>
 
 <script>
-import { Game } from "@/api.js";
+import { Game } from "@/api";
 import Question from "../../quiz/components/Question.vue";
 import CAppBar from "@/components/CAppBar.vue";
 import Jumper from "../components/Jumper.vue";

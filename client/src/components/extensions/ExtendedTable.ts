@@ -6,14 +6,14 @@ import { CellSelection } from "prosemirror-tables";
 export default Table.extend({
   addProseMirrorPlugins() {
     return [
-      ...this.parent(),
+      ...this.parent!(),
       new Plugin({
         key: new PluginKey("TableCellSelectionDecorator"),
         props: {
           decorations(state) {
             // Adapted from https://github.com/ProseMirror/prosemirror-tables/blob/6b16ed3cf306886f2c169aebbe60701e1ac2deac/src/cellselection.js#L233
             if (!(state.selection instanceof CellSelection)) return null;
-            let cells = [];
+            const cells: Decoration[] = [];
             state.selection.forEachCell((node, pos) => {
               cells.push(
                 Decoration.node(pos, pos + node.nodeSize, {

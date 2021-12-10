@@ -1,4 +1,4 @@
-import TextEditor from "./TextEditor";
+import TextEditor from "./TextEditor.vue";
 
 export default {
   title: "Text Editor",

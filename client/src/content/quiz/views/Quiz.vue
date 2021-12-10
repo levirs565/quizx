@@ -64,7 +64,7 @@
 
 <script>
 import Question from "../components/Question";
-import { Quiz, Game } from "@/api.js";
+import { Quiz, Game } from "@/api";
 import QuizSummary from "../components/QuizSummary.vue";
 import DialogPlayQuiz from "../components/DialogPlayQuiz.vue";
 import AnswerResult from "../components/AnswerResult.vue";

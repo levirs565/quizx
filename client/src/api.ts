@@ -1,7 +1,7 @@
 import axios from "axios";
 
-function throwError(res) {
-  let data = res.data;
+function throwError(res: any) {
+  const data = res.data;
 
   if (data.error) {
     console.log(data.error);
@@ -24,11 +24,11 @@ class QuizApi {
     const res = await instance.get(this.path);
     return throwError(res);
   }
-  async getQuiz(id) {
+  async getQuiz(id: string) {
     const res = await instance.get(`${this.path}/${id}`);
     return throwError(res);
   }
-  async checkQuestionAnswer(quizId, questionId, answer) {
+  async checkQuestionAnswer(quizId: string, questionId: string, answer: string | number | null) {
     const res = await instance.post(
       `${this.path}/${quizId}/${questionId}/check`,
       {
@@ -37,23 +37,23 @@ class QuizApi {
     );
     return throwError(res);
   }
-  async createQuiz(data) {
+  async createQuiz(data: any) {
     const res = await instance.post(this.path, data);
     return throwError(res);
   }
-  async getQuizForEditor(id) {
+  async getQuizForEditor(id: string) {
     const res = await instance.get(`${this.path}/${id}/edit`);
     return throwError(res);
   }
-  async saveQuiz(id, quiz) {
+  async saveQuiz(id: string, quiz: any) {
     const res = await instance.put(`${this.path}/${id}/edit`, quiz);
     return throwError(res);
   }
-  async deleteQuiz(id) {
+  async deleteQuiz(id: string) {
     const res = await instance.delete(`${this.path}/${id}`);
     return throwError(res);
   }
-  async upload(id, file) {
+  async upload(id: string, file: Blob) {
     const rootPath = `${this.path}/${id}/upload`;
     const formData = new FormData();
     formData.append("file", file);
@@ -72,11 +72,11 @@ class QuizApi {
 export const Quiz = new QuizApi();
 
 export const User = {
-  async signup(id, name, password) {
+  async signup(id: string, name: string, password: string) {
     const res = await instance.post("/user/signup", { id, name, password });
     return throwError(res);
   },
-  async login(id, password) {
+  async login(id: string, password: string) {
     const res = await instance.post("/user/login", { id, password });
     return throwError(res);
   },
@@ -91,25 +91,25 @@ export const User = {
 };
 
 export const Game = {
-  async playGame(quizId, preference) {
+  async playGame(quizId: string, preference: any) {
     const res = await instance.post("/game/play", {
       quizId,
       ...preference,
     });
     return throwError(res);
   },
-  async getGame(id) {
+  async getGame(id: string) {
     const res = await instance.get(`/game/${id}`);
     return throwError(res);
   },
-  async putAnswer(gameId, questionIndex, answer) {
+  async putAnswer(gameId: string, questionIndex: string, answer: string | number | null) {
     const res = await instance.put(
       `/game/${gameId}/question/${questionIndex}`,
       { answer }
     );
     return throwError(res);
   },
-  async finishGame(gameId) {
+  async finishGame(gameId: string) {
     const res = await instance.post(`/game/${gameId}/finish`);
     return throwError(res);
   },

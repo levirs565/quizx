@@ -1,5 +1,5 @@
 import { Extension } from "@tiptap/core";
-import { Plugin, PluginKey } from "prosemirror-state";
+import { Plugin, PluginKey, EditorState } from "prosemirror-state";
 
 const name = "cursorTracker";
 const pluginKey = new PluginKey(name);
@@ -30,6 +30,6 @@ export const CursorTracker = Extension.create({
   },
 });
 
-export function getPrevCursorPos(editorState) {
+export function getPrevCursorPos(editorState: EditorState) {
   return pluginKey.getState(editorState).prevCursorPos;
 }

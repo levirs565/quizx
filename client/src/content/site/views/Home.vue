@@ -18,7 +18,7 @@
 </template>
 
 <script>
-import { Quiz } from "@/api.js";
+import { Quiz } from "@/api";
 import QuizSummaryCard from "../../components/QuizSummaryCard.vue";
 
 export default {

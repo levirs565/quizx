@@ -1,11 +1,16 @@
-import { User } from '@/api.js';
+import { User } from '@/api';
+import { Module } from "vuex";
+
+interface CoreStoreState {
+  user: any
+}
 
 export default {
   state: {
     user: undefined
   },
   mutations: {
-    setUser(state, user) {
+    setUser(state, user: any) {
       state.user = user;
     }
   },
@@ -21,4 +26,4 @@ export default {
       });
     }
   }
-};
+} as Module<CoreStoreState, void>

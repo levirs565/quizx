@@ -8,4 +8,4 @@ import "@mdi/font/css/materialdesignicons.css";
 
 Vue.use(Buefy);
 
-configure(require.context("../src", true, /\.stories\.js$/), module);
+configure(require.context("../src", true, /\.stories\.ts$/), module);

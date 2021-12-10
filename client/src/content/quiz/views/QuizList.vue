@@ -37,7 +37,7 @@
 </template>
 
 <script>
-import { Quiz } from "@/api.js";
+import { Quiz } from "@/api";
 import QuizSummaryCard from "@/content/components/QuizSummaryCard.vue";
 import DialogCreateQuiz from "../components/DialogCreateQuiz.vue";
 
