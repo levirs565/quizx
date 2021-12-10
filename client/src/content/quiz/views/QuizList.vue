@@ -1,5 +1,5 @@
 <template>
-  <div class="has-fab">
+  <resource-wrapper :state="state" class="has-fab" @reload="loadList">
     <h1 class="title">My Quiz</h1>
 
     <ul>
@@ -33,23 +33,28 @@
         <dialog-create-quiz @close="props.close" @create="createQuiz" />
       </template>
     </b-modal>
-  </div>
+  </resource-wrapper>
 </template>
 
 <script>
 import { Quiz } from "@/api";
 import QuizSummaryCard from "@/content/components/QuizSummaryCard.vue";
 import DialogCreateQuiz from "../components/DialogCreateQuiz.vue";
+import ResourceWrapper, {
+  updateResourceStateByPromise,
+} from "@/components/ResourceWrapper.vue";
 
 export default {
   components: {
     QuizSummaryCard,
     DialogCreateQuiz,
+    ResourceWrapper,
   },
   data() {
     return {
       quizList: [],
       isCreateDialogShow: false,
+      state: null,
     };
   },
   methods: {
@@ -70,19 +75,20 @@ export default {
         });
       }
     },
+    loadList() {
+      // TODO: Only show current user quiz
+      updateResourceStateByPromise(
+        Quiz.getQuizList().then((val) => {
+          this.quizList = val.list;
+        }),
+        (state) => {
+          this.state = state;
+        }
+      );
+    },
   },
   mounted() {
-    // Only show current user quiz
-    Quiz.getQuizList()
-      .then((val) => {
-        this.quizList = val.list;
-      })
-      .catch(() => {
-        this.$buefy.toast.open({
-          message: "Cannot load Quiz list",
-          type: "is-danger",
-        });
-      });
+    this.loadList();
   },
 };
 </script>

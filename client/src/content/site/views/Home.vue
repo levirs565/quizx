@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <resource-wrapper :state="state" @reload="loadList">
     <h1 class="title">Explore Quiz</h1>
 
     <ul>
@@ -14,34 +14,41 @@
         <quiz-summary-card :quiz="quiz" @click="navigate" />
       </router-link>
     </ul>
-  </div>
+  </resource-wrapper>
 </template>
 
 <script>
 import { Quiz } from "@/api";
 import QuizSummaryCard from "../../components/QuizSummaryCard.vue";
+import ResourceWrapper, {
+  updateResourceStateByPromise,
+} from "@/components/ResourceWrapper.vue";
 
 export default {
   components: {
     QuizSummaryCard,
+    ResourceWrapper,
   },
   data() {
     return {
       quizList: [],
+      state: null,
     };
   },
-
+  methods: {
+    loadList() {
+      updateResourceStateByPromise(
+        Quiz.getQuizList().then((val) => {
+          this.quizList = val.list;
+        }),
+        (state) => {
+          this.state = state;
+        }
+      );
+    },
+  },
   mounted() {
-    Quiz.getQuizList()
-      .then((val) => {
-        this.quizList = val.list;
-      })
-      .catch(() => {
-        this.$buefy.toast.open({
-          message: "Cannot load Quiz",
-          type: "is-danger",
-        });
-      });
+    this.loadList();
   },
 };
 </script>

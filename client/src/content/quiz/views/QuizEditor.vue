@@ -1,5 +1,5 @@
 <template>
-  <div class="has-fab">
+  <resource-wrapper :state="state" class="has-fab" @reload="refresh">
     <quiz-summary :quiz="quiz" editor>
       <b-button type="is-danger" @click="showDeleteQuizDialog"
         >Delete Quiz</b-button
@@ -49,7 +49,7 @@
         />
       </template>
     </b-modal>
-  </div>
+  </resource-wrapper>
 </template>
 
 <script>
@@ -57,6 +57,9 @@ import { Quiz } from "@/api";
 import QuestionEditor from "../components/QuestionEditor.vue";
 import QuizSummary from "../components/QuizSummary.vue";
 import DialogSelectImage from "../components/DialogSelectImage.vue";
+import ResourceWrapper, {
+  updateResourceStateByPromise,
+} from "@/components/ResourceWrapper.vue";
 
 export default {
   props: {
@@ -66,6 +69,7 @@ export default {
     QuestionEditor,
     QuizSummary,
     DialogSelectImage,
+    ResourceWrapper,
   },
   data() {
     return {
@@ -73,20 +77,19 @@ export default {
       isSelectImageDialogShow: false,
       onImageSelected: null,
       onImageSelectCancelled: null,
+      state: null,
     };
   },
   methods: {
     refresh() {
-      Quiz.getQuizForEditor(this.quiz_id)
-        .then((val) => {
-          this.quiz = val;
-        })
-        .catch(() => {
-          this.$buefy.toast.open({
-            message: "Cannot load quiz for editing",
-            type: "is-danger",
-          });
-        });
+      updateResourceStateByPromise(
+        Quiz.getQuizForEditor(this.quiz_id).then((quiz) => {
+          if (quiz) this.quiz = quiz;
+        }),
+        (val) => {
+          this.state = val;
+        }
+      );
     },
     showDeleteQuizDialog() {
       this.$buefy.dialog.confirm({

@@ -1,7 +1,13 @@
 <template>
   <div class="page">
     <c-app-bar></c-app-bar>
-    <b-sidebar mobile="hide" position="static" open fullheight>
+    <b-sidebar
+      mobile="hide"
+      position="static"
+      open
+      fullheight
+      :class="{ hidden: !state || state.isLoading || state.isError }"
+    >
       <div class="card m-4">
         <div class="card-content">
           <jumper
@@ -13,32 +19,34 @@
       </div>
     </b-sidebar>
     <div class="main-layout">
-      <div class="container p-4" ref="container">
-        <h1 class="title">{{ game.quizTitle }}</h1>
+      <div class="container p-4" style="min-height: 100%" ref="container">
+        <resource-wrapper :state="state" @reload="updateState">
+          <h1 class="title">{{ game.quizTitle }}</h1>
 
-        <ul>
-          <li
-            v-for="(question, index) in questions"
-            :key="question.id"
-            class="block"
-          >
-            <question
-              :index="index"
-              :question="question"
-              :initialAnswer="question.answer"
-              @answerChanged="answerChanged"
-              ref="questions"
+          <ul>
+            <li
+              v-for="(question, index) in questions"
+              :key="question.id"
+              class="block"
             >
-            </question>
-          </li>
-        </ul>
+              <question
+                :index="index"
+                :question="question"
+                :initialAnswer="question.answer"
+                @answerChanged="answerChanged"
+                ref="questions"
+              >
+              </question>
+            </li>
+          </ul>
 
-        <b-button
-          @click="showFinishDialog"
-          type="is-danger"
-          class="mt-4 block ml-auto"
-          >Finish</b-button
-        >
+          <b-button
+            @click="showFinishDialog"
+            type="is-danger"
+            class="mt-4 block ml-auto"
+            >Finish</b-button
+          >
+        </resource-wrapper>
       </div>
     </div>
   </div>
@@ -50,12 +58,16 @@ import Question from "../../quiz/components/Question.vue";
 import CAppBar from "@/components/CAppBar.vue";
 import Jumper from "../components/Jumper.vue";
 import { isAnswerEmpty } from "@/content/utils";
+import ResourceWrapper, {
+  updateResourceStateByPromise,
+} from "@/components/ResourceWrapper.vue";
 
 export default {
   components: {
     Question,
     CAppBar,
     Jumper,
+    ResourceWrapper,
   },
   props: {
     game_id: String,
@@ -66,6 +78,7 @@ export default {
       lastQuestionResult: 0,
       questions: [],
       jumperButtons: [],
+      state: null,
     };
   },
   methods: {
@@ -90,16 +103,21 @@ export default {
       });
     },
     updateState() {
-      Game.getGame(this.game_id).then((val) => {
-        this.game = val;
+      updateResourceStateByPromise(
+        Game.getGame(this.game_id).then((val) => {
+          this.game = val;
 
-        if (!this.game.isPlaying) return;
+          if (!this.game.isPlaying) return;
 
-        this.questions = val.questions;
-        this.jumperButtons = this.questions.map((question) =>
-          this.getQuestionColor(question.answer)
-        );
-      });
+          this.questions = val.questions;
+          this.jumperButtons = this.questions.map((question) =>
+            this.getQuestionColor(question.answer)
+          );
+        }),
+        (val) => {
+          this.state = val;
+        }
+      );
     },
     getQuestionColor(answer) {
       if (!isAnswerEmpty(answer)) return "is-primary";
@@ -141,5 +159,10 @@ export default {
   background: transparent;
   box-shadow: none;
   width: 288px;
+}
+
+.page >>> .b-sidebar.hidden {
+  visibility: hidden;
+  width: 0;
 }
 </style>

@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <resource-wrapper :state="state" @reload="loadGame" v-slot="{}">
     <div class="card block">
       <header class="card-header">
         <p class="card-header-title">Game</p>
@@ -73,7 +73,7 @@
         </question>
       </li>
     </ul>
-  </div>
+  </resource-wrapper>
 </template>
 
 <script>
@@ -81,23 +81,35 @@ import { Game } from "@/api";
 import Question from "@/content/quiz/components/Question.vue";
 import MathField from "@/components/MathField.vue";
 import { getChoiceIndex } from "@/content/utils";
+import ResourceWrapper, {
+  updateResourceStateByPromise,
+} from "@/components/ResourceWrapper.vue";
 
 export default {
-  components: { Question, MathField },
+  components: { Question, MathField, ResourceWrapper },
   props: {
     game_id: String,
   },
   data() {
     return {
-      game: undefined,
+      game: {},
+      state: null,
     };
   },
   mounted() {
-    Game.getGame(this.game_id).then((game) => {
-      this.game = game;
-    });
+    this.loadGame();
   },
   methods: {
+    loadGame() {
+      updateResourceStateByPromise(
+        Game.getGame(this.game_id).then((game) => {
+          this.game = game;
+        }),
+        (val) => {
+          this.state = val;
+        }
+      );
+    },
     getQuestionMessage(index) {
       const state = this.game.result.questionsState[index];
       if (state == 0) return "Answer is correct";

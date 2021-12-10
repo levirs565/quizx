@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <resource-wrapper :state="state" @reload="updateQuiz">
     <quiz-summary :quiz="quiz">
       <b-button
         v-if="$store.state.core.user"
@@ -59,7 +59,7 @@
         ></dialog-play-quiz>
       </template>
     </b-modal>
-  </div>
+  </resource-wrapper>
 </template>
 
 <script>
@@ -69,6 +69,9 @@ import QuizSummary from "../components/QuizSummary.vue";
 import DialogPlayQuiz from "../components/DialogPlayQuiz.vue";
 import AnswerResult from "../components/AnswerResult.vue";
 import { isAnswerEmpty as isAnswerEmptyImpl } from "@/content/utils";
+import ResourceWrapper, {
+  updateResourceStateByPromise,
+} from "@/components/ResourceWrapper.vue";
 
 export default {
   components: {
@@ -76,18 +79,16 @@ export default {
     QuizSummary,
     AnswerResult,
     DialogPlayQuiz,
+    ResourceWrapper,
   },
   props: {
     quiz_id: String,
   },
   data() {
     return {
-      quiz: {
-        id: undefined,
-        title: "undefined",
-        questions: [],
-      },
+      quiz: {},
       isPlayDialogShow: false,
+      state: null,
     };
   },
   mounted() {
@@ -100,16 +101,14 @@ export default {
   },
   methods: {
     updateQuiz() {
-      Quiz.getQuiz(this.quiz_id)
-        .then((val) => {
-          this.quiz = val;
-        })
-        .catch(() => {
-          this.$buefy.toast.open({
-            message: "Cannot load Quiz",
-            type: "is-danger",
-          });
-        });
+      updateResourceStateByPromise(
+        Quiz.getQuiz(this.quiz_id).then((quiz) => {
+          this.quiz = quiz;
+        }),
+        (val) => {
+          this.state = val;
+        }
+      );
     },
     checkAnswer(questionComponent) {
       const id = questionComponent.question.id;
