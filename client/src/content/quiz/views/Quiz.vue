@@ -1,6 +1,8 @@
 <template>
   <resource-wrapper :state="state" @reload="updateQuiz">
-    <quiz-summary :quiz="quiz">
+    <quiz-summary :quiz="quiz"> </quiz-summary>
+
+    <top-toolbar>
       <b-button
         v-if="$store.state.core.user"
         type="is-primary"
@@ -16,7 +18,7 @@
       >
         <b-button :href="href" @click="navigate">Edit</b-button>
       </router-link>
-    </quiz-summary>
+    </top-toolbar>
 
     <p class="subtitle">Questions</p>
 
@@ -72,6 +74,7 @@ import { isAnswerEmpty as isAnswerEmptyImpl } from "@/content/utils";
 import ResourceWrapper, {
   updateResourceStateByPromise,
 } from "@/components/ResourceWrapper.vue";
+import TopToolbar from "@/components/TopToolbar.vue";
 
 export default {
   components: {
@@ -80,6 +83,7 @@ export default {
     AnswerResult,
     DialogPlayQuiz,
     ResourceWrapper,
+    TopToolbar,
   },
   props: {
     quiz_id: String,

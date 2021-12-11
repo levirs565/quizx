@@ -16,12 +16,6 @@
         :questionCount="quiz.questions.length"
       ></quiz-information>
     </div>
-
-    <footer class="card-footer level">
-      <div class="card-footer-item level-left buttons">
-        <slot></slot>
-      </div>
-    </footer>
   </div>
 </template>
 <script>

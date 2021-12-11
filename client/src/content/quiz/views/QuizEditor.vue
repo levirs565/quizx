@@ -1,11 +1,13 @@
 <template>
   <resource-wrapper :state="state" class="has-fab" @reload="refresh">
-    <quiz-summary :quiz="quiz" editor>
+    <quiz-summary :quiz="quiz" editor> </quiz-summary>
+
+    <top-toolbar>
       <b-button type="is-danger" @click="showDeleteQuizDialog"
         >Delete Quiz</b-button
       >
       <b-button type="is-primary" @click="saveQuiz">Save</b-button>
-    </quiz-summary>
+    </top-toolbar>
 
     <p class="subtitle">Questions</p>
 
@@ -57,6 +59,7 @@ import { Quiz } from "@/api";
 import QuestionEditor from "../components/QuestionEditor.vue";
 import QuizSummary from "../components/QuizSummary.vue";
 import DialogSelectImage from "../components/DialogSelectImage.vue";
+import TopToolbar from "@/components/TopToolbar.vue"
 import ResourceWrapper, {
   updateResourceStateByPromise,
 } from "@/components/ResourceWrapper.vue";
@@ -70,6 +73,7 @@ export default {
     QuizSummary,
     DialogSelectImage,
     ResourceWrapper,
+    TopToolbar
   },
   data() {
     return {
