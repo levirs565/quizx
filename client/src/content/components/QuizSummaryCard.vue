@@ -1,5 +1,5 @@
 <template>
-  <div class="card" @click="$emit('click', $event)">
+  <div class="card is-clickable" @click="$emit('click', $event)">
     <div class="card-content">
       <p class="title is-6 mb-1">{{ quiz.title }}</p>
       <quiz-information
