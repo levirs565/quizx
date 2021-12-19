@@ -35,7 +35,7 @@
   </div>
 </template>
 <script>
-import { Quiz } from "@/api";
+import { Media } from "@/api";
 
 export default {
   props: {
@@ -56,8 +56,8 @@ export default {
       if (this.activeTab === "upload") {
         if (!this.file) return;
         try {
-          const uploadResult = await Quiz.upload(this.quizId, this.file);
-          result.src = uploadResult.url;
+          const uploadResult = await Media.upload(this.quizId, this.file);
+          result.src = uploadResult.path;
         } catch (e) {
           this.$buefy.toast.open({
             type: "is-danger",

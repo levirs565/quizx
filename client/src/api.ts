@@ -11,14 +11,14 @@ function throwError(res: any) {
   }
 }
 
-const baseURL = "http://localhost:3000/api";
+const baseURL = "/";
 const instance = axios.create({
   baseURL,
   withCredentials: true,
 });
 
 class QuizApi {
-  path = "/quiz";
+  path = "/api/quiz";
 
   async getQuizList() {
     const res = await instance.get(this.path);
@@ -28,7 +28,11 @@ class QuizApi {
     const res = await instance.get(`${this.path}/${id}`);
     return throwError(res);
   }
-  async checkQuestionAnswer(quizId: string, questionId: string, answer: string | number | null) {
+  async checkQuestionAnswer(
+    quizId: string,
+    questionId: string,
+    answer: string | number | null
+  ) {
     const res = await instance.post(
       `${this.path}/${quizId}/${questionId}/check`,
       {
@@ -53,8 +57,62 @@ class QuizApi {
     const res = await instance.delete(`${this.path}/${id}`);
     return throwError(res);
   }
+}
+export const Quiz = new QuizApi();
+
+export const User = {
+  async signup(id: string, name: string, password: string) {
+    const res = await instance.post("/api/user/signup", { id, name, password });
+    return throwError(res);
+  },
+  async login(id: string, password: string) {
+    const res = await instance.post("/api/user/login", { id, password });
+    return throwError(res);
+  },
+  async logout() {
+    const res = await instance.post("/api/user/logout");
+    return throwError(res);
+  },
+  async state() {
+    const res = await instance.get("/api/user/state");
+    return throwError(res);
+  },
+};
+
+export const Game = {
+  async playGame(quizId: string, preference: any) {
+    const res = await instance.post("/api/game/play", {
+      quizId,
+      ...preference,
+    });
+    return throwError(res);
+  },
+  async getGame(id: string) {
+    const res = await instance.get(`/api/game/${id}`);
+    return throwError(res);
+  },
+  async putAnswer(
+    gameId: string,
+    questionIndex: string,
+    answer: string | number | null
+  ) {
+    const res = await instance.put(
+      `/api/game/${gameId}/question/${questionIndex}`,
+      { answer }
+    );
+    return throwError(res);
+  },
+  async finishGame(gameId: string) {
+    const res = await instance.post(`/api/game/${gameId}/finish`);
+    return throwError(res);
+  },
+};
+
+export class MediaApi {
+  path = "/media";
+
   async upload(id: string, file: Blob) {
-    const rootPath = `${this.path}/${id}/upload`;
+    const rootPath = `${this.path}/quiz/${id}`;
     const formData = new FormData();
     formData.append("file", file);
     const res = throwError(
@@ -64,53 +122,8 @@ class QuizApi {
         },
       })
     );
-    return {
-      url: `${baseURL}${rootPath}/${res.name}`,
-    };
+    return res
   }
 }
-export const Quiz = new QuizApi();
 
-export const User = {
-  async signup(id: string, name: string, password: string) {
-    const res = await instance.post("/user/signup", { id, name, password });
-    return throwError(res);
-  },
-  async login(id: string, password: string) {
-    const res = await instance.post("/user/login", { id, password });
-    return throwError(res);
-  },
-  async logout() {
-    const res = await instance.post("/user/logout");
-    return throwError(res);
-  },
-  async state() {
-    const res = await instance.get("/user/state");
-    return throwError(res);
-  },
-};
-
-export const Game = {
-  async playGame(quizId: string, preference: any) {
-    const res = await instance.post("/game/play", {
-      quizId,
-      ...preference,
-    });
-    return throwError(res);
-  },
-  async getGame(id: string) {
-    const res = await instance.get(`/game/${id}`);
-    return throwError(res);
-  },
-  async putAnswer(gameId: string, questionIndex: string, answer: string | number | null) {
-    const res = await instance.put(
-      `/game/${gameId}/question/${questionIndex}`,
-      { answer }
-    );
-    return throwError(res);
-  },
-  async finishGame(gameId: string) {
-    const res = await instance.post(`/game/${gameId}/finish`);
-    return throwError(res);
-  },
-};
+export const Media = new MediaApi()
