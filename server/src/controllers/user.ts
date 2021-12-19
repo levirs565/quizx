@@ -1,6 +1,6 @@
 import { Body, Get, JsonController, Post, Session, UseInterceptor } from 'routing-controllers';
 import { ActionInterceptor } from '../interceptors/action';
-import * as UserService from '../services/user';
+import UserService from '../services/user';
 import SessionType from '../types/session';
 import { SignupRequestBody, LoginRequestBody } from '../types/user';
 @JsonController('/user')

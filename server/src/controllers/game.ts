@@ -1,6 +1,6 @@
 import { PlayGameRequestBody } from '../types/game';
 import { AnswerQuestionRequestBody } from '../types/quiz';
-import * as GameService from '../services/game';
+import GameService from '../services/game';
 import {
   Body,
   Get,

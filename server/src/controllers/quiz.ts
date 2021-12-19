@@ -6,7 +6,7 @@ import {
   Quiz,
   QuestionValidationGroupWithoutId
 } from '../types/quiz';
-import * as QuizService from '../services/quiz';
+import QuizService from '../services/quiz';
 import SessionType from '../types/session';
 import {
   Body,
@@ -87,11 +87,7 @@ export class QuizController {
   }
 
   @Put('/:id/edit')
-  save(
-    @Session() session: SessionType,
-    @Param('id') id: string,
-    @Body() quiz: Quiz
-  ) {
+  save(@Session() session: SessionType, @Param('id') id: string, @Body() quiz: Quiz) {
     return QuizService.saveQuiz(session, id, quiz);
   }
 
