@@ -15,7 +15,7 @@ import {
 import SessionType from '../types/session';
 import { ActionInterceptor } from '../interceptors/action';
 
-@JsonController('/game')
+@JsonController('/api/game')
 export class GameController {
   @Post('/play')
   play(@Session() session: SessionType, @Body() { quizId, ...preference }: PlayGameRequestBody) {

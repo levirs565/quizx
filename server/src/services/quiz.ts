@@ -1,7 +1,4 @@
 import { Types } from 'mongoose';
-import path from 'path';
-import crypto from 'crypto';
-import fs from 'fs-extra';
 import QuizModel from '../models/quiz';
 import { EError, E } from '../error';
 import {
@@ -20,11 +17,9 @@ import {
   validateUserId,
   validateUserLoggedIn
 } from './helper';
-import config from '../config';
 import { mapper } from '../types/mapper';
 import { classToPlain, instanceToPlain } from 'class-transformer';
 
-const uploadRoot = path.join(config.storagePath, 'quiz');
 export class QuizService {
   async getQuizList(): Promise<QuizSummary[]> {
     const list = await QuizModel.find();
@@ -121,35 +116,6 @@ export class QuizService {
   async validateUserCanUpload(session: Session, id: string) {
     const doc = await this.getQuizDocument(id);
     await validateUserId(session, doc.userId);
-  }
-
-  getUploadDirectory(quizId: string) {
-    const dir = path.join(uploadRoot, quizId);
-    fs.ensureDirSync(dir);
-    return dir;
-  }
-
-  getUploadFilename(originalName: string) {
-    const extension = path.extname(originalName);
-    return crypto.randomUUID() + extension;
-  }
-
-  getFilePath(quizId: string, name: string) {
-    const filePath = path.join(uploadRoot, quizId, name);
-    if (fs.existsSync(filePath)) return filePath;
-    return undefined;
-  }
-
-  canUploadByMime(mime: string) {
-    return mime.startsWith('image/');
-  }
-
-  getUploadResult(fileName?: string) {
-    if (!fileName) throw new EError(200, 'File is not accepted');
-
-    return {
-      name: fileName
-    };
   }
 }
 

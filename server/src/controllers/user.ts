@@ -3,7 +3,7 @@ import { ActionInterceptor } from '../interceptors/action';
 import UserService from '../services/user';
 import SessionType from '../types/session';
 import { SignupRequestBody, LoginRequestBody } from '../types/user';
-@JsonController('/user')
+@JsonController('/api/user')
 export class UserController {
   @Post('/signup')
   @UseInterceptor(ActionInterceptor)

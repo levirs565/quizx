@@ -1,5 +1,3 @@
-import { Response } from 'express';
-import multer from 'multer';
 import {
   AnswerQuestionRequestBody,
   CreateQuizParameters,
@@ -24,28 +22,7 @@ import {
 } from 'routing-controllers';
 import { ActionInterceptor } from '../interceptors/action';
 
-const storage = multer.diskStorage({
-  destination(req, file, cb) {
-    cb(null, QuizService.getUploadDirectory(req.params.id));
-  },
-  filename(req, file, cb) {
-    cb(null, QuizService.getUploadFilename(file.originalname));
-  }
-});
-const uploader = multer({
-  storage,
-  fileFilter(req, file, cb) {
-    QuizService.validateUserCanUpload(req.session, req.params.id)
-      .then(() => {
-        cb(null, QuizService.canUploadByMime(file.mimetype));
-      })
-      .catch(reason => {
-        cb(reason);
-      });
-  }
-});
-
-@JsonController('/quiz')
+@JsonController('/api/quiz')
 export class QuizController {
   @Get('/')
   async getList() {
@@ -95,24 +72,5 @@ export class QuizController {
   @UseInterceptor(ActionInterceptor)
   delete(@Session() session: SessionType, @Param('id') id: string) {
     return QuizService.deleteQuiz(session, id);
-  }
-
-  @Post('/:id/upload')
-  uploadAsset(@UploadedFile('file', { options: uploader }) file: Express.Multer.File) {
-    return QuizService.getUploadResult(file.filename);
-  }
-
-  @Get('/:id/upload/:name')
-  getAsset(@Param('id') id: string, @Param('name') name: string, @Res() res: Response) {
-    const fileName = QuizService.getFilePath(id, name);
-    if (fileName)
-      return new Promise<Response>((resolve, reject) => {
-        res.sendFile(fileName, err => {
-          if (err) reject(err);
-
-          resolve(res);
-        });
-      });
-    else return res.sendStatus(404);
   }
 }

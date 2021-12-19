@@ -11,3 +11,10 @@ export interface ErrorResponse {
     validationMessages?: string[]
   }
 }
+
+export interface UploadMediaResponse {
+  /**
+   * Media path in server
+   */
+  path: string
+}

@@ -8,6 +8,7 @@ import { useExpressServer } from 'routing-controllers';
 import { UserController } from './controllers/user';
 import { QuizController } from './controllers/quiz';
 import { GameController } from './controllers/game';
+import { MediaController } from './controllers/media';
 
 const app = express();
 
@@ -21,8 +22,7 @@ app.use(json());
 app.use(sessionMiddleware);
 
 useExpressServer(app, {
-  routePrefix: '/api',
-  controllers: [UserController, QuizController, GameController],
+  controllers: [UserController, QuizController, GameController, MediaController],
   defaultErrorHandler: false,
   validation: {
     whitelist: true,
