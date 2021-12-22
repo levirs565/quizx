@@ -1,5 +1,6 @@
 import { Inject, MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
 import { RouterModule } from '@nestjs/core';
+import { ServeStaticModule } from '@nestjs/serve-static';
 import { GameModule } from './game/game.module';
 import { MediaModule } from './media/media.module';
 import { QuizModule } from './quiz/quiz.module';
@@ -12,9 +13,17 @@ import session from 'express-session';
 import MongoStore from 'connect-mongo';
 import { AutomapperModule } from '@automapper/nestjs';
 import { classes } from '@automapper/classes';
+import path from 'path';
 
 @Module({
   imports: [
+    ServeStaticModule.forRoot({
+      rootPath: path.join(__dirname, '../../client/dist'),
+      exclude: [
+        "/api/*",
+        "/media/*"
+      ]
+    }),
     AppConfigModule,
     MongooseModule.forRootAsync({
       imports: [AppConfigModule],

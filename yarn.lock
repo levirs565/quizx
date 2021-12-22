@@ -2669,6 +2669,18 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@nestjs/serve-static@npm:^2.2.2":
+  version: 2.2.2
+  resolution: "@nestjs/serve-static@npm:2.2.2"
+  dependencies:
+    path-to-regexp: 0.1.7
+  peerDependencies:
+    "@nestjs/common": ^6.0.0 || ^7.0.0 || ^8.0.0
+    "@nestjs/core": ^6.0.0 || ^7.0.0 || ^8.0.0
+  checksum: 8e13c7389572a4a1852e13ad8255aa98f643410df4b9d7acc1b34f12f0c07c17899a5adfaf5f07351b74dc8cf3399e0aeb9e94c23d04e6c7a9f094ee3685c3e9
+  languageName: node
+  linkType: hard
+
 "@nestjs/testing@npm:^8.1.1":
   version: 8.2.4
   resolution: "@nestjs/testing@npm:8.2.4"
@@ -2821,6 +2833,7 @@ __metadata:
     "@nestjs/mongoose": ^9.0.1
     "@nestjs/platform-express": ^8.1.1
     "@nestjs/schematics": ^8.0.4
+    "@nestjs/serve-static": ^2.2.2
     "@nestjs/testing": ^8.1.1
     "@types/bcrypt": ^5.0.0
     "@types/express": ^4.17.13
