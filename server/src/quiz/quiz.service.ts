@@ -1,12 +1,10 @@
-import { Types } from 'mongoose';
-import QuizModel from '../models/quiz';
-import { EError, E } from '../error';
+import { Types, Document } from 'mongoose';
+import { QuizModelName } from '../schemas/quiz.schema';
 import {
   AnswerQuestionResult,
   CreateQuizResult,
   Quiz,
   QuizSummary,
-  Question,
   SaveQuizResult,
   CreateQuizParameters
 } from '../types/quiz';
@@ -16,21 +14,31 @@ import {
   validateQuestionAnswerDataType,
   validateUserId,
   validateUserLoggedIn
-} from './helper';
-import { mapper } from '../types/mapper';
-import { classToPlain, instanceToPlain } from 'class-transformer';
+} from '../common/service.helper';
+import { instanceToPlain } from 'class-transformer';
+import { Injectable, NotFoundException } from '@nestjs/common';
+import { InjectModel } from '@nestjs/mongoose';
+import { BaseModel } from 'schemas/helper';
+import { InjectMapper } from '@automapper/nestjs';
+import { Mapper } from '@automapper/core';
 
+@Injectable()
 export class QuizService {
-  async getQuizList(): Promise<QuizSummary[]> {
-    const list = await QuizModel.find();
+  constructor(
+    @InjectModel(QuizModelName) private readonly quizModel: BaseModel<Quiz>,
+    @InjectMapper() private readonly mapper: Mapper
+  ) {}
 
-    return list.map(val => mapper.map(val.toClass(), QuizSummary, Quiz));
+  async getQuizList(): Promise<QuizSummary[]> {
+    const list = await this.quizModel.find();
+
+    return list.map(val => this.mapper.map(val.toClass(), QuizSummary, Quiz));
   }
 
   async getQuizDocument(id: string) {
-    const quizPackage = await QuizModel.findById(id);
+    const quizPackage = await this.quizModel.findById(id);
 
-    if (!quizPackage) throw new EError(...E.E201_SOAL_PAKET_NOT_FOUND);
+    if (!quizPackage) throw new NotFoundException('Quiz not found');
 
     return quizPackage;
   }
@@ -49,7 +57,7 @@ export class QuizService {
   async getQuestionDocument(quizId: string, questionId: string) {
     const quizPackage = await this.getQuizDocument(quizId);
     const item = quizPackage.questions.find(item => item.id == questionId);
-    if (!item) throw new EError(...E.E202_SOAL_NOT_FOUND);
+    if (!item) throw new NotFoundException('Question not found');
     return item;
   }
 
@@ -67,7 +75,7 @@ export class QuizService {
 
   async createQuiz(session: Session, param: CreateQuizParameters): Promise<CreateQuizResult> {
     await validateUserLoggedIn(session);
-    const paketDb = new QuizModel({
+    const paketDb = new this.quizModel({
       userId: session.user!.id,
       ...instanceToPlain(param)
     });
@@ -118,5 +126,3 @@ export class QuizService {
     await validateUserId(session, doc.userId);
   }
 }
-
-export default new QuizService();

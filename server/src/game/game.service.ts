@@ -1,30 +1,41 @@
-import GameModel from '../models/game';
-import QuizService from './quiz';
+import { GameModelName } from '../schemas/game.schema';
+import { QuizService } from 'quiz/quiz.service';
 import Session from '../types/session';
-import { EError, E } from '../error';
 import { GameSummary, GamePreference, GameResult, Game, QuestionState } from '../types/game';
-import { AnswerQuestionResult, Question, questionDiscriminator } from '../types/quiz';
+import { AnswerQuestionResult } from '../types/quiz';
 import {
   validateUserLoggedIn,
   validateUserId,
   validateQuestionAnswerDataType,
   checkQuestionAnswer
-} from './helper';
+} from '../common/service.helper';
 import shuffle from 'just-shuffle';
-import { mapper } from '../types/mapper';
 import { instanceToPlain } from 'class-transformer';
+import { Injectable, NotFoundException } from '@nestjs/common';
+import { InjectModel } from '@nestjs/mongoose';
+import { BaseModel } from 'schemas/helper';
+import { CommonServiceException } from 'common/common-service.exception';
+import { InjectMapper } from '@automapper/nestjs';
+import { Mapper } from '@automapper/core';
 
+@Injectable()
 export class GameService {
+  constructor(
+    @InjectModel(GameModelName) private readonly gameModel: BaseModel<Game>,
+    private readonly quizService: QuizService,
+    @InjectMapper() private readonly mapper: Mapper
+  ) {}
+
   async playGame(
     session: Session,
     quizId: string,
     preference: GamePreference
   ): Promise<GameSummary> {
     const user = await validateUserLoggedIn(session);
-    const playedGame = await GameModel.findOne({ userId: user.id, isPlaying: true });
-    if (playedGame) throw new EError(...E.E402_PERMAINAN_NOT_FINISHED);
+    const playedGame = await this.gameModel.findOne({ userId: user.id, isPlaying: true });
+    if (playedGame) throw new CommonServiceException('Last game not finished');
 
-    const quiz = await (await QuizService.getQuizDocument(quizId)).toClass();
+    const quiz = await (await this.quizService.getQuizDocument(quizId)).toClass();
 
     if (preference.shuffleQuestions) quiz.questions = shuffle(quiz.questions);
 
@@ -42,18 +53,18 @@ export class GameService {
       correctAnswers,
       ...preference
     };
-    const game = new GameModel(gameObject);
+    const game = new this.gameModel(gameObject);
 
     await game.save();
-    return mapper.map(game.toClass(), GameSummary, Game);
+    return this.mapper.map(game.toClass(), GameSummary, Game);
   }
 
-  async getGameInternal(id: string) {
-    const game = await GameModel.findOne({ _id: id });
+  private async getGameInternal(id: string) {
+    const game = await this.gameModel.findOne({ _id: id });
 
     if (game) return game;
 
-    throw new EError(...E.E404_GAME_NOT_FOUND);
+    throw new NotFoundException('Game not found');
   }
 
   async getGame(id: string): Promise<GameSummary> {
@@ -75,7 +86,7 @@ export class GameService {
     const questionDocumentIndex = game.questions.findIndex(item => item.id == questionId);
 
     if (questionDocumentIndex == -1) {
-      throw new EError(...E.E403_PERMAINAN_SOAL_NOT_FOUND);
+      throw new NotFoundException('Question not found in this game');
     }
 
     const questionDocument = game.questions[questionDocumentIndex];
@@ -129,5 +140,3 @@ export class GameService {
     await game.save();
   }
 }
-
-export default new GameService();

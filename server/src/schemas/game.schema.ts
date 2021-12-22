@@ -1,10 +1,10 @@
 import { Schema, model } from 'mongoose';
-import { configureQuestionDiscriminators, createQuestionSchema } from './question';
+import { configureQuestionDiscriminators, createQuestionSchema } from './question.schema';
 import { BaseModel, BaseModelSchema, configureBaseModelSchema } from './helper';
 import { Game, QuestionState } from '../types/game';
 
 const questionSchema = createQuestionSchema(false);
-const gameSchema: BaseModelSchema<Game> = new Schema(
+export const GameSchema: BaseModelSchema<Game> = new Schema(
   {
     userId: {
       type: String,
@@ -60,10 +60,7 @@ const gameSchema: BaseModelSchema<Game> = new Schema(
     collection: 'game'
   }
 );
+export const GameModelName = 'GameModel';
 
-configureQuestionDiscriminators(gameSchema, 'questions', questionSchema);
-configureBaseModelSchema(gameSchema, Game);
-
-const GameModel: BaseModel<Game> = model('Game', gameSchema);
-
-export default GameModel;
+configureQuestionDiscriminators(GameSchema, 'questions', questionSchema);
+configureBaseModelSchema(GameSchema, Game);

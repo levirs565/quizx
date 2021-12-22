@@ -94,3 +94,5 @@ typings/
 *Diagram*
 
 dist
+
+*.tsbuildinfo

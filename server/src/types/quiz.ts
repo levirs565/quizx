@@ -9,6 +9,7 @@ import {
   IsString,
   ValidateNested
 } from 'class-validator';
+import { ValidationGroups } from 'common/validation-groups.decorator';
 
 export const QuestionValidationGroupWithoutId = 'WithoutId';
 
@@ -110,6 +111,7 @@ export interface AnswerQuestionRequestBody {
   answer: QuestionAnswer | null;
 }
 
+@ValidationGroups([QuestionValidationGroupWithoutId])
 export class CreateQuizParameters {
   @IsString({ always: true })
   title!: string;

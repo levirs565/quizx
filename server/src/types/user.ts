@@ -1,34 +1,33 @@
-
-import { IsString } from "class-validator"
+import { IsString } from 'class-validator';
 
 export interface UserState {
-    user?: UserData
+  user?: UserData;
 }
 
 export interface UserData {
-  id: string
-  name: string
-  isAdmin: boolean
+  id: string;
+  name: string;
+  isAdmin: boolean;
 }
 
 export class LoginRequestBody {
   @IsString()
-  id: string
+  id: string;
   @IsString()
-  password: string
+  password: string;
 
   constructor(id: string, password: string) {
-    this.id = id
-    this.password = password
+    this.id = id;
+    this.password = password;
   }
 }
 
 export class SignupRequestBody extends LoginRequestBody {
   @IsString()
-  name: string
+  name: string;
 
   constructor(id: string, password: string, name: string) {
-    super(id, password)
-    this.name = name
+    super(id, password);
+    this.name = name;
   }
 }

@@ -1,9 +1,12 @@
 import { genSalt, hash as _hash, compare } from 'bcrypt';
-import UserModel, { User } from '../models/user';
+import { User, UserModelName } from '../schemas/user.schema';
 import Session from '../types/session';
-import { EError, E } from '../error';
-import { validateUserLoggedIn } from './helper';
+import { validateUserLoggedIn } from '../common/service.helper';
 import { UserState } from '../types/user';
+import { Injectable } from '@nestjs/common';
+import { InjectModel } from '@nestjs/mongoose';
+import { BaseModel } from 'schemas/helper';
+import { CommonServiceException } from 'common/common-service.exception';
 
 const saltRounds = 10;
 
@@ -18,15 +21,18 @@ const loginAs = (user: User | undefined, session: Session) => {
     : undefined;
 };
 
+@Injectable()
 export class UserService {
-  async signup(id: string, name: string, password: string) {
-    let user = await UserModel.findOne({ id });
+  constructor(@InjectModel(UserModelName) private readonly userModel: BaseModel<User>) {}
 
-    if (user) throw new EError(...E.E301_USER_ALREADY_REGISTERED);
+  async signup(id: string, name: string, password: string) {
+    let user = await this.userModel.findOne({ id });
+
+    if (user) throw new CommonServiceException('User already registered');
 
     const salt = await genSalt(saltRounds);
     const hashedPassword = await _hash(password, salt);
-    user = new UserModel({
+    user = new this.userModel({
       id,
       name,
       password: hashedPassword
@@ -37,17 +43,17 @@ export class UserService {
 
   async login(id: string, password: string, session: Session) {
     if (session.user) {
-      throw new EError(...E.E303_USER_LOGGED_IN);
+      throw new CommonServiceException('User already logged in');
     }
 
-    const user = await UserModel.findOne({ id });
+    const user = await this.userModel.findOne({ id });
     if (!user) {
-      throw new EError(...E.E302_USER_NOT_REGISTERED);
+      throw new CommonServiceException('User not registered');
     }
 
     const matched = await compare(password, user.password);
 
-    if (!matched) throw new EError(...E.E305_USER_PASSWORD_NOT_MATCH);
+    if (!matched) throw new CommonServiceException('Password not match');
 
     loginAs(user, session);
   }
@@ -63,5 +69,3 @@ export class UserService {
     };
   }
 }
-
-export default new UserService()

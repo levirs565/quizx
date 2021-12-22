@@ -3,9 +3,10 @@
     "src/**/*"
   ],
   "compilerOptions": {
-    "target": "es6",
+    "target": "es2017",
     "rootDir": "./src",
-    "outDir": "dist",
+    "outDir": "./dist",
+    "baseUrl": "./src",
     "module": "commonjs",
     "esModuleInterop": true,
     "strict": true,
@@ -13,6 +14,10 @@
     "resolveJsonModule": true,
     "skipLibCheck": true,
     "emitDecoratorMetadata": true,
-    "experimentalDecorators": true
+    "experimentalDecorators": true,
+    "declaration": true,
+    "removeComments": true,
+    "allowSyntheticDefaultImports": true,
+    "sourceMap": true
   }
 }

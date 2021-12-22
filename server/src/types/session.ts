@@ -2,10 +2,10 @@ import { UserData } from './user';
 
 declare module 'express-session' {
   interface SessionData {
-    user?: UserData
+    user?: UserData;
   }
 }
 
 export default interface Session {
-  user?: UserData
+  user?: UserData;
 }

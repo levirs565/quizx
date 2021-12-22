@@ -4,36 +4,35 @@ import {
   Quiz,
   QuestionValidationGroupWithoutId
 } from '../types/quiz';
-import QuizService from '../services/quiz';
+import { QuizService } from './quiz.service';
 import SessionType from '../types/session';
+import { ActionInterceptor } from '../common/action.interceptor';
 import {
   Body,
+  Controller,
   Delete,
   Get,
-  JsonController,
   Param,
   Post,
   Put,
-  Res,
-  ResponseClassTransformOptions,
   Session,
-  UploadedFile,
-  UseInterceptor
-} from 'routing-controllers';
-import { ActionInterceptor } from '../interceptors/action';
+  UseInterceptors
+} from '@nestjs/common';
 
-@JsonController('/api/quiz')
+@Controller()
 export class QuizController {
+  constructor(private readonly quizService: QuizService) {}
+
   @Get('/')
   async getList() {
     return {
-      list: await QuizService.getQuizList()
+      list: await this.quizService.getQuizList()
     };
   }
 
   @Get('/:id')
   getOne(@Param('id') id: string) {
-    return QuizService.getQuiz(id);
+    return this.quizService.getQuiz(id);
   }
 
   @Post('/:quizId/:questionId/check')
@@ -42,35 +41,27 @@ export class QuizController {
     @Param('questionId') questionId: string,
     @Body() { answer }: AnswerQuestionRequestBody
   ) {
-    return QuizService.answerQuestion(quizId, questionId, answer);
+    return this.quizService.answerQuestion(quizId, questionId, answer);
   }
 
   @Post('/')
-  async createOne(
-    @Session() session: SessionType,
-    @Body({
-      validate: {
-        groups: [QuestionValidationGroupWithoutId]
-      }
-    })
-    param: CreateQuizParameters
-  ) {
-    return QuizService.createQuiz(session, param);
+  async createOne(@Session() session: SessionType, @Body() param: CreateQuizParameters) {
+    return this.quizService.createQuiz(session, param);
   }
 
   @Get('/:id/edit')
   getOneForEditor(@Session() session: SessionType, @Param('id') id: string) {
-    return QuizService.getQuizForEditor(session, id);
+    return this.quizService.getQuizForEditor(session, id);
   }
 
   @Put('/:id/edit')
   save(@Session() session: SessionType, @Param('id') id: string, @Body() quiz: Quiz) {
-    return QuizService.saveQuiz(session, id, quiz);
+    return this.quizService.saveQuiz(session, id, quiz);
   }
 
   @Delete('/:id')
-  @UseInterceptor(ActionInterceptor)
+  @UseInterceptors(ActionInterceptor)
   delete(@Session() session: SessionType, @Param('id') id: string) {
-    return QuizService.deleteQuiz(session, id);
+    return this.quizService.deleteQuiz(session, id);
   }
 }

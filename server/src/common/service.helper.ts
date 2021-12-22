@@ -1,22 +1,16 @@
 import Session from '../types/session';
-import { EError, E } from '../error';
 import { MathQuestion, Question } from '../types/quiz';
 import { ComputeEngine, match as mathMatch } from '@cortex-js/compute-engine';
+import { ForbiddenException, UnauthorizedException } from '@nestjs/common';
 
 export async function validateUserLoggedIn(session: Session) {
-  if (!session.user) throw new EError(...E.E304_USER_NOT_LOGGED_IN);
+  if (!session.user) throw new UnauthorizedException();
   return session.user;
-}
-
-export async function validateUserIsAdmin(session: Session) {
-  const user = await validateUserLoggedIn(session);
-  if (!user.isAdmin) throw new EError(...E.E306_USER_IS_NOT_ADMIN);
-  return user;
 }
 
 export async function validateUserId(session: Session, id: string) {
   const user = await validateUserLoggedIn(session);
-  if (user.id != id) throw new EError(...E.E307_ACCESS_DENIED);
+  if (user.id != id) throw new ForbiddenException('Access denied');
   return user;
 }
 

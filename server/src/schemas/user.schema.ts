@@ -4,14 +4,14 @@ import { BaseModelSchema, BaseModel, configureBaseModelSchema } from './helper';
 // TODO: Rename id to _id
 
 export class User {
-  id!: string
-  name!: string
-  password!: string
-  isAdmin!: boolean
-  registerDate!: Date
+  id!: string;
+  name!: string;
+  password!: string;
+  isAdmin!: boolean;
+  registerDate!: Date;
 }
 
-const userScheme: BaseModelSchema<User> = new Schema(
+export const UserSchema: BaseModelSchema<User> = new Schema(
   {
     id: {
       type: String,
@@ -45,8 +45,6 @@ const userScheme: BaseModelSchema<User> = new Schema(
   }
 );
 
-configureBaseModelSchema(userScheme, User)
+export const UserModelName = 'User';
 
-const UserModel: BaseModel<User> = model('User', userScheme);
-
-export default UserModel;
+configureBaseModelSchema(UserSchema, User);

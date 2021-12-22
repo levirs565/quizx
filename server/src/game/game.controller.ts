@@ -1,30 +1,22 @@
 import { PlayGameRequestBody } from '../types/game';
 import { AnswerQuestionRequestBody } from '../types/quiz';
-import GameService from '../services/game';
-import {
-  Body,
-  Get,
-  JsonController,
-  Param,
-  Post,
-  Put,
-  ResponseClassTransformOptions,
-  Session,
-  UseInterceptor
-} from 'routing-controllers';
+import { GameService } from './game.service';
 import SessionType from '../types/session';
-import { ActionInterceptor } from '../interceptors/action';
+import { ActionInterceptor } from '../common/action.interceptor';
+import { Body, Controller, Get, Param, Post, Put, Session, UseInterceptors } from '@nestjs/common';
 
-@JsonController('/api/game')
+@Controller()
 export class GameController {
+  constructor(private readonly gameService: GameService) {}
+
   @Post('/play')
   play(@Session() session: SessionType, @Body() { quizId, ...preference }: PlayGameRequestBody) {
-    return GameService.playGame(session, quizId, preference);
+    return this.gameService.playGame(session, quizId, preference);
   }
 
   @Get('/:id')
   get(@Param('id') id: string) {
-    return GameService.getGame(id);
+    return this.gameService.getGame(id);
   }
 
   @Put('/:gameId/question/:questionId')
@@ -34,12 +26,12 @@ export class GameController {
     @Param('questionId') questionId: string,
     @Body() { answer }: AnswerQuestionRequestBody
   ) {
-    return GameService.putAnswer(session, gameId, questionId, answer);
+    return this.gameService.putAnswer(session, gameId, questionId, answer);
   }
 
   @Post('/:id/finish')
-  @UseInterceptor(ActionInterceptor)
+  @UseInterceptors(ActionInterceptor)
   finish(@Session() session: SessionType, @Param('id') id: string) {
-    return GameService.finishGame(session, id);
+    return this.gameService.finishGame(session, id);
   }
 }

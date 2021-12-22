@@ -1,14 +1,24 @@
-import config from './config';
-import { connect } from 'mongoose';
-import { MSG_SERVER_READY } from './consts';
+import { NestFactory, Reflector } from '@nestjs/core';
+import { AppModule } from './app.module';
+import { AppConfigService } from './app.config.service';
+import { ValidationPipe } from 'common/validation.pipe';
+import { AllExceptionsFilter } from 'common/exception.filter';
+import { ClassSerializerInterceptor } from '@nestjs/common';
 
-async function run() {
-  await connect(config.dbUri);
+async function bootstrap() {
+  const app = await NestFactory.create(AppModule);
+  const appConfig = app.get(AppConfigService);
 
-  const app = (await import('./app')).default
-  app.listen(config.serverPort, () => {
-    console.log(MSG_SERVER_READY);
-  });
+  app.useGlobalPipes(
+    new ValidationPipe({
+      whitelist: true,
+      forbidNonWhitelisted: true,
+      strictGroups: true
+    })
+  );
+  app.useGlobalInterceptors(new ClassSerializerInterceptor(app.get(Reflector)));
+  app.useGlobalFilters(new AllExceptionsFilter());
+
+  await app.listen(appConfig.serverPort);
 }
-
-run();
+bootstrap();

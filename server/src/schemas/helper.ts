@@ -1,7 +1,7 @@
 import { plainToClass } from 'class-transformer';
 import { ToObjectOptions, Model, Schema } from 'mongoose';
 
-interface BaseModelMethods<T> {
+export interface BaseModelMethods<T> {
   toClass(): T;
 }
 
