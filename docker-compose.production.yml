@@ -1,0 +1,19 @@
+# Example docker file for use in production
+version: '3.7'
+
+services:
+  app:
+    image: levirs565/quizx:initial
+    ports:
+      - 8000:8000
+    volumes:
+      - ./storage:/quizx_storage
+    environment:
+      SERVER_PORT: 8000
+      DB_URI: mongodb://mongodb:27017/quizx
+      SESSION_SECRET: "VERY SECRET TEXT"
+      STORAGE_PATH: /quizx_storage
+  mongodb:
+    image: mongo:4.4
+    volumes:
+      - ./db:/data/db
