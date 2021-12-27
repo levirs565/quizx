@@ -1,13 +1,21 @@
-import { Response, Request } from 'express';
+import { Request } from 'express';
 import { MediaService } from './media.service';
-import { Controller, Get, Param, Post, Req, Res, UploadedFile } from '@nestjs/common';
+import {
+  Controller,
+  Post,
+  Req,
+  UploadedFile,
+  UseInterceptors
+} from '@nestjs/common';
+import { FileInterceptor } from '@nestjs/platform-express';
 
 @Controller()
 export class MediaController {
   constructor(private readonly mediaService: MediaService) {}
 
   @Post('/quiz/:id/')
-  uploadAsset(@Req() req: Request, @UploadedFile('file') file?: Express.Multer.File) {
+  @UseInterceptors(FileInterceptor('file'))
+  uploadAsset(@Req() req: Request, @UploadedFile() file?: Express.Multer.File) {
     return this.mediaService.getUploadResult(req.path, file?.filename);
   }
 }
