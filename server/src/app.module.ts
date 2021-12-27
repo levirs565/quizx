@@ -33,7 +33,8 @@ import express from 'express';
     MongooseModule.forRootAsync({
       imports: [AppConfigModule],
       useFactory: async (appConfig: AppConfigService) => ({
-        uri: appConfig.dbUri
+        uri: appConfig.dbUri,
+        retryAttempts: Infinity
       }),
       inject: [AppConfigService]
     }),
