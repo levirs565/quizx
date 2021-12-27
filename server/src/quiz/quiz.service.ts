@@ -74,7 +74,7 @@ export class QuizService {
   }
 
   async createQuiz(session: Session, param: CreateQuizParameters): Promise<CreateQuizResult> {
-    await validateUserLoggedIn(session);
+    validateUserLoggedIn(session);
     const paketDb = new this.quizModel({
       userId: session.user!.id,
       ...instanceToPlain(param)
@@ -88,19 +88,19 @@ export class QuizService {
 
   async getQuizForEditor(session: Session, id: string): Promise<Quiz> {
     const doc = await this.getQuizDocument(id);
-    await validateUserId(session, doc.userId);
+    validateUserId(session, doc.userId);
     return doc.toClass();
   }
 
   async deleteQuiz(session: Session, id: string) {
     const doc = await this.getQuizDocument(id);
-    await validateUserId(session, doc.userId);
+    validateUserId(session, doc.userId);
     await doc.remove();
   }
 
   async saveQuiz(session: Session, id: string, quiz: Quiz): Promise<SaveQuizResult> {
     const doc = await this.getQuizDocument(id);
-    await validateUserId(session, doc.userId);
+    validateUserId(session, doc.userId);
 
     const result: SaveQuizResult = {
       newQuestionsId: {}
@@ -123,6 +123,6 @@ export class QuizService {
 
   async validateUserCanUpload(session: Session, id: string) {
     const doc = await this.getQuizDocument(id);
-    await validateUserId(session, doc.userId);
+    validateUserId(session, doc.userId);
   }
 }

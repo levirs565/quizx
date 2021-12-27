@@ -59,7 +59,7 @@ export class UserService {
   }
 
   async logout(session: Session) {
-    await validateUserLoggedIn(session);
+    validateUserLoggedIn(session);
     loginAs(undefined, session);
   }
 

@@ -3,13 +3,13 @@ import { MathQuestion, Question } from '../types/quiz';
 import { ComputeEngine, match as mathMatch } from '@cortex-js/compute-engine';
 import { ForbiddenException, UnauthorizedException } from '@nestjs/common';
 
-export async function validateUserLoggedIn(session: Session) {
+export function validateUserLoggedIn(session: Session) {
   if (!session.user) throw new UnauthorizedException();
   return session.user;
 }
 
-export async function validateUserId(session: Session, id: string) {
-  const user = await validateUserLoggedIn(session);
+export function validateUserId(session: Session, id: string) {
+  const user = validateUserLoggedIn(session);
   if (user.id != id) throw new ForbiddenException('Access denied');
   return user;
 }

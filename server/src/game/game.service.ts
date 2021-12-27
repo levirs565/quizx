@@ -35,11 +35,11 @@ export class GameService {
     quizId: string,
     preference: GamePreference
   ): Promise<GameSummary> {
-    const user = await validateUserLoggedIn(session);
+    const user = validateUserLoggedIn(session);
     const playedGame = await this.gameModel.findOne({ userId: user.id, isPlaying: true });
     if (playedGame) throw new CommonServiceException('Last game not finished');
 
-    const quiz = await (await this.quizService.getQuizDocument(quizId)).toClass();
+    const quiz = (await this.quizService.getQuizDocument(quizId)).toClass();
 
     if (preference.shuffleQuestions) quiz.questions = shuffle(quiz.questions);
 
@@ -86,7 +86,7 @@ export class GameService {
   ): Promise<AnswerQuestionResult> {
     const game = await this.getGameInternal(gameId);
 
-    await validateUserId(session, game.userId);
+    validateUserId(session, game.userId);
     this.validateGamePlaying(game);
 
     const questionDocumentIndex = game.questions.findIndex(item => item.id == questionId);
@@ -115,7 +115,7 @@ export class GameService {
   async finishGame(session: Session, gameId: string) {
     const game = await this.getGameInternal(gameId);
 
-    await validateUserId(session, game.userId);
+    validateUserId(session, game.userId);
     this.validateGamePlaying(game);
 
     const { questions, correctAnswers } = game.toClass();
