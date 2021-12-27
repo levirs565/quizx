@@ -26,6 +26,10 @@ export class GameService {
     @InjectMapper() private readonly mapper: Mapper
   ) {}
 
+  validateGamePlaying(game: Game) {
+    if (!game.isPlaying) throw new CommonServiceException('Game is finished');
+  }
+
   async playGame(
     session: Session,
     quizId: string,
@@ -81,7 +85,9 @@ export class GameService {
     questionAnswer: number | string | null
   ): Promise<AnswerQuestionResult> {
     const game = await this.getGameInternal(gameId);
+
     await validateUserId(session, game.userId);
+    this.validateGamePlaying(game);
 
     const questionDocumentIndex = game.questions.findIndex(item => item.id == questionId);
 
@@ -108,7 +114,10 @@ export class GameService {
 
   async finishGame(session: Session, gameId: string) {
     const game = await this.getGameInternal(gameId);
+
     await validateUserId(session, game.userId);
+    this.validateGamePlaying(game);
+
     const { questions, correctAnswers } = game.toClass();
     const result: GameResult = {
       unanswered: 0,
