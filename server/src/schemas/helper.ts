@@ -10,7 +10,7 @@ export type BaseModel<T> = Model<T, {}, BaseModelMethods<T>>;
 export type BaseModelSchema<T> = Schema<T, BaseModel<T>, BaseModelMethods<T>>;
 
 export function configureBaseModelSchema<T>(schema: BaseModelSchema<T>, constructor: new () => T) {
-  schema.methods.toClass = function() {
+  schema.methods.toClass = function () {
     return plainToClass(constructor, this.toObject(toObjectOptions), { ignoreDecorators: true });
   };
   if (!schema.paths['id']) configureSchemaIdSetter(schema);
@@ -27,7 +27,7 @@ const toObjectOptions: ToObjectOptions = {
     delete ret['_id'];
     return ret;
   },
-  versionKey: false
+  versionKey: false,
 };
 
 function setId(this: any, id: any) {

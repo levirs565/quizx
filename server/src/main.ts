@@ -13,7 +13,7 @@ async function bootstrap() {
     new ValidationPipe({
       whitelist: true,
       forbidNonWhitelisted: true,
-      strictGroups: true
+      strictGroups: true,
     })
   );
   app.useGlobalInterceptors(new ClassSerializerInterceptor(app.get(Reflector)));

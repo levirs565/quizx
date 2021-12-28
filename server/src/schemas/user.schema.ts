@@ -17,31 +17,31 @@ export const UserSchema: BaseModelSchema<User> = new Schema(
       type: String,
       required: true,
       unique: true,
-      minlength: 4
+      minlength: 4,
     },
     name: {
       type: String,
       required: true,
       minlength: 4,
-      maxlength: 25
+      maxlength: 25,
     },
     password: {
       type: String,
-      required: true
+      required: true,
     },
     isAdmin: {
       type: Boolean,
       required: false,
-      default: false
+      default: false,
     },
     registerDate: {
       type: Date,
       required: true,
-      default: () => new Date(Date.now())
-    }
+      default: () => new Date(Date.now()),
+    },
   },
   {
-    collection: 'user'
+    collection: 'user',
   }
 );
 

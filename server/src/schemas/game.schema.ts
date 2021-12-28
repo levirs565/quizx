@@ -8,38 +8,38 @@ export const GameSchema: BaseModelSchema<Game> = new Schema(
   {
     userId: {
       type: String,
-      required: true
+      required: true,
     },
     quizId: {
       type: String,
-      required: true
+      required: true,
     },
     quizTitle: {
       type: String,
-      required: true
+      required: true,
     },
     isPlaying: {
       type: Boolean,
       required: true,
-      default: true
+      default: true,
     },
     isInteractive: {
       type: Boolean,
       required: true,
-      default: false
+      default: false,
     },
     shuffleQuestions: {
       type: Boolean,
       required: true,
-      default: false
+      default: false,
     },
     questions: {
       type: [questionSchema.root],
-      required: true
+      required: true,
     },
     correctAnswers: {
       type: [Schema.Types.Mixed],
-      required: true
+      required: true,
     },
     result: {
       required: false,
@@ -50,14 +50,14 @@ export const GameSchema: BaseModelSchema<Game> = new Schema(
         questionsState: [
           {
             type: Number,
-            enum: QuestionState
-          }
-        ]
-      }
-    }
+            enum: QuestionState,
+          },
+        ],
+      },
+    },
   },
   {
-    collection: 'game'
+    collection: 'game',
   }
 );
 export const GameModelName = 'GameModel';

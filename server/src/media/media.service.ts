@@ -39,7 +39,7 @@ export class MediaService {
     if (!fileName) throw new CommonServiceException('File is not accepted');
 
     return {
-      path: path.posix.join(uploadPath, fileName)
+      path: path.posix.join(uploadPath, fileName),
     };
   }
 }

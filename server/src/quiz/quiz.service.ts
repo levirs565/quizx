@@ -6,14 +6,14 @@ import {
   Quiz,
   QuizSummary,
   SaveQuizResult,
-  CreateQuizParameters
+  CreateQuizParameters,
 } from '../types/quiz';
 import Session from '../types/session';
 import {
   checkQuestionAnswer,
   validateQuestionAnswerDataType,
   validateUserId,
-  validateUserLoggedIn
+  validateUserLoggedIn,
 } from '../common/service.helper';
 import { instanceToPlain } from 'class-transformer';
 import { Injectable, NotFoundException } from '@nestjs/common';
@@ -32,7 +32,7 @@ export class QuizService {
   async getQuizList(): Promise<QuizSummary[]> {
     const list = await this.quizModel.find();
 
-    return list.map(val => this.mapper.map(val.toClass(), QuizSummary, Quiz));
+    return list.map((val) => this.mapper.map(val.toClass(), QuizSummary, Quiz));
   }
 
   async getQuizDocument(id: string) {
@@ -47,7 +47,7 @@ export class QuizService {
     const quizPackage = await this.getQuizDocument(id);
     const quiz = quizPackage.toClass();
 
-    quiz.questions.forEach(question => {
+    quiz.questions.forEach((question) => {
       question.answer = undefined;
     });
 
@@ -56,7 +56,7 @@ export class QuizService {
 
   async getQuestionDocument(quizId: string, questionId: string) {
     const quizPackage = await this.getQuizDocument(quizId);
-    const item = quizPackage.questions.find(item => item.id == questionId);
+    const item = quizPackage.questions.find((item) => item.id == questionId);
     if (!item) throw new NotFoundException('Question not found');
     return item;
   }
@@ -69,7 +69,7 @@ export class QuizService {
     const item = await this.getQuestionDocument(quizId, questionId);
     validateQuestionAnswerDataType(item.answer!, answer);
     return {
-      correct: checkQuestionAnswer(item, item.answer!, answer)
+      correct: checkQuestionAnswer(item, item.answer!, answer),
     };
   }
 
@@ -77,12 +77,12 @@ export class QuizService {
     validateUserLoggedIn(session);
     const paketDb = new this.quizModel({
       userId: session.user!.id,
-      ...instanceToPlain(param)
+      ...instanceToPlain(param),
     });
 
     await paketDb.save();
     return {
-      id: paketDb.id
+      id: paketDb.id,
     };
   }
 
@@ -103,9 +103,9 @@ export class QuizService {
     validateUserId(session, doc.userId);
 
     const result: SaveQuizResult = {
-      newQuestionsId: {}
+      newQuestionsId: {},
     };
-    quiz.questions.forEach(question => {
+    quiz.questions.forEach((question) => {
       const id = question.id!;
       if (id.startsWith('new-')) {
         question.id = new Types.ObjectId().toHexString();

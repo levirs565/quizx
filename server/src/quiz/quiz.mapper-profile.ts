@@ -10,10 +10,10 @@ export class QuizMapperProfile extends AutomapperProfile {
   }
 
   mapProfile(): MappingProfile {
-    return mapper => {
+    return (mapper) => {
       mapper.createMap(Quiz, QuizSummary).forMember(
-        destination => destination.questionCount,
-        mapFrom(source => source.questions.length)
+        (destination) => destination.questionCount,
+        mapFrom((source) => source.questions.length)
       );
     };
   }

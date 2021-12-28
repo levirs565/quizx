@@ -7,7 +7,7 @@ import {
   validateUserLoggedIn,
   validateUserId,
   validateQuestionAnswerDataType,
-  checkQuestionAnswer
+  checkQuestionAnswer,
 } from '../common/service.helper';
 import shuffle from 'just-shuffle';
 import { instanceToPlain } from 'class-transformer';
@@ -43,8 +43,8 @@ export class GameService {
 
     if (preference.shuffleQuestions) quiz.questions = shuffle(quiz.questions);
 
-    const correctAnswers = quiz.questions.map(question => question.answer!);
-    quiz.questions.forEach(question => {
+    const correctAnswers = quiz.questions.map((question) => question.answer!);
+    quiz.questions.forEach((question) => {
       question.answer = undefined;
     });
 
@@ -55,7 +55,7 @@ export class GameService {
       questions: instanceToPlain(quiz).questions,
       isPlaying: true,
       correctAnswers,
-      ...preference
+      ...preference,
     };
     const game = new this.gameModel(gameObject);
 
@@ -89,7 +89,7 @@ export class GameService {
     validateUserId(session, game.userId);
     this.validateGamePlaying(game);
 
-    const questionDocumentIndex = game.questions.findIndex(item => item.id == questionId);
+    const questionDocumentIndex = game.questions.findIndex((item) => item.id == questionId);
 
     if (questionDocumentIndex == -1) {
       throw new NotFoundException('Question not found in this game');
@@ -105,7 +105,7 @@ export class GameService {
 
     if (game.isInteractive) {
       return {
-        correct: checkQuestionAnswer(questionDocument, correctAnswer, questionAnswer)
+        correct: checkQuestionAnswer(questionDocument, correctAnswer, questionAnswer),
       };
     }
 
@@ -123,7 +123,7 @@ export class GameService {
       unanswered: 0,
       correct: 0,
       wrong: 0,
-      questionsState: []
+      questionsState: [],
     };
 
     questions.forEach((question, index) => {

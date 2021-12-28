@@ -6,7 +6,7 @@ import { ActionSuccessResponse } from '../types/base';
 export class ActionInterceptor implements NestInterceptor {
   intercept(context: ExecutionContext, next: CallHandler): Observable<any> {
     const response: ActionSuccessResponse = {
-      success: true
+      success: true,
     };
     return next.handle().pipe(map(() => response));
   }

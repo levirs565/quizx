@@ -8,16 +8,16 @@ export const QuizSchema: BaseModelSchema<Quiz> = new Schema(
   {
     userId: {
       type: String,
-      required: true
+      required: true,
     },
     title: {
       type: String,
-      required: true
+      required: true,
     },
-    questions: [questionSchema.root]
+    questions: [questionSchema.root],
   },
   {
-    collection: 'quiz'
+    collection: 'quiz',
   }
 );
 export const QuizModelName = 'Quiz';

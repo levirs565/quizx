@@ -8,18 +8,18 @@ interface QuestionSchemaContainer {
   };
 }
 
-export function createQuestionSchema(answerRequired: Boolean): QuestionSchemaContainer {
+export function createQuestionSchema(answerRequired: boolean): QuestionSchemaContainer {
   return {
     root: configureSchemaIdSetter(
       new Schema(
         {
           question: {
             type: String,
-            required: true
-          }
+            required: true,
+          },
         },
         {
-          discriminatorKey: 'type'
+          discriminatorKey: 'type',
         }
       )
     ),
@@ -27,32 +27,32 @@ export function createQuestionSchema(answerRequired: Boolean): QuestionSchemaCon
       'multiple-choice': new Schema({
         choices: {
           type: Array,
-          required: true
+          required: true,
         },
         answer: {
           type: Number,
-          required: answerRequired
-        }
+          required: answerRequired,
+        },
       }),
       'short-text': new Schema({
         answer: {
           type: String,
-          required: answerRequired
-        }
+          required: answerRequired,
+        },
       }),
       number: new Schema({
         answer: {
           type: Number,
-          required: answerRequired
-        }
+          required: answerRequired,
+        },
       }),
       math: new Schema({
         answer: {
           type: String,
-          required: answerRequired
-        }
-      })
-    }
+          required: answerRequired,
+        },
+      }),
+    },
   };
 }
 

@@ -16,7 +16,7 @@ const loginAs = (user: User | undefined, session: Session) => {
     ? {
         name: user.name,
         id: user.id,
-        isAdmin: user.isAdmin
+        isAdmin: user.isAdmin,
       }
     : undefined;
 };
@@ -35,7 +35,7 @@ export class UserService {
     user = new this.userModel({
       id,
       name,
-      password: hashedPassword
+      password: hashedPassword,
     });
 
     await user.save();
@@ -65,7 +65,7 @@ export class UserService {
 
   getState(session: Session): UserState {
     return {
-      user: session.user
+      user: session.user,
     };
   }
 }

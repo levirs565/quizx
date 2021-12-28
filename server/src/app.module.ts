@@ -4,7 +4,7 @@ import {
   Module,
   NestModule,
   NotFoundException,
-  OnModuleInit
+  OnModuleInit,
 } from '@nestjs/common';
 import { HttpAdapterHost, RouterModule } from '@nestjs/core';
 import { ServeStaticModule } from '@nestjs/serve-static';
@@ -27,20 +27,20 @@ import express from 'express';
   imports: [
     ServeStaticModule.forRoot({
       rootPath: path.join(__dirname, '../../client/dist'),
-      exclude: ['/api/*', '/media/*']
+      exclude: ['/api/*', '/media/*'],
     }),
     AppConfigModule,
     MongooseModule.forRootAsync({
       imports: [AppConfigModule],
       useFactory: async (appConfig: AppConfigService) => ({
         uri: appConfig.dbUri,
-        retryAttempts: Infinity
+        retryAttempts: Infinity,
       }),
-      inject: [AppConfigService]
+      inject: [AppConfigService],
     }),
     AutomapperModule.forRoot({
       options: [{ name: 'mapper', pluginInitializer: classes }],
-      singular: true
+      singular: true,
     }),
     RouterModule.register([
       {
@@ -48,28 +48,28 @@ import express from 'express';
         children: [
           {
             path: 'user',
-            module: UserModule
+            module: UserModule,
           },
           {
             path: 'quiz',
-            module: QuizModule
+            module: QuizModule,
           },
           {
             path: 'game',
-            module: GameModule
-          }
-        ]
+            module: GameModule,
+          },
+        ],
       },
       {
         path: 'media',
-        module: MediaModule
-      }
+        module: MediaModule,
+      },
     ]),
     UserModule,
     QuizModule,
     GameModule,
-    MediaModule
-  ]
+    MediaModule,
+  ],
 })
 export class AppModule implements NestModule, OnModuleInit {
   constructor(
@@ -90,11 +90,11 @@ export class AppModule implements NestModule, OnModuleInit {
       .apply(
         session({
           store: new MongoStore({
-            client: this.connection.getClient()
+            client: this.connection.getClient(),
           }),
           secret: this.appConfig.sessionSecret,
           resave: true,
-          saveUninitialized: false
+          saveUninitialized: false,
         })
       )
       .forRoutes('*');

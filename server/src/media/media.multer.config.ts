@@ -21,7 +21,7 @@ export class MediaMulterConfig implements MulterOptionsFactory {
       },
       filename(req, file, cb) {
         cb(null, mediaService.getUploadFilename(file.originalname));
-      }
+      },
     });
     return {
       storage,
@@ -31,10 +31,10 @@ export class MediaMulterConfig implements MulterOptionsFactory {
           .then(() => {
             cb(null, mediaService.canUploadByMime(file.mimetype));
           })
-          .catch(reason => {
+          .catch((reason) => {
             cb(reason, false);
           });
-      }
+      },
     };
   }
 }

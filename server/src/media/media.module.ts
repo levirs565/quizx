@@ -10,12 +10,12 @@ import { QuizModule } from 'quiz/quiz.module';
   imports: [
     MulterModule.registerAsync({
       useClass: MediaMulterConfig,
-      imports: [MediaModule, QuizModule]
+      imports: [MediaModule, QuizModule],
     }),
-    AppConfigModule
+    AppConfigModule,
   ],
   controllers: [MediaController],
   providers: [MediaService],
-  exports: [MediaService]
+  exports: [MediaService],
 })
 export class MediaModule {}

@@ -9,6 +9,6 @@ import { QuizService } from './quiz.service';
   imports: [MongooseModule.forFeature([{ name: QuizModelName, schema: QuizSchema }])],
   controllers: [QuizController],
   providers: [QuizService, QuizMapperProfile],
-  exports: [QuizService]
+  exports: [QuizService],
 })
 export class QuizModule {}

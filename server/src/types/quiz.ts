@@ -7,7 +7,7 @@ import {
   IsNumber,
   IsOptional,
   IsString,
-  ValidateNested
+  ValidateNested,
 } from 'class-validator';
 import { ValidationGroups } from 'common/validation-groups.decorator';
 
@@ -18,7 +18,7 @@ export type QuestionAnswer = string | number;
 export abstract class Question {
   @IsString()
   @Equals(undefined, {
-    groups: [QuestionValidationGroupWithoutId]
+    groups: [QuestionValidationGroupWithoutId],
   })
   id?: string;
   @IsString({ always: true })
@@ -56,21 +56,21 @@ export const questionDiscriminator: DiscriminatorDescriptor = {
   subTypes: [
     {
       value: MultipleChoiceQuestion,
-      name: 'multiple-choice'
+      name: 'multiple-choice',
     },
     {
       value: ShortTextQuestion,
-      name: 'short-text'
+      name: 'short-text',
     },
     {
       value: NumberQuestion,
-      name: 'number'
+      name: 'number',
     },
     {
       value: MathQuestion,
-      name: 'math'
-    }
-  ]
+      name: 'math',
+    },
+  ],
 };
 abstract class BaseQuiz {
   @AutoMap()
@@ -92,7 +92,7 @@ export class QuizSummary extends BaseQuiz {
 export class Quiz extends BaseQuiz {
   @ValidateNested()
   @Type(() => Question, {
-    discriminator: questionDiscriminator
+    discriminator: questionDiscriminator,
   })
   questions!: Array<Question>;
 }
@@ -117,7 +117,7 @@ export class CreateQuizParameters {
   title!: string;
   @ValidateNested({ always: true })
   @Type(() => Question, {
-    discriminator: questionDiscriminator
+    discriminator: questionDiscriminator,
   })
   questions?: Array<Question>;
 }

@@ -5,10 +5,10 @@ import { AppConfigService } from './app.config.service';
 @Module({
   imports: [
     ConfigModule.forRoot({
-      cache: true
-    })
+      cache: true,
+    }),
   ],
   providers: [AppConfigService],
-  exports: [AppConfigService]
+  exports: [AppConfigService],
 })
 export class AppConfigModule {}

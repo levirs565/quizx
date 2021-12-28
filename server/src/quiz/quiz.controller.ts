@@ -2,7 +2,7 @@ import {
   AnswerQuestionRequestBody,
   CreateQuizParameters,
   Quiz,
-  QuestionValidationGroupWithoutId
+  QuestionValidationGroupWithoutId,
 } from '../types/quiz';
 import { QuizService } from './quiz.service';
 import SessionType from '../types/session';
@@ -16,7 +16,7 @@ import {
   Post,
   Put,
   Session,
-  UseInterceptors
+  UseInterceptors,
 } from '@nestjs/common';
 
 @Controller()
@@ -26,7 +26,7 @@ export class QuizController {
   @Get('/')
   async getList() {
     return {
-      list: await this.quizService.getQuizList()
+      list: await this.quizService.getQuizList(),
     };
   }
 

@@ -18,7 +18,7 @@ export class PlayGameRequestBody extends GamePreference {
 export enum QuestionState {
   Correct,
   Incorrect,
-  Unanswered
+  Unanswered,
 }
 
 export interface GameResult {
@@ -45,7 +45,7 @@ export class GameSummary extends GamePreference {
 
 export class Game extends GameSummary {
   @Type(() => Question, {
-    discriminator: questionDiscriminator
+    discriminator: questionDiscriminator,
   })
   questions!: Array<Question>;
   correctAnswers?: Array<QuestionAnswer>;

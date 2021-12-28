@@ -9,6 +9,6 @@ import { GameMapperProfile } from './game.mapper-profile';
 @Module({
   imports: [QuizModule, MongooseModule.forFeature([{ name: GameModelName, schema: GameSchema }])],
   controllers: [GameController],
-  providers: [GameService, GameMapperProfile]
+  providers: [GameService, GameMapperProfile],
 })
 export class GameModule {}

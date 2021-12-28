@@ -10,7 +10,7 @@ export class GameMapperProfile extends AutomapperProfile {
   }
 
   mapProfile(): MappingProfile {
-    return mapper => {
+    return (mapper) => {
       mapper.createMap(Game, GameSummary);
     };
   }
