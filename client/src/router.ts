@@ -6,6 +6,7 @@ import ContentRouter from "@/content/router";
 Vue.use(VueRouter);
 
 const router = new VueRouter({
+  mode: 'history',
   routes: [...CoreRouter, ...ContentRouter],
 });
 
