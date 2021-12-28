@@ -37,7 +37,7 @@ export const UserSchema: BaseModelSchema<User> = new Schema(
     registerDate: {
       type: Date,
       required: true,
-      default: Date.now
+      default: () => new Date(Date.now())
     }
   },
   {

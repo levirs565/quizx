@@ -7,7 +7,7 @@ export interface BaseModelMethods<T> {
 
 export type BaseModel<T> = Model<T, {}, BaseModelMethods<T>>;
 
-export type BaseModelSchema<T> = Schema<T, BaseModel<T>, undefined, BaseModelMethods<T>>;
+export type BaseModelSchema<T> = Schema<T, BaseModel<T>, BaseModelMethods<T>>;
 
 export function configureBaseModelSchema<T>(schema: BaseModelSchema<T>, constructor: new () => T) {
   schema.methods.toClass = function() {
@@ -16,7 +16,7 @@ export function configureBaseModelSchema<T>(schema: BaseModelSchema<T>, construc
   if (!schema.paths['id']) configureSchemaIdSetter(schema);
 }
 
-export function configureSchemaIdSetter(schema: Schema<any, any, any, any>) {
+export function configureSchemaIdSetter(schema: Schema<any, any, any>) {
   schema.virtual('id').set(setId);
   return schema;
 }

@@ -2,9 +2,9 @@ import { Schema } from 'mongoose';
 import { configureSchemaIdSetter } from './helper';
 
 interface QuestionSchemaContainer {
-  readonly root: Schema<any, any, any, any>;
+  readonly root: Schema<any, any, any>;
   readonly discriminators: {
-    [name: string]: Schema<any, any, any, any>;
+    [name: string]: Schema<any, any, any>;
   };
 }
 
@@ -57,7 +57,7 @@ export function createQuestionSchema(answerRequired: Boolean): QuestionSchemaCon
 }
 
 export function configureQuestionDiscriminators(
-  schema: Schema<any, any, any, any>,
+  schema: Schema<any, any, any>,
   path: string,
   container: QuestionSchemaContainer
 ) {
