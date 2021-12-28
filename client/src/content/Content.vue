@@ -14,13 +14,14 @@
               v-for="(link, index) in links"
               :key="index"
               :to="link.to"
-              v-slot="{ href, isExactActive }"
+              v-slot="{ href, isExactActive, navigate }"
             >
               <b-menu-item
                 :href="href"
                 :active="isExactActive"
                 :icon="link.icon"
                 :label="link.label"
+                @click="navigate"
               />
             </router-link>
           </b-menu-list>
