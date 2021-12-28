@@ -1,5 +1,6 @@
 {
   "name": "@quizx/server",
+  "version": "0.4.0",
   "scripts": {
     "prebuild": "rimraf dist",
     "build": "nest build",

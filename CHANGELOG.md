@@ -1,5 +1,41 @@
 # CHANGELOG
 
+## v0.4.0
+
+All:
+
+- Upgrade dependencies to latest version
+- Remove unused file
+- Remove unused dependencies
+- Add docker build
+- Add docker compose example
+
+Server:
+
+- Migrate server to NestJS
+- Use `express.serve` for serving media file
+- Always retry to connect mongodb database
+- Reconfigure eslint
+- Prevent changed finished game
+
+Client:
+
+- Use Vue Router History Mode
+- Migrate to TypeScript
+- Change When Text Editor Floating Menu should show
+- Upgrade storybook
+- Add loading and error indicator to page
+- Improve Quiz and Quiz editor Toolbar
+- Use proxy for dev tools
+- Fix MathLive cannot load sounds
+
+Text Editor Math Plugin:
+
+- Remove Math Raw Edit, Instead use MathLive LaTex mode.
+- Improve input rule
+- Add paste rule
+- Improving spacing
+
 ## v0.3.0
 
 Quiz:
