@@ -1,38 +1,40 @@
 <template>
   <resource-wrapper :state="state" class="has-fab" @reload="loadList">
-    <h1 class="title">My Quiz</h1>
+    <template v-slot:toolbar>
+      <v-toolbar-title>My Quiz</v-toolbar-title>
+    </template>
 
-    <ul>
-      <router-link
-        :to="`/quiz/${quiz.id}`"
-        v-for="quiz in quizList"
-        :key="quiz.id"
-        tag="li"
-        v-slot="{ navigate }"
-        class="block"
-      >
-        <quiz-summary-card :quiz="quiz" @click="navigate" />
-      </router-link>
-    </ul>
+    <v-row dense>
+      <v-col cols="12" v-for="quiz in quizList" :key="quiz.id">
+        <quiz-summary-card :quiz="quiz" :to="`/quiz/${quiz.id}`" />
+      </v-col>
+    </v-row>
 
+    <v-dialog max-width="600px" v-model="isCreateDialogShow">
+      <template v-slot:activator="{ on, attrs }">
+        <v-fab-transition>
+          <v-btn
+            aboslute
+            fab
+            top
+            right
+            color="primary"
+            v-bind="attrs"
+            v-on="on"
+          >
+            <v-icon>mdi-plus</v-icon>
+          </v-btn>
+        </v-fab-transition>
+      </template>
+
+      <dialog-create-quiz @close="isCreateDialogShow = false" @create="createQuiz" />
+    </v-dialog>
     <b-button
       type="is-primary"
       class="is-fab"
       icon-right="plus"
       @click="showCreateQuiz"
     />
-
-    <b-modal
-      v-model="isCreateDialogShow"
-      has-modal-card
-      trap-focus
-      :can-cancel="['escape', 'outside']"
-      custom-class="dialog"
-    >
-      <template #default="props">
-        <dialog-create-quiz @close="props.close" @create="createQuiz" />
-      </template>
-    </b-modal>
   </resource-wrapper>
 </template>
 

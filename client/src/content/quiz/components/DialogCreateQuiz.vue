@@ -1,27 +1,28 @@
 <template>
-  <div class="modal-card w-auto">
-    <header class="modal-card-head">
-      <p class="modal-card-title">Create Quiz</p>
-    </header>
-    <section class="modal-card-body">
-      <b-tabs type="is-toggle" v-model="activeTab">
-        <b-tab-item label="Blank" value="blank">
-          <b-field label="Title">
-            <b-input type="text" v-model="title" />
-          </b-field>
-        </b-tab-item>
-        <b-tab-item label="Import JSON" value="json">
-          <b-field label="JSON">
-            <b-input type="textarea" v-model="json" />
-          </b-field>
-        </b-tab-item>
-      </b-tabs>
-    </section>
-    <footer class="modal-card-foot">
-      <b-button @click="$emit('close')">Cancel</b-button>
-      <b-button type="is-primary" @click="submit">Create</b-button>
-    </footer>
-  </div>
+  <v-card>
+    <v-card-title class="text-h5">Create Quiz</v-card-title>
+    <v-card-text>
+      <v-tabs v-model="activeTab">
+        <v-tab>Title</v-tab>
+        <v-tab>Import JSON</v-tab>
+      </v-tabs>
+    </v-card-text>
+    <v-card-text>
+      <v-tabs-items v-model="activeTab">
+        <v-tab-item>
+          <v-text-field label="Title" v-model="title"></v-text-field>
+        </v-tab-item>
+        <v-tab-item>
+          <v-textarea label="JSON" v-model="json"></v-textarea>
+        </v-tab-item>
+      </v-tabs-items>
+    </v-card-text>
+    <v-card-actions>
+      <v-spacer></v-spacer>
+      <v-btn text @click="$emit('close')">Cancel</v-btn>
+      <v-btn color="primary" text @click="submit">Create</v-btn>
+    </v-card-actions>
+  </v-card>
 </template>
 <script>
 export default {
@@ -29,20 +30,21 @@ export default {
     return {
       title: "",
       json: "",
-      activeTab: "blank",
+      activeTab: 0,
     };
   },
   methods: {
     submit() {
       let quiz;
-      if (this.activeTab === "blank") {
+      if (this.activeTab === 0) {
         quiz = {
           title: this.title,
         };
-      } else if (this.activeTab === "json") {
+      } else if (this.activeTab === 1) {
         try {
           quiz = JSON.parse(this.json);
         } catch (e) {
+          // TODO: Migrate toast
           this.$buefy.toast.open({
             type: "is-danger",
             message: `Cannot parse JSON: ${e.message}`,
