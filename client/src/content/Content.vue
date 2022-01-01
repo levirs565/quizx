@@ -1,59 +1,97 @@
 <template>
-  <div class="page">
-    <app-bar></app-bar>
-    <b-sidebar mobile="hide" position="static" type="is-light" open fullheight>
-      <div class="p-2 has-text-centered">
-        <b-button type="is-primary my-4">Create Quiz</b-button>
-        <b-menu
-          class="has-text-left is-custom-mobile"
-          :activable="false"
-          :accordion="false"
+  <v-app id="quizx">
+    <v-navigation-drawer app>
+      <v-list dense>
+        <template v-if="user">
+          <v-list-item>
+            <v-list-item-avatar color="green" size="64">
+              <span class="white--text text-h4">{{
+                user.id | selectOneUpper
+              }}</span>
+            </v-list-item-avatar>
+          </v-list-item>
+
+          <v-list-group>
+            <template v-slot:activator>
+              <v-list-item-content>
+                <v-list-item-title class="text-subtitle-1">
+                  {{ user.name }}
+                </v-list-item-title>
+                <v-list-item-subtitle class="text-subtitle-2">
+                  {{ user.id }}
+                </v-list-item-subtitle>
+              </v-list-item-content>
+            </template>
+
+            <v-list-item link @click="logout">
+              <v-list-item-icon>
+                <v-icon>mdi-logout</v-icon>
+              </v-list-item-icon>
+              <v-list-item-title>Logout</v-list-item-title>
+            </v-list-item>
+          </v-list-group>
+        </template>
+
+        <v-list-item v-else link to="/auth/login">
+          <v-list-item-icon>
+            <v-icon>mdi-login</v-icon>
+          </v-list-item-icon>
+          <v-list-item-title>Login</v-list-item-title>
+        </v-list-item>
+      </v-list>
+
+      <v-divider></v-divider>
+
+      <v-list nav dense>
+        <v-list-item
+          v-for="{ to, icon, label } in links"
+          :key="to"
+          link
+          :to="to"
         >
-          <b-menu-list>
-            <router-link
-              v-for="(link, index) in links"
-              :key="index"
-              :to="link.to"
-              v-slot="{ href, isExactActive, navigate }"
-            >
-              <b-menu-item
-                :href="href"
-                :active="isExactActive"
-                :icon="link.icon"
-                :label="link.label"
-                @click="navigate"
-              />
-            </router-link>
-          </b-menu-list>
-        </b-menu>
-      </div>
-    </b-sidebar>
-    <router-view class="main-layout container p-4"></router-view>
-  </div>
+          <v-list-item-icon>
+            <v-icon>{{ icon }}</v-icon>
+          </v-list-item-icon>
+
+          <v-list-item-content>
+            <v-list-item-title>{{ label }}</v-list-item-title>
+          </v-list-item-content>
+        </v-list-item>
+      </v-list>
+    </v-navigation-drawer>
+
+    <router-view></router-view>
+  </v-app>
 </template>
 
 <script>
-import AppBar from "../components/CAppBar.vue";
-
 export default {
-  components: {
-    AppBar,
-  },
+  components: {},
   data() {
     return {
       links: [
         {
           to: "/",
-          icon: "home",
+          icon: "mdi-home",
           label: "Home",
         },
         {
           to: "/quiz",
-          icon: "file-document",
+          icon: "mdi-file-document",
           label: "Quiz",
         },
       ],
     };
+  },
+  methods: {
+    logout() {
+      this.$store.dispatch("logout");
+    },
+  },
+  computed: {
+    user() {
+      return this.$store.state.core.user;
+    },
   },
 };
 </script>
