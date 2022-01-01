@@ -1,19 +1,13 @@
 <template>
   <resource-wrapper :state="state" @reload="loadList">
-    <h1 class="title">Explore Quiz</h1>
-
-    <ul>
-      <router-link
-        :to="`/quiz/${quiz.id}`"
-        v-for="quiz in quizList"
-        :key="quiz.id"
-        tag="li"
-        v-slot="{ navigate }"
-        class="mb-2"
-      >
-        <quiz-summary-card :quiz="quiz" @click="navigate" />
-      </router-link>
-    </ul>
+    <template v-slot:toolbar>
+      <v-toolbar-title>Explore Quiz</v-toolbar-title>
+    </template>
+    <v-row dense>
+      <v-col cols="12" v-for="quiz in quizList" :key="quiz.id">
+        <quiz-summary-card :to="`quiz/${quiz.id}`" :quiz="quiz" />
+      </v-col>
+    </v-row>
   </resource-wrapper>
 </template>
 

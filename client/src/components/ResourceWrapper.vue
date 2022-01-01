@@ -1,12 +1,36 @@
 <template>
-  <div v-if="state">
-    <b-loading :active="state.isLoading" :is-full-page="false" />
-    <slot v-if="!state.isLoading && !state.isError" />
-    <div class="section is-medium has-text-centered" v-if="state.isError">
-      <h1 class="title has-text-danger-dark">Oops!</h1>
-      <h2 class="subtitle">An error occured</h2>
-      <b-button type="is-primary" @click="$emit('reload')">Reload</b-button>
-    </div>
+  <div>
+    <v-app-bar app color="white">
+      <slot name="toolbar" />
+      <v-progress-linear
+        :active="state && state.isLoading"
+        :indeterminate="state && state.isLoading"
+        absolute
+        bottom
+      ></v-progress-linear>
+    </v-app-bar>
+    <v-main>
+      <v-container v-if="state && !state.isLoading && !state.isError">
+        <slot />
+      </v-container>
+      <v-container
+        class="text-center"
+        fill-height
+        v-if="state && state.isError"
+      >
+        <v-row align-content="center" justify="center">
+          <v-col cols="12">
+            <h1 class="red--text text-h1">Oops!</h1>
+          </v-col>
+          <v-col cols="12">
+            <h2 class="subtitle">An error occured</h2>
+          </v-col>
+          <v-col>
+            <v-btn color="primary" @click="$emit('reload')">Reload</v-btn>
+          </v-col>
+        </v-row>
+      </v-container>
+    </v-main>
   </div>
 </template>
 <script lang="ts">

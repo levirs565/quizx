@@ -1,13 +1,13 @@
 <template>
-  <div class="card is-clickable" @click="$emit('click', $event)">
-    <div class="card-content">
-      <p class="title is-6 mb-1">{{ quiz.title }}</p>
+  <v-card :to="to">
+    <v-card-title>{{ quiz.title }}</v-card-title>
+    <v-card-text>
       <quiz-information
         :userId="quiz.userId"
         :questionCount="quiz.questionCount"
-      ></quiz-information>
-    </div>
-  </div>
+      />
+    </v-card-text>
+  </v-card>
 </template>
 
 <script>
@@ -16,6 +16,7 @@ export default {
   components: { QuizInformation },
   props: {
     quiz: Object,
+    to: String
   },
 };
 </script>
