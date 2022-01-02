@@ -1,9 +1,9 @@
 <template>
   <v-card>
     <v-card-title v-if="!editor">{{ quiz.title }}</v-card-title>
-    <b-field v-else>
-      <b-input v-model="quiz.title" />
-    </b-field>
+    <v-card-title v-else>
+      <v-text-field filled v-model="quiz.title" hide-details="auto" />
+    </v-card-title>
     <v-card-text>
       <quiz-information
         :userId="quiz.userId"

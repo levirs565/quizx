@@ -48,9 +48,6 @@ export default {
   },
   mounted() {
     let editorClass = "text-body-1 text--primary";
-    if (this.editable) {
-      editorClass += " textarea";
-    }
     this.editor = new Editor({
       editable: this.editable,
       content: this.value,
@@ -78,7 +75,7 @@ export default {
   watch: {
     value(value) {
       if (this.editor.getHTML() === value) return;
-      this.editor.commands.setContent(value, false)
+      this.editor.commands.setContent(value, false);
     },
   },
   before() {

@@ -1,85 +1,59 @@
 <template>
-  <div class="card">
-    <header class="card-header">
-      <p class="card-header-title">Question {{ index + 1 }}</p>
-    </header>
-    <div class="card-content">
-      <text-editor
-        hasMenu
-        class="field"
+  <base-question
+    :question="question"
+    :index="index"
+    :answer.sync="question.answer"
+    answerEditable
+  >
+    <template v-slot:question>
+      <text-editor-card
         v-model="question.question"
+        hasMenu
         :selectImageFunction="selectImageFunction"
       />
-
-      <b-field grouped position="is-right">
-        <b-select :value="question.type" @input="changeType">
-          <option v-for="(title, id) in questionTypes" :key="id" :value="id">
-            {{ title }}
-          </option>
-        </b-select>
-      </b-field>
-
-      <template v-if="question.type === 'multiple-choice'">
-        <b-field
-          v-for="(entry, choiceIndex) in question.choices"
-          :key="choiceIndex"
-        >
-          <b-radio
-            v-model="question.answer"
-            :native-value="choiceIndex"
-            type="is-success"
+      <v-row justify="end" no-gutters>
+        <v-col cols="3">
+          <v-select
+            :value="question.type"
+            :items="questionTypes"
+            item-value="value"
+            item-text="name"
+            @input="changeType"
+            filled
+            class="my-2"
           />
-          <span class="mr-2 is-align-self-baseline"
-            >{{ getChoiceIndex(choiceIndex) }}.</span
-          >
-          <text-editor
-            hasMenu
-            class="choice-editor is-align-self-baseline"
-            :value="entry"
-            @input="onChoiceInput(choiceIndex, $event)"
-            :selectImageFunction="selectImageFunction"
-          ></text-editor>
-          <b-button
-            class="ml-2"
-            icon-right="close"
-            @click="removeChoice(choiceIndex)"
-          />
-        </b-field>
-        <div class="has-text-right">
-          <b-button icon-left="plus" @click="addChoice">Add Choice</b-button>
-        </div>
-      </template>
-      <b-field v-else-if="question.type == 'short-text'">
-        <b-input v-model="question.answer" type="text" />
-      </b-field>
-      <b-field v-else-if="question.type == 'number'">
-        <b-numberinput :controls="false" v-model="question.answer" />
-      </b-field>
-      <math-field
-        bordered
-        v-else-if="question.type == 'math'"
-        v-model="question.answer"
-        virtual-keyboard-mode="manual"
+        </v-col>
+      </v-row>
+    </template>
+    <template v-slot:afterChoice="{ choice, index, indexChar }">
+      <span class="mr-2 text--primary">{{ indexChar }}.</span>
+      <text-editor-card
+        :value="choice"
+        @input="onChoiceInput(index, $event)"
+        hasMenu
+        :selectImageFunction="selectImageFunction"
+        class="flex-grow-1 mb-2"
       />
-    </div>
+      <v-btn icon class="ml-2" @click="removeChoice(index)">
+        <v-icon>mdi-close</v-icon>
+      </v-btn>
+    </template>
 
-    <footer class="card-footer level">
-      <div class="card-footer-item level-left buttons"></div>
-      <div class="card-footer-item level-right buttons">
-        <b-button
-          v-show="question.id != 'new'"
-          icon-right="delete"
-          @click="$emit('delete', index)"
-        />
+    <template v-slot:content>
+      <div
+        v-if="question.type == 'multiple-choice'"
+        @click="addChoice"
+        class="d-flex justify-end"
+      >
+        <v-btn>Add Question</v-btn>
       </div>
-    </footer>
-  </div>
+    </template>
+  </base-question>
 </template>
 
 <script>
-import TextEditor from "@/components/TextEditor.vue";
-import MathField from "@/components/MathField.vue";
-import { getChoiceIndex } from "@/content/utils";
+import TextEditorCard from "@/components/TextEditorCard.vue";
+import BaseQuestion from "./BaseQuestion.vue";
 
 export default {
   props: {
@@ -88,18 +62,24 @@ export default {
     selectImageFunction: Function,
   },
   components: {
-    TextEditor,
-    MathField,
+    TextEditorCard,
+    BaseQuestion,
   },
   data() {
     return {
       answerResult: null,
-      questionTypes: {
-        "multiple-choice": "Multiple Choice",
-        "short-text": "Short Text",
-        number: "Number",
-        math: "Math",
-      },
+      questionTypes: [
+        {
+          value: "multiple-choice",
+          name: "Multiple Choice",
+        },
+        {
+          value: "short-text",
+          name: "Short Text",
+        },
+        { value: "number", name: "Number" },
+        { value: "math", name: "Math" },
+      ],
     };
   },
   methods: {
@@ -142,7 +122,6 @@ export default {
       }
       this.$emit("update:question", newQuestion);
     },
-    getChoiceIndex,
   },
 };
 </script>

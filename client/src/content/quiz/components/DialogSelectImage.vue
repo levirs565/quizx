@@ -1,38 +1,33 @@
 <template>
-  <div class="modal-card w-auto">
-    <header class="modal-card-head">
-      <p class="modal-card-title">Add Image</p>
-    </header>
-    <section class="modal-card-body">
-      <b-tabs type="is-toggle" v-model="activeTab">
-        <b-tab-item label="Upload" value="upload">
-          <b-field
-            class="file is-centered is-primary"
-            :class="{ 'has-name': !!file }"
-          >
-            <b-upload v-model="file" class="file-label" accept="image/*">
-              <span class="file-cta">
-                <b-icon class="file-icon" icon="upload"></b-icon>
-                <span class="file-label">Click to upload</span>
-              </span>
-              <span class="file-name" v-if="file">
-                {{ file.name }}
-              </span>
-            </b-upload>
-          </b-field>
-        </b-tab-item>
-        <b-tab-item label="URL" value="url">
-          <b-field label="URL">
-            <b-input type="text" v-model="url" />
-          </b-field>
-        </b-tab-item>
-      </b-tabs>
-    </section>
-    <footer class="modal-card-foot">
-      <b-button @click="$parent.cancel('x')">Cancel</b-button>
-      <b-button type="is-primary" @click="submit">Add</b-button>
-    </footer>
-  </div>
+  <v-card>
+    <v-card-title>Add Image</v-card-title>
+    <v-card-text>
+      <v-tabs v-model="activeTab">
+        <v-tab>Upload</v-tab>
+        <v-tab>Url</v-tab>
+      </v-tabs>
+    </v-card-text>
+    <v-card-text>
+      <v-tabs-items v-model="activeTab">
+        <v-tab-item>
+          <v-file-input
+            accept="image/*"
+            prepend-icon="mdi-image"
+            filled
+            v-model="file"
+          />
+        </v-tab-item>
+        <v-tab-item>
+          <v-text-field filled v-model="url" label="URL" />
+        </v-tab-item>
+      </v-tabs-items>
+    </v-card-text>
+    <v-card-actions>
+      <v-spacer />
+      <v-btn text @click="$emit('cancel')">Cancel</v-btn>
+      <v-btn text color="primary" @click="submit">Add</v-btn>
+    </v-card-actions>
+  </v-card>
 </template>
 <script>
 import { Media } from "@/api";
@@ -53,7 +48,7 @@ export default {
       const result = {
         src: null,
       };
-      if (this.activeTab === "upload") {
+      if (this.activeTab === 0) {
         if (!this.file) return;
         try {
           const uploadResult = await Media.upload(this.quizId, this.file);
@@ -71,7 +66,9 @@ export default {
       }
 
       this.$emit("imageSelected", result);
-      this.$parent.close();
+
+      this.file = null;
+      this.url = "";
     },
   },
 };

@@ -1,21 +1,39 @@
 <template>
   <resource-wrapper :state="state" class="has-fab" @reload="refresh">
+    <template v-slot:toolbar>
+      <v-toolbar-title>Quiz Editor</v-toolbar-title>
+      <v-spacer />
+      <v-btn icon @click="saveQuiz">
+        <v-icon>mdi-content-save</v-icon>
+      </v-btn>
+      <v-dialog max-width="300px" v-model="isDeleteDialogShow">
+        <template v-slot:activator="{ on, attrs }">
+          <v-btn icon v-on="on" v-bind="attrs">
+            <v-icon>mdi-delete</v-icon>
+          </v-btn>
+        </template>
+
+        <v-card>
+          <v-card-title>Delete Quiz?</v-card-title>
+          <v-card-text>This action is permanent.</v-card-text>
+          <v-card-actions>
+            <v-spacer></v-spacer>
+            <v-btn text @click="isDeleteDialogShow = false">Cancel</v-btn>
+            <v-btn text color="error" @click="deleteQuiz">Delete</v-btn>
+          </v-card-actions>
+        </v-card>
+      </v-dialog>
+    </template>
+
     <quiz-summary :quiz="quiz" editor> </quiz-summary>
 
-    <top-toolbar>
-      <b-button type="is-danger" @click="showDeleteQuizDialog"
-        >Delete Quiz</b-button
-      >
-      <b-button type="is-primary" @click="saveQuiz">Save</b-button>
-    </top-toolbar>
+    <p class="text-h6 my-4">Questions</p>
 
-    <p class="subtitle">Questions</p>
-
-    <ul>
-      <li
+    <v-row>
+      <v-col
+        cols="12"
         v-for="(question, index) in quiz.questions"
         :key="question.id"
-        class="block"
       >
         <question-editor
           :index="index"
@@ -24,61 +42,47 @@
           @delete="deleteQuestion"
           :selectImageFunction="selectImage"
         />
-      </li>
-    </ul>
+      </v-col>
 
-    <b-button
-      size="is-medium"
-      type="is-primary"
-      class="is-fab"
-      icon-right="plus"
-      @click="newQuestion"
-    />
+      <v-col>
+        <v-btn color="primary" @click="newQuestion"> Add Question </v-btn>
+      </v-col>
+    </v-row>
 
-    <b-modal
-      v-model="isSelectImageDialogShow"
-      has-modal-card
-      trap-focus
-      :can-cancel="['escape', 'outside', 'x']"
-      custom-class="dialog"
-      :on-cancel="callImageSelectCancelled"
-    >
-      <template #default="props">
-        <dialog-select-image
-          :quizId="quiz.id"
-          @close="props.close"
-          @imageSelected="callImageSelected"
-        />
-      </template>
-    </b-modal>
+    <v-dialog v-model="isSelectImageDialogShow" max-width="500px">
+      <dialog-select-image
+        :quizId="quiz.id"
+        @cancel="callImageSelectCancelled"
+        @imageSelected="callImageSelected"
+      />
+    </v-dialog>
   </resource-wrapper>
 </template>
 
 <script>
 import { Quiz } from "@/api";
-import QuestionEditor from "../components/QuestionEditor.vue";
 import QuizSummary from "../components/QuizSummary.vue";
 import DialogSelectImage from "../components/DialogSelectImage.vue";
-import TopToolbar from "@/components/TopToolbar.vue"
 import ResourceWrapper, {
   updateResourceStateByPromise,
 } from "@/components/ResourceWrapper.vue";
+import QuestionEditor from "../components/QuestionEditor.vue";
 
 export default {
   props: {
     quiz_id: String,
   },
   components: {
-    QuestionEditor,
     QuizSummary,
     DialogSelectImage,
     ResourceWrapper,
-    TopToolbar
+    QuestionEditor,
   },
   data() {
     return {
       quiz: {},
       isSelectImageDialogShow: false,
+      isDeleteDialogShow: false,
       onImageSelected: null,
       onImageSelectCancelled: null,
       state: null,
@@ -95,15 +99,6 @@ export default {
         }
       );
     },
-    showDeleteQuizDialog() {
-      this.$buefy.dialog.confirm({
-        title: "Delete Quiz?",
-        message: "This action is permanent.",
-        type: "is-danger",
-        confirmText: "Delete",
-        onConfirm: () => this.deleteQuiz(),
-      });
-    },
     deleteQuiz() {
       Quiz.deleteQuiz(this.quiz_id).then(() => {
         this.$router.replace("/quiz");
@@ -111,11 +106,7 @@ export default {
     },
     newQuestion() {
       this.quiz.questions.push({
-        id:
-          "new-" +
-          Math.random()
-            .toString(36)
-            .substr(2),
+        id: "new-" + Math.random().toString(36).substr(2),
         type: "multiple-choice",
         question: "",
         choices: ["", "", "", ""],
@@ -162,9 +153,11 @@ export default {
       });
     },
     callImageSelected(result) {
+      this.isSelectImageDialogShow = false
       this.onImageSelected(result);
     },
     callImageSelectCancelled() {
+      this.isSelectImageDialogShow = false;
       this.onImageSelectCancelled();
     },
   },
