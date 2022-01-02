@@ -47,7 +47,7 @@ export default {
     };
   },
   mounted() {
-    let editorClass = "content";
+    let editorClass = "text-body-1 text--primary";
     if (this.editable) {
       editorClass += " textarea";
     }

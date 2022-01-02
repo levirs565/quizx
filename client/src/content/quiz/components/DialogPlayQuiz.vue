@@ -1,23 +1,24 @@
 <template>
-  <div class="modal-card w-auto">
-    <header class="modal-card-head">
-      <p class="modal-card-title">Play Game</p>
-    </header>
-    <section class="modal-card-body">
-      <b-field>
-        <b-switch v-model="preference.isInteractive">Interactive Game</b-switch>
-      </b-field>
-      <b-field>
-        <b-switch v-model="preference.shuffleQuestions"
-          >Shuffle Questions</b-switch
-        >
-      </b-field>
-    </section>
-    <footer class="modal-card-foot">
-      <b-button @click="$emit('close')">Cancel</b-button>
-      <b-button type="is-primary" @click="submit">Play Now</b-button>
-    </footer>
-  </div>
+  <v-card>
+    <v-card-title>Play Game</v-card-title>
+    <v-card-text class="modal-card-body">
+      <v-switch
+        v-model="preference.isInteractive"
+        label="Interactive Game"
+        hide-details
+      />
+      <v-switch
+        v-model="preference.shuffleQuestions"
+        label="Shuffle Questions"
+        hide-details
+      />
+    </v-card-text>
+    <v-card-actions>
+      <v-spacer />
+      <v-btn text @click="$emit('close')">Cancel</v-btn>
+      <v-btn color="primary" @click="submit">Play Now</v-btn>
+    </v-card-actions>
+  </v-card>
 </template>
 <script>
 export default {

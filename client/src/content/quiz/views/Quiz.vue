@@ -1,66 +1,63 @@
 <template>
   <resource-wrapper :state="state" @reload="updateQuiz">
-    <quiz-summary :quiz="quiz"> </quiz-summary>
+    <template v-slot:toolbar>
+      <v-toolbar-title>Quiz</v-toolbar-title>
+      <v-spacer />
 
-    <top-toolbar>
-      <b-button
-        v-if="$store.state.core.user"
-        type="is-primary"
-        @click="showPlayDialog"
-        >Play</b-button
-      >
-      <router-link
+      <v-btn
         v-if="
           $store.state.core.user && $store.state.core.user.id == quiz.userId
         "
+        icon
         :to="`/quiz/${quiz_id}/edit`"
-        v-slot="{ navigate, href }"
       >
-        <b-button :href="href" @click="navigate">Edit</b-button>
-      </router-link>
-    </top-toolbar>
+        <v-icon>mdi-pencil</v-icon>
+      </v-btn>
+    </template>
 
-    <p class="subtitle">Questions</p>
+    <quiz-summary :quiz="quiz">
+      <v-card-actions>
+        <v-dialog
+          v-model="isPlayDialogShow"
+          v-if="$store.state.core.user"
+          max-width="400px"
+        >
+          <template v-slot:activator="{ on, attrs }">
+            <v-btn text color="primary" v-on="on" v-bind="attrs"> Play </v-btn>
+          </template>
 
-    <ul>
-      <li
+          <dialog-play-quiz
+            @close="isPlayDialogShow = false"
+            @play="playGame"
+          ></dialog-play-quiz>
+        </v-dialog>
+      </v-card-actions>
+    </quiz-summary>
+
+    <p class="text-h6 my-4">Questions</p>
+
+    <v-row dense>
+      <v-col
+        cols="12"
         v-for="(question, index) in quiz.questions"
         :key="question.id"
-        class="block"
       >
-        <question :index="index" :question="question" v-slot="{ component }">
-          <footer
-            class="card-footer level"
-            v-if="!isAnswerEmpty(component.answer)"
-          >
-            <div class="card-footer-item level-left buttons">
-              <b-button @click="checkAnswer(component)" type="is-primary"
-                >Check Answer</b-button
-              >
-              <answer-result
-                :result="component.extraData.result"
-              ></answer-result>
-            </div>
-          </footer>
+        <question
+          :index="index"
+          :question="question"
+          v-slot="{ component }"
+          :answerResult="answerResults[question.id]"
+        >
+          <v-card-actions v-if="!isAnswerEmpty(component.answer)">
+            <v-btn
+              @click="checkAnswer(question.id, component.answer)"
+              color="primary"
+              >Check Answer
+            </v-btn>
+          </v-card-actions>
         </question>
-      </li>
-    </ul>
-
-    <b-modal
-      v-model="isPlayDialogShow"
-      :destroy-on-hide="false"
-      has-modal-card
-      trap-focus
-      :can-cancel="['escape', 'outside']"
-      custom-class="dialog"
-    >
-      <template #default="props">
-        <dialog-play-quiz
-          @close="props.close"
-          @play="playGame"
-        ></dialog-play-quiz>
-      </template>
-    </b-modal>
+      </v-col>
+    </v-row>
   </resource-wrapper>
 </template>
 
@@ -69,21 +66,17 @@ import Question from "../components/Question";
 import { Quiz, Game } from "@/api";
 import QuizSummary from "../components/QuizSummary.vue";
 import DialogPlayQuiz from "../components/DialogPlayQuiz.vue";
-import AnswerResult from "../components/AnswerResult.vue";
 import { isAnswerEmpty as isAnswerEmptyImpl } from "@/content/utils";
 import ResourceWrapper, {
   updateResourceStateByPromise,
 } from "@/components/ResourceWrapper.vue";
-import TopToolbar from "@/components/TopToolbar.vue";
 
 export default {
   components: {
     Question,
     QuizSummary,
-    AnswerResult,
     DialogPlayQuiz,
     ResourceWrapper,
-    TopToolbar,
   },
   props: {
     quiz_id: String,
@@ -93,6 +86,7 @@ export default {
       quiz: {},
       isPlayDialogShow: false,
       state: null,
+      answerResults: {},
     };
   },
   mounted() {
@@ -114,11 +108,9 @@ export default {
         }
       );
     },
-    checkAnswer(questionComponent) {
-      const id = questionComponent.question.id;
-      const answer = questionComponent.answer;
-      Quiz.checkQuestionAnswer(this.quiz_id, id, answer).then((val) => {
-        this.$set(questionComponent.extraData, "result", val);
+    checkAnswer(questionId, answer) {
+      Quiz.checkQuestionAnswer(this.quiz_id, questionId, answer).then((val) => {
+        this.$set(this.answerResults, questionId, val);
       });
     },
     showPlayDialog() {

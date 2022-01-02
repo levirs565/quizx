@@ -1,8 +1,8 @@
 <template>
   <span
     v-if="result"
-    class="ml-4 text-body2"
-    :class="result.correct ? 'text-green-600' : 'text-red-600'"
+    class="text-body-1"
+    :class="result.correct ? 'success--text' : 'error--text'"
   >
     Jawaban anda
     {{ result.correct ? "benar" : "salah coba lagi." }}

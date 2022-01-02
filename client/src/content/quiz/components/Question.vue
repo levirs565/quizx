@@ -1,55 +1,63 @@
 <template>
-  <div class="card">
-    <header class="card-header">
-      <p class="card-header-title">Question {{ index + 1 }}</p>
-    </header>
-    <div class="card-content">
-      <text-editor class="field" :value="question.question" :editable="false" />
+  <v-card>
+    <v-card-title class="text-overline">Question {{ index + 1 }}</v-card-title>
+    <v-card-text>
+      <text-editor :value="question.question" :editable="false" />
 
-      <template v-if="question.type === 'multiple-choice'">
-        <b-field
+      <v-radio-group
+        v-if="question.type === 'multiple-choice'"
+        v-model="answer"
+        :readonly="!editable"
+        v-bind="inputProps"
+      >
+        <v-radio
           v-for="(entry, choiceIndex) in question.choices"
           :key="choiceIndex"
+          :value="choiceIndex"
+          class="question-radio"
         >
-          <b-radio
-            v-model="answer"
-            :native-value="choiceIndex"
-            type="is-success"
-            class="question-radio"
-            @click.native="handleRadioClick"
-          >
-            <span class="mr-2">{{ getChoiceIndex(choiceIndex) }}.</span>
+          <template v-slot:label>
+            <span class="mr-2 text--primary"
+              >{{ getChoiceIndex(choiceIndex) }}.</span
+            >
             <text-editor :value="entry" :editable="false" />
-          </b-radio>
-        </b-field>
-      </template>
-      <b-field v-else-if="question.type == 'short-text'">
-        <b-input v-model="answer" type="text" :readonly="!editable" />
-      </b-field>
-      <b-field v-else-if="question.type == 'number'">
-        <b-numberinput
-          :controls="false"
-          v-model="answer"
-          :editable="editable"
-        />
-      </b-field>
-      <math-field
+          </template>
+        </v-radio>
+      </v-radio-group>
+      <v-text-field
+        v-else-if="question.type == 'short-text'"
+        v-model="answer"
+        type="text"
+        filled
+        :readonly="!editable"
+        v-bind="inputProps"
+      />
+      <v-text-field
+        v-else-if="question.type == 'number'"
+        type="number"
+        v-model.number="answer"
+        filled
+        :readonly="!editable"
+        v-bind="inputProps"
+      />
+      <math-field-input
         v-else-if="question.type == 'math'"
-        bordered
+        filled
         v-model="answer"
         virtual-keyboard-mode="manual"
-        :read-only="!editable"
+        :readonly="!editable"
+        v-bind="inputProps"
       />
-    </div>
+    </v-card-text>
 
     <slot v-bind:component="this"></slot>
-  </div>
+  </v-card>
 </template>
 
 <script>
 import TextEditor from "@/components/TextEditor.vue";
-import MathField from "@/components/MathField.vue";
 import { getChoiceIndex } from "@/content/utils";
+import MathFieldInput from "@/components/MathFieldInput.vue";
 
 export default {
   props: {
@@ -60,10 +68,11 @@ export default {
       type: Boolean,
       default: true,
     },
+    answerResult: Object,
   },
   components: {
     TextEditor,
-    MathField,
+    MathFieldInput,
   },
   data() {
     return {
@@ -83,6 +92,22 @@ export default {
       this.$emit("answerChanged", this);
     },
   },
+  computed: {
+    inputProps() {
+      if (!this.answerResult) return {};
+
+      const baseText = "Your answer is ";
+      if (this.answerResult.correct) {
+        return {
+          "success-messages": `${baseText} correct`,
+        };
+      }
+
+      return {
+        "error-messages": `${baseText} wrong`,
+      };
+    },
+  },
 };
 </script>
 
@@ -90,9 +115,16 @@ export default {
 .question-choice-index {
   vertical-align: top;
 }
-.question-radio >>> .control-label {
+.question-radio-label {
   display: flex;
   flex-direction: row;
   align-items: baseline;
+}
+
+.question-radio > div {
+  align-self: baseline !important;
+}
+.question-radio > label {
+  align-items: baseline !important;
 }
 </style>
