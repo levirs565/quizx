@@ -14,9 +14,9 @@
       <template v-slot:activator="{ on, attrs }">
         <v-fab-transition>
           <v-btn
-            aboslute
+            fixed
             fab
-            top
+            bottom
             right
             color="primary"
             v-bind="attrs"
@@ -27,14 +27,11 @@
         </v-fab-transition>
       </template>
 
-      <dialog-create-quiz @close="isCreateDialogShow = false" @create="createQuiz" />
+      <dialog-create-quiz
+        @close="isCreateDialogShow = false"
+        @create="createQuiz"
+      />
     </v-dialog>
-    <b-button
-      type="is-primary"
-      class="is-fab"
-      icon-right="plus"
-      @click="showCreateQuiz"
-    />
   </resource-wrapper>
 </template>
 
