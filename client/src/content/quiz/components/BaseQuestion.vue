@@ -43,7 +43,7 @@
         v-else-if="question.type == 'short-text'"
         v-model="lazyAnswer"
         type="text"
-        filled
+        outlined
         :readonly="!answerEditable"
         v-bind="inputProps"
       />
@@ -51,13 +51,13 @@
         v-else-if="question.type == 'number'"
         type="number"
         v-model.number="lazyAnswer"
-        filled
+        outlined
         :readonly="!answerEditable"
         v-bind="inputProps"
       />
       <math-field-input
         v-else-if="question.type == 'math'"
-        filled
+        outlined
         v-model="lazyAnswer"
         virtual-keyboard-mode="manual"
         :readonly="!answerEditable"
