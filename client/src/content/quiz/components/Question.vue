@@ -20,7 +20,7 @@
 </template>
 
 <script>
-import TextEditor from "@/components/TextEditor.vue";
+import TextEditor from "@/components/TextViewer.vue";
 import BaseQuestion from "./BaseQuestion.vue";
 
 export default {

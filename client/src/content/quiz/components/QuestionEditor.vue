@@ -52,7 +52,7 @@
 </template>
 
 <script>
-import TextEditorCard from "@/components/TextEditorCard.vue";
+import TextEditorCard from "@/components/TextEditor.vue";
 import BaseQuestion from "./BaseQuestion.vue";
 
 export default {
