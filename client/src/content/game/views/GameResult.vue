@@ -1,55 +1,47 @@
 <template>
-  <resource-wrapper :state="state" @reload="loadGame" v-slot="{}">
-    <div class="card block">
-      <header class="card-header">
-        <p class="card-header-title">Game</p>
-      </header>
+  <resource-wrapper :state="state" @reload="loadGame">
+    <template v-slot:toolbar>
+      <v-toolbar-title>Game</v-toolbar-title>
+    </template>
 
-      <div class="card-content">
-        <p class="title">
-          {{ game.quizTitle }}
-        </p>
+    <v-card>
+      <v-card-title class="title">
+        {{ game.quizTitle }}
+      </v-card-title>
 
-        <table class="table game-result-table">
-          <tr>
-            <td>Score</td>
-            <td>N/A</td>
-          </tr>
-          <tr>
-            <td>Correct</td>
-            <td>{{ game.result.correct }}</td>
-          </tr>
-          <tr>
-            <td>Wrong</td>
-            <td>{{ game.result.wrong }}</td>
-          </tr>
-          <tr>
-            <td>Unanswered</td>
-            <td>{{ game.result.unanswered }}</td>
-          </tr>
-        </table>
-      </div>
-    </div>
+      <v-card-text>
+        <v-row
+          v-for="(entry, name) in results"
+          :key="name"
+          no-gutters
+          class="text-body-1 text--primary"
+        >
+          <v-col>{{ entry.name }}</v-col>
+          <v-col>{{ entry.value }}</v-col>
+        </v-row>
+      </v-card-text>
+    </v-card>
 
-    <p class="subtitle">Questions</p>
+    <h2 class="text-h4 my-4">Questions</h2>
 
-    <ul>
-      <li
+    <v-row dense>
+      <v-col
         v-for="(question, index) in game.questions"
         :key="question.id"
-        class="block"
+        cols="12"
       >
         <question
           :index="index"
           :question="question"
           :editable="false"
           :initialAnswer="question.answer"
+          :answerState="game.result.questionsState[index]"
         >
-          <footer class="card-footer">
-            <p class="card-footer-item question-correct-answer">
+          <template v-slot:content>
+            <p class="text-body-1 text--primary my-2">
               Correct answer:
               <math-field
-                class="is-inline-block ml-2"
+                class="d-inline-block ml-2"
                 v-if="question.type === 'math'"
                 read-only
                 :value="game.correctAnswers[index]"
@@ -58,21 +50,10 @@
                 {{ getQuestionCorrectAnswerText(index) }}
               </span>
             </p>
-            <p
-              class="card-footer-item question-state"
-              :class="'has-text-' + getQuestionStateColor(index)"
-            >
-              <b-icon
-                size="is-small"
-                class="mr-1"
-                :icon="getQuestionStateIcon(index)"
-              />
-              {{ getQuestionMessage(index) }}
-            </p>
-          </footer>
+          </template>
         </question>
-      </li>
-    </ul>
+      </v-col>
+    </v-row>
   </resource-wrapper>
 </template>
 
@@ -94,6 +75,21 @@ export default {
     return {
       game: {},
       state: null,
+      results: {
+        score: {
+          name: "Score",
+          value: "N/A",
+        },
+        correct: {
+          name: "Correct",
+        },
+        wrong: {
+          name: "Wrong",
+        },
+        unanswered: {
+          name: "Unanswered",
+        },
+      },
     };
   },
   mounted() {
@@ -104,29 +100,14 @@ export default {
       updateResourceStateByPromise(
         Game.getGame(this.game_id).then((game) => {
           this.game = game;
+          this.results.correct.value = game.result.correct;
+          this.results.wrong.value = game.result.wrong;
+          this.results.unanswered.value = game.result.unanswered;
         }),
         (val) => {
           this.state = val;
         }
       );
-    },
-    getQuestionMessage(index) {
-      const state = this.game.result.questionsState[index];
-      if (state == 0) return "Answer is correct";
-      else if (state == 1) return "Answer is wrong";
-      else return "Unanswered";
-    },
-    getQuestionStateIcon(index) {
-      const state = this.game.result.questionsState[index];
-      if (state === 0) return "check";
-      else if (state === 1) return "close";
-      else return "help";
-    },
-    getQuestionStateColor(index) {
-      const state = this.game.result.questionsState[index];
-      if (state === 0) return "success";
-      else if (state === 1) return "danger";
-      else return "warning-dark";
     },
     getQuestionCorrectAnswerText(index) {
       const answer = this.game.correctAnswers[index];

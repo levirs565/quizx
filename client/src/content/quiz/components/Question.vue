@@ -15,6 +15,10 @@
       <text-editor :value="choice" :editable="false" />
     </template>
 
+    <template v-slot:content>
+      <slot name="content" />
+    </template>
+
     <slot v-bind:component="this"></slot>
   </base-question>
 </template>
@@ -32,7 +36,7 @@ export default {
       type: Boolean,
       default: true,
     },
-    answerResult: Object,
+    answerState: Number,
   },
   components: {
     TextEditor,
@@ -54,18 +58,26 @@ export default {
   },
   computed: {
     inputProps() {
-      if (!this.answerResult) return {};
-
       const baseText = "Your answer is ";
-      if (this.answerResult.correct) {
+      if (this.answerState == 0) {
         return {
           "success-messages": `${baseText} correct`,
         };
       }
 
-      return {
-        "error-messages": `${baseText} wrong`,
-      };
+      if (this.answerState == 1) {
+        return {
+          "error-messages": `${baseText} wrong`,
+        };
+      }
+
+      if (this.answerState == 2) {
+        return {
+          messages: "Unanswered",
+        };
+      }
+
+      return {};
     },
   },
 };

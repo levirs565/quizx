@@ -46,7 +46,7 @@
           :index="index"
           :question="question"
           v-slot="{ component }"
-          :answerResult="answerResults[question.id]"
+          :answerState="answerResults[question.id]"
         >
           <v-card-actions v-if="!isAnswerEmpty(component.answer)">
             <v-btn
@@ -110,7 +110,9 @@ export default {
     },
     checkAnswer(questionId, answer) {
       Quiz.checkQuestionAnswer(this.quiz_id, questionId, answer).then((val) => {
-        this.$set(this.answerResults, questionId, val);
+        let state = 1;
+        if (val.correct) state = 0;
+        this.$set(this.answerResults, questionId, state);
       });
     },
     showPlayDialog() {
