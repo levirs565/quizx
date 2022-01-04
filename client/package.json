@@ -20,8 +20,6 @@
     "@tiptap/starter-kit": "latest",
     "@tiptap/vue-2": "latest",
     "axios": "^0.21.1",
-    "buefy": "^0.9.10",
-    "bulma": "^0.7.4",
     "core-js": "^3.6.5",
     "mathlive": "^0.69.7",
     "vue": "^2.6.10",

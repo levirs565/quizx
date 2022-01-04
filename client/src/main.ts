@@ -3,12 +3,8 @@ import App from "./App.vue";
 import router from "./router";
 import store from "./store";
 import "@/style.css";
-import Buefy from "buefy";
-import "buefy/dist/buefy.css";
 import "@mdi/font/css/materialdesignicons.css";
 import vuetify from "./plugins/vuetify";
-
-Vue.use(Buefy);
 
 Vue.filter("selectOneUpper", function (value: string) {
   return value.charAt(0).toUpperCase();

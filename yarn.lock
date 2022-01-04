@@ -2834,8 +2834,6 @@ __metadata:
     babel-eslint: ^10.1.0
     babel-loader: ^8.0.6
     babel-preset-vue: ^2.0.2
-    buefy: ^0.9.10
-    bulma: ^0.7.4
     core-js: ^3.6.5
     eslint: ^6.8.0
     eslint-loader: ^4.0.2
@@ -7376,17 +7374,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"buefy@npm:^0.9.10":
-  version: 0.9.10
-  resolution: "buefy@npm:0.9.10"
-  dependencies:
-    bulma: 0.9.3
-  peerDependencies:
-    vue: ^2.6.11
-  checksum: 76401a8e9190b76bdf24df9102f0d168947f244f90dd3aed5399f661667059a8cf54be5d0c6caaefbfd43e7e37ca7613c8125222fef5b9f665d2433f5fa5ff1e
-  languageName: node
-  linkType: hard
-
 "buffer-from@npm:^1.0.0":
   version: 1.1.1
   resolution: "buffer-from@npm:1.1.1"
@@ -7447,20 +7434,6 @@ __metadata:
   version: 3.0.0
   resolution: "builtin-status-codes@npm:3.0.0"
   checksum: 1119429cf4b0d57bf76b248ad6f529167d343156ebbcc4d4e4ad600484f6bc63002595cbb61b67ad03ce55cd1d3c4711c03bbf198bf24653b8392420482f3773
-  languageName: node
-  linkType: hard
-
-"bulma@npm:0.9.3":
-  version: 0.9.3
-  resolution: "bulma@npm:0.9.3"
-  checksum: 98e1c2794b70c6339b41afc929bec6e22eae5b2751dc5fb0d9b7195d1c799ba4129a6fda1097e966db492f65fc4bed719da2498356c1ea6a9972f23ad3025d5c
-  languageName: node
-  linkType: hard
-
-"bulma@npm:^0.7.4":
-  version: 0.7.5
-  resolution: "bulma@npm:0.7.5"
-  checksum: 5d08a00ea8da23ed325669fcc62ada5dc5bd1cbe347b231f12e68a6cb63944b4cee5ee5fe418a8c9dbf92f2c7b47382db6ce5395f0cc7248c727111aaf013225
   languageName: node
   linkType: hard
 
