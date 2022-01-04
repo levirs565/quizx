@@ -1,31 +1,31 @@
 <template>
-  <form class="card" action="none" @submit.prevent="login">
-    <div class="card-content">
-      <p class="title">Login</p>
-      <p class="subtext">
-        <i>
-          Tidak punya akun?&nbsp;
-          <router-link to="/auth/register">Register</router-link>
-        </i>
-      </p>
+  <v-card>
+    <v-card-title>Login</v-card-title>
+    <v-card-subtitle>
+      <i>
+        Tidak punya akun?&nbsp;
+        <router-link to="/auth/register">Register</router-link>
+      </i>
+    </v-card-subtitle>
+    <v-card-text>
+      <v-form>
+        <v-text-field type="text" v-model="userID" label="ID" filled />
+        <v-text-field
+          type="password"
+          v-model="userPassword"
+          label="Password"
+          filled
+        />
+      </v-form>
+    </v-card-text>
 
-      <b-field label="ID">
-        <b-input type="text" v-model="userID" />
-      </b-field>
-
-      <b-field label="Password">
-        <b-input type="password" v-model="userPassword" />
-      </b-field>
-    </div>
-
-    <footer class="card-footer level">
-      <div class="card-footer-item level-left buttons">
-        <b-button type="is-primary" :disabled="!valid" @click="login"
-          >Login</b-button
-        >
-      </div>
-    </footer>
-  </form>
+    <v-card-actions>
+      <v-spacer />
+      <v-btn text color="primary" :disabled="!valid" @click="login">
+        Login
+      </v-btn>
+    </v-card-actions>
+  </v-card>
 </template>
 
 <script>

@@ -1,24 +1,20 @@
 <template>
-  <div class="auth-layout">
-    <router-view class="auth-content"></router-view>
-  </div>
+  <v-app>
+    <v-main>
+      <v-container fluid fill-height>
+        <v-row align="center" justify="center">
+          <router-view class="auth-form" />
+        </v-row>
+      </v-container>
+    </v-main>
+  </v-app>
 </template>
 
 <script>
 export default {};
 </script>
-
 <style scoped>
-.auth-layout {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: center;
-  min-height: 100vh;
-}
-
-.auth-layout >>> .auth-content {
-  max-width: 384px;
-  width: 100%;
+.auth-form {
+  min-width: 350px;
 }
 </style>

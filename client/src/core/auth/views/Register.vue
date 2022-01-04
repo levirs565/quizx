@@ -1,39 +1,38 @@
 <template>
-  <form class="card" action="none" @submit.prevent="register">
-    <div class="card-content">
-      <h1 class="title">Register</h1>
-      <p class="subtext">
-        <i>
-          Punya akun?&nbsp;
-          <router-link to="/auth/login">Login</router-link>
-        </i>
-      </p>
+  <v-card>
+    <v-card-title>Register</v-card-title>
+    <v-card-subtitle>
+      <i>
+        Punya akun?&nbsp;
+        <router-link to="/auth/login">Login</router-link>
+      </i>
+    </v-card-subtitle>
+    <v-card-text class="card-content">
+      <v-form>
+        <v-text-field type="text" v-model="userID" label="ID" filled />
+        <v-text-field type="text" v-model="userName" label="Name" filled />
+        <v-text-field
+          type="password"
+          v-model="userPassword"
+          label="Password"
+          filled
+        />
+        <v-text-field
+          type="password"
+          v-model="userPassword2"
+          label="Retry Password"
+          filled
+        />
+      </v-form>
+    </v-card-text>
 
-      <b-field label="ID">
-        <b-input type="text" v-model="userID" />
-      </b-field>
-
-      <b-field label="Name">
-        <b-input type="text" v-model="userName" />
-      </b-field>
-
-      <b-field label="Password">
-        <b-input type="password" v-model="userPassword" />
-      </b-field>
-
-      <b-field label="Retry Password">
-        <b-input type="password" v-model="userPassword2" />
-      </b-field>
-    </div>
-
-    <footer class="card-footer level">
-      <div class="card-footer-item level-left buttons">
-        <b-button type="is-primary" :disabled="!valid" @click="register"
-          >Register</b-button
-        >
-      </div>
-    </footer>
-  </form>
+    <v-card-actions>
+      <v-spacer />
+      <v-btn text color="primary" :disabled="!valid" @click="register">
+        Register
+      </v-btn>
+    </v-card-actions>
+  </v-card>
 </template>
 
 <script>
