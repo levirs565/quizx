@@ -1,40 +1,19 @@
 <template>
   <div>
-    <v-app-bar app color="white">
+    <molecule-app-bar :isLoading="state && state.isLoading">
       <slot name="toolbar" />
-      <v-progress-linear
-        :active="state && state.isLoading"
-        :indeterminate="state && state.isLoading"
-        absolute
-        bottom
-      ></v-progress-linear>
-    </v-app-bar>
-    <v-main>
-      <v-container v-if="state && !state.isLoading && !state.isError">
+    </molecule-app-bar>
+    <organism-resource-main @reload="$emit('reload')" :state="state">
+      <v-container>
         <slot />
       </v-container>
-      <v-container
-        class="text-center"
-        fill-height
-        v-if="state && state.isError"
-      >
-        <v-row align-content="center" justify="center">
-          <v-col cols="12">
-            <h1 class="red--text text-h1">Oops!</h1>
-          </v-col>
-          <v-col cols="12">
-            <h2 class="subtitle">An error occured</h2>
-          </v-col>
-          <v-col>
-            <v-btn color="primary" @click="$emit('reload')">Reload</v-btn>
-          </v-col>
-        </v-row>
-      </v-container>
-    </v-main>
+    </organism-resource-main>
   </div>
 </template>
 <script lang="ts">
 import Vue from "vue";
+import MoleculeAppBar from "./MoleculeAppBar.vue";
+import OrganismResourceMain from "./OrganismResourceMain.vue";
 
 interface ResourceState {
   isLoading: Boolean;
@@ -67,6 +46,10 @@ export function updateResourceStateByPromise<T>(
 }
 
 export default Vue.extend({
+  components: {
+    MoleculeAppBar,
+    OrganismResourceMain,
+  },
   props: {
     state: {
       type: Object,

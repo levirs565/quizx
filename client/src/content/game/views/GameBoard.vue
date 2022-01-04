@@ -1,73 +1,82 @@
 <template>
-  <div class="page">
-    <c-app-bar></c-app-bar>
-    <b-sidebar
-      mobile="hide"
-      position="static"
-      open
-      fullheight
-      :class="{ hidden: !state || state.isLoading || state.isError }"
-    >
-      <div class="card m-4">
-        <div class="card-content">
-          <jumper
-            :buttons="jumperButtons"
-            class="w-full"
-            @click="goToQuestion"
-          ></jumper>
-        </div>
-      </div>
-    </b-sidebar>
-    <div class="main-layout">
-      <div class="container p-4" style="min-height: 100%" ref="container">
-        <resource-wrapper :state="state" @reload="updateState">
-          <h1 class="title">{{ game.quizTitle }}</h1>
-
-          <ul>
-            <li
-              v-for="(question, index) in questions"
-              :key="question.id"
-              class="block"
-            >
-              <question
-                :index="index"
-                :question="question"
-                :initialAnswer="question.answer"
-                @answerChanged="answerChanged"
-                ref="questions"
-              >
-              </question>
-            </li>
-          </ul>
-
-          <b-button
-            @click="showFinishDialog"
-            type="is-danger"
-            class="mt-4 block ml-auto"
-            >Finish</b-button
+  <v-app>
+    <molecule-app-bar :isLoading="state && state.isLoading">
+      <v-toolbar-title>Game</v-toolbar-title>
+    </molecule-app-bar>
+    <organism-resource-main :state="state" @reload="updateState">
+      <v-container>
+        <v-row>
+          <v-col
+            cols="3"
+            :style="{ position: 'sticky', top: sidebarTop }"
+            align-self="start"
           >
-        </resource-wrapper>
-      </div>
-    </div>
-  </div>
+            <jumper
+              :buttons="jumperButtons"
+              class="w-full"
+              @click="goToQuestion"
+            ></jumper>
+          </v-col>
+          <v-col>
+            <h1 class="text-h4 mb-4">{{ game.quizTitle }}</h1>
+
+            <v-row dense>
+              <v-col
+                cols="12"
+                v-for="(question, index) in questions"
+                :key="question.id"
+              >
+                <question
+                  :index="index"
+                  :question="question"
+                  :initialAnswer="question.answer"
+                  @answerChanged="answerChanged"
+                  ref="questions"
+                >
+                </question>
+              </v-col>
+            </v-row>
+
+            <v-dialog v-model="isFinishDialogShow" max-width="350px">
+              <template v-slot:activator="{ on, attrs }">
+                <v-btn class="mt-4" color="error" v-on="on" v-bind="attrs">
+                  Finish
+                </v-btn>
+              </template>
+              <v-card>
+                <v-card-title>Finish Game?</v-card-title>
+                <v-card-text
+                  >Make sure all questions are answered correctly.</v-card-text
+                >
+                <v-card-actions>
+                  <v-spacer />
+                  <v-btn text @click="isFinishDialogShow = false">Cancel</v-btn>
+                  <v-btn text color="error" @click="finish">Finish</v-btn>
+                </v-card-actions>
+              </v-card>
+            </v-dialog>
+          </v-col>
+        </v-row>
+      </v-container>
+    </organism-resource-main>
+  </v-app>
 </template>
 
 <script>
 import { Game } from "@/api";
 import Question from "../../quiz/components/Question.vue";
-import CAppBar from "@/components/CAppBar.vue";
-import Jumper from "../components/Jumper.vue";
+import Jumper from "../components/MoleculeJumper.vue";
 import { isAnswerEmpty } from "@/content/utils";
-import ResourceWrapper, {
-  updateResourceStateByPromise,
-} from "@/components/ResourceWrapper.vue";
+import { updateResourceStateByPromise } from "@/components/ResourceWrapper.vue";
+import MoleculeAppBar from "@/components/MoleculeAppBar.vue";
+import OrganismResourceMain from "@/components/OrganismResourceMain.vue";
 
 export default {
   components: {
     Question,
-    CAppBar,
     Jumper,
-    ResourceWrapper,
+    MoleculeAppBar,
+    OrganismResourceMain,
   },
   props: {
     game_id: String,
@@ -79,6 +88,7 @@ export default {
       questions: [],
       jumperButtons: [],
       state: null,
+      isFinishDialogShow: false,
     };
   },
   methods: {
@@ -120,17 +130,8 @@ export default {
       );
     },
     getQuestionColor(answer) {
-      if (!isAnswerEmpty(answer)) return "is-primary";
+      if (!isAnswerEmpty(answer)) return "primary";
       return "";
-    },
-    showFinishDialog() {
-      this.$buefy.dialog.confirm({
-        title: "Finish Game?",
-        message: "Make sure all questions are answered correctly.",
-        type: "is-danger",
-        confirmText: "Finish",
-        onConfirm: () => this.finish(),
-      });
     },
     finish() {
       Game.finishGame(this.game_id).then(() => {
@@ -143,26 +144,19 @@ export default {
     },
     goToQuestion(index) {
       const element = this.$refs.questions[index].$el;
-      const top =
-        this.getElementTop(element) - this.getElementTop(this.$refs.container);
+      const top = this.getElementTop(element) - this.$vuetify.application.top;
       window.scrollTo(0, top);
     },
   },
   mounted() {
     this.updateState();
   },
+  computed: {
+    sidebarTop() {
+      return this.$vuetify.application.top + "px";
+    },
+  },
 };
 </script>
 
-<style scoped>
-.page >>> .sidebar-content {
-  background: transparent;
-  box-shadow: none;
-  width: 288px;
-}
-
-.page >>> .b-sidebar.hidden {
-  visibility: hidden;
-  width: 0;
-}
-</style>
+<style scoped></style>

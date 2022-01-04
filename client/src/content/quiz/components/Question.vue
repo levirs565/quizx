@@ -43,6 +43,15 @@ export default {
       answer: this.initialAnswer,
     };
   },
+  watch: {
+    answer(value) {
+      this.$emit("answerChanged", {
+        question: this.question,
+        index: this.index,
+        answer: value,
+      });
+    },
+  },
   computed: {
     inputProps() {
       if (!this.answerResult) return {};
