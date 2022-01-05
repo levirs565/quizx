@@ -1,4 +1,4 @@
-import TextEditor from "./TextViewer.vue";
+import TextEditor from "./tiptap/TextViewer.vue";
 
 export default {
   title: "Text Editor",
