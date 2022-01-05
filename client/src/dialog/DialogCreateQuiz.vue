@@ -10,10 +10,10 @@
     <v-card-text>
       <v-tabs-items v-model="activeTab">
         <v-tab-item>
-          <v-text-field label="Title" v-model="title"></v-text-field>
+          <v-text-field filled label="Title" v-model="title"></v-text-field>
         </v-tab-item>
         <v-tab-item>
-          <v-textarea label="JSON" v-model="json"></v-textarea>
+          <v-textarea filled label="JSON" v-model="json"></v-textarea>
         </v-tab-item>
       </v-tabs-items>
     </v-card-text>
