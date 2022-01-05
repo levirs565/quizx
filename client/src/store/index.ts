@@ -1,13 +1,13 @@
 import Vue from "vue";
 import Vuex from "vuex";
-import CoreStore from "@/core/store";
+import AuthStore from "@/store/auth";
 import NotificationStore from "@/store/notification";
 
 Vue.use(Vuex);
 
 const store = new Vuex.Store({
   modules: {
-    core: CoreStore,
+    auth: AuthStore,
     notification: NotificationStore,
   },
 });

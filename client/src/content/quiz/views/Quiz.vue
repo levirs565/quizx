@@ -6,7 +6,7 @@
 
       <v-btn
         v-if="
-          $store.state.core.user && $store.state.core.user.id == quiz.userId
+          $store.state.auth.user && $store.state.auth.user.id == quiz.userId
         "
         icon
         :to="`/quiz/${quiz_id}/edit`"
@@ -19,7 +19,7 @@
       <v-card-actions>
         <v-dialog
           v-model="isPlayDialogShow"
-          v-if="$store.state.core.user"
+          v-if="$store.state.auth.user"
           max-width="400px"
         >
           <template v-slot:activator="{ on, attrs }">

@@ -1,7 +1,7 @@
 import { User } from '@/api';
 import { Module } from "vuex";
 
-interface CoreStoreState {
+interface AuthStoreState {
   user: any
 }
 
@@ -26,4 +26,4 @@ export default {
       });
     }
   }
-} as Module<CoreStoreState, void>
+} as Module<AuthStoreState, void>
