@@ -109,13 +109,9 @@ export default {
 </script>
 
 <style scoped>
-.question-radio >>> div {
-  align-self: baseline !important;
-}
+.question-choice,
+.question-radio,
 .question-radio >>> label {
-  align-items: baseline !important;
-}
-.question-choice {
   align-items: baseline !important;
 }
 </style>

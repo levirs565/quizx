@@ -83,20 +83,4 @@ export default {
 };
 </script>
 
-<style scoped>
-.question-choice-index {
-  vertical-align: top;
-}
-.question-radio-label {
-  display: flex;
-  flex-direction: row;
-  align-items: baseline;
-}
-
-.question-radio > div {
-  align-self: baseline !important;
-}
-.question-radio > label {
-  align-items: baseline !important;
-}
-</style>
+<style scoped></style>
