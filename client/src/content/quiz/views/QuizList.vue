@@ -68,9 +68,9 @@ export default {
         console.error(e);
         let message = "Cannot create Quiz: ";
         if (e.message) message += " " + e.message;
-        this.$buefy.toast.open({
-          message: message,
-          type: "is-danger",
+        this.showNotification({
+          text: message,
+          color: "error",
         });
       }
     },

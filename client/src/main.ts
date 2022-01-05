@@ -5,6 +5,9 @@ import store from "./store";
 import "@/style.css";
 import "@mdi/font/css/materialdesignicons.css";
 import vuetify from "./plugins/vuetify";
+import notification from "./plugins/notification";
+
+Vue.use(notification);
 
 Vue.filter("selectOneUpper", function (value: string) {
   return value.charAt(0).toUpperCase();

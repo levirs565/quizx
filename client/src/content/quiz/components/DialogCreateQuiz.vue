@@ -44,10 +44,9 @@ export default {
         try {
           quiz = JSON.parse(this.json);
         } catch (e) {
-          // TODO: Migrate toast
-          this.$buefy.toast.open({
-            type: "is-danger",
-            message: `Cannot parse JSON: ${e.message}`,
+          this.showNotification({
+            color: "error",
+            text: `Cannot parse JSON: ${e.message}`,
           });
           return;
         }

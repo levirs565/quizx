@@ -122,15 +122,15 @@ export default {
             question.id = newIdsMap[question.id];
           }
         }
-        this.$buefy.toast.open({
-          message: "Quiz saved",
-          type: "is-success",
+        this.showNotification({
+          text: "Quiz saved",
+          color: "success",
         });
       } catch (e) {
         console.error(e);
-        this.$buefy.toast.open({
-          message: "Cannot save quiz",
-          type: "is-danger",
+        this.showNotification({
+          text: "Cannot save quiz",
+          color: "error",
         });
       }
     },
@@ -153,7 +153,7 @@ export default {
       });
     },
     callImageSelected(result) {
-      this.isSelectImageDialogShow = false
+      this.isSelectImageDialogShow = false;
       this.onImageSelected(result);
     },
     callImageSelectCancelled() {

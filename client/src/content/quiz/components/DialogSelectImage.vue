@@ -54,9 +54,9 @@ export default {
           const uploadResult = await Media.upload(this.quizId, this.file);
           result.src = uploadResult.path;
         } catch (e) {
-          this.$buefy.toast.open({
-            type: "is-danger",
-            message: `Cannot upload file: ${e.message}`,
+          this.showNotification({
+            color: "error",
+            text: `Cannot upload file: ${e.message}`,
           });
           return;
         }
