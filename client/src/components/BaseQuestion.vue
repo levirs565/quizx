@@ -72,7 +72,7 @@
 </template>
 
 <script>
-import { getChoiceIndex } from "@/content/utils";
+import { getChoiceIndex } from "@/utils";
 import MathFieldInput from "@/components/MathFieldInput.vue";
 
 export default {

@@ -64,9 +64,9 @@
 
 <script>
 import { Game } from "@/api";
-import Question from "../../quiz/components/Question.vue";
-import Jumper from "../components/MoleculeJumper.vue";
-import { isAnswerEmpty } from "@/content/utils";
+import Question from "@/components/Question.vue";
+import Jumper from "@/components/MoleculeJumper.vue";
+import { isAnswerEmpty } from "@/utils";
 import { updateResourceStateByPromise } from "@/components/ResourceWrapper.vue";
 import MoleculeAppBar from "@/components/MoleculeAppBar.vue";
 import OrganismResourceMain from "@/components/OrganismResourceMain.vue";

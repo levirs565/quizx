@@ -62,11 +62,11 @@
 </template>
 
 <script>
-import Question from "../components/Question";
+import Question from "@/components/Question";
 import { Quiz, Game } from "@/api";
-import QuizSummary from "../components/QuizSummary.vue";
-import DialogPlayQuiz from "../components/DialogPlayQuiz.vue";
-import { isAnswerEmpty as isAnswerEmptyImpl } from "@/content/utils";
+import QuizSummary from "@/components/QuizSummary.vue";
+import DialogPlayQuiz from "@/dialog/DialogPlayQuiz.vue";
+import { isAnswerEmpty as isAnswerEmptyImpl } from "@/utils";
 import ResourceWrapper, {
   updateResourceStateByPromise,
 } from "@/components/ResourceWrapper.vue";

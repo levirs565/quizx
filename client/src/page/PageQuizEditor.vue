@@ -61,12 +61,12 @@
 
 <script>
 import { Quiz } from "@/api";
-import QuizSummary from "../components/QuizSummary.vue";
-import DialogSelectImage from "../components/DialogSelectImage.vue";
+import QuizSummary from "@/components/QuizSummary.vue";
+import DialogSelectImage from "@/dialog/DialogSelectImage.vue";
 import ResourceWrapper, {
   updateResourceStateByPromise,
 } from "@/components/ResourceWrapper.vue";
-import QuestionEditor from "../components/QuestionEditor.vue";
+import QuestionEditor from "@/components/QuestionEditor.vue";
 
 export default {
   props: {

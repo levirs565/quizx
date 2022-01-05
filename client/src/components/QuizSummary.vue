@@ -14,7 +14,7 @@
   </v-card>
 </template>
 <script>
-import QuizInformation from "@/content/components/QuizInformation.vue";
+import QuizInformation from "@/components/QuizInformation.vue";
 
 export default {
   components: {

@@ -59,9 +59,9 @@
 
 <script>
 import { Game } from "@/api";
-import Question from "@/content/quiz/components/Question.vue";
+import Question from "@/components/Question.vue";
 import MathField from "@/components/MathField.vue";
-import { getChoiceIndex } from "@/content/utils";
+import { getChoiceIndex } from "@/utils";
 import ResourceWrapper, {
   updateResourceStateByPromise,
 } from "@/components/ResourceWrapper.vue";
