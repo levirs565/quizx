@@ -41,7 +41,7 @@ export default {
   computed: {
     src: {
       get() {
-        return this.node.attrs.src;
+        return String(this.node.attrs.src);
       },
       set(src) {
         this.updateAttributes({
