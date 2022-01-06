@@ -8,6 +8,7 @@
         :color="color"
         depressed
         tile
+        small
       >
         {{ index + 1 }}
       </v-btn>
@@ -29,6 +30,6 @@ export default {
 <style>
 .jumper {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(3rem, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(50px, 1fr));
 }
 </style>
