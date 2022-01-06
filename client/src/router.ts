@@ -1,15 +1,5 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
-import LayoutAuth from "@/layout/LayoutAuth.vue";
-import PageLogin from "@/page/PageLogin.vue";
-import PageRegister from "@/page/PageRegister.vue";
-import LayoutContent from "@/layout/LayoutContent.vue";
-import PageHome from "@/page/PageHome.vue";
-import PageQuizList from "@/page/PageQuizList.vue";
-import PageQuiz from "@/page/PageQuiz.vue";
-import PageQuizEditor from "@/page/PageQuizEditor.vue";
-import PageGameBoard from "@/page/PageGameBoard.vue";
-import PageGameResult from "@/page/PageGameResult.vue";
 
 Vue.use(VueRouter);
 
@@ -18,45 +8,45 @@ const router = new VueRouter({
   routes: [
     {
       path: "/auth",
-      component: LayoutAuth,
+      component: () => import("@/layout/LayoutAuth.vue"),
       children: [
         {
           path: "login",
-          component: PageLogin,
+          component: () => import("@/page/PageLogin.vue"),
         },
         {
           path: "register",
-          component: PageRegister,
+          component: () => import("@/page/PageRegister.vue"),
         },
       ],
     },
     {
       path: "/",
-      component: LayoutContent,
+      component: () => import("@/layout/LayoutContent.vue"),
       children: [
         {
           path: "",
-          component: PageHome,
+          component: () => import("@/page/PageHome.vue"),
           alias: "home",
         },
 
         {
           path: "quiz",
-          component: PageQuizList,
+          component: () => import("@/page/PageQuizList.vue"),
         },
         {
           path: "quiz/:quiz_id",
           props: true,
-          component: PageQuiz,
+          component: () => import("@/page/PageQuiz.vue"),
         },
         {
           path: "quiz/:quiz_id/edit",
           props: true,
-          component: PageQuizEditor,
+          component: () => import("@/page/PageQuizEditor.vue"),
         },
         {
           path: "game/:game_id",
-          component: PageGameResult,
+          component: () => import("@/page/PageGameResult.vue"),
           props: true,
         },
       ],
@@ -64,7 +54,7 @@ const router = new VueRouter({
     {
       path: "/game/:game_id/board",
       props: true,
-      component: PageGameBoard,
+      component: () => import("@/page/PageGameBoard.vue"),
     },
   ],
 });
