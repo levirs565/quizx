@@ -11,18 +11,17 @@
         hasMenu
         :selectImageFunction="selectImageFunction"
       />
-      <v-row justify="end" no-gutters>
-        <v-col cols="3">
-          <v-select
-            :value="question.type"
-            :items="questionTypes"
-            item-value="value"
-            item-text="name"
-            @input="changeType"
-            filled
-            class="my-2"
-          />
-        </v-col>
+      <v-row no-gutters>
+        <v-spacer />
+        <v-select
+          :value="question.type"
+          :items="questionTypes"
+          item-value="value"
+          item-text="name"
+          @input="changeType"
+          filled
+          class="my-2"
+        />
       </v-row>
     </template>
     <template v-slot:afterChoice="{ choice, index, indexChar }">
