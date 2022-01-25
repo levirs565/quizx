@@ -2838,7 +2838,7 @@ __metadata:
     eslint: ^6.8.0
     eslint-loader: ^4.0.2
     eslint-plugin-vue: ^6.2.2
-    mathlive: ^0.69.7
+    mathlive: ^0.69.9
     sass: ~1.32.0
     sass-loader: ^10.0.0
     typescript: ~4.1.5
@@ -15111,12 +15111,12 @@ fsevents@^1.2.7:
   languageName: node
   linkType: hard
 
-"mathlive@npm:^0.69.7":
-  version: 0.69.7
-  resolution: "mathlive@npm:0.69.7"
+"mathlive@npm:^0.69.9":
+  version: 0.69.9
+  resolution: "mathlive@npm:0.69.9"
   dependencies:
     "@cortex-js/compute-engine": ^0.4.2
-  checksum: 08fa3bc948a08278e770208032ce5ff022e419316775fabe732b2d4d5a65e4a1297c45fcf3cbdaf88cc3361b36cc0e59a91c13d0cfdcde0d96ea9fcfabfa84d6
+  checksum: 890907b250203ccbdf5bd8204f4148e8be0b8440004bf6bc727ca5ef606aaa9d11a5d1b52c598ea1c639faf86b87b00bce262d6b0cf847c7f3a08a46a9723d1f
   languageName: node
   linkType: hard
 

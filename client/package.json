@@ -21,7 +21,7 @@
     "@tiptap/vue-2": "latest",
     "axios": "^0.21.1",
     "core-js": "^3.6.5",
-    "mathlive": "^0.69.7",
+    "mathlive": "^0.69.9",
     "vue": "^2.6.10",
     "vue-class-component": "^7.2.3",
     "vue-property-decorator": "^9.1.2",
