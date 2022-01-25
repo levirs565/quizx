@@ -9,6 +9,7 @@
     "sb": "start-storybook -s ./public"
   },
   "dependencies": {
+    "@fontsource/roboto": "^4.5.1",
     "@mdi/font": "^5.9.55",
     "@tiptap/extension-bubble-menu": "^2.0.0-beta.44",
     "@tiptap/extension-floating-menu": "^2.0.0-beta.36",

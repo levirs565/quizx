@@ -2192,6 +2192,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@fontsource/roboto@npm:^4.5.1":
+  version: 4.5.1
+  resolution: "@fontsource/roboto@npm:4.5.1"
+  checksum: dddc5b883e0355096ebb8944a6ad8ec5fec583482e96b22c2b2b7e83d3a538a85586c379b9471db117f934bfcea981c273c153bdf55a33f5c44a39837dc6fa97
+  languageName: node
+  linkType: hard
+
 "@hapi/address@npm:2.x.x":
   version: 2.1.4
   resolution: "@hapi/address@npm:2.1.4"
@@ -2812,6 +2819,7 @@ __metadata:
   resolution: "@quizx/client@workspace:client"
   dependencies:
     "@babel/core": ^7.14.8
+    "@fontsource/roboto": ^4.5.1
     "@mdi/font": ^5.9.55
     "@storybook/vue": ^6.4.9
     "@tiptap/extension-bubble-menu": ^2.0.0-beta.44
