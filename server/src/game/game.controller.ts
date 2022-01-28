@@ -10,7 +10,7 @@ export class GameController {
   constructor(private readonly gameService: GameService) {}
 
   @Post('/play')
-  play(@Session() session: SessionType, @Body() { quizId, ...preference }: PlayGameRequestBody) {
+  play(@Session() session: SessionType, @Body() { quizId, preference }: PlayGameRequestBody) {
     return this.gameService.playGame(session, quizId, preference);
   }
 
@@ -27,6 +27,15 @@ export class GameController {
     @Body() { answer }: AnswerQuestionRequestBody
   ) {
     return this.gameService.putAnswer(session, gameId, questionId, answer);
+  }
+
+  @Post('/:gameId/question/:questionId')
+  submitAnswer(
+    @Session() session: SessionType,
+    @Param('gameId') gameId: string,
+    @Param('questionId') questionId: string
+  ) {
+    return this.gameService.submitAnswer(session, gameId, questionId);
   }
 
   @Post('/:id/finish')

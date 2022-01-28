@@ -40,3 +40,7 @@ export function checkQuestionAnswer(
   }
   return correctAnswer === userAnswer;
 }
+
+export function addSecondToDate(date: Date, minute: number) {
+  return new Date(date.getTime() + minute * 1000);
+}
