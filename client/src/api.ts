@@ -83,7 +83,7 @@ export const Game = {
   async playGame(quizId: string, preference: any) {
     const res = await instance.post("/api/game/play", {
       quizId,
-      ...preference,
+      preference,
     });
     return throwError(res);
   },
@@ -122,8 +122,8 @@ export class MediaApi {
         },
       })
     );
-    return res
+    return res;
   }
 }
 
-export const Media = new MediaApi()
+export const Media = new MediaApi();
