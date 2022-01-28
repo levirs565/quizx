@@ -1,6 +1,6 @@
 import { AutoMap } from '@automapper/classes';
 import { Type } from 'class-transformer';
-import { IsBoolean, IsNumber, IsPositive, IsString, Min } from 'class-validator';
+import { IsBoolean, IsNumber, IsOptional, IsPositive, IsString, Min } from 'class-validator';
 import { Question, QuestionAnswer, questionDiscriminator } from './quiz';
 
 export abstract class GamePreference {
@@ -11,21 +11,23 @@ export abstract class GamePreference {
 export class FlashCardGamePreference extends GamePreference {
   @IsNumber()
   @Min(0)
+  @IsOptional()
   questionTimeMinute?: number;
   @IsNumber()
   @Min(0)
+  @IsOptional()
   retryCount?: number;
 }
 
 export class ExamGamePreference extends GamePreference {
   @IsNumber()
-  @Min(0)
+  @IsOptional()
   examTimeMinute?: number;
 }
 
 export enum GameType {
   Exam = 'exam',
-  FlashCard = 'flash-card'
+  FlashCard = 'flash-card',
 }
 
 export class PlayGameRequestBody {
@@ -77,7 +79,7 @@ export class GameSummary {
   @AutoMap()
   startTime!: Date;
   @AutoMap()
-  finishTime!: Date;
+  finishTime?: Date;
 }
 
 export abstract class GameData {
@@ -87,12 +89,13 @@ export abstract class GameData {
 export class FlashCardGameData extends GameData {
   preference!: FlashCardGamePreference;
   currentQuestionIndex!: number;
-  currentQuestionMaxTime!: number;
+  currentQuestionMaxTime?: Date;
+  currentQuestionRetryCount?: number;
 }
 
 export class ExamGameData extends GameData {
   preference!: ExamGamePreference;
-  maxFinishTime!: Date;
+  maxFinishTime?: Date;
 }
 
 export class Game extends GameSummary {
@@ -100,7 +103,7 @@ export class Game extends GameSummary {
     discriminator: questionDiscriminator,
   })
   questions!: Array<Question>;
-  questionsState!: Array<QuestionState>;
+  questionsState?: Array<QuestionState>;
   correctAnswers?: Array<QuestionAnswer>;
   @Type(() => GameData, {
     discriminator: {
@@ -108,15 +111,19 @@ export class Game extends GameSummary {
       subTypes: [
         {
           name: GameType.Exam,
-          value: ExamGameData
+          value: ExamGameData,
         },
         {
           name: GameType.FlashCard,
-          value: FlashCardGameData
-        }
-      ]
-    }
+          value: FlashCardGameData,
+        },
+      ],
+    },
   })
   data!: GameData;
 }
 
+export interface GameAnswerResult {
+  state?: QuestionState;
+  next?: boolean;
+}

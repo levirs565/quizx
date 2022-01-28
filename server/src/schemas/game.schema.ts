@@ -4,25 +4,47 @@ import { BaseModel, BaseModelSchema, configureBaseModelSchema } from './helper';
 import { ExamGameData, FlashCardGameData, Game, GameType, QuestionState } from '../types/game';
 
 const BaseGamePreferenceSchema = {
-  shuffleQuestions: Boolean
-}
+  shuffleQuestions: {
+    required: true,
+    type: Boolean,
+  },
+};
 
 const ExamGameDataSchema = new Schema<ExamGameData>({
   preference: {
-    examTimeMinute: Number,
-    ...BaseGamePreferenceSchema
+    examTimeMinute: {
+      required: false,
+      type: Number,
+    },
+    ...BaseGamePreferenceSchema,
   },
-  maxFinishTime: Date,
+  maxFinishTime: {
+    required: false,
+    type: Date,
+  },
 });
 
 const FlashCardGameDataSchema = new Schema<FlashCardGameData>({
   preference: {
-    questionTimeMinute: Number,
-    retryCount: Number,
-    ...BaseGamePreferenceSchema
+    questionTimeMinute: {
+      type: Number,
+      required: false,
+    },
+    retryCount: {
+      type: Number,
+      required: false,
+    },
+    ...BaseGamePreferenceSchema,
   },
   currentQuestionIndex: Number,
-  currentQuestionMaxTime: Number,
+  currentQuestionMaxTime: {
+    required: false,
+    type: Date,
+  },
+  currentQuestionRetryCount: {
+    required: false,
+    type: Number,
+  },
 });
 
 const questionSchema = createQuestionSchema(false);
@@ -78,7 +100,10 @@ export const GameSchema: BaseModelSchema<Game> = new Schema(
       type: [Schema.Types.Mixed],
       required: true,
     },
-    data: {},
+    data: {
+      type: Object,
+      required: true,
+    },
   },
   {
     collection: 'game',

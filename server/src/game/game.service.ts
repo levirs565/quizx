@@ -1,22 +1,36 @@
 import { GameModelName } from '../schemas/game.schema';
 import { QuizService } from 'quiz/quiz.service';
 import Session from '../types/session';
-import { GameSummary, GamePreference, GameResult, Game, QuestionState } from '../types/game';
-import { AnswerQuestionResult } from '../types/quiz';
+import {
+  GameSummary,
+  GamePreference,
+  GameResult,
+  Game,
+  QuestionState,
+  ExamGamePreference,
+  GameData,
+  ExamGameData,
+  FlashCardGameData,
+  FlashCardGamePreference,
+  GameAnswerResult,
+} from '../types/game';
+import { AnswerQuestionResult, Question, QuestionAnswer } from '../types/quiz';
 import {
   validateUserLoggedIn,
   validateUserId,
   validateQuestionAnswerDataType,
   checkQuestionAnswer,
+  addMinuteToDate,
 } from '../common/service.helper';
 import shuffle from 'just-shuffle';
 import { instanceToPlain } from 'class-transformer';
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { BaseModel } from 'schemas/helper';
+import { BaseModel, BaseModelMethods } from 'schemas/helper';
 import { CommonServiceException } from 'common/common-service.exception';
 import { InjectMapper } from '@automapper/nestjs';
 import { Mapper } from '@automapper/core';
+import { Document, Types } from 'mongoose';
 
 @Injectable()
 export class GameService {
@@ -48,19 +62,42 @@ export class GameService {
       question.answer = undefined;
     });
 
-    const gameObject: Omit<Game, 'id'> = {
-      userId: user.id,
-      quizId,
-      quizTitle: quiz.title,
-      questions: instanceToPlain(quiz).questions,
-      isPlaying: true,
-      correctAnswers,
-      ...preference,
-    };
-    const game = new this.gameModel(gameObject);
+    const game = new Game();
+    game.startTime = new Date();
+    game.userId = user.id;
+    game.quizId = quizId;
+    game.quizTitle = quiz.title;
+    game.questions = quiz.questions;
+    game.isPlaying = true;
+    game.correctAnswers = correctAnswers;
 
-    await game.save();
-    return this.mapper.map(game.toClass(), GameSummary, Game);
+    if (preference instanceof ExamGamePreference) {
+      const data = new ExamGameData();
+      data.preference = preference;
+      if (preference.examTimeMinute) {
+        data.maxFinishTime = addMinuteToDate(game.startTime, preference.examTimeMinute);
+      }
+      game.data = data;
+    } else if (preference instanceof FlashCardGamePreference) {
+      const data = new FlashCardGameData();
+      data.currentQuestionIndex = 0;
+      if (preference.questionTimeMinute) {
+        data.currentQuestionMaxTime = addMinuteToDate(
+          game.startTime,
+          preference.questionTimeMinute
+        );
+      }
+      if (preference.retryCount) {
+        data.currentQuestionRetryCount = 0;
+      }
+      game.data = data;
+      game.questionsState = [];
+    }
+
+    const gameDb = new this.gameModel(instanceToPlain(game));
+
+    await gameDb.save();
+    return this.mapper.map(gameDb.toClass(), GameSummary, Game);
   }
 
   private async getGameInternal(id: string) {
@@ -83,33 +120,93 @@ export class GameService {
     gameId: string,
     questionId: string,
     questionAnswer: number | string | null
-  ): Promise<AnswerQuestionResult> {
-    const game = await this.getGameInternal(gameId);
+  ): Promise<GameAnswerResult> {
+    const gameDb = await this.getGameInternal(gameId);
 
-    validateUserId(session, game.userId);
-    this.validateGamePlaying(game);
+    validateUserId(session, gameDb.userId);
+    this.validateGamePlaying(gameDb);
 
-    const questionDocumentIndex = game.questions.findIndex((item) => item.id == questionId);
+    const currentDate = new Date();
+    const game = gameDb.toClass();
+    if (
+      game.data instanceof ExamGameData &&
+      game.data.maxFinishTime &&
+      currentDate > game.data.maxFinishTime
+    ) {
+      await this.internalFinishGame(gameDb, game);
+      throw new CommonServiceException('Game is timeout');
+    }
 
-    if (questionDocumentIndex == -1) {
+    const questionIndex = gameDb.questions.findIndex((item) => item.id == questionId);
+
+    if (questionIndex == -1) {
       throw new NotFoundException('Question not found in this game');
     }
 
-    const questionDocument = game.questions[questionDocumentIndex];
-    const correctAnswer = game.correctAnswers![questionDocumentIndex];
+    const questionDocument = gameDb.questions[questionIndex];
+    const correctAnswer = gameDb.correctAnswers![questionIndex];
+    let acceptedAnswer = questionAnswer;
+    const result: GameAnswerResult = {};
 
-    validateQuestionAnswerDataType(correctAnswer, questionAnswer);
-    questionDocument.answer = questionAnswer ?? undefined;
+    if (game.data instanceof FlashCardGameData) {
+      if (questionIndex != game.data.currentQuestionIndex) {
+        throw new CommonServiceException('Cannot answer question that is not current question');
+      }
 
-    await game.save();
+      let mustNext = false;
 
-    if (game.isInteractive) {
-      return {
-        correct: checkQuestionAnswer(questionDocument, correctAnswer, questionAnswer),
-      };
+      if (game.data.currentQuestionMaxTime && currentDate > game.data.currentQuestionMaxTime) {
+        mustNext = true;
+        acceptedAnswer = questionDocument.answer ?? null;
+      }
+
+      validateQuestionAnswerDataType(correctAnswer, acceptedAnswer);
+
+      const data = gameDb.data as FlashCardGameData;
+      if (data.preference.retryCount) {
+        data.currentQuestionRetryCount!!++;
+        if (data.currentQuestionRetryCount == data.preference.retryCount) {
+          mustNext = true;
+        } else if (data.currentQuestionRetryCount!! > data.preference.retryCount) {
+          throw new CommonServiceException('Number of retry exceeded max allowed retry');
+        }
+      }
+
+      const state = this.generateQuestionState(
+        game.questions[questionIndex],
+        acceptedAnswer,
+        correctAnswer
+      );
+      if (state == QuestionState.Correct) {
+        mustNext = true;
+      }
+
+      if (mustNext) {
+        gameDb.questionsState!!.push(state);
+        data.currentQuestionIndex++;
+
+        if (data.preference.retryCount) {
+          data.currentQuestionRetryCount = 0;
+        }
+
+        if (data.preference.questionTimeMinute) {
+          data.currentQuestionMaxTime = addMinuteToDate(
+            new Date(),
+            data.preference.questionTimeMinute
+          );
+        }
+      }
+
+      result.state = state;
+      result.next = mustNext;
     }
 
-    return {};
+    validateQuestionAnswerDataType(correctAnswer, acceptedAnswer);
+    questionDocument.answer = acceptedAnswer ?? undefined;
+
+    await gameDb.save();
+
+    return result;
   }
 
   async finishGame(session: Session, gameId: string) {
@@ -117,14 +214,33 @@ export class GameService {
 
     validateUserId(session, game.userId);
     this.validateGamePlaying(game);
+    await this.internalFinishGame(game, game.toClass());
+  }
 
-    const { questions, correctAnswers } = game.toClass();
+  private generateQuestionState(
+    question: Question,
+    userAnswer: QuestionAnswer | null,
+    actualAnswer: QuestionAnswer
+  ): QuestionState {
+    if (userAnswer === undefined) {
+      return QuestionState.Unanswered;
+    } else if (checkQuestionAnswer(question, actualAnswer, userAnswer)) {
+      return QuestionState.Correct;
+    } else {
+      return QuestionState.Incorrect;
+    }
+  }
+
+  private async internalFinishGame(
+    game: Document<any, any, Game> & Game,
+    { questions, correctAnswers }: Game
+  ) {
     const result: GameResult = {
       unanswered: 0,
       correct: 0,
       wrong: 0,
-      questionsState: [],
     };
+    const questionsState: Array<QuestionState> = [];
 
     questions.forEach((question, index) => {
       const actualAnswer = correctAnswers![index];
@@ -141,11 +257,12 @@ export class GameService {
         result.wrong += 1;
         state = QuestionState.Incorrect;
       }
-      result.questionsState.push(state);
+      questionsState.push(state);
     });
 
     game.isPlaying = false;
     game.result = result;
+    game.questionsState = questionsState;
     await game.save();
   }
 }
