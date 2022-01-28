@@ -55,6 +55,9 @@ export default {
         answer: value,
       });
     },
+    question() {
+      this.answer = this.initialAnswer;
+    },
   },
   computed: {
     inputProps() {
