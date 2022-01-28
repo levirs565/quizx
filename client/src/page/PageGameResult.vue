@@ -35,7 +35,7 @@
           :question="question"
           :editable="false"
           :initialAnswer="question.answer"
-          :answerState="game.result.questionsState[index]"
+          :answerState="game.questionsState[index]"
         >
           <template v-slot:content>
             <p class="text-body-1 text--primary my-2">
