@@ -101,7 +101,7 @@ export const GameSchema: BaseModelSchema<Game> = new Schema(
       required: true,
     },
     data: {
-      type: Object,
+      type: new Schema({}, { discriminatorKey: 'type' }),
       required: true,
     },
   },
@@ -109,11 +109,12 @@ export const GameSchema: BaseModelSchema<Game> = new Schema(
     collection: 'game',
   }
 );
+
 export const GameModelName = 'GameModel';
 
-GameSchema.path<Schema.Types.Subdocument>('data')
-  .discriminator(GameType.Exam, ExamGameDataSchema)
-  .discriminator(GameType.FlashCard, FlashCardGameDataSchema);
+const dataSubdocument = GameSchema.path<Schema.Types.Subdocument>('data')
+dataSubdocument.discriminator(GameType.Exam, ExamGameDataSchema);
+dataSubdocument.discriminator(GameType.FlashCard, FlashCardGameDataSchema);
 
 configureQuestionDiscriminators(GameSchema, 'questions', questionSchema);
 configureBaseModelSchema(GameSchema, Game);
