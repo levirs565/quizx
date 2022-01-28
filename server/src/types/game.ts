@@ -11,19 +11,19 @@ export abstract class GamePreference {
 export class FlashCardGamePreference extends GamePreference {
   @IsNumber()
   @Min(0)
-  questionTimeMinute?: Number;
+  questionTimeMinute?: number;
   @IsNumber()
   @Min(0)
-  retryCount?: Number;
+  retryCount?: number;
 }
 
 export class ExamGamePreference extends GamePreference {
   @IsNumber()
   @Min(0)
-  examTimeMinute?: Number;
+  examTimeMinute?: number;
 }
 
-enum GameType {
+export enum GameType {
   Exam = 'exam',
   FlashCard = 'flash-card'
 }
@@ -75,13 +75,13 @@ export class GameSummary {
   @AutoMap()
   result?: GameResult;
   @AutoMap()
-  finishTime!: Date;
+  startTime!: Date;
   @AutoMap()
-  endTime!: Date;
+  finishTime!: Date;
 }
 
 export abstract class GameData {
-  peference!: GamePreference;
+  preference!: GamePreference;
 }
 
 export class FlashCardGameData extends GameData {
@@ -91,11 +91,11 @@ export class FlashCardGameData extends GameData {
 }
 
 export class ExamGameData extends GameData {
-  peference!: ExamGamePreference;
+  preference!: ExamGamePreference;
   maxFinishTime!: Date;
 }
 
-export abstract class Game extends GameSummary {
+export class Game extends GameSummary {
   @Type(() => Question, {
     discriminator: questionDiscriminator,
   })
