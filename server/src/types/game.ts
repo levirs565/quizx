@@ -1,6 +1,15 @@
 import { AutoMap } from '@automapper/classes';
 import { Type } from 'class-transformer';
-import { IsBoolean, IsNumber, IsOptional, IsPositive, IsString, Min } from 'class-validator';
+import {
+  IsBoolean,
+  IsDefined,
+  IsNumber,
+  IsOptional,
+  IsPositive,
+  IsString,
+  Min,
+  ValidateNested,
+} from 'class-validator';
 import { Question, QuestionAnswer, questionDiscriminator } from './quiz';
 
 export abstract class GamePreference {
@@ -33,6 +42,8 @@ export enum GameType {
 export class PlayGameRequestBody {
   @IsString()
   quizId!: string;
+  @IsDefined()
+  @ValidateNested({ always: true })
   @Type(() => GamePreference, {
     discriminator: {
       property: 'type',
