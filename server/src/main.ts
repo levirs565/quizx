@@ -14,6 +14,7 @@ async function bootstrap() {
       whitelist: true,
       forbidNonWhitelisted: true,
       strictGroups: true,
+      transform: true,
     })
   );
   app.useGlobalInterceptors(new ClassSerializerInterceptor(app.get(Reflector)));
