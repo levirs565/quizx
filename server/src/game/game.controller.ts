@@ -10,7 +10,7 @@ export class GameController {
   constructor(private readonly gameService: GameService) {}
 
   @Post('/play')
-  play(@Session() session: SessionType, @Body() { quizId, ...preference }: PlayGameRequestBody) {
+  play(@Session() session: SessionType, @Body() { quizId, preference }: PlayGameRequestBody) {
     return this.gameService.playGame(session, quizId, preference);
   }
 
