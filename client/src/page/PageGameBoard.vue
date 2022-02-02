@@ -56,6 +56,8 @@ export default {
     submitAnswer(index, id) {
       Game.submitAnswer(this.game_id, id).then((result) => {
         this.game.data.currentQuestionIndex = result.currentQuestionIndex;
+        this.game.data.currentQuestionRetryCount =
+          result.currentQuestionRetryCount;
 
         if (this.game.questionsState.length == index) {
           this.game.questionsState.push(result.state);

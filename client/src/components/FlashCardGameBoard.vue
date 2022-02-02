@@ -6,18 +6,28 @@
     @finish="$emit('finish')"
   >
     <transition name="fade">
-      <question
-        v-if="showQuestion"
-        :index="currentQuestionIndex"
-        :question="currentQuestion"
-        :initialAnswer="currentQuestion.answer"
-        @answerChanged="$emit('answerChanged', $event)"
-      />
+      <div v-if="showQuestion">
+        <p v-if="game.data.preference.retryCount">
+          Retry count: {{ game.data.currentQuestionRetryCount }}. Max retry
+          count:
+          {{ game.data.preference.retryCount }}
+        </p>
+        <question
+          :index="currentQuestionIndex"
+          :question="currentQuestion"
+          :initialAnswer="currentQuestion.answer"
+          @answerChanged="$emit('answerChanged', $event)"
+        />
+      </div>
       <p v-else-if="currentQuestionIndex == -1">
         Game is completed. Press 'Finish' now.
       </p>
     </transition>
     <template v-slot:buttons>
+      <transition name="fade">
+        <p class="error--text" v-show="showTryAgain">Try again</p>
+      </transition>
+      <v-spacer />
       <v-btn
         v-if="showQuestion"
         class="mr-4"
@@ -70,6 +80,9 @@ export default {
         if (state == 0) return "success";
         else if (state == 1) return "error";
       });
+    },
+    showTryAgain() {
+      return this.game.data.currentQuestionRetryCount > 0;
     },
   },
 };
