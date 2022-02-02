@@ -2,7 +2,7 @@
   <base-game-board
     :game="game"
     :jumperButtons="jumperButtons"
-    :showButtons="showQuestion"
+    :showButtons="showButtons"
     @finish="$emit('finish')"
   >
     <transition name="fade">
@@ -13,6 +13,9 @@
         :initialAnswer="currentQuestion.answer"
         @answerChanged="$emit('answerChanged', $event)"
       />
+      <p v-else-if="currentQuestionIndex == -1">
+        Game is completed. Press 'Finish' now.
+      </p>
     </transition>
     <template v-slot:buttons>
       <v-btn
@@ -36,6 +39,7 @@ export default {
     return {
       currentQuestion: {},
       showQuestion: false,
+      showButtons: false,
     };
   },
   watch: {
@@ -44,10 +48,14 @@ export default {
       handler(val) {
         this.showQuestion = false;
         if (val > -1) {
+          this.showButtons = false;
           setTimeout(() => {
             this.currentQuestion = this.game.questions[val];
             this.showQuestion = true;
+            this.showButtons = true;
           }, 500);
+        } else {
+          this.showButtons = true;
         }
       },
     },

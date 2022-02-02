@@ -55,9 +55,7 @@ export default {
     },
     submitAnswer(index, id) {
       Game.submitAnswer(this.game_id, id).then((result) => {
-        if (result.next) {
-          this.game.data.currentQuestionIndex++;
-        }
+        this.game.data.currentQuestionIndex = result.currentQuestionIndex;
 
         if (this.game.questionsState.length == index) {
           this.game.questionsState.push(result.state);
