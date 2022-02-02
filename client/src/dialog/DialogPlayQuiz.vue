@@ -22,7 +22,7 @@
           type="number"
           suffix="minute"
           v-show="exam.timeLimit.enabled"
-          v-model="exam.timeLimit.minute"
+          v-model.number="exam.timeLimit.minute"
           outlined
           hide-details
         />
@@ -37,7 +37,7 @@
           type="number"
           suffix="minute"
           v-show="flashCard.questionTimeLimit.enabled"
-          v-model="flashCard.questionTimeLimit.minute"
+          v-model.number="flashCard.questionTimeLimit.minute"
           outlined
           hide-details
         />
@@ -49,7 +49,7 @@
           label="Retry Count Limit"
           type="number"
           v-show="flashCard.retryCountLimit.enabled"
-          v-model="flashCard.retryCountLimit.count"
+          v-model.number="flashCard.retryCountLimit.count"
           outlined
           hide-details
         />
