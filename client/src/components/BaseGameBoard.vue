@@ -26,7 +26,10 @@
               <template v-slot:activator="{ on, attrs }">
                 <v-btn color="error" v-on="on" v-bind="attrs"> Finish </v-btn>
               </template>
-              <dialog-finish-game @submit="$emit('finish')" />
+              <dialog-finish-game
+                @submit="$emit('finish')"
+                @close="isFinishDialogShow = false"
+              />
             </v-dialog>
           </v-row>
         </transition>
