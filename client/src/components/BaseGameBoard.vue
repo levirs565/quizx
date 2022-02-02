@@ -19,10 +19,15 @@
 
         <slot />
 
-        <dialog-finish-game
-          v-model="isFinishDialogShow"
-          @submit="$emit('finish')"
-        />
+        <v-row class="mt-4" justify="end">
+          <slot name="buttons" />
+          <v-dialog v-model="isFinishDialogShow" max-width="350px">
+            <template v-slot:activator="{ on, attrs }">
+              <v-btn color="error" v-on="on" v-bind="attrs"> Finish </v-btn>
+            </template>
+            <dialog-finish-game @submit="$emit('finish')" />
+          </v-dialog>
+        </v-row>
       </v-col>
     </v-row>
   </v-container>

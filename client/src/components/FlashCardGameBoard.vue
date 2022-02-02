@@ -10,10 +10,13 @@
       :initialAnswer="currentQuestion.answer"
       @answerChanged="$emit('answerChanged', $event)"
     />
-    <v-btn
-      @click="$emit('submitAnswer', currentQuestionIndex, currentQuestion.id)"
-      >Submit</v-btn
-    >
+    <template v-slot:buttons>
+      <v-btn
+        class="mr-4"
+        @click="$emit('submitAnswer', currentQuestionIndex, currentQuestion.id)"
+        >Submit</v-btn
+      >
+    </template>
   </base-game-board>
 </template>
 <script>
