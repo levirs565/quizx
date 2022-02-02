@@ -102,7 +102,7 @@ export const Game = {
     );
     return throwError(res);
   },
-  async submitAnswer(gameId: PerformanceServerTiming, questionId: string) {
+  async submitAnswer(gameId: string, questionId: string) {
     const res = await instance.post(
       `/api/game/${gameId}/question/${questionId}`
     );
