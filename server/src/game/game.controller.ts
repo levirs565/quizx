@@ -29,6 +29,15 @@ export class GameController {
     return this.gameService.putAnswer(session, gameId, questionId, answer);
   }
 
+  @Post('/:gameId/question/:questionId')
+  submitAnswer(
+    @Session() session: SessionType,
+    @Param('gameId') gameId: string,
+    @Param('questionId') questionId: string
+  ) {
+    return this.gameService.submitAnswer(session, gameId, questionId);
+  }
+
   @Post('/:id/finish')
   @UseInterceptors(ActionInterceptor)
   finish(@Session() session: SessionType, @Param('id') id: string) {

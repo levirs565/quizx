@@ -116,12 +116,35 @@ export class GameService {
     return game;
   }
 
+  private findGameQuestionById(game: Game, questionId: string) {
+    const questionIndex = game.questions.findIndex((item) => item.id == questionId);
+
+    if (questionIndex == -1) {
+      throw new NotFoundException('Question not found in this game');
+    }
+
+    const questionDocument = game.questions[questionIndex];
+    const correctAnswer = game.correctAnswers![questionIndex];
+
+    return {
+      index: questionIndex,
+      document: questionDocument,
+      correctAnswer,
+    };
+  }
+
+  private validateAnswerCurrentQuestion(index: number, data: FlashCardGameData) {
+    if (index != data.currentQuestionIndex) {
+      throw new CommonServiceException('Cannot answer question that is not current question');
+    }
+  }
+
   async putAnswer(
     session: Session,
     gameId: string,
     questionId: string,
     questionAnswer: number | string | null
-  ): Promise<GameAnswerResult> {
+  ) {
     const gameDb = await this.getGameInternal(gameId);
 
     validateUserId(session, gameDb.userId);
@@ -138,76 +161,88 @@ export class GameService {
       throw new CommonServiceException('Game is timeout');
     }
 
-    const questionIndex = gameDb.questions.findIndex((item) => item.id == questionId);
-
-    if (questionIndex == -1) {
-      throw new NotFoundException('Question not found in this game');
-    }
-
-    const questionDocument = gameDb.questions[questionIndex];
-    const correctAnswer = gameDb.correctAnswers![questionIndex];
-    let acceptedAnswer = questionAnswer;
-    const result: GameAnswerResult = {};
+    const questionMeta = this.findGameQuestionById(gameDb, questionId);
 
     if (game.data instanceof FlashCardGameData) {
-      if (questionIndex != game.data.currentQuestionIndex) {
-        throw new CommonServiceException('Cannot answer question that is not current question');
-      }
-
-      let mustNext = false;
-
+      this.validateAnswerCurrentQuestion(questionMeta.index, game.data);
       if (game.data.currentQuestionMaxTime && currentDate > game.data.currentQuestionMaxTime) {
-        mustNext = true;
-        acceptedAnswer = questionDocument.answer ?? null;
+        throw new CommonServiceException('Question answer time is timeout');
       }
-
-      validateQuestionAnswerDataType(correctAnswer, acceptedAnswer);
-
-      const data = gameDb.data as FlashCardGameData;
-      if (data.preference.retryCount) {
-        data.currentQuestionRetryCount!!++;
-        if (data.currentQuestionRetryCount == data.preference.retryCount) {
-          mustNext = true;
-        } else if (data.currentQuestionRetryCount!! > data.preference.retryCount) {
-          throw new CommonServiceException('Number of retry exceeded max allowed retry');
-        }
-      }
-
-      const state = this.generateQuestionState(
-        game.questions[questionIndex],
-        acceptedAnswer,
-        correctAnswer
-      );
-      if (state == QuestionState.Correct) {
-        mustNext = true;
-      }
-
-      if (mustNext) {
-        gameDb.questionsState!!.push(state);
-        data.currentQuestionIndex++;
-
-        if (data.preference.retryCount) {
-          data.currentQuestionRetryCount = 0;
-        }
-
-        if (data.preference.questionTimeMinute) {
-          data.currentQuestionMaxTime = addMinuteToDate(
-            new Date(),
-            data.preference.questionTimeMinute
-          );
-        }
-      }
-
-      result.state = state;
-      result.next = mustNext;
     }
 
-    validateQuestionAnswerDataType(correctAnswer, acceptedAnswer);
-    questionDocument.answer = acceptedAnswer ?? undefined;
+    validateQuestionAnswerDataType(questionMeta.correctAnswer, questionAnswer);
+    questionMeta.document.answer = questionAnswer ?? undefined;
+
+    await gameDb.save();
+  }
+
+  async submitAnswer(
+    session: Session,
+    gameId: string,
+    questionId: string
+  ): Promise<GameAnswerResult> {
+    const gameDb = await this.getGameInternal(gameId);
+
+    validateUserId(session, gameDb.userId);
+    this.validateGamePlaying(gameDb);
+
+    const game = gameDb.toClass();
+
+    if (!(game.data instanceof FlashCardGameData))
+      throw new CommonServiceException('Submit only work for flash card game');
+
+    const data = gameDb.data as FlashCardGameData;
+    let mustNext = false;
+
+    const questionMeta = this.findGameQuestionById(gameDb, questionId);
+
+    this.validateAnswerCurrentQuestion(questionMeta.index, data);
+
+    if (game.data.currentQuestionMaxTime && new Date() > game.data.currentQuestionMaxTime) {
+      mustNext = true;
+    }
+
+    if (data.preference.retryCount) {
+      data.currentQuestionRetryCount!!++;
+      if (data.currentQuestionRetryCount == data.preference.retryCount) {
+        mustNext = true;
+      } else if (data.currentQuestionRetryCount!! > data.preference.retryCount) {
+        throw new CommonServiceException('Number of retry exceeded max allowed retry');
+      }
+    }
+
+    const question = game.questions[questionMeta.index];
+    const state = this.generateQuestionState(
+      question,
+      question.answer ?? null,
+      questionMeta.correctAnswer
+    );
+    if (state == QuestionState.Correct) {
+      mustNext = true;
+    }
+
+    if (mustNext) {
+      gameDb.questionsState!!.push(state);
+      data.currentQuestionIndex++;
+
+      if (data.preference.retryCount) {
+        data.currentQuestionRetryCount = 0;
+      }
+
+      if (data.preference.questionTimeMinute) {
+        data.currentQuestionMaxTime = addMinuteToDate(
+          new Date(),
+          data.preference.questionTimeMinute
+        );
+      }
+    }
 
     await gameDb.save();
 
-    return result;
+    return {
+      next: mustNext,
+      state,
+    };
   }
 
   async finishGame(session: Session, gameId: string) {
