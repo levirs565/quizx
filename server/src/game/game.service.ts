@@ -223,17 +223,23 @@ export class GameService {
 
     if (mustNext) {
       gameDb.questionsState!!.push(state);
-      data.currentQuestionIndex++;
+      if (data.currentQuestionIndex < gameDb.questions.length) {
+        data.currentQuestionIndex++;
 
-      if (data.preference.retryCount) {
-        data.currentQuestionRetryCount = 0;
-      }
+        if (data.preference.retryCount) {
+          data.currentQuestionRetryCount = 0;
+        }
 
-      if (data.preference.questionTimeMinute) {
-        data.currentQuestionMaxTime = addMinuteToDate(
-          new Date(),
-          data.preference.questionTimeMinute
-        );
+        if (data.preference.questionTimeMinute) {
+          data.currentQuestionMaxTime = addMinuteToDate(
+            new Date(),
+            data.preference.questionTimeMinute
+          );
+        }
+      } else {
+        data.currentQuestionIndex = -1;
+        data.currentQuestionRetryCount = undefined;
+        data.currentQuestionMaxTime = undefined;
       }
     }
 
