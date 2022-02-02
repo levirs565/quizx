@@ -102,6 +102,12 @@ export const Game = {
     );
     return throwError(res);
   },
+  async submitAnswer(gameId: PerformanceServerTiming, questionId: string) {
+    const res = await instance.post(
+      `/api/game/${gameId}/question/${questionId}`
+    );
+    return throwError(res);
+  },
   async finishGame(gameId: string) {
     const res = await instance.post(`/api/game/${gameId}/finish`);
     return throwError(res);
