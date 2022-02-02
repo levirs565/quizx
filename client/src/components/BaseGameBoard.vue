@@ -20,7 +20,7 @@
         <slot />
 
         <transition name="fade">
-          <v-row class="my-4" justify="end" v-if="showButtons">
+          <v-row class="my-4" justify="end" v-if="showButtons" no-gutters>
             <slot name="buttons" />
             <v-dialog v-model="isFinishDialogShow" max-width="350px">
               <template v-slot:activator="{ on, attrs }">
