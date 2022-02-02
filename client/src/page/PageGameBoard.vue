@@ -11,11 +11,18 @@
             :style="{ position: 'sticky', top: sidebarTop }"
             align-self="start"
           >
-            <jumper
-              :buttons="jumperButtons"
-              class="w-full"
-              @click="goToQuestion"
-            ></jumper>
+            <v-card>
+              <v-card-text
+                class="text-center text--primary pb-0"
+                v-if="timer.show"
+              >
+                <span class="text-h5">{{ timer.timeLeftText }}</span>
+              </v-card-text>
+              <jumper
+                :buttons="jumperButtons"
+                @click="goToQuestion"
+              ></jumper>
+            </v-card>
           </v-col>
           <v-col>
             <h1 class="text-h4 mb-4">{{ game.quizTitle }}</h1>
@@ -89,6 +96,12 @@ export default {
       jumperButtons: [],
       state: null,
       isFinishDialogShow: false,
+      timer: {
+        show: false,
+        timeLeftText: "",
+        maxTime: 0,
+        interval: 0,
+      },
     };
   },
   methods: {
@@ -123,11 +136,30 @@ export default {
           this.jumperButtons = this.questions.map((question) =>
             this.getQuestionColor(question.answer)
           );
+
+          if (val.data.type === "exam") {
+            if (val.data.maxFinishTime) {
+              this.timer.show = true;
+              this.timer.maxTime = new Date(val.data.maxFinishTime).getTime();
+              this.timerTick();
+              this.timer.interval = setInterval(this.timerTick, 1000);
+            }
+          }
         }),
         (val) => {
           this.state = val;
         }
       );
+    },
+    timerTick() {
+      const timeLeft = (this.timer.maxTime - Date.now()) / 1000;
+      if (timeLeft <= 0) this.finish();
+      const minute = Math.floor(timeLeft / 60);
+      const second = Math.round(timeLeft - minute * 60);
+      this.timer.timeLeftText =
+        minute.toString().padStart(2, "0") +
+        ":" +
+        second.toString().padStart(2, "0");
     },
     getQuestionColor(answer) {
       if (!isAnswerEmpty(answer)) return "primary";
@@ -150,6 +182,9 @@ export default {
   },
   mounted() {
     this.updateState();
+  },
+  beforeDestroy() {
+    if (this.timer.interval) clearInterval(this.timer.interval);
   },
   computed: {
     sidebarTop() {

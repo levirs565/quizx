@@ -1,19 +1,17 @@
 <template>
-  <v-card>
-    <v-card-text class="jumper">
-      <v-btn
-        v-for="(color, index) in buttons"
-        :key="index"
-        @click="jumpClick(index)"
-        :color="color"
-        depressed
-        tile
-        small
-      >
-        {{ index + 1 }}
-      </v-btn>
-    </v-card-text>
-  </v-card>
+  <v-card-text class="jumper">
+    <v-btn
+      v-for="(color, index) in buttons"
+      :key="index"
+      @click="jumpClick(index)"
+      :color="color"
+      depressed
+      tile
+      small
+    >
+      {{ index + 1 }}
+    </v-btn>
+  </v-card-text>
 </template>
 
 <script>
