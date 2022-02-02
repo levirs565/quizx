@@ -80,6 +80,7 @@ export class GameService {
       game.data = data;
     } else if (preference instanceof FlashCardGamePreference) {
       const data = new FlashCardGameData();
+      data.preference = preference;
       data.currentQuestionIndex = 0;
       if (preference.questionTimeMinute) {
         data.currentQuestionMaxTime = addMinuteToDate(
