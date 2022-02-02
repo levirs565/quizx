@@ -265,7 +265,7 @@ export class GameService {
     userAnswer: QuestionAnswer | null,
     actualAnswer: QuestionAnswer
   ): QuestionState {
-    if (userAnswer === undefined) {
+    if (userAnswer === null) {
       return QuestionState.Unanswered;
     } else if (checkQuestionAnswer(question, actualAnswer, userAnswer)) {
       return QuestionState.Correct;
