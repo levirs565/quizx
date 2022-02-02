@@ -223,7 +223,7 @@ export class GameService {
 
     if (mustNext) {
       gameDb.questionsState!!.push(state);
-      if (data.currentQuestionIndex < gameDb.questions.length) {
+      if (data.currentQuestionIndex + 1 < gameDb.questions.length) {
         data.currentQuestionIndex++;
 
         if (data.preference.retryCount) {
@@ -246,7 +246,7 @@ export class GameService {
     await gameDb.save();
 
     return {
-      next: mustNext,
+      currentQuestionIndex: data.currentQuestionIndex,
       state,
     };
   }

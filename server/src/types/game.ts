@@ -135,6 +135,6 @@ export class Game extends GameSummary {
 }
 
 export interface GameAnswerResult {
-  state?: QuestionState;
-  next?: boolean;
+  state: QuestionState;
+  currentQuestionIndex: number;
 }
