@@ -19,15 +19,17 @@
 
         <slot />
 
-        <v-row class="mt-4" justify="end">
-          <slot name="buttons" />
-          <v-dialog v-model="isFinishDialogShow" max-width="350px">
-            <template v-slot:activator="{ on, attrs }">
-              <v-btn color="error" v-on="on" v-bind="attrs"> Finish </v-btn>
-            </template>
-            <dialog-finish-game @submit="$emit('finish')" />
-          </v-dialog>
-        </v-row>
+        <transition name="fade">
+          <v-row class="mt-4" justify="end" v-if="showButtons">
+            <slot name="buttons" />
+            <v-dialog v-model="isFinishDialogShow" max-width="350px">
+              <template v-slot:activator="{ on, attrs }">
+                <v-btn color="error" v-on="on" v-bind="attrs"> Finish </v-btn>
+              </template>
+              <dialog-finish-game @submit="$emit('finish')" />
+            </v-dialog>
+          </v-row>
+        </transition>
       </v-col>
     </v-row>
   </v-container>
@@ -40,6 +42,10 @@ export default {
   props: {
     game: Object,
     jumperButtons: Array,
+    showButtons: {
+      type: Boolean,
+      default: true,
+    },
   },
   data() {
     return {
@@ -53,3 +59,13 @@ export default {
   },
 };
 </script>
+<style>
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.5s;
+}
+.fade-enter,
+.fade-leave-to {
+  opacity: 0;
+}
+</style>

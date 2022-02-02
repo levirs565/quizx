@@ -2,16 +2,21 @@
   <base-game-board
     :game="game"
     :jumperButtons="jumperButtons"
+    :showButtons="showQuestion"
     @finish="$emit('finish')"
   >
-    <question
-      :index="currentQuestionIndex"
-      :question="currentQuestion"
-      :initialAnswer="currentQuestion.answer"
-      @answerChanged="$emit('answerChanged', $event)"
-    />
+    <transition name="fade">
+      <question
+        v-if="showQuestion"
+        :index="currentQuestionIndex"
+        :question="currentQuestion"
+        :initialAnswer="currentQuestion.answer"
+        @answerChanged="$emit('answerChanged', $event)"
+      />
+    </transition>
     <template v-slot:buttons>
       <v-btn
+        v-if="showQuestion"
         class="mr-4"
         @click="$emit('submitAnswer', currentQuestionIndex, currentQuestion.id)"
         >Submit</v-btn
@@ -28,13 +33,26 @@ export default {
     game: Object,
   },
   data() {
-    return {};
+    return {
+      currentQuestion: {},
+      showQuestion: false,
+    };
   },
-  methods: {},
-  computed: {
-    currentQuestion() {
-      return this.game.questions[this.currentQuestionIndex];
+  watch: {
+    currentQuestionIndex: {
+      immediate: true,
+      handler(val) {
+        this.showQuestion = false;
+        if (val > -1) {
+          setTimeout(() => {
+            this.currentQuestion = this.game.questions[val];
+            this.showQuestion = true;
+          }, 500);
+        }
+      },
     },
+  },
+  computed: {
     currentQuestionIndex() {
       return this.game.data.currentQuestionIndex;
     },
