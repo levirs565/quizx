@@ -79,6 +79,7 @@ export default {
         const state = this.game.questionsState[index];
         if (state == 0) return "success";
         else if (state == 1) return "error";
+        else if (state == 2) return "warning"
       });
     },
     showTryAgain() {
