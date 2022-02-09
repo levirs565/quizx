@@ -24,3 +24,48 @@ export function formatSecondTime(time: number): string {
     second.toString().padStart(2, "0")
   );
 }
+
+export class CounDownTimer {
+  enabled: boolean;
+  text: string;
+  endTime?: number;
+  interval?: number;
+  onEnd: () => void;
+
+  constructor(onEnd: () => void) {
+    this.enabled = false;
+    this.text = "";
+    this.onEnd = onEnd;
+  }
+
+  stop() {
+    if (this.interval) {
+      clearInterval(this.interval);
+      this.interval = undefined;
+    }
+
+    if (this.enabled) {
+      this.enabled = false;
+      this.text = "";
+    }
+  }
+
+  start(endTime: number) {
+    this.stop();
+
+    this.endTime = endTime;
+    this.interval = setInterval(this.tick, 1000);
+    this.tick();
+    this.enabled = true;
+  }
+
+  tick = () => {
+    const left = calculateTimeLeftSecond(this.endTime!!);
+    if (left <= 0) {
+      this.stop();
+      this.onEnd();
+      return;
+    }
+    this.text = formatSecondTime(left);
+  };
+}

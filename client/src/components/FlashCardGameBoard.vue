@@ -15,7 +15,7 @@
           </p>
           <v-spacer />
           <p v-if="game.data.preference.questionTimeMinute">
-            Time left: {{ timer.timeLeftText }}
+            Time left: {{ timer.text }}
           </p>
         </v-row>
         <question
@@ -41,7 +41,7 @@
   </base-game-board>
 </template>
 <script>
-import { calculateTimeLeftSecond, formatSecondTime } from "@/utils";
+import { CounDownTimer } from "@/utils";
 import BaseGameBoard from "./BaseGameBoard.vue";
 import Question from "./Question.vue";
 export default {
@@ -54,23 +54,12 @@ export default {
       currentQuestion: {},
       showQuestion: false,
       showButtons: false,
-      timer: {
-        interval: 0,
-        timeLeftText: "",
-        maxTime: 0,
-      },
+      timer: new CounDownTimer(() => {
+        this.submitCurrentAnswer();
+      }),
     };
   },
   methods: {
-    timerTick() {
-      const timeLeft = calculateTimeLeftSecond(this.timer.maxTime);
-      if (timeLeft <= 0) {
-        this.submitCurrentAnswer();
-        clearInterval(this.timer.interval);
-        return;
-      }
-      this.timer.timeLeftText = formatSecondTime(timeLeft);
-    },
     submitCurrentAnswer() {
       this.$emit(
         "submitAnswer",
@@ -99,11 +88,7 @@ export default {
     "game.data.currentQuestionMaxTime": {
       immediate: true,
       handler(val) {
-        if (this.timer.interval) clearInterval(this.timer.interval);
-
-        this.timer.maxTime = new Date(val).getTime();
-        this.timerTick();
-        this.timer.interval = setInterval(this.timerTick, 1000);
+        this.timer.start(new Date(val).getTime());
       },
     },
   },
