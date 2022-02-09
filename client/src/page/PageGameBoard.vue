@@ -58,6 +58,7 @@ export default {
         this.game.data.currentQuestionIndex = result.currentQuestionIndex;
         this.game.data.currentQuestionRetryCount =
           result.currentQuestionRetryCount;
+        this.game.data.currentQuestionMaxTime = result.currentQuestionMaxTime;
 
         if (this.game.questionsState.length == index) {
           this.game.questionsState.push(result.state);

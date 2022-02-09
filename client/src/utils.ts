@@ -10,3 +10,17 @@ const CODEPOINT_A = "A".charCodeAt(0);
 export function getChoiceIndex(index: number) {
   return String.fromCharCode(CODEPOINT_A + index);
 }
+
+export function calculateTimeLeftSecond(from: number): number {
+  return (from - Date.now()) / 1000;
+}
+
+export function formatSecondTime(time: number): string {
+  const minute = Math.floor(time / 60);
+  const second = Math.round(time - minute * 60);
+  return (
+    minute.toString().padStart(2, "0") +
+    ":" +
+    second.toString().padStart(2, "0")
+  );
+}

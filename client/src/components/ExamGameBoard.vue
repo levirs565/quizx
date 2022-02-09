@@ -30,7 +30,11 @@
   </base-game-board>
 </template>
 <script>
-import { isAnswerEmpty } from "@/utils";
+import {
+  calculateTimeLeftSecond,
+  formatSecondTime,
+  isAnswerEmpty,
+} from "@/utils";
 import BaseGameBoard from "./BaseGameBoard.vue";
 import Question from "./Question.vue";
 export default {
@@ -63,17 +67,12 @@ export default {
       }
     },
     timerTick() {
-      const timeLeft = (this.timer.maxTime - Date.now()) / 1000;
+      const timeLeft = calculateTimeLeftSecond(this.timer.maxTime);
       if (timeLeft <= 0) {
         this.$emit("finish");
         clearInterval(this.timer.interval);
       }
-      const minute = Math.floor(timeLeft / 60);
-      const second = Math.round(timeLeft - minute * 60);
-      this.timer.timeLeftText =
-        minute.toString().padStart(2, "0") +
-        ":" +
-        second.toString().padStart(2, "0");
+      this.timer.timeLeftText = formatSecondTime(timeLeft);
     },
     getElementTop(el) {
       const scrollY = window.pageYOffset || document.documentElement.scrollTop;
