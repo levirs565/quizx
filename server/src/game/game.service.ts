@@ -248,6 +248,7 @@ export class GameService {
     return {
       currentQuestionIndex: data.currentQuestionIndex,
       currentQuestionRetryCount: data.currentQuestionRetryCount,
+      currentQuestionMaxTime: data.currentQuestionMaxTime,
       state,
     };
   }

@@ -138,4 +138,5 @@ export interface GameAnswerResult {
   state: QuestionState;
   currentQuestionIndex: number;
   currentQuestionRetryCount?: number;
+  currentQuestionMaxTime?: Date;
 }
