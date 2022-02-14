@@ -1,5 +1,25 @@
 # CHANGELOG
 
+## v0.5.0
+
+All:
+
+- Support multiple game question (exam and flash card). Exam game has time limit. Flash card game has time limit per question adn retry count limit per question.
+
+Server:
+
+- Fix request body not transformed to class
+
+Client:
+
+- Migrate UI to Vuetify
+- Redesign layout
+- Restructure source code directory
+- Fix some small bugs
+- Imrpove performance by using dynamic import and make question component lazy
+- Upgrade MathLive
+- Use font from npm library to make QuizX fully offline
+
 ## v0.4.0
 
 All:
