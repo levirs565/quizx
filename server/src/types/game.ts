@@ -21,7 +21,7 @@ export class FlashCardGamePreference extends GamePreference {
   @IsNumber()
   @Min(0)
   @IsOptional()
-  questionTimeMinute?: number;
+  questionTimeSecond?: number;
   @IsNumber()
   @Min(0)
   @IsOptional()
@@ -31,7 +31,7 @@ export class FlashCardGamePreference extends GamePreference {
 export class ExamGamePreference extends GamePreference {
   @IsNumber()
   @IsOptional()
-  examTimeMinute?: number;
+  examTimeSecond?: number;
 }
 
 export enum GameType {

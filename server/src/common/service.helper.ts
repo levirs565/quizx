@@ -41,6 +41,6 @@ export function checkQuestionAnswer(
   return correctAnswer === userAnswer;
 }
 
-export function addMinuteToDate(date: Date, minute: number) {
-  return new Date(date.getTime() + minute * 60 * 1000)
+export function addSecondToDate(date: Date, minute: number) {
+  return new Date(date.getTime() + minute * 1000);
 }

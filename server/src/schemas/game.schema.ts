@@ -12,7 +12,7 @@ const BaseGamePreferenceSchema = {
 
 const ExamGameDataSchema = new Schema<ExamGameData>({
   preference: {
-    examTimeMinute: {
+    examTimeSecond: {
       required: false,
       type: Number,
     },
@@ -26,7 +26,7 @@ const ExamGameDataSchema = new Schema<ExamGameData>({
 
 const FlashCardGameDataSchema = new Schema<FlashCardGameData>({
   preference: {
-    questionTimeMinute: {
+    questionTimeSecond: {
       type: Number,
       required: false,
     },
@@ -112,7 +112,7 @@ export const GameSchema: BaseModelSchema<Game> = new Schema(
 
 export const GameModelName = 'GameModel';
 
-const dataSubdocument = GameSchema.path<Schema.Types.Subdocument>('data')
+const dataSubdocument = GameSchema.path<Schema.Types.Subdocument>('data');
 dataSubdocument.discriminator(GameType.Exam, ExamGameDataSchema);
 dataSubdocument.discriminator(GameType.FlashCard, FlashCardGameDataSchema);
 

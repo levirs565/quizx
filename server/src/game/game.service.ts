@@ -20,7 +20,7 @@ import {
   validateUserId,
   validateQuestionAnswerDataType,
   checkQuestionAnswer,
-  addMinuteToDate,
+  addSecondToDate,
 } from '../common/service.helper';
 import shuffle from 'just-shuffle';
 import { instanceToPlain } from 'class-transformer';
@@ -74,18 +74,18 @@ export class GameService {
     if (preference instanceof ExamGamePreference) {
       const data = new ExamGameData();
       data.preference = preference;
-      if (preference.examTimeMinute) {
-        data.maxFinishTime = addMinuteToDate(game.startTime, preference.examTimeMinute);
+      if (preference.examTimeSecond) {
+        data.maxFinishTime = addSecondToDate(game.startTime, preference.examTimeSecond);
       }
       game.data = data;
     } else if (preference instanceof FlashCardGamePreference) {
       const data = new FlashCardGameData();
       data.preference = preference;
       data.currentQuestionIndex = 0;
-      if (preference.questionTimeMinute) {
-        data.currentQuestionMaxTime = addMinuteToDate(
+      if (preference.questionTimeSecond) {
+        data.currentQuestionMaxTime = addSecondToDate(
           game.startTime,
-          preference.questionTimeMinute
+          preference.questionTimeSecond
         );
       }
       if (preference.retryCount) {
@@ -230,10 +230,10 @@ export class GameService {
           data.currentQuestionRetryCount = 0;
         }
 
-        if (data.preference.questionTimeMinute) {
-          data.currentQuestionMaxTime = addMinuteToDate(
+        if (data.preference.questionTimeSecond) {
+          data.currentQuestionMaxTime = addSecondToDate(
             new Date(),
-            data.preference.questionTimeMinute
+            data.preference.questionTimeSecond
           );
         }
       } else {
