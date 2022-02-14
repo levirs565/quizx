@@ -17,7 +17,7 @@ export function calculateTimeLeftSecond(from: number): number {
 
 export function formatSecondTime(time: number): string {
   const minute = Math.floor(time / 60);
-  const second = Math.round(time - minute * 60);
+  const second = Math.floor(time % 60);
   return (
     minute.toString().padStart(2, "0") +
     ":" +

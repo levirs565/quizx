@@ -14,7 +14,7 @@
             {{ game.data.preference.retryCount }}
           </p>
           <v-spacer />
-          <p v-if="game.data.preference.questionTimeMinute">
+          <p v-if="game.data.preference.questionTimeSecond">
             Time left: {{ timer.text }}
           </p>
         </v-row>

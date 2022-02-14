@@ -17,14 +17,10 @@
       />
       <template v-if="mode == 'exam'">
         <v-switch label="Limit Exam Time" v-model="exam.timeLimit.enabled" />
-        <v-text-field
+        <molecule-duration-input
           label="Exam Time Limit"
-          type="number"
-          suffix="minute"
           v-show="exam.timeLimit.enabled"
-          v-model.number="exam.timeLimit.minute"
-          outlined
-          hide-details
+          v-model="exam.timeLimit.second"
         />
       </template>
       <template v-if="mode == 'flash-card'">
@@ -32,14 +28,10 @@
           label="Limit Question Time"
           v-model="flashCard.questionTimeLimit.enabled"
         />
-        <v-text-field
-          label="Exam Question Limit"
-          type="number"
-          suffix="minute"
+        <molecule-duration-input
+          label="Question Time Limit"
           v-show="flashCard.questionTimeLimit.enabled"
-          v-model.number="flashCard.questionTimeLimit.minute"
-          outlined
-          hide-details
+          v-model="flashCard.questionTimeLimit.second"
         />
         <v-switch
           label="Limit Retry Count"
@@ -63,7 +55,9 @@
   </v-card>
 </template>
 <script>
+import MoleculeDurationInput from "@/components/MoleculeDurationInput.vue";
 export default {
+  components: { MoleculeDurationInput },
   data() {
     return {
       mode: "exam",
@@ -80,7 +74,7 @@ export default {
       exam: {
         timeLimit: {
           enabled: false,
-          minute: 20,
+          second: 20 * 60,
         },
       },
       flashCard: {
@@ -90,7 +84,7 @@ export default {
         },
         questionTimeLimit: {
           enabled: false,
-          minute: 1,
+          second: 1 * 60,
         },
       },
       preference: {
@@ -106,7 +100,7 @@ export default {
       };
       if (this.mode == "exam") {
         if (this.exam.timeLimit.enabled) {
-          preference.examTimeMinute = this.exam.timeLimit.minute;
+          preference.examTimeSecond = this.exam.timeLimit.second;
         }
       } else if (this.mode == "flash-card") {
         if (this.flashCard.retryCountLimit.enabled) {
@@ -114,8 +108,8 @@ export default {
         }
 
         if (this.flashCard.questionTimeLimit.enabled) {
-          preference.questionTimeMinute =
-            this.flashCard.questionTimeLimit.minute;
+          preference.questionTimeSecond =
+            this.flashCard.questionTimeLimit.second;
         }
       }
       this.$emit("play", preference);
