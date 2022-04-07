@@ -1,11 +1,6 @@
 <template>
   <v-card outlined>
     <v-card-text>
-      <text-editor-menu
-        :editor="editor"
-        :selectImageFunction="selectImageFunction"
-      />
-      <text-editor-bubble-menu :editor="editor" />
       <editor-content class="text-editor-card" :editor="editor" />
     </v-card-text>
   </v-card>

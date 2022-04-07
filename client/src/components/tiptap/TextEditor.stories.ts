@@ -1,4 +1,5 @@
 import TextEditor from "./TextEditor.vue";
+import TextEditorToolbar from "./TextEditorToolbar.vue";
 import TextViewer from "./TextViewer.vue";
 
 export default {
@@ -11,7 +12,7 @@ const text = `
 <h3>Heading 3</h3>
 <h4>Heading 4</h4>
 <h5>Heading 5</h5>
-<h5>Heading 6</h5>
+<h6>Heading 6</h6>
 
 <p>This is <strong>bold</strong> and <i>italic</i> text <math src="x^2+y^2=r^2"></math></p>
 <math-block src="x^2+y^2=r^2"></math-block>
@@ -105,23 +106,70 @@ const text = `
 export const editor = () => ({
   components: {
     TextEditor,
+    TextEditorToolbar,
   },
   data() {
     return {
       text,
+      editor: null,
     };
   },
   methods: {
     selectImage() {
-      return Promise.resolve({
-        src: window.prompt("URL"),
-      });
+      const src = window.prompt("URL");
+      if (src) {
+        this.editor.chain().focus().setImage({ src: src }).run();
+      }
     },
   },
   template: `
   <div>
-    <text-editor v-model="text" :selectImageFunction="selectImage" hasMenu></text-editor>
+    <text-editor-toolbar
+      :editor="editor"
+      @addImage="selectImage"
+    />
+    <text-editor 
+      v-model="text" 
+      @editorFocus="editor = $event">
+    </text-editor>
     <pre><code>{{ text }}</code></pre>
+  </div>`,
+});
+
+export const multiEditor = () => ({
+  components: {
+    TextEditor,
+    TextEditorToolbar,
+  },
+  data() {
+    return {
+      text_1: text,
+      text_2: text,
+      editor: null,
+    };
+  },
+  methods: {
+    selectImage() {
+      const src = window.prompt("URL");
+      if (src) {
+        this.editor.chain().focus().setImage({ src: src }).run();
+      }
+    },
+  },
+  template: `
+  <div>
+    <text-editor-toolbar
+      :editor="editor"
+      @addImage="selectImage"
+    />
+    <text-editor 
+      v-model="text_1" 
+      @editorFocus="editor = $event">
+    </text-editor>
+    <text-editor 
+      v-model="text_2" 
+      @editorFocus="editor = $event">
+    </text-editor>
   </div>`,
 });
 

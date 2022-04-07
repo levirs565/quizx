@@ -8,14 +8,10 @@ import TableHeader from "@tiptap/extension-table-header";
 import Image from "@tiptap/extension-image";
 import { MathBlock, MathInline } from "./extensions/Math";
 import { CursorTracker } from "./extensions/CursorTracker";
-import TextEditorMenu from "./TextEditorMenu.vue";
-import TextEditorBubbleMenu from "./TextEditorBubbleMenu.vue";
 
 export default {
   components: {
     EditorContent,
-    TextEditorMenu,
-    TextEditorBubbleMenu,
   },
   props: {
     value: String,
@@ -53,6 +49,9 @@ export default {
       },
       onUpdate: () => {
         this.$emit("input", this.editor.getHTML());
+      },
+      onFocus: ({ editor }) => {
+        this.$emit("editorFocus", editor);
       },
     });
   },

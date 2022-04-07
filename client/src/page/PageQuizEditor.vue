@@ -29,6 +29,12 @@
 
     <p class="text-h6 my-4">Questions</p>
 
+    <text-editor-toolbar
+      :editor="activeEditor"
+      :stickyTop="toolbarTop"
+      @addImage="addImage"
+    />
+
     <v-row>
       <v-col
         cols="12"
@@ -40,7 +46,7 @@
           :question="question"
           @update:question="$set(quiz.questions, index, $event)"
           @delete="deleteQuestion"
-          :selectImageFunction="selectImage"
+          @editorFocus="activeEditor = $event"
         />
       </v-col>
 
@@ -67,6 +73,7 @@ import ResourceWrapper, {
   updateResourceStateByPromise,
 } from "@/components/ResourceWrapper.vue";
 import QuestionEditor from "@/components/QuestionEditor.vue";
+import TextEditorToolbar from "@/components/tiptap/TextEditorToolbar.vue";
 
 export default {
   props: {
@@ -77,15 +84,15 @@ export default {
     DialogSelectImage,
     ResourceWrapper,
     QuestionEditor,
+    TextEditorToolbar,
   },
   data() {
     return {
       quiz: {},
       isSelectImageDialogShow: false,
       isDeleteDialogShow: false,
-      onImageSelected: null,
-      onImageSelectCancelled: null,
       state: null,
+      activeEditor: null,
     };
   },
   methods: {
@@ -137,33 +144,32 @@ export default {
     async deleteQuestion(index) {
       this.$delete(this.quiz.questions, index);
     },
-    selectImage() {
-      return new Promise((resolve) => {
-        const unbindEvent = () => {
-          this.onImageSelected = null;
-          this.onImageSelectCancelled = null;
-        };
-        this.onImageSelected = (result) => {
-          resolve(result);
-
-          unbindEvent();
-        };
-        this.onImageSelectCancelled = unbindEvent;
-        this.isSelectImageDialogShow = true;
-      });
+    addImage() {
+      this.isSelectImageDialogShow = true;
     },
     callImageSelected(result) {
       this.isSelectImageDialogShow = false;
-      this.onImageSelected(result);
+      if (this.activeEditor) {
+        this.activeEditor.chain().focus().setImage(result).run();
+      } else {
+        this.showNotification({
+          text: "Cannot add image",
+          color: "error",
+        });
+      }
     },
     callImageSelectCancelled() {
       this.isSelectImageDialogShow = false;
-      this.onImageSelectCancelled();
     },
   },
   watch: {
     quiz_id() {
       this.refresh();
+    },
+  },
+  computed: {
+    toolbarTop() {
+      return this.$vuetify.application.top + "px";
     },
   },
   mounted() {

@@ -8,8 +8,7 @@
     <template v-slot:question>
       <text-editor-card
         v-model="question.question"
-        hasMenu
-        :selectImageFunction="selectImageFunction"
+        @editorFocus="$emit('editorFocus', $event)"
       />
       <v-row no-gutters>
         <v-spacer />
@@ -29,9 +28,8 @@
       <text-editor-card
         :value="choice"
         @input="onChoiceInput(index, $event)"
-        hasMenu
-        :selectImageFunction="selectImageFunction"
         class="flex-grow-1 mb-2"
+        @editorFocus="$emit('editorFocus', $event)"
       />
       <v-btn icon class="ml-2" @click="removeChoice(index)">
         <v-icon>mdi-close</v-icon>
@@ -58,7 +56,6 @@ export default {
   props: {
     question: Object,
     index: Number,
-    selectImageFunction: Function,
   },
   components: {
     TextEditorCard,

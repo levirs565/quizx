@@ -105,7 +105,7 @@ export const MathBlock = Node.create({
 
   addNodeView() {
     // I do not know why this needed
-    return VueNodeViewRenderer((MathNodeView as unknown) as VueConstructor);
+    return VueNodeViewRenderer(MathNodeView as unknown as VueConstructor);
   },
 
   addInputRules() {
@@ -114,6 +114,22 @@ export const MathBlock = Node.create({
 
   addPasteRules() {
     return [mathPasteRule(PASTE_RULE_BLOCK, this.type)];
+  },
+
+  addCommands() {
+    return {
+      addMathBlock:
+        () =>
+        ({ commands, tr }) => {
+          tr.replaceRangeWith(
+            tr.selection.from,
+            tr.selection.from,
+            this.type.create()
+          );
+          selectionToMathStart(tr);
+          return true;
+        },
+    };
   },
 });
 
@@ -143,7 +159,7 @@ export const MathInline = Node.create({
   },
 
   addNodeView() {
-    return VueNodeViewRenderer((MathNodeView as unknown) as VueConstructor);
+    return VueNodeViewRenderer(MathNodeView as unknown as VueConstructor);
   },
 
   addInputRules() {
@@ -152,5 +168,21 @@ export const MathInline = Node.create({
 
   addPasteRules() {
     return [mathPasteRule(PASTE_RULE_INLINE, this.type)];
+  },
+
+  addCommands() {
+    return {
+      addMathInline:
+        () =>
+        ({ commands, tr }) => {
+          tr.replaceRangeWith(
+            tr.selection.from,
+            tr.selection.from,
+            this.type.create()
+          );
+          selectionToMathStart(tr);
+          return true;
+        },
+    };
   },
 });
