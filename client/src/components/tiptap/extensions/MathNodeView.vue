@@ -32,6 +32,7 @@ export default {
     };
   },
   mounted() {
+    // only useful when node is math inline
     if (this.editor.state.selection.from === this.getPos()) {
       this.$nextTick(() => {
         this.focusMathField();
@@ -67,11 +68,16 @@ export default {
   },
   methods: {
     focusMathField() {
-      if (!this.editor.isFocused) return;
-      const field = this.$refs.mathField.$el;
-      if (!field.hasFocus()) {
-        field.focus();
-      }
+      // Only useful when add math from toolbar
+      // Maybe because text editor focus is delayed
+      // See https://github.com/ueberdosis/tiptap/blob/ab4a0e2507b4b92c46d293a0bb06bb00a04af6e0/packages/core/src/commands/focus.ts#L33 
+      requestAnimationFrame(() => {
+        if (!this.editor.isFocused) return;
+        const field = this.$refs.mathField.$el;
+        if (!field.hasFocus()) {
+          field.focus();
+        }
+      });
     },
     moveOutNode(isForward) {
       const view = this.editor.view;
