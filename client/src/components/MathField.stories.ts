@@ -13,7 +13,7 @@ export const mathField = () => ({
   },
   template: `<div>
     <math-field v-model="text" read-only></math-field>
-    <b-input type="textarea" v-model="text"/>
+    <v-text-field type="textarea" v-model="text"/>
   </div>`,
 });
 
@@ -26,6 +26,6 @@ export const mathFieldBordered = () => ({
   },
   template: `<div>
     <math-field v-model="text" bordered virtual-keyboard-mode="manual"></math-field>
-    <b-input type="textarea" v-model="text"/>
+    <v-text-field type="textarea" v-model="text"/>
   </div>`,
 });

@@ -1,4 +1,5 @@
-import TextEditor from "./tiptap/TextViewer.vue";
+import TextEditor from "./TextEditor.vue";
+import TextViewer from "./TextViewer.vue";
 
 export default {
   title: "Text Editor",
@@ -126,7 +127,7 @@ export const editor = () => ({
 
 export const renderer = () => ({
   components: {
-    TextEditor,
+    TextViewer,
   },
   data() {
     return {
@@ -135,6 +136,6 @@ export const renderer = () => ({
   },
   template: `
   <div>
-    <text-editor v-model="text" :editable="false"></text-editor>
+    <text-viewer v-model="text" :editable="false"></text-viewer>
   </div>`,
 });
