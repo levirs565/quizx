@@ -1,5 +1,12 @@
 # CHANGELOG
 
+## Dev
+
+Client:
+
+- Use shared toolbar menu for text editor
+- Remove floating and bubble menu
+
 ## v0.5.0
 
 All:
