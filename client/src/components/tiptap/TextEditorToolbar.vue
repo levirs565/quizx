@@ -115,6 +115,18 @@
       :active="editor.isActive('code')"
       title="Inline Code"
     />
+    <action-button
+      icon="mdi-format-subscript"
+      @click="editor.chain().focus().toggleSubscript().run()"
+      :active="editor.isActive('subscript')"
+      title="Subscript"
+    />
+    <action-button
+      icon="mdi-format-superscript"
+      @click="editor.chain().focus().toggleSuperscript().run()"
+      :active="editor.isActive('superscript')"
+      title="Superscript"
+    />
     <br />
     <action-button
       icon="mdi-table-row-plus-before"

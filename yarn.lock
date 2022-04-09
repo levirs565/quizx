@@ -2825,6 +2825,8 @@ __metadata:
     "@tiptap/extension-bubble-menu": ^2.0.0-beta.44
     "@tiptap/extension-floating-menu": ^2.0.0-beta.36
     "@tiptap/extension-image": ^2.0.0-beta.24
+    "@tiptap/extension-subscript": ^2.0.0-beta.10
+    "@tiptap/extension-superscript": ^2.0.0-beta.10
     "@tiptap/extension-table": ^2.0.0-beta.34
     "@tiptap/extension-table-cell": ^2.0.0-beta.15
     "@tiptap/extension-table-header": ^2.0.0-beta.17
@@ -3926,6 +3928,24 @@ __metadata:
   peerDependencies:
     "@tiptap/core": ^2.0.0-beta.1
   checksum: f43f305205cb35ee2f03be8c316cedd7b6fe15b628fa80c7ce79b8d2cda9d553481fd2c5fdae5364cd48925ffaf8b2b1272280b6aeaedf9fee08c71341c1b4e6
+  languageName: node
+  linkType: hard
+
+"@tiptap/extension-subscript@npm:^2.0.0-beta.10":
+  version: 2.0.0-beta.10
+  resolution: "@tiptap/extension-subscript@npm:2.0.0-beta.10"
+  peerDependencies:
+    "@tiptap/core": ^2.0.0-beta.1
+  checksum: 4e074d1be0888017c6cd7b4f4f39d4aef681b83d5b5d14f5675eb4eb4dd8850da39090f631c46a910aa98adb6f14c8412b42a8ded11248857bf5908e5c8a09ab
+  languageName: node
+  linkType: hard
+
+"@tiptap/extension-superscript@npm:^2.0.0-beta.10":
+  version: 2.0.0-beta.10
+  resolution: "@tiptap/extension-superscript@npm:2.0.0-beta.10"
+  peerDependencies:
+    "@tiptap/core": ^2.0.0-beta.1
+  checksum: 4294d4ffbc72e18958e3c6e4295eeedf9a67a600aa14a865c4a6ed3c58af3a2b5a34b37c56eeda76a818cfebf1a567550aa3fe0e40ba8f20ffa15f9a571e2286
   languageName: node
   linkType: hard
 

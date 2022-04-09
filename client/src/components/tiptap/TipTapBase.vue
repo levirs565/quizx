@@ -6,6 +6,8 @@ import TableRow from "@tiptap/extension-table-row";
 import TableCell from "@tiptap/extension-table-cell";
 import TableHeader from "@tiptap/extension-table-header";
 import Image from "@tiptap/extension-image";
+import Superscript from "@tiptap/extension-superscript";
+import Subscript from "@tiptap/extension-subscript";
 import { MathBlock, MathInline } from "./extensions/Math";
 import { CursorTracker } from "./extensions/CursorTracker";
 
@@ -38,6 +40,8 @@ export default {
         TableHeader,
         TableCell,
         Image,
+        Superscript,
+        Subscript,
         CursorTracker,
         MathBlock,
         MathInline,
