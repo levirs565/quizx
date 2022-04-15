@@ -10,6 +10,14 @@ export interface UserData {
   isAdmin: boolean;
 }
 
+export class User implements UserData {
+  id!: string;
+  name!: string;
+  password!: string;
+  isAdmin!: boolean;
+  registerDate!: Date;
+}
+
 export class LoginRequestBody {
   @IsString()
   id: string;

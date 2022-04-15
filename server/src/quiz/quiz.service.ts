@@ -1,5 +1,3 @@
-import { Types, Document } from 'mongoose';
-import { QuizModelName } from '../schemas/quiz.schema';
 import {
   AnswerQuestionResult,
   CreateQuizResult,
@@ -15,37 +13,19 @@ import {
   validateUserId,
   validateUserLoggedIn,
 } from '../common/service.helper';
-import { instanceToPlain } from 'class-transformer';
 import { Injectable, NotFoundException } from '@nestjs/common';
-import { InjectModel } from '@nestjs/mongoose';
-import { BaseModel } from 'schemas/helper';
-import { InjectMapper } from '@automapper/nestjs';
-import { Mapper } from '@automapper/core';
+import { QuizRepository } from './quiz.repository';
 
 @Injectable()
 export class QuizService {
-  constructor(
-    @InjectModel(QuizModelName) private readonly quizModel: BaseModel<Quiz>,
-    @InjectMapper() private readonly mapper: Mapper
-  ) {}
+  constructor(private readonly repository: QuizRepository) {}
 
   async getQuizList(): Promise<QuizSummary[]> {
-    const list = await this.quizModel.find();
-
-    return list.map((val) => this.mapper.map(val.toClass(), QuizSummary, Quiz));
-  }
-
-  async getQuizDocument(id: string) {
-    const quizPackage = await this.quizModel.findById(id);
-
-    if (!quizPackage) throw new NotFoundException('Quiz not found');
-
-    return quizPackage;
+    return this.repository.getSummaryList();
   }
 
   async getQuiz(id: string): Promise<Quiz> {
-    const quizPackage = await this.getQuizDocument(id);
-    const quiz = quizPackage.toClass();
+    const quiz = await this.repository.getById(id);
 
     quiz.questions.forEach((question) => {
       question.answer = undefined;
@@ -55,8 +35,8 @@ export class QuizService {
   }
 
   async getQuestionDocument(quizId: string, questionId: string) {
-    const quizPackage = await this.getQuizDocument(quizId);
-    const item = quizPackage.questions.find((item) => item.id == questionId);
+    const quiz = await this.repository.getById(quizId);
+    const item = quiz.questions.find((item) => item.id == questionId);
     if (!item) throw new NotFoundException('Question not found');
     return item;
   }
@@ -75,32 +55,33 @@ export class QuizService {
 
   async createQuiz(session: Session, param: CreateQuizParameters): Promise<CreateQuizResult> {
     validateUserLoggedIn(session);
-    const paketDb = new this.quizModel({
-      userId: session.user!.id,
-      ...instanceToPlain(param),
-    });
 
-    await paketDb.save();
+    const quiz = new Quiz();
+    quiz.userId = session.user!.id;
+    quiz.title = param.title;
+    if (param.questions) quiz.questions = param.questions;
+
+    await this.repository.createOne(quiz);
     return {
-      id: paketDb.id,
+      id: quiz.id,
     };
   }
 
   async getQuizForEditor(session: Session, id: string): Promise<Quiz> {
-    const doc = await this.getQuizDocument(id);
-    validateUserId(session, doc.userId);
-    return doc.toClass();
+    const quiz = await this.repository.getById(id);
+    validateUserId(session, quiz.userId);
+    return quiz;
   }
 
   async deleteQuiz(session: Session, id: string) {
-    const doc = await this.getQuizDocument(id);
-    validateUserId(session, doc.userId);
-    await doc.remove();
+    const quiz = await this.repository.getById(id);
+    validateUserId(session, quiz.userId);
+    await this.repository.deleteById(id);
   }
 
   async saveQuiz(session: Session, id: string, quiz: Quiz): Promise<SaveQuizResult> {
-    const doc = await this.getQuizDocument(id);
-    validateUserId(session, doc.userId);
+    const dbQuiz = await this.repository.getById(id);
+    validateUserId(session, dbQuiz.userId);
 
     const result: SaveQuizResult = {
       newQuestionsId: {},
@@ -108,21 +89,17 @@ export class QuizService {
     quiz.questions.forEach((question) => {
       const id = question.id!;
       if (id.startsWith('new-')) {
-        question.id = new Types.ObjectId().toHexString();
+        question.id = this.repository.generateQuestionId();
         result.newQuestionsId[id] = question.id;
       }
     });
-    const { questions } = instanceToPlain(quiz);
 
-    doc.title = quiz.title;
-    doc.set('questions', questions);
-
-    await doc.save();
+    await this.repository.updateById(quiz);
     return result;
   }
 
   async validateUserCanUpload(session: Session, id: string) {
-    const doc = await this.getQuizDocument(id);
-    validateUserId(session, doc.userId);
+    const quiz = await this.repository.getById(id);
+    validateUserId(session, quiz.userId);
   }
 }

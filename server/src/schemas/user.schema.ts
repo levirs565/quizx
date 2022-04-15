@@ -1,15 +1,8 @@
 import { Schema, model } from 'mongoose';
+import { User } from 'types/user';
 import { BaseModelSchema, BaseModel, configureBaseModelSchema } from './helper';
 
 // TODO: Rename id to _id
-
-export class User {
-  id!: string;
-  name!: string;
-  password!: string;
-  isAdmin!: boolean;
-  registerDate!: Date;
-}
 
 export const UserSchema: BaseModelSchema<User> = new Schema(
   {

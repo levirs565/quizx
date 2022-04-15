@@ -1,5 +1,3 @@
-import { GameModelName } from '../schemas/game.schema';
-import { QuizService } from 'quiz/quiz.service';
 import Session from '../types/session';
 import {
   GameSummary,
@@ -8,13 +6,12 @@ import {
   Game,
   QuestionState,
   ExamGamePreference,
-  GameData,
   ExamGameData,
   FlashCardGameData,
   FlashCardGamePreference,
   GameAnswerResult,
 } from '../types/game';
-import { AnswerQuestionResult, Question, QuestionAnswer } from '../types/quiz';
+import { Question, QuestionAnswer } from '../types/quiz';
 import {
   validateUserLoggedIn,
   validateUserId,
@@ -23,20 +20,18 @@ import {
   addSecondToDate,
 } from '../common/service.helper';
 import shuffle from 'just-shuffle';
-import { instanceToPlain } from 'class-transformer';
 import { Injectable, NotFoundException } from '@nestjs/common';
-import { InjectModel } from '@nestjs/mongoose';
-import { BaseModel, BaseModelMethods } from 'schemas/helper';
 import { CommonServiceException } from 'common/common-service.exception';
 import { InjectMapper } from '@automapper/nestjs';
 import { Mapper } from '@automapper/core';
-import { Document, Types } from 'mongoose';
+import { GameRepository } from './game.repository';
+import { QuizRepository } from 'quiz/quiz.repository';
 
 @Injectable()
 export class GameService {
   constructor(
-    @InjectModel(GameModelName) private readonly gameModel: BaseModel<Game>,
-    private readonly quizService: QuizService,
+    private readonly repository: GameRepository,
+    private readonly quizRepository: QuizRepository,
     @InjectMapper() private readonly mapper: Mapper
   ) {}
 
@@ -50,10 +45,10 @@ export class GameService {
     preference: GamePreference
   ): Promise<GameSummary> {
     const user = validateUserLoggedIn(session);
-    const playedGame = await this.gameModel.findOne({ userId: user.id, isPlaying: true });
-    if (playedGame) throw new CommonServiceException('Last game not finished');
+    if (await this.repository.hasPlayed(user.id))
+      throw new CommonServiceException('Last game not finished');
 
-    const quiz = (await this.quizService.getQuizDocument(quizId)).toClass();
+    const quiz = await this.quizRepository.getById(quizId);
 
     if (preference.shuffleQuestions) quiz.questions = shuffle(quiz.questions);
 
@@ -95,22 +90,12 @@ export class GameService {
       game.questionsState = [];
     }
 
-    const gameDb = new this.gameModel(instanceToPlain(game));
-
-    await gameDb.save();
-    return this.mapper.map(gameDb.toClass(), GameSummary, Game);
-  }
-
-  private async getGameInternal(id: string) {
-    const game = await this.gameModel.findOne({ _id: id });
-
-    if (game) return game;
-
-    throw new NotFoundException('Game not found');
+    await this.repository.createOne(game);
+    return this.mapper.map(game, GameSummary, Game);
   }
 
   async getGame(id: string): Promise<GameSummary> {
-    const game = (await this.getGameInternal(id)).toClass();
+    const game = await this.repository.getById(id);
     if (game.isPlaying) game.correctAnswers = undefined;
 
     return game;
@@ -123,12 +108,10 @@ export class GameService {
       throw new NotFoundException('Question not found in this game');
     }
 
-    const questionDocument = game.questions[questionIndex];
     const correctAnswer = game.correctAnswers![questionIndex];
 
     return {
       index: questionIndex,
-      document: questionDocument,
       correctAnswer,
     };
   }
@@ -145,35 +128,36 @@ export class GameService {
     questionId: string,
     questionAnswer: number | string | null
   ) {
-    const gameDb = await this.getGameInternal(gameId);
+    const game = await this.repository.getById(gameId);
 
-    validateUserId(session, gameDb.userId);
-    this.validateGamePlaying(gameDb);
+    validateUserId(session, game.userId);
+    this.validateGamePlaying(game);
 
     const currentDate = new Date();
-    const game = gameDb.toClass();
     if (
       game.data instanceof ExamGameData &&
       game.data.maxFinishTime &&
       currentDate > game.data.maxFinishTime
     ) {
-      await this.internalFinishGame(gameDb, game);
+      await this.internalFinishGame(game);
       throw new CommonServiceException('Game is timeout');
     }
 
-    const questionMeta = this.findGameQuestionById(gameDb, questionId);
+    const question = this.findGameQuestionById(game, questionId);
 
     if (game.data instanceof FlashCardGameData) {
-      this.validateAnswerCurrentQuestion(questionMeta.index, game.data);
+      this.validateAnswerCurrentQuestion(question.index, game.data);
       if (game.data.currentQuestionMaxTime && currentDate > game.data.currentQuestionMaxTime) {
         throw new CommonServiceException('Question answer time is timeout');
       }
     }
 
-    validateQuestionAnswerDataType(questionMeta.correctAnswer, questionAnswer);
-    questionMeta.document.answer = questionAnswer ?? undefined;
-
-    await gameDb.save();
+    validateQuestionAnswerDataType(question.correctAnswer, questionAnswer);
+    await this.repository.updateQuestionAnswer(
+      game.id,
+      question.index,
+      questionAnswer ?? undefined
+    );
   }
 
   async submitAnswer(
@@ -181,20 +165,18 @@ export class GameService {
     gameId: string,
     questionId: string
   ): Promise<GameAnswerResult> {
-    const gameDb = await this.getGameInternal(gameId);
+    const game = await this.repository.getById(gameId);
 
-    validateUserId(session, gameDb.userId);
-    this.validateGamePlaying(gameDb);
-
-    const game = gameDb.toClass();
+    validateUserId(session, game.userId);
+    this.validateGamePlaying(game);
 
     if (!(game.data instanceof FlashCardGameData))
       throw new CommonServiceException('Submit only work for flash card game');
 
-    const data = gameDb.data as FlashCardGameData;
+    const data = game.data as FlashCardGameData;
     let mustNext = false;
 
-    const questionMeta = this.findGameQuestionById(gameDb, questionId);
+    const questionMeta = this.findGameQuestionById(game, questionId);
 
     this.validateAnswerCurrentQuestion(questionMeta.index, data);
 
@@ -222,8 +204,7 @@ export class GameService {
     }
 
     if (mustNext) {
-      gameDb.questionsState!!.push(state);
-      if (data.currentQuestionIndex + 1 < gameDb.questions.length) {
+      if (data.currentQuestionIndex + 1 < game.questions.length) {
         data.currentQuestionIndex++;
 
         if (data.preference.retryCount) {
@@ -243,7 +224,7 @@ export class GameService {
       }
     }
 
-    await gameDb.save();
+    await this.repository.updateFlashCard(game.id, data, mustNext ? state : undefined);
 
     return {
       currentQuestionIndex: data.currentQuestionIndex,
@@ -254,11 +235,11 @@ export class GameService {
   }
 
   async finishGame(session: Session, gameId: string) {
-    const game = await this.getGameInternal(gameId);
+    const game = await this.repository.getById(gameId);
 
     validateUserId(session, game.userId);
     this.validateGamePlaying(game);
-    await this.internalFinishGame(game, game.toClass());
+    await this.internalFinishGame(game);
   }
 
   private generateQuestionState(
@@ -275,10 +256,7 @@ export class GameService {
     }
   }
 
-  private async internalFinishGame(
-    game: Document<any, any, Game> & Game,
-    { questions, correctAnswers }: Game
-  ) {
+  private async internalFinishGame(game: Game) {
     const result: GameResult = {
       unanswered: 0,
       correct: 0,
@@ -286,8 +264,8 @@ export class GameService {
     };
     const questionsState: Array<QuestionState> = [];
 
-    questions.forEach((question, index) => {
-      const actualAnswer = correctAnswers![index];
+    game.questions.forEach((question, index) => {
+      const actualAnswer = game.correctAnswers![index];
       const userAnswer = question.answer;
       let state: QuestionState;
 
@@ -304,9 +282,6 @@ export class GameService {
       questionsState.push(state);
     });
 
-    game.isPlaying = false;
-    game.result = result;
-    game.questionsState = questionsState;
-    await game.save();
+    await this.repository.updateFinish(game.id, questionsState, result);
   }
 }
