@@ -36,12 +36,13 @@ export class QuizRepository {
   }
 
   async updateById(quiz: Quiz) {
-    const { title, questions } = instanceToPlain(quiz);
+    const { title, tags, questions } = instanceToPlain(quiz);
     await this.model.updateOne(
       { _id: quiz.id },
       {
         $set: {
           title,
+          tags,
           questions,
         },
       }

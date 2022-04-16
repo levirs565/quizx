@@ -1,9 +1,11 @@
 import { AutoMap } from '@automapper/classes';
 import { DiscriminatorDescriptor, Expose, Type } from 'class-transformer';
 import {
+  ArrayUnique,
   Equals,
   IsArray,
   IsEmpty,
+  IsNotEmpty,
   IsNumber,
   IsOptional,
   IsString,
@@ -82,6 +84,12 @@ abstract class BaseQuiz {
   @AutoMap()
   @IsString()
   title!: string;
+  @AutoMap()
+  @IsArray()
+  @IsString({ each: true })
+  @IsNotEmpty({ each: true })
+  @ArrayUnique()
+  tags!: Array<string>;
 }
 
 export class QuizSummary extends BaseQuiz {

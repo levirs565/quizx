@@ -15,6 +15,10 @@ export const QuizSchema: BaseModelSchema<Quiz> = new Schema(
       required: true,
     },
     questions: [questionSchema.root],
+    tags: {
+      type: [String],
+      required: true,
+    },
   },
   {
     collection: 'quiz',
