@@ -153,11 +153,7 @@ export class GameService {
     }
 
     validateQuestionAnswerDataType(question.correctAnswer, questionAnswer);
-    await this.repository.updateQuestionAnswer(
-      game.id,
-      question.index,
-      questionAnswer ?? undefined
-    );
+    await this.repository.updateQuestionAnswer(game.id, question.index, questionAnswer);
   }
 
   async submitAnswer(

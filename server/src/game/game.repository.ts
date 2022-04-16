@@ -30,7 +30,7 @@ export class GameRepository {
     game.id = gameDb.id;
   }
 
-  async updateQuestionAnswer(id: string, index: number, answer?: QuestionAnswer) {
+  async updateQuestionAnswer(id: string, index: number, answer: QuestionAnswer | null) {
     await this.gameModel.updateOne(
       { _id: id },
       {
