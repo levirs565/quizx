@@ -6,10 +6,6 @@ import { AllExceptionsFilter } from 'common/exception.filter';
 import { ClassSerializerInterceptor } from '@nestjs/common';
 
 async function bootstrap() {
-  const Logger = require('mongodb').Logger;
-  Logger.setLevel('info');
-  require('mongoose').set('debug', true);
-
   const app = await NestFactory.create(AppModule);
   const appConfig = app.get(AppConfigService);
 
