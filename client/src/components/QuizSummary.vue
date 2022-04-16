@@ -9,6 +9,19 @@
         :userId="quiz.userId"
         :questionCount="quiz.questions.length"
       ></quiz-information>
+      <v-combobox
+        v-if="editor"
+        v-model="quiz.tags"
+        label="Tags"
+        small-chips
+        multiple
+        hint="Enter to add tag"
+        outlined
+        class="mt-4"
+      />
+      <v-chip-group v-else column class="mt-1">
+        <v-chip v-for="tag in quiz.tags" :key="tag">{{ tag }}</v-chip>
+      </v-chip-group>
     </v-card-text>
     <slot></slot>
   </v-card>
