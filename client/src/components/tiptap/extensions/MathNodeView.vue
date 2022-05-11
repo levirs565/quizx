@@ -13,7 +13,7 @@
   </node-view-wrapper>
 </template>
 <script>
-import MathField from "@/components/MathField.vue";
+import MathField from "@/components/math/MathField.vue";
 import { NodeViewWrapper, nodeViewProps } from "@tiptap/vue-2";
 import { Selection } from "prosemirror-state";
 import { getPrevCursorPos } from "./CursorTracker";

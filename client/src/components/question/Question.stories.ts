@@ -1,4 +1,4 @@
-import Question from './Question.vue';
+import Question from './question/Question.vue';
 
 export default { title: 'Soal' };
 

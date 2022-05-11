@@ -23,11 +23,11 @@
 
 <script>
 import { Game } from "@/api";
-import { updateResourceStateByPromise } from "@/components/ResourceWrapper.vue";
-import MoleculeAppBar from "@/components/MoleculeAppBar.vue";
-import OrganismResourceMain from "@/components/OrganismResourceMain.vue";
-import ExamGameBoard from "@/components/ExamGameBoard.vue";
-import FlashCardGameBoard from "@/components/FlashCardGameBoard.vue";
+import { updateResourceStateByPromise } from "@/components/resource/ResourceWrapper.vue";
+import MoleculeAppBar from "@/components/BaseAppBar.vue";
+import OrganismResourceMain from "@/components/resource/ResourceMainContainer.vue";
+import ExamGameBoard from "@/components/game/ExamGameBoard.vue";
+import FlashCardGameBoard from "@/components/game/FlashCardGameBoard.vue";
 
 export default {
   components: {

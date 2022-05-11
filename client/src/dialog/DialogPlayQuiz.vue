@@ -55,7 +55,7 @@
   </v-card>
 </template>
 <script>
-import MoleculeDurationInput from "@/components/MoleculeDurationInput.vue";
+import MoleculeDurationInput from "@/components/DurationInput.vue";
 export default {
   components: { MoleculeDurationInput },
   data() {

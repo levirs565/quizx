@@ -32,7 +32,7 @@
 <script>
 import { CounDownTimer, isAnswerEmpty } from "@/utils";
 import BaseGameBoard from "./BaseGameBoard.vue";
-import Question from "./Question.vue";
+import Question from "../question/Question.vue";
 export default {
   components: { Question, BaseGameBoard },
   props: {

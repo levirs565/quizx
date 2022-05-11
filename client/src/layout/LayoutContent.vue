@@ -69,7 +69,7 @@
 </template>
 
 <script>
-import MoleculeNotification from "@/components/MoleculeNotification.vue";
+import MoleculeNotification from "@/components/NotificationContainer.vue";
 export default {
   components: { MoleculeNotification },
   data() {

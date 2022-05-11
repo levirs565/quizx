@@ -37,11 +37,11 @@
 
 <script>
 import { Quiz } from "@/api";
-import QuizSummaryCard from "@/components/QuizSummaryCard.vue";
+import QuizSummaryCard from "@/components/quiz/QuizSummaryCard.vue";
 import DialogCreateQuiz from "@/dialog/DialogCreateQuiz.vue";
 import ResourceWrapper, {
   updateResourceStateByPromise,
-} from "@/components/ResourceWrapper.vue";
+} from "@/components/resource/ResourceWrapper.vue";
 
 export default {
   components: {

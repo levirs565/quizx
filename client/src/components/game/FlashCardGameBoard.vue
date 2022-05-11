@@ -43,7 +43,7 @@
 <script>
 import { CounDownTimer } from "@/utils";
 import BaseGameBoard from "./BaseGameBoard.vue";
-import Question from "./Question.vue";
+import Question from "../question/Question.vue";
 export default {
   components: { BaseGameBoard, Question },
   props: {

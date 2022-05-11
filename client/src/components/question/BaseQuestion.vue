@@ -77,7 +77,7 @@
 
 <script>
 import { getChoiceIndex } from "@/utils";
-import MathFieldInput from "@/components/MathFieldInput.vue";
+import MathFieldInput from "@/components/math/MathFieldInput.vue";
 
 export default {
   props: {

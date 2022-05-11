@@ -8,7 +8,7 @@
   </v-main>
 </template>
 <script>
-import MoleculeErrorView from "@/components/MoleculeErrorView.vue";
+import MoleculeErrorView from "@/components/resource/ResourceErrorView.vue";
 
 export default {
   components: {

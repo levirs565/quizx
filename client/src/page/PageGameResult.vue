@@ -59,12 +59,12 @@
 
 <script>
 import { Game } from "@/api";
-import Question from "@/components/Question.vue";
-import MathField from "@/components/MathField.vue";
+import Question from "@/components/question/Question.vue";
+import MathField from "@/components/math/MathField.vue";
 import { getChoiceIndex } from "@/utils";
 import ResourceWrapper, {
   updateResourceStateByPromise,
-} from "@/components/ResourceWrapper.vue";
+} from "@/components/resource/ResourceWrapper.vue";
 
 export default {
   components: { Question, MathField, ResourceWrapper },

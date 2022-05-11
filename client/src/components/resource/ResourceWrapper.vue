@@ -12,8 +12,8 @@
 </template>
 <script lang="ts">
 import Vue from "vue";
-import MoleculeAppBar from "./MoleculeAppBar.vue";
-import OrganismResourceMain from "./OrganismResourceMain.vue";
+import MoleculeAppBar from "@/components/BaseAppBar.vue";
+import OrganismResourceMain from "./ResourceMainContainer.vue";
 
 interface ResourceState {
   isLoading: Boolean;

@@ -62,14 +62,14 @@
 </template>
 
 <script>
-import Question from "@/components/Question";
+import Question from "@/components/question/Question.vue";
 import { Quiz, Game } from "@/api";
-import QuizSummary from "@/components/QuizSummary.vue";
+import QuizSummary from "@/components/quiz/QuizSummary.vue";
 import DialogPlayQuiz from "@/dialog/DialogPlayQuiz.vue";
 import { isAnswerEmpty as isAnswerEmptyImpl } from "@/utils";
 import ResourceWrapper, {
   updateResourceStateByPromise,
-} from "@/components/ResourceWrapper.vue";
+} from "@/components/resource/ResourceWrapper.vue";
 
 export default {
   components: {

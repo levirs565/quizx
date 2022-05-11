@@ -39,7 +39,7 @@
 </template>
 <script>
 import DialogFinishGame from "@/dialog/DialogFinishGame.vue";
-import MoleculeJumper from "./MoleculeJumper.vue";
+import MoleculeJumper from "../MoleculeJumper.vue";
 export default {
   components: { DialogFinishGame, MoleculeJumper },
   props: {

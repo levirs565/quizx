@@ -15,7 +15,7 @@
 </template>
 
 <script>
-import QuizInformation from "./QuizInformation.vue";
+import QuizInformation from "../quiz/QuizInformation.vue";
 export default {
   components: { QuizInformation },
   props: {
