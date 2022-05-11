@@ -1,18 +1,18 @@
 <template>
   <v-main>
     <slot v-if="state && !state.isLoading && !state.isError" />
-    <molecule-error-view
+    <resource-error-view
       @reload="$emit('reload')"
       v-if="state && state.isError"
     />
   </v-main>
 </template>
 <script>
-import MoleculeErrorView from "@/components/resource/ResourceErrorView.vue";
+import ResourceErrorView from "@/components/resource/ResourceErrorView.vue";
 
 export default {
   components: {
-    MoleculeErrorView,
+    ResourceErrorView,
   },
   props: {
     state: {

@@ -1,9 +1,9 @@
 <template>
   <v-app>
-    <molecule-app-bar :isLoading="state && state.isLoading">
+    <base-app-bar :isLoading="state && state.isLoading">
       <v-toolbar-title>Game</v-toolbar-title>
-    </molecule-app-bar>
-    <organism-resource-main :state="state" @reload="updateState">
+    </base-app-bar>
+    <resource-main-container :state="state" @reload="updateState">
       <exam-game-board
         v-if="type == 'exam'"
         :game="game"
@@ -17,22 +17,22 @@
         @answerChanged="answerChanged"
         @submitAnswer="submitAnswer"
       />
-    </organism-resource-main>
+    </resource-main-container>
   </v-app>
 </template>
 
 <script>
 import { Game } from "@/api";
 import { updateResourceStateByPromise } from "@/components/resource/ResourceWrapper.vue";
-import MoleculeAppBar from "@/components/BaseAppBar.vue";
-import OrganismResourceMain from "@/components/resource/ResourceMainContainer.vue";
+import BaseAppBar from "@/components/BaseAppBar.vue";
+import ResourceMainContainer from "@/components/resource/ResourceMainContainer.vue";
 import ExamGameBoard from "@/components/game/ExamGameBoard.vue";
 import FlashCardGameBoard from "@/components/game/FlashCardGameBoard.vue";
 
 export default {
   components: {
-    MoleculeAppBar,
-    OrganismResourceMain,
+    BaseAppBar,
+    ResourceMainContainer,
     ExamGameBoard,
     FlashCardGameBoard,
   },

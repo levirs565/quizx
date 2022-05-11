@@ -1,19 +1,19 @@
 <template>
   <div>
-    <molecule-app-bar :isLoading="state && state.isLoading">
+    <base-app-bar :isLoading="state && state.isLoading">
       <slot name="toolbar" />
-    </molecule-app-bar>
-    <organism-resource-main @reload="$emit('reload')" :state="state">
+    </base-app-bar>
+    <resource-main-container @reload="$emit('reload')" :state="state">
       <v-container>
         <slot />
       </v-container>
-    </organism-resource-main>
+    </resource-main-container>
   </div>
 </template>
 <script lang="ts">
 import Vue from "vue";
-import MoleculeAppBar from "@/components/BaseAppBar.vue";
-import OrganismResourceMain from "./ResourceMainContainer.vue";
+import BaseAppBar from "@/components/BaseAppBar.vue";
+import ResourceMainContainer from "./ResourceMainContainer.vue";
 
 interface ResourceState {
   isLoading: Boolean;
@@ -47,8 +47,8 @@ export function updateResourceStateByPromise<T>(
 
 export default Vue.extend({
   components: {
-    MoleculeAppBar,
-    OrganismResourceMain,
+    BaseAppBar,
+    ResourceMainContainer,
   },
   props: {
     state: {

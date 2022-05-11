@@ -60,7 +60,7 @@
       </v-list>
     </v-navigation-drawer>
 
-    <molecule-notification
+    <notification-container
       :notification="$store.state.notification.notification"
     />
 
@@ -69,9 +69,9 @@
 </template>
 
 <script>
-import MoleculeNotification from "@/components/NotificationContainer.vue";
+import NotificationContainer from "@/components/NotificationContainer.vue";
 export default {
-  components: { MoleculeNotification },
+  components: { NotificationContainer },
   data() {
     return {
       links: [

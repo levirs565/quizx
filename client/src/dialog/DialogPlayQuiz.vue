@@ -17,7 +17,7 @@
       />
       <template v-if="mode == 'exam'">
         <v-switch label="Limit Exam Time" v-model="exam.timeLimit.enabled" />
-        <molecule-duration-input
+        <duration-input
           label="Exam Time Limit"
           v-show="exam.timeLimit.enabled"
           v-model="exam.timeLimit.second"
@@ -28,7 +28,7 @@
           label="Limit Question Time"
           v-model="flashCard.questionTimeLimit.enabled"
         />
-        <molecule-duration-input
+        <duration-input
           label="Question Time Limit"
           v-show="flashCard.questionTimeLimit.enabled"
           v-model="flashCard.questionTimeLimit.second"
@@ -55,9 +55,9 @@
   </v-card>
 </template>
 <script>
-import MoleculeDurationInput from "@/components/DurationInput.vue";
+import DurationInput from "@/components/DurationInput.vue";
 export default {
-  components: { MoleculeDurationInput },
+  components: { DurationInput },
   data() {
     return {
       mode: "exam",
