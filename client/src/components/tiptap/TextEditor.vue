@@ -1,8 +1,6 @@
 <template>
   <v-card outlined>
-    <v-card-text>
-      <editor-content class="text-editor-card" :editor="editor" />
-    </v-card-text>
+    <editor-content class="text-editor-card" :editor="editor" />
   </v-card>
 </template>
 <script>
@@ -20,5 +18,7 @@ export default {
 .text-editor-card >>> .ProseMirror {
   outline: none !important;
   cursor: text;
+  margin: 0;
+  padding: 32px 16px;
 }
 </style>
