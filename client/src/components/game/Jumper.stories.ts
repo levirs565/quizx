@@ -1,4 +1,4 @@
-import Jumper from "./MoleculeJumper.vue";
+import Jumper from "./Jumper.vue";
 
 export default { title: "Jumper" };
 
