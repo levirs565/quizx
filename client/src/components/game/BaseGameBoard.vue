@@ -8,10 +8,10 @@
       >
         <v-card>
           <slot name="sidebar" />
-          <molecule-jumper
+          <jumper
             :buttons="jumperButtons"
             @click="$emit('jumperClick', $event)"
-          ></molecule-jumper>
+          ></jumper>
         </v-card>
       </v-col>
       <v-col>
@@ -39,9 +39,9 @@
 </template>
 <script>
 import DialogFinishGame from "@/dialog/DialogFinishGame.vue";
-import MoleculeJumper from "../MoleculeJumper.vue";
+import Jumper from "./Jumper.vue";
 export default {
-  components: { DialogFinishGame, MoleculeJumper },
+  components: { DialogFinishGame, Jumper },
   props: {
     game: Object,
     jumperButtons: Array,
