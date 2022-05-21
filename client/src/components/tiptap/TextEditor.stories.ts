@@ -1,3 +1,4 @@
+import { Editor } from "@tiptap/vue-2";
 import TextEditor from "./TextEditor.vue";
 import TextEditorToolbar from "./TextEditorToolbar.vue";
 import TextViewer from "./TextViewer.vue";
@@ -155,20 +156,32 @@ export const multiEditor = () => ({
         this.editor.chain().focus().setImage({ src: src }).run();
       }
     },
+    onBlur(editor: Editor, event: FocusEvent) {
+      const relatedElement = event.relatedTarget as Element;
+      if (relatedElement) {
+        const toolbar = this.$refs.toolbar.$el;
+        if (relatedElement.parentElement == toolbar) return;
+      }
+
+      if (this.editor == editor) this.editor = null;
+    },
   },
   template: `
   <div>
     <text-editor-toolbar
       :editor="editor"
       @addImage="selectImage"
+      ref="toolbar"
     />
     <text-editor 
       v-model="text_1" 
-      @editorFocus="editor = $event">
+      @editorFocus="editor = $event"
+      @editorBlur="onBlur">
     </text-editor>
     <text-editor 
       v-model="text_2" 
-      @editorFocus="editor = $event">
+      @editorFocus="editor = $event"
+      @editorBlur="onBlur">
     </text-editor>
   </div>`,
 });

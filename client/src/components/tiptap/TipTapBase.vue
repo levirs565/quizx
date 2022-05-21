@@ -57,6 +57,9 @@ export default {
       onFocus: ({ editor }) => {
         this.$emit("editorFocus", editor);
       },
+      onBlur: ({ editor, event }) => {
+        this.$emit("editorBlur", editor, event);
+      },
     });
   },
   watch: {

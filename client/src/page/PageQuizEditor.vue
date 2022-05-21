@@ -33,6 +33,7 @@
       :editor="activeEditor"
       :stickyTop="toolbarTop"
       @addImage="addImage"
+      ref="toolbar"
     />
 
     <v-row>
@@ -47,6 +48,7 @@
           @update:question="$set(quiz.questions, index, $event)"
           @delete="deleteQuestion"
           @editorFocus="activeEditor = $event"
+          @editorBlur="onEditorBlur"
         />
       </v-col>
 
@@ -160,6 +162,15 @@ export default {
     },
     callImageSelectCancelled() {
       this.isSelectImageDialogShow = false;
+    },
+    onEditorBlur(editor, event) {
+      const relatedElement = event.relatedTarget;
+      if (relatedElement) {
+        const toolbar = this.$refs.toolbar.$el;
+        if (relatedElement.parentElement == toolbar) return;
+      }
+
+      if (this.activeEditor == editor) this.activeEditor = null;
     },
   },
   watch: {

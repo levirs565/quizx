@@ -9,6 +9,7 @@
       <text-editor-card
         v-model="question.question"
         @editorFocus="$emit('editorFocus', $event)"
+        @editorBlur="onBlur"
       />
       <v-row no-gutters>
         <v-spacer />
@@ -87,6 +88,9 @@ export default {
     },
     onChoiceInput(index, value) {
       this.$set(this.question.choices, index, value);
+    },
+    onBlur(editor, event) {
+      this.$emit("editorBlur", editor, event);
     },
     changeType(type) {
       let newQuestion = {
