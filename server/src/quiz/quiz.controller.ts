@@ -16,12 +16,21 @@ import {
   Post,
   Put,
   Session,
+  UploadedFile,
   UseInterceptors,
 } from '@nestjs/common';
+import session from 'express-session';
+import { FileInterceptor } from '@nestjs/platform-express';
+import { QuizImporterService } from './quiz.importer.service';
+import { CommonServiceException } from 'common/common-service.exception';
+import { memoryStorage } from 'multer';
 
 @Controller()
 export class QuizController {
-  constructor(private readonly quizService: QuizService) {}
+  constructor(
+    private readonly quizService: QuizService,
+    private readonly quizImporterService: QuizImporterService
+  ) {}
 
   @Get('/')
   async getList() {
@@ -46,7 +55,28 @@ export class QuizController {
 
   @Post('/')
   async createOne(@Session() session: SessionType, @Body() param: CreateQuizParameters) {
-    return this.quizService.createQuiz(session, param);
+    return this.quizService.createQuiz(session, () => param);
+  }
+
+  @Post('/import_markdown')
+  @UseInterceptors(
+    FileInterceptor('file', {
+      storage: memoryStorage(),
+      fileFilter(_, file, cb) {
+        cb(null, file.originalname.endsWith('.md'));
+      },
+    })
+  )
+  async importMarkdown(
+    @Session() session: SessionType,
+    @UploadedFile() file?: Express.Multer.File
+  ) {
+    if (!file) throw new CommonServiceException('File is not accepted');
+
+    return this.quizService.createQuiz(session, () => {
+      const markdownText = file.buffer.toString();
+      return this.quizImporterService.markdownToQuiz(markdownText);
+    });
   }
 
   @Get('/:id/edit')

@@ -53,9 +53,13 @@ export class QuizService {
     };
   }
 
-  async createQuiz(session: Session, param: CreateQuizParameters): Promise<CreateQuizResult> {
+  async createQuiz(
+    session: Session,
+    paramCreator: () => CreateQuizParameters
+  ): Promise<CreateQuizResult> {
     validateUserLoggedIn(session);
 
+    const param = paramCreator();
     const quiz = new Quiz();
     quiz.userId = session.user!.id;
     quiz.title = param.title;

@@ -27,6 +27,7 @@
     "@nestjs/mongoose": "^9.0.2",
     "@nestjs/platform-express": "^8.2.4",
     "@nestjs/serve-static": "^2.2.2",
+    "@types/markdown-it": "^12.2.3",
     "bcrypt": "^5.0.1",
     "class-transformer": "^0.5.1",
     "class-validator": "^0.13.2",
@@ -34,6 +35,9 @@
     "express-session": "^1.17.2",
     "fs-extra": "^10.0.0",
     "just-shuffle": "^4.0.1",
+    "markdown-it": "^13.0.1",
+    "markdown-it-dollarmath": "^0.4.2",
+    "markdown-it-fancy-lists": "^1.1.3",
     "mongoose": "^6.1.4",
     "reflect-metadata": "^0.1.13",
     "rimraf": "^3.0.2",
@@ -78,6 +82,10 @@
     "transform": {
       "^.+\\.(t|j)s$": "ts-jest"
     },
+    "moduleDirectories": [
+      "node_modules",
+      "src"
+    ],
     "collectCoverageFrom": [
       "**/*.(t|j)s"
     ],
