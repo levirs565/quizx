@@ -2,10 +2,22 @@
 
 ## Dev
 
+All:
+
+- Support import quiz from markdown
+- Add tags to quiz
+
 Client:
 
 - Use shared toolbar menu for text editor
 - Remove floating and bubble menu
+- Fix editor not focus when card clicked
+- Support superscript and subscript in editor
+- Restructure component folder
+
+Server:
+
+- Move database operation to repository
 
 ## v0.5.0
 
