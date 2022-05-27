@@ -18,6 +18,7 @@
         hint="Enter to add tag"
         outlined
         class="mt-4"
+        append-icon=""
       />
       <v-chip-group v-else column class="mt-1">
         <v-chip v-for="tag in quiz.tags" :key="tag">{{ tag }}</v-chip>
