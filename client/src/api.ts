@@ -45,6 +45,17 @@ class QuizApi {
     const res = await instance.post(this.path, data);
     return throwError(res);
   }
+  async importMarkdown(file: Blob) {
+    const form = new FormData();
+    form.append("file", file);
+    return throwError(
+      await instance.post(`${this.path}/import_markdown`, form, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      })
+    );
+  }
   async getQuizForEditor(id: string) {
     const res = await instance.get(`${this.path}/${id}/edit`);
     return throwError(res);

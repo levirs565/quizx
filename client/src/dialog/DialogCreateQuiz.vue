@@ -5,6 +5,7 @@
       <v-tabs v-model="activeTab">
         <v-tab>Title</v-tab>
         <v-tab>Import JSON</v-tab>
+        <v-tab>Import Markdown</v-tab>
       </v-tabs>
     </v-card-text>
     <v-card-text>
@@ -14,6 +15,15 @@
         </v-tab-item>
         <v-tab-item>
           <v-textarea filled label="JSON" v-model="json"></v-textarea>
+        </v-tab-item>
+        <v-tab-item>
+          <v-file-input
+            filled
+            label="Markdown File"
+            accept=".md"
+            prepend-icon="mdi-file-document"
+            v-model="markdownFile"
+          />
         </v-tab-item>
       </v-tabs-items>
     </v-card-text>
@@ -30,17 +40,18 @@ export default {
     return {
       title: "",
       json: "",
+      markdownFile: null,
       activeTab: 0,
     };
   },
   methods: {
     submit() {
-      let quiz;
       if (this.activeTab === 0) {
-        quiz = {
+        this.$emit("create", {
           title: this.title,
-        };
+        });
       } else if (this.activeTab === 1) {
+        let quiz;
         try {
           quiz = JSON.parse(this.json);
         } catch (e) {
@@ -50,8 +61,10 @@ export default {
           });
           return;
         }
+        this.$$emit("create", quiz);
+      } else if (this.activeTab === 2) {
+        this.$emit("importMarkdown", this.markdownFile);
       }
-      this.$emit("create", quiz);
     },
   },
 };

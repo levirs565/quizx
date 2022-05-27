@@ -30,6 +30,7 @@
       <dialog-create-quiz
         @close="isCreateDialogShow = false"
         @create="createQuiz"
+        @importMarkdown="importMarkdown"
       />
     </v-dialog>
   </resource-wrapper>
@@ -60,9 +61,9 @@ export default {
     showCreateQuiz() {
       this.isCreateDialogShow = true;
     },
-    async createQuiz(quiz) {
+    async baseCreateQuiz(factory) {
       try {
-        const quizResult = await Quiz.createQuiz(quiz);
+        const quizResult = await factory();
         this.$router.push(`/quiz/${quizResult.id}`);
       } catch (e) {
         console.error(e);
@@ -73,6 +74,12 @@ export default {
           color: "error",
         });
       }
+    },
+    async createQuiz(quiz) {
+      await this.baseCreateQuiz(async () => Quiz.createQuiz(quiz));
+    },
+    async importMarkdown(file) {
+      await this.baseCreateQuiz(async () => Quiz.importMarkdown(file));
     },
     loadList() {
       // TODO: Only show current user quiz
