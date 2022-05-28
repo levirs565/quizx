@@ -1,6 +1,6 @@
 import Session from '../types/session';
 import { MathQuestion, Question } from '../types/quiz';
-import { ComputeEngine, match as mathMatch } from '@cortex-js/compute-engine';
+import { ComputeEngine } from '@cortex-js/compute-engine';
 import { ForbiddenException, UnauthorizedException } from '@nestjs/common';
 
 export function validateUserLoggedIn(session: Session) {
@@ -31,12 +31,12 @@ export function checkQuestionAnswer(
 ): boolean {
   if (question instanceof MathQuestion) {
     const ce = new ComputeEngine();
-    const correctMath = ce.format(ce.parse(correctAnswer as string));
-    const userMath = ce.format(ce.parse(userAnswer as string));
+    const correctMath = ce.parse(correctAnswer as string).canonical;
+    const userMath = ce.parse(userAnswer as string).canonical;
     if (!correctMath || !userMath) {
       throw Error('Correct math or');
     }
-    return mathMatch(userMath, correctMath) !== null;
+    return userMath.match(correctMath) !== null;
   }
   return correctAnswer === userAnswer;
 }
