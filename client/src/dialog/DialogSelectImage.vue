@@ -10,10 +10,10 @@
     <v-card-text>
       <v-tabs-items v-model="activeTab">
         <v-tab-item>
-          <v-file-input
+          <base-file-input
             accept="image/*"
-            prepend-icon="mdi-image"
-            filled
+            icon="mdi-image"
+            label="Image File"
             v-model="file"
           />
         </v-tab-item>
@@ -31,8 +31,10 @@
 </template>
 <script>
 import { Media } from "@/api";
+import BaseFileInput from "@/components/BaseFileInput.vue";
 
 export default {
+  components: { BaseFileInput },
   props: {
     quizId: String,
   },

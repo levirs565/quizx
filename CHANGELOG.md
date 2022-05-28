@@ -14,6 +14,7 @@ Client:
 - Fix editor not focus when card clicked
 - Support superscript and subscript in editor
 - Restructure component folder
+- Support drag and drop in file upload
 
 Server:
 

@@ -17,11 +17,10 @@
           <v-textarea filled label="JSON" v-model="json"></v-textarea>
         </v-tab-item>
         <v-tab-item>
-          <v-file-input
-            filled
+          <base-file-input
             label="Markdown File"
             accept=".md"
-            prepend-icon="mdi-file-document"
+            icon="mdi-file-document"
             v-model="markdownFile"
           />
         </v-tab-item>
@@ -35,7 +34,9 @@
   </v-card>
 </template>
 <script>
+import BaseFileInput from "@/components/BaseFileInput.vue";
 export default {
+  components: { BaseFileInput },
   data() {
     return {
       title: "",
