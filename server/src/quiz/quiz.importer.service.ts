@@ -9,6 +9,8 @@ import {
 } from 'types/quiz';
 import markdownIt, { PluginWithOptions } from 'markdown-it';
 import { markdownItFancyListPlugin } from 'markdown-it-fancy-lists';
+import markdownItSub from 'markdown-it-sub';
+import markdownItSup from 'markdown-it-sup';
 import dollarmathPlugin from 'markdown-it-dollarmath';
 import Token from 'markdown-it/lib/token';
 import { RenderRule } from 'markdown-it/lib/renderer';
@@ -17,6 +19,8 @@ import { escapeHtml } from 'markdown-it/lib/common/utils';
 @Injectable()
 export class QuizImporterService {
   private markdownProcessor = markdownIt()
+    .use(markdownItSub)
+    .use(markdownItSup)
     .use(markdownItFancyListPlugin as PluginWithOptions)
     .use(dollarmathPlugin, {
       allow_digits: true,
@@ -133,12 +137,13 @@ export class QuizImporterService {
       (token) =>
         token.type === 'ordered_list_open' && ['A', 'a'].includes(token.attrGet('type') || '')
     );
-    if (multipleChoiceAnswerRegex.test(answer.text) && choiceIndex >= 0) {
+    if (choiceIndex >= 0 && (answer.text === '' || multipleChoiceAnswerRegex.test(answer.text))) {
       const bodyTokens = tokens.slice(0, choiceIndex);
       const questionHTML = this.renderTokensToHTML(bodyTokens);
-      const answerIndex = answer.text.toLowerCase().codePointAt(0)! - 'a'.codePointAt(0)!;
+      const answerIndex =
+        answer.text !== '' ? answer.text.toLowerCase().codePointAt(0)! - 'a'.codePointAt(0)! : 0;
 
-      const choicesTokens = tokens.slice(choiceIndex, tokens.length - 3);
+      const choicesTokens = tokens.slice(choiceIndex, answer.tokenIndex);
       const choicesHTML = this.extractOrderedListItems(choicesTokens, 0).listItems.map((tokens) =>
         this.renderTokensToHTML(tokens)
       );
@@ -183,7 +188,7 @@ export class QuizImporterService {
       if (node.type === 'heading_open') {
         nodeIndex++;
         const headingInline = ast[nodeIndex];
-        quiz.title = headingInline.content;
+        if (!quiz.title) quiz.title = headingInline.content;
         nodeIndex++;
       } else if (node.type === 'ordered_list_open' && node.attrs?.length == 0) {
         // Ordererd list with number marker doest not have attrs
@@ -196,6 +201,8 @@ export class QuizImporterService {
 
       nodeIndex++;
     }
+
+    if (!quiz.title) quiz.title = 'Untitled Quiz';
 
     return quiz;
   }

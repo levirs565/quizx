@@ -52,6 +52,11 @@ describe('QuizImportService', () => {
 6. Question with math answer
 
    Answer: $a + a$
+7. Multiple choice without answer
+   a. Choice 1
+   b. Choice 2
+   c. Choice 3
+   d. Choice 4
 `;
     const expected = new CreateQuizParameters();
     expected.title = 'Example Quiz Title *Bold*';
@@ -93,7 +98,20 @@ Yaya</p>
     question6.question = '<p>Question with math answer</p>\n';
     question6.answer = 'a + a';
 
-    expected.questions = [question1, question2, question3, question4, question5, question6];
+    const question7 = new MultipleChoiceQuestion();
+    question7.question = '<p>Multiple choice without answer</p>\n';
+    question7.choices = ['Choice 1', 'Choice 2', 'Choice 3', 'Choice 4'];
+    question7.answer = 0;
+
+    expected.questions = [
+      question1,
+      question2,
+      question3,
+      question4,
+      question5,
+      question6,
+      question7,
+    ];
 
     const quiz = service.markdownToQuiz(markdown);
 
@@ -131,5 +149,35 @@ Yaya</p>
 
     const quiz = service.markdownToQuiz(markdown);
     expect(quiz).toEqual(expected);
+  });
+
+  it('should use default title when title not found', () => {
+    const expected = new CreateQuizParameters();
+    expected.title = 'Untitled Quiz';
+    expected.questions = [];
+    const quiz = service.markdownToQuiz('');
+    expect(quiz).toEqual(expected);
+  });
+
+  it('should use first heading for title', () => {
+    const expected = new CreateQuizParameters();
+    expected.title = 'First Heading';
+    expected.questions = [];
+    const quiz = service.markdownToQuiz('# First Heading\n\n# Second Heading');
+    expect(quiz).toEqual(expected);
+  });
+
+  it('should correcly parse subscript and superscript', () => {
+    const exptected = new CreateQuizParameters();
+    exptected.title = 'Untitled Quiz';
+
+    const question = new ShortTextQuestion();
+    question.question = 'Test: <sub>sub</sub> <sup>sup</sup>';
+    question.answer = 'Empty answer';
+
+    exptected.questions = [question];
+
+    const quiz = service.markdownToQuiz('1. Test: ~sub~ ^sup^');
+    expect(quiz).toEqual(exptected);
   });
 });
