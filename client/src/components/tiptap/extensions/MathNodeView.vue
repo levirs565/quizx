@@ -1,6 +1,7 @@
 <template>
   <node-view-wrapper :class="node.isInline ? 'inline-math-wrapper' : 'block'">
     <math-field
+      class="math-field"
       v-model="src"
       ref="mathField"
       :read-only="readOnly"
@@ -70,7 +71,7 @@ export default {
     focusMathField() {
       // Only useful when add math from toolbar
       // Maybe because text editor focus is delayed
-      // See https://github.com/ueberdosis/tiptap/blob/ab4a0e2507b4b92c46d293a0bb06bb00a04af6e0/packages/core/src/commands/focus.ts#L33 
+      // See https://github.com/ueberdosis/tiptap/blob/ab4a0e2507b4b92c46d293a0bb06bb00a04af6e0/packages/core/src/commands/focus.ts#L33
       requestAnimationFrame(() => {
         if (!this.editor.isFocused) return;
         const field = this.$refs.mathField.$el;
@@ -108,5 +109,8 @@ export default {
 <style scoped>
 .inline-math-wrapper {
   display: inline-block;
+}
+.math-field {
+  white-space: normal !important;
 }
 </style>
