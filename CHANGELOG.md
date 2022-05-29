@@ -1,5 +1,11 @@
 # CHANGELOG
 
+## Next
+
+Client:
+
+- Fix all typescript error
+
 ## v0.6.0
 
 All:

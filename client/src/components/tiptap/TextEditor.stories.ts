@@ -1,4 +1,6 @@
 import { Editor } from "@tiptap/vue-2";
+import "@tiptap/extension-image";
+import Vue from "vue";
 import TextEditor from "./TextEditor.vue";
 import TextEditorToolbar from "./TextEditorToolbar.vue";
 import TextViewer from "./TextViewer.vue";
@@ -104,26 +106,27 @@ const text = `
 </table>
 `;
 
-export const editor = () => ({
-  components: {
-    TextEditor,
-    TextEditorToolbar,
-  },
-  data() {
-    return {
-      text,
-      editor: null,
-    };
-  },
-  methods: {
-    selectImage() {
-      const src = window.prompt("URL");
-      if (src) {
-        this.editor.chain().focus().setImage({ src: src }).run();
-      }
+export const editor = () =>
+  Vue.extend({
+    components: {
+      TextEditor,
+      TextEditorToolbar,
     },
-  },
-  template: `
+    data() {
+      return {
+        text,
+        editor: null as Editor | null,
+      };
+    },
+    methods: {
+      selectImage() {
+        const src = window.prompt("URL");
+        if (src) {
+          this.editor!.chain().focus().setImage({ src: src }).run();
+        }
+      },
+    },
+    template: `
   <div>
     <text-editor-toolbar
       :editor="editor"
@@ -135,38 +138,39 @@ export const editor = () => ({
     </text-editor>
     <pre><code>{{ text }}</code></pre>
   </div>`,
-});
+  });
 
-export const multiEditor = () => ({
-  components: {
-    TextEditor,
-    TextEditorToolbar,
-  },
-  data() {
-    return {
-      text_1: text,
-      text_2: text,
-      editor: null,
-    };
-  },
-  methods: {
-    selectImage() {
-      const src = window.prompt("URL");
-      if (src) {
-        this.editor.chain().focus().setImage({ src: src }).run();
-      }
+export const multiEditor = () =>
+  Vue.extend({
+    components: {
+      TextEditor,
+      TextEditorToolbar,
     },
-    onBlur(editor: Editor, event: FocusEvent) {
-      const relatedElement = event.relatedTarget as Element;
-      if (relatedElement) {
-        const toolbar = this.$refs.toolbar.$el;
-        if (relatedElement.parentElement == toolbar) return;
-      }
+    data() {
+      return {
+        text_1: text,
+        text_2: text,
+        editor: null as Editor | null,
+      };
+    },
+    methods: {
+      selectImage() {
+        const src = window.prompt("URL");
+        if (src) {
+          this.editor!.chain().focus().setImage({ src: src }).run();
+        }
+      },
+      onBlur(editor: Editor, event: FocusEvent) {
+        const relatedElement = event.relatedTarget as Element;
+        if (relatedElement) {
+          const toolbar = (this.$refs.toolbar! as Vue).$el;
+          if (relatedElement.parentElement == toolbar) return;
+        }
 
-      if (this.editor == editor) this.editor = null;
+        if (this.editor == editor) this.editor = null;
+      },
     },
-  },
-  template: `
+    template: `
   <div>
     <text-editor-toolbar
       :editor="editor"
@@ -184,7 +188,7 @@ export const multiEditor = () => ({
       @editorBlur="onBlur">
     </text-editor>
   </div>`,
-});
+  });
 
 export const renderer = () => ({
   components: {

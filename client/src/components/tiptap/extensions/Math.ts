@@ -1,4 +1,10 @@
-import { Node, InputRule, PasteRule } from "@tiptap/core";
+import {
+  Node,
+  InputRule,
+  PasteRule,
+  RawCommands,
+  CommandProps,
+} from "@tiptap/core";
 import { VueNodeViewRenderer } from "@tiptap/vue-2";
 import { NodeType } from "prosemirror-model";
 import { Selection, Transaction } from "prosemirror-state";
@@ -120,7 +126,7 @@ export const MathBlock = Node.create({
     return {
       addMathBlock:
         () =>
-        ({ commands, tr }) => {
+        ({ commands, tr }: CommandProps) => {
           tr.replaceRangeWith(
             tr.selection.from,
             tr.selection.from,
@@ -129,7 +135,7 @@ export const MathBlock = Node.create({
           selectionToMathStart(tr);
           return true;
         },
-    };
+    } as Partial<RawCommands>;
   },
 });
 
@@ -174,7 +180,7 @@ export const MathInline = Node.create({
     return {
       addMathInline:
         () =>
-        ({ commands, tr }) => {
+        ({ commands, tr }: CommandProps) => {
           tr.replaceRangeWith(
             tr.selection.from,
             tr.selection.from,
@@ -183,6 +189,6 @@ export const MathInline = Node.create({
           selectionToMathStart(tr);
           return true;
         },
-    };
+    } as Partial<RawCommands>;
   },
 });
