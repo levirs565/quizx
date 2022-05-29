@@ -1,11 +1,12 @@
 # CHANGELOG
 
-## Dev
+## v0.6.0
 
 All:
 
 - Support import quiz from markdown
 - Add tags to quiz
+- Upgrade some dependencies
 
 Client:
 
