@@ -1,6 +1,7 @@
 {
   "name": "@quizx/server",
   "version": "0.6.0",
+  "license": "AGPL-3.0",
   "scripts": {
     "prebuild": "rimraf dist",
     "build": "nest build",
