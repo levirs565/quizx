@@ -1,0 +1,5 @@
+build:
+  docker:
+    web: Dockerfile
+run:
+  web: "env SERVER_PORT=$PORT node ./dist/main.js"
