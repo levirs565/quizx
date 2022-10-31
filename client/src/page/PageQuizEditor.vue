@@ -29,53 +29,58 @@
 
     <p class="text-h6 my-4">Questions</p>
 
-    <text-editor-toolbar
-      :editor="activeEditor"
-      :stickyTop="toolbarTop"
-      @addImage="addImage"
-      ref="toolbar"
-    />
-
     <v-row>
       <v-col
         cols="12"
         v-for="(question, index) in quiz.questions"
         :key="question.id"
       >
-        <question-editor
+        <question
           :index="index"
           :question="question"
-          @update:question="$set(quiz.questions, index, $event)"
-          @delete="deleteQuestion"
-          @editorFocus="activeEditor = $event"
-          @editorBlur="onEditorBlur"
-        />
+          :initialAnswer="question.answer"
+          :editable="false"
+        >
+          <v-card-actions>
+            <v-spacer />
+            <v-btn outlined color="error" @click="deleteQuestion(index)">
+              <v-icon left>mdi-delete</v-icon>
+              Delete
+            </v-btn>
+            <v-btn outlined @click="editQuestion(index)">
+              <v-icon left>mdi-pencil</v-icon>
+              Edit
+            </v-btn>
+          </v-card-actions>
+        </question>
       </v-col>
 
       <v-col>
         <v-btn color="primary" @click="newQuestion"> Add Question </v-btn>
       </v-col>
-    </v-row>
 
-    <v-dialog v-model="isSelectImageDialogShow" max-width="500px">
-      <dialog-select-image
-        :quizId="quiz.id"
-        @cancel="callImageSelectCancelled"
-        @imageSelected="callImageSelected"
-      />
-    </v-dialog>
+      <v-dialog fullscreen hide-overlay v-model="editDialogState.isShow">
+        <dialog-question-editor
+          :question="editDialogState.question"
+          :index="editDialogState.questionIndex"
+          :isNewQuestion="editDialogState.isNew"
+          @cancel="cancelEditQuestion"
+          @apply="applyEditQuestion"
+        ></dialog-question-editor>
+      </v-dialog>
+    </v-row>
   </resource-wrapper>
 </template>
 
 <script>
 import { Quiz } from "@/api";
 import QuizSummary from "@/components/quiz/QuizSummary.vue";
-import DialogSelectImage from "@/dialog/DialogSelectImage.vue";
 import ResourceWrapper, {
   updateResourceStateByPromise,
 } from "@/components/resource/ResourceWrapper.vue";
-import QuestionEditor from "@/components/question/QuestionEditor.vue";
-import TextEditorToolbar from "@/components/tiptap/TextEditorToolbar.vue";
+import Question from "@/components/question/Question.vue";
+import DialogQuestionEditor from "@/dialog/DialogQuestionEditor.vue";
+import clone from "just-clone";
 
 export default {
   props: {
@@ -83,16 +88,20 @@ export default {
   },
   components: {
     QuizSummary,
-    DialogSelectImage,
     ResourceWrapper,
-    QuestionEditor,
-    TextEditorToolbar,
+    Question,
+    DialogQuestionEditor,
   },
   data() {
     return {
       quiz: {},
-      isSelectImageDialogShow: false,
       isDeleteDialogShow: false,
+      editDialogState: {
+        isShow: false,
+        isNew: false,
+        question: null,
+        questionIndex: 0,
+      },
       state: null,
       activeEditor: null,
     };
@@ -113,14 +122,36 @@ export default {
         this.$router.replace("/quiz");
       });
     },
+    editQuestion(index) {
+      this.editDialogState.isNew = false;
+      this.editDialogState.questionIndex = index;
+      this.editDialogState.question = clone(this.quiz.questions[index]);
+      this.editDialogState.isShow = true;
+    },
+    cancelEditQuestion() {
+      this.editDialogState.isShow = false;
+    },
+    applyEditQuestion() {
+      this.editDialogState.isShow = false;
+      if (!this.editDialogState.isNew)
+        this.$set(
+          this.quiz.questions,
+          this.editDialogState.questionIndex,
+          this.editDialogState.question
+        );
+      else this.quiz.questions.push(this.editDialogState.question);
+    },
     newQuestion() {
-      this.quiz.questions.push({
+      this.editDialogState.isNew = true;
+      this.editDialogState.questionIndex = 0;
+      this.editDialogState.question = {
         id: "new-" + Math.random().toString(36).substr(2),
         type: "multiple-choice",
         question: "",
         choices: ["", "", "", ""],
         answer: 0,
-      });
+      };
+      this.editDialogState.isShow = true;
     },
     async saveQuiz() {
       try {
@@ -145,32 +176,6 @@ export default {
     },
     async deleteQuestion(index) {
       this.$delete(this.quiz.questions, index);
-    },
-    addImage() {
-      this.isSelectImageDialogShow = true;
-    },
-    callImageSelected(result) {
-      this.isSelectImageDialogShow = false;
-      if (this.activeEditor) {
-        this.activeEditor.chain().focus().setImage(result).run();
-      } else {
-        this.showNotification({
-          text: "Cannot add image",
-          color: "error",
-        });
-      }
-    },
-    callImageSelectCancelled() {
-      this.isSelectImageDialogShow = false;
-    },
-    onEditorBlur(editor, event) {
-      const relatedElement = event.relatedTarget;
-      if (relatedElement) {
-        const toolbar = this.$refs.toolbar.$el;
-        if (relatedElement.parentElement == toolbar) return;
-      }
-
-      if (this.activeEditor == editor) this.activeEditor = null;
     },
   },
   watch: {

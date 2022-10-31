@@ -1,31 +1,35 @@
 <template>
-  <base-question
-    :question="question"
-    :answer.sync="answer"
-    :index="index"
-    :answerEditable="editable"
-    :inputProps="inputProps"
-  >
-    <template v-slot:question>
-      <text-editor :value="question.question" :editable="false" />
-    </template>
+  <v-lazy min-height="200px">
+    <v-card>
+      <v-card-title class="text-overline"
+        >Question {{ index + 1 }}</v-card-title
+      >
+      <v-card-text>
+        <text-viewer :value="question.question" />
 
-    <template v-slot:choice="{ choice, indexChar }">
-      <span class="mr-2 text--primary">{{ indexChar }}.</span>
-      <text-editor :value="choice" :editable="false" />
-    </template>
+        <question-answer
+          :question="question"
+          :editable="editable"
+          :selectedAnswer.sync="answer"
+          :inputProps="inputProps"
+        >
+          <template v-slot:choice="{ choice, indexChar }">
+            <span class="mr-2 text--primary">{{ indexChar }}.</span>
+            <text-viewer :value="choice" />
+          </template>
+        </question-answer>
 
-    <template v-slot:content>
-      <slot name="content" />
-    </template>
+        <slot name="content" />
+      </v-card-text>
 
-    <slot v-bind:component="this"></slot>
-  </base-question>
+      <slot v-bind:component="this"></slot>
+    </v-card>
+  </v-lazy>
 </template>
 
 <script>
-import TextEditor from "@/components/tiptap/TextViewer.vue";
-import BaseQuestion from "./BaseQuestion.vue";
+import TextViewer from "@/components/tiptap/TextViewer.vue";
+import QuestionAnswer from "./QuestionAnswer.vue";
 
 export default {
   props: {
@@ -39,8 +43,8 @@ export default {
     answerState: Number,
   },
   components: {
-    TextEditor,
-    BaseQuestion,
+    TextViewer,
+    QuestionAnswer,
   },
   data() {
     return {

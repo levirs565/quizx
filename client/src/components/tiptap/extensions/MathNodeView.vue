@@ -34,6 +34,10 @@ export default {
     // only useful when node is math inline
     if (this.editor.state.selection.from === this.getPos()) {
       this.$nextTick(() => {
+        this.$refs.mathField.$el.setOptions({
+          virtualKeyboardContainer:
+            this.extension.options.virtualKeyboardContainer,
+        });
         this.focusMathField();
       });
     }

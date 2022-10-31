@@ -27,6 +27,7 @@ export default {
       default: false,
     },
     selectImageFunction: Function,
+    mathVirtualKeyboardContainer: HTMLElement,
   },
   data() {
     return {
@@ -34,37 +35,48 @@ export default {
     };
   },
   mounted() {
-    let editorClass = "text-body-1 text--primary";
-    this.editor = new Editor({
-      editable: true,
-      content: this.value,
-      extensions: [
-        StarterKit,
-        Table,
-        TableRow,
-        TableHeader,
-        TableCell,
-        Image,
-        Superscript,
-        Subscript,
-        CursorTracker,
-        MathBlock,
-        MathInline,
-      ],
-      editorProps: {
-        attributes: {
-          class: editorClass,
+    this.$nextTick(() => {
+      let editorClass = "text-body-1 text--primary";
+      const mathNodeSetting = {
+        addOptions: () => {
+          return {
+            virtualKeyboardContainer: this.mathVirtualKeyboardContainer
+              ? this.mathVirtualKeyboardContainer
+              : document.body,
+          };
         },
-      },
-      onUpdate: () => {
-        this.$emit("input", this.editor.getHTML());
-      },
-      onFocus: ({ editor }) => {
-        this.$emit("editorFocus", editor);
-      },
-      onBlur: ({ editor, event }) => {
-        this.$emit("editorBlur", editor, event);
-      },
+      };
+      this.editor = new Editor({
+        editable: true,
+        content: this.value,
+        extensions: [
+          StarterKit,
+          Table,
+          TableRow,
+          TableHeader,
+          TableCell,
+          Image,
+          Superscript,
+          Subscript,
+          CursorTracker,
+          MathBlock.extend(mathNodeSetting),
+          MathInline.extend(mathNodeSetting),
+        ],
+        editorProps: {
+          attributes: {
+            class: editorClass,
+          },
+        },
+        onUpdate: () => {
+          this.$emit("input", this.editor.getHTML());
+        },
+        onFocus: ({ editor }) => {
+          this.$emit("editorFocus", editor);
+        },
+        onBlur: ({ editor, event }) => {
+          this.$emit("editorBlur", editor, event);
+        },
+      });
     });
   },
   watch: {
