@@ -157,11 +157,14 @@ export const MathInline = Node.create({
       {
         tag: "math",
       },
+      {
+        tag: "math-inline",
+      },
     ];
   },
 
   renderHTML({ HTMLAttributes }) {
-    return ["math", HTMLAttributes];
+    return ["math-inline", HTMLAttributes];
   },
 
   addNodeView() {

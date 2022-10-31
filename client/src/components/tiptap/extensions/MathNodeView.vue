@@ -4,7 +4,6 @@
       class="math-field"
       v-model="src"
       ref="mathField"
-      :read-only="readOnly"
       :default-mode="defaultMode"
       @move-out.native="mathMoveOut"
       @focus-out.native.prevent="mathMoveOut"
@@ -28,7 +27,6 @@ export default {
       defaultMode = "inline-math";
     }
     return {
-      readOnly: !this.editor.isEditable,
       defaultMode,
     };
   },

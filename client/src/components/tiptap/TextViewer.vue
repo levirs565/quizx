@@ -1,14 +1,12 @@
 <template>
-  <editor-content :editor="editor" />
+  <div class="TextViewer text-body-1 text--primary" v-html="value" />
 </template>
 <script>
-import TipTapBaseVue from "./TipTapBase.vue";
+import "./MathViewerElement";
+
 export default {
-  extends: TipTapBaseVue,
-  data() {
-    return {
-      editable: false,
-    };
+  props: {
+    value: String,
   },
 };
 </script>

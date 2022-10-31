@@ -2,6 +2,7 @@ import Vue from "vue";
 import App from "./App.vue";
 import router from "./router";
 import store from "./store/index";
+import "./style.scss"
 import "@mdi/font/css/materialdesignicons.css";
 import "@fontsource/roboto/100.css";
 import "@fontsource/roboto/300.css"
