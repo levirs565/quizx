@@ -2,12 +2,10 @@
   <resource-wrapper :state="state" @reload="updateQuiz">
     <template v-slot:toolbar>
       <v-toolbar-title>Quiz</v-toolbar-title>
-      <v-spacer />
-
+    </template>
+    <template #toolbarAppend>
       <v-btn
-        v-if="
-          $store.state.auth.user && $store.state.auth.user.id == quiz.userId
-        "
+        v-if="user && user.id == quiz.userId"
         icon
         :to="`/quiz/${quiz_id}/edit`"
       >
@@ -17,13 +15,9 @@
 
     <quiz-summary :quiz="quiz">
       <v-card-actions>
-        <v-dialog
-          v-model="isPlayDialogShow"
-          v-if="$store.state.auth.user"
-          max-width="400px"
-        >
-          <template v-slot:activator="{ on, attrs }">
-            <v-btn text color="primary" v-on="on" v-bind="attrs"> Play </v-btn>
+        <v-dialog v-model="isPlayDialogShow" v-if="user" max-width="400px">
+          <template v-slot:activator="{ props }">
+            <v-btn variant="text" color="primary" v-bind="props"> Play </v-btn>
           </template>
 
           <dialog-play-quiz
@@ -70,6 +64,8 @@ import { isAnswerEmpty as isAnswerEmptyImpl } from "@/utils";
 import ResourceWrapper, {
   updateResourceStateByPromise,
 } from "@/components/resource/ResourceWrapper.vue";
+import useAuthStore from "@/store/auth";
+import { mapState } from "pinia";
 
 export default {
   components: {
@@ -112,7 +108,7 @@ export default {
       Quiz.checkQuestionAnswer(this.quiz_id, questionId, answer).then((val) => {
         let state = 1;
         if (val.correct) state = 0;
-        this.$set(this.answerResults, questionId, state);
+        this.answerResults[questionId] = state;
       });
     },
     showPlayDialog() {
@@ -126,6 +122,9 @@ export default {
     isAnswerEmpty(answer) {
       return isAnswerEmptyImpl(answer);
     },
+  },
+  computed: {
+    ...mapState(useAuthStore, ["user"]),
   },
 };
 </script>

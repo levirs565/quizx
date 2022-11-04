@@ -1,20 +1,15 @@
-import { Module } from "vuex";
+import { defineStore } from "pinia";
 
 export interface Notification {
   text: String;
   color: String;
 }
-interface NotificationStoreState {
+interface State {
   notification?: Notification;
 }
 
-export default {
-  state: {
+export default defineStore("notification", {
+  state: (): State => ({
     notification: undefined,
-  },
-  mutations: {
-    setNotification(state, notification) {
-      state.notification = notification;
-    },
-  },
-} as Module<NotificationStoreState, void>;
+  }),
+});

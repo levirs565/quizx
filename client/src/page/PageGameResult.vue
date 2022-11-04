@@ -40,11 +40,11 @@
           <template v-slot:content>
             <p class="text-body-1 text--primary my-2">
               Correct answer:
-              <math-field
+              <math-field-base
                 class="d-inline-block ml-2"
                 v-if="question.type === 'math'"
                 read-only
-                :value="game.correctAnswers[index]"
+                :modelValue="game.correctAnswers[index]"
               />
               <span class="ml-2" v-else>
                 {{ getQuestionCorrectAnswerText(index) }}
@@ -60,14 +60,14 @@
 <script>
 import { Game } from "@/api";
 import Question from "@/components/question/Question.vue";
-import MathField from "@/components/math/MathField.vue";
+import MathFieldBase from "@/components/math/MathFieldBase.vue";
 import { getChoiceIndex } from "@/utils";
 import ResourceWrapper, {
   updateResourceStateByPromise,
 } from "@/components/resource/ResourceWrapper.vue";
 
 export default {
-  components: { Question, MathField, ResourceWrapper },
+  components: { Question, MathFieldBase, ResourceWrapper },
   props: {
     game_id: String,
   },

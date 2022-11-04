@@ -2,7 +2,7 @@
   <v-card>
     <v-card-title v-if="!editor">{{ quiz.title }}</v-card-title>
     <v-card-title v-else>
-      <v-text-field filled v-model="quiz.title" hide-details="auto" />
+      <v-text-field variant="filled" v-model="quiz.title" hide-details="auto" />
     </v-card-title>
     <v-card-text>
       <quiz-information
@@ -13,10 +13,10 @@
         v-if="editor"
         v-model="quiz.tags"
         label="Tags"
-        small-chips
+        chips
         multiple
         hint="Enter to add tag"
-        outlined
+        variant="outlined"
         class="mt-4"
         append-icon=""
       />

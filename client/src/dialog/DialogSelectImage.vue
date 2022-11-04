@@ -18,14 +18,14 @@
           />
         </v-tab-item>
         <v-tab-item>
-          <v-text-field filled v-model="url" label="URL" />
+          <v-text-field variant="filled" v-model="url" label="URL" />
         </v-tab-item>
       </v-tabs-items>
     </v-card-text>
     <v-card-actions>
       <v-spacer />
-      <v-btn text @click="$emit('cancel')">Cancel</v-btn>
-      <v-btn text color="primary" @click="submit">Add</v-btn>
+      <v-btn variant="text" @click="$emit('cancel')">Cancel</v-btn>
+      <v-btn variant="text" color="primary" @click="submit">Add</v-btn>
     </v-card-actions>
   </v-card>
 </template>

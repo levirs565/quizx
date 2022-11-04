@@ -1,10 +1,9 @@
 <template>
   <v-tooltip bottom>
-    <template v-slot:activator="{ on, attrs }">
+    <template v-slot:activator="{ props }">
       <v-btn
         @click="$emit('click')"
-        v-bind="attrs"
-        v-on="on"
+        v-bind="props"
         icon
         :color="active ? 'primary' : ''"
         :disabled="disabled"

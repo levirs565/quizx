@@ -8,8 +8,7 @@
       :label="label"
       :accept="accept"
       :prepend-icon="icon"
-      :value="value"
-      @change="$emit('input', $event)"
+      v-model="files"
     />
   </div>
 </template>
@@ -19,13 +18,25 @@ export default {
     accept: String,
     icon: String,
     label: String,
-    value: null,
+    modelValue: File,
+  },
+  computed: {
+    files: {
+      get() {
+        const result = [];
+        if (this.modelValue) result.push(this.modelValue);
+        return result;
+      },
+      set(val) {
+        this.$emit("update:modelValue", val[0]);
+      },
+    },
   },
   methods: {
     addDropFile(event) {
       const file = event.dataTransfer.files[0];
 
-      if (file) this.$emit("input", file);
+      if (file) this.$emit("update:modelValue", file);
     },
   },
 };

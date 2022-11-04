@@ -10,9 +10,9 @@
         v-model="mode"
         :items="modeList"
         item-value="type"
-        item-text="text"
+        item-title="text"
         label="Mode"
-        outlined
+        variant="outlined"
         hide-details
       />
       <template v-if="mode == 'exam'">
@@ -42,14 +42,14 @@
           type="number"
           v-show="flashCard.retryCountLimit.enabled"
           v-model.number="flashCard.retryCountLimit.count"
-          outlined
+          variant="outlined"
           hide-details
         />
       </template>
     </v-card-text>
     <v-card-actions>
       <v-spacer />
-      <v-btn text @click="$emit('close')">Cancel</v-btn>
+      <v-btn variant="text" @click="$emit('close')">Cancel</v-btn>
       <v-btn color="primary" @click="submit">Play Now</v-btn>
     </v-card-actions>
   </v-card>

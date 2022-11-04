@@ -2,6 +2,9 @@
   <div>
     <base-app-bar :isLoading="state && state.isLoading">
       <slot name="toolbar" />
+      <template #append>
+        <slot name="toolbarAppend" />
+      </template>
     </base-app-bar>
     <resource-main-container @reload="$emit('reload')" :state="state">
       <v-container>
@@ -11,7 +14,7 @@
   </div>
 </template>
 <script lang="ts">
-import Vue from "vue";
+import { defineComponent } from "vue";
 import BaseAppBar from "@/components/BaseAppBar.vue";
 import ResourceMainContainer from "./ResourceMainContainer.vue";
 
@@ -45,7 +48,7 @@ export function updateResourceStateByPromise<T>(
     });
 }
 
-export default Vue.extend({
+export default defineComponent({
   components: {
     BaseAppBar,
     ResourceMainContainer,

@@ -9,19 +9,24 @@
     </v-card-subtitle>
     <v-card-text>
       <v-form>
-        <v-text-field type="text" v-model="userID" label="ID" filled />
+        <v-text-field
+          type="text"
+          v-model="userID"
+          label="ID"
+          variant="filled"
+        />
         <v-text-field
           type="password"
           v-model="userPassword"
           label="Password"
-          filled
+          variant="filled"
         />
       </v-form>
     </v-card-text>
 
     <v-card-actions>
       <v-spacer />
-      <v-btn text color="primary" :disabled="!valid" @click="login">
+      <v-btn variant="text" color="primary" :disabled="!valid" @click="login">
         Login
       </v-btn>
     </v-card-actions>
@@ -30,6 +35,8 @@
 
 <script>
 import { User } from "@/api";
+import useAuthStore from "@/store/auth";
+import { mapActions } from "pinia";
 
 export default {
   data() {
@@ -46,10 +53,11 @@ export default {
   methods: {
     login() {
       User.login(this.userID, this.userPassword).then(() => {
-        this.$store.dispatch("updateUser");
+        this.updateUser();
         this.$router.push("/");
       });
     },
+    ...mapActions(useAuthStore, ["updateUser"]),
   },
 };
 </script>

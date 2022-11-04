@@ -1,29 +1,26 @@
-import Vue from "vue";
+import { createApp } from "vue";
 import App from "./App.vue";
 import router from "./router";
-import store from "./store/index";
-import "./style.scss"
+import { createPinia } from "pinia";
+import "./style.scss";
 import "@mdi/font/css/materialdesignicons.css";
 import "@fontsource/roboto/100.css";
-import "@fontsource/roboto/300.css"
-import "@fontsource/roboto/400.css"
-import "@fontsource/roboto/500.css"
-import "@fontsource/roboto/700.css"
-import "@fontsource/roboto/900.css"
+import "@fontsource/roboto/300.css";
+import "@fontsource/roboto/400.css";
+import "@fontsource/roboto/500.css";
+import "@fontsource/roboto/700.css";
+import "@fontsource/roboto/900.css";
 import vuetify from "./plugins/vuetify";
 import notification from "./plugins/notification";
 
-Vue.use(notification);
+// Vue.config.productionTip = false;
 
-Vue.filter("selectOneUpper", function (value: string) {
-  return value.charAt(0).toUpperCase();
-});
+const pinia = createPinia();
+const app = createApp(App);
 
-Vue.config.productionTip = false;
+app.use(router);
+app.use(vuetify);
+app.use(pinia);
+app.use(notification);
 
-new Vue({
-  render: (h) => h(App),
-  router,
-  vuetify,
-  store,
-}).$mount("#app");
+app.mount("#app");

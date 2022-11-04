@@ -3,20 +3,20 @@
     v-model="isSnackbarShow"
     :color="currentNotification ? currentNotification.color : ''"
   >
-    <template v-slot:action="{ attrs }">
-      <v-btn text v-bind="attrs" @click="isSnackbarShow = false"> Close </v-btn>
+    <template v-slot:actions>
+      <v-btn variant="text" @click="isSnackbarShow = false"> Close </v-btn>
     </template>
 
     {{ currentNotification ? currentNotification.text : "" }}
   </v-snackbar>
 </template>
 <script lang="ts">
-import Vue, { PropType } from "vue";
+import { defineComponent } from "vue";
 import { Notification } from "@/store/notification";
 
-export default Vue.extend({
+export default defineComponent({
   props: {
-    notification: Object as PropType<Notification>,
+    notification: Object,
   },
   data() {
     return {
@@ -68,4 +68,3 @@ export default Vue.extend({
   },
 });
 </script>
->

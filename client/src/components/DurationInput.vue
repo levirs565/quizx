@@ -7,7 +7,7 @@
       <v-text-field
         type="number"
         suffix="minute"
-        outlined
+        variant="outlined"
         hide-details
         min="0"
         v-model.number="minute"
@@ -17,7 +17,7 @@
       <v-text-field
         type="number"
         suffix="second"
-        outlined
+        variant="outlined"
         hide-details
         min="0"
         max="59"
@@ -29,7 +29,7 @@
 <script>
 export default {
   props: {
-    value: {
+    modelValue: {
       type: Number,
     },
     label: {
@@ -45,7 +45,7 @@ export default {
   methods: {
     updateValue() {
       const time = this.minute * 60 + this.second;
-      this.$emit("input", time);
+      this.$emit("update:modelValue", time);
     },
   },
   watch: {
@@ -55,7 +55,7 @@ export default {
     second() {
       this.updateValue();
     },
-    value: {
+    modelValue: {
       immediate: true,
       handler(value) {
         this.minute = Math.floor(value / 60);

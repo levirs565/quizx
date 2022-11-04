@@ -11,7 +11,7 @@
       no-gutters
       class="question-choice"
     >
-      <v-radio :value="choiceIndex" class="question-radio">
+      <v-radio :value="choiceIndex" class="question-radio" inline>
         <template v-slot:label>
           <slot
             name="choice"
@@ -38,7 +38,7 @@
     v-else-if="question.type == 'short-text'"
     v-model="lazyAnswer"
     type="text"
-    outlined
+    variant="outlined"
     :readonly="!editable"
     v-bind="inputProps"
   />
@@ -46,28 +46,34 @@
     v-else-if="question.type == 'number'"
     type="number"
     v-model.number="lazyAnswer"
-    outlined
+    variant="outlined"
     :readonly="!editable"
     v-bind="inputProps"
   />
   <math-field-input
     v-else-if="question.type == 'math'"
-    outlined
+    variant="outlined"
     v-model="lazyAnswer"
     virtual-keyboard-mode="manual"
     :readonly="!editable"
     v-bind="inputProps"
+    :virtualKeyboardContainer="mathVirtualKeyboardContainer"
   />
 </template>
 <script>
 import { getChoiceIndex } from "@/utils";
+import MathFieldInput from "@/components/math/MathFieldInput.vue";
 
 export default {
+  components: {
+    MathFieldInput,
+  },
   props: {
     question: Object,
     selectedAnswer: [Number, String],
     editable: Boolean,
     inputProps: Object,
+    mathVirtualKeyboardContainer: HTMLElement,
   },
   data() {
     return {

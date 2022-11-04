@@ -1,6 +1,6 @@
 <template>
   <math-field
-    @input="$emit('input', $el.value)"
+    @input="$emit('update:modelValue', $el.value)"
     :class="{
       'bordered-math-field': bordered,
       input: bordered,
@@ -13,7 +13,7 @@ import "mathlive/dist/mathlive-fonts.css";
 
 export default {
   props: {
-    value: {
+    modelValue: {
       type: String,
       default: "",
     },
@@ -24,11 +24,11 @@ export default {
   },
   mounted() {
     this.$nextTick(() => {
-      this.$el.value = this.value;
+      this.$el.value = this.modelValue;
     });
   },
   watch: {
-    value(value) {
+    modelValue(value) {
       if (value == this.$el.value) return;
 
       this.$el.value = value;

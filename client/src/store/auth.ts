@@ -1,29 +1,24 @@
-import { User } from '@/api';
-import { Module } from "vuex";
+import { User } from "@/api";
+import { defineStore } from "pinia";
 
-interface AuthStoreState {
-  user: any
+interface State {
+  user: any;
 }
 
-export default {
-  state: {
-    user: undefined
-  },
-  mutations: {
-    setUser(state, user: any) {
-      state.user = user;
-    }
-  },
+export default defineStore("auth", {
+  state: (): State => ({
+    user: undefined,
+  }),
   actions: {
-    updateUser({ commit }) {
-      return User.state().then(result => {
-        commit('setUser', result.user);
+    updateUser() {
+      return User.state().then((result) => {
+        this.user = result.user;
       });
     },
-    logout({ dispatch }) {
+    logout() {
       User.logout().then(() => {
-        dispatch('updateUser');
+        this.updateUser();
       });
-    }
-  }
-} as Module<AuthStoreState, void>
+    },
+  },
+});

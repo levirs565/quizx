@@ -10,8 +10,8 @@
         <question-answer
           :question="question"
           :editable="editable"
-          :selectedAnswer.sync="answer"
-          :inputProps="inputProps"
+          v-model:selectedAnswer="answer"
+          :inputProps="answerInputProps"
         >
           <template v-slot:choice="{ choice, indexChar }">
             <span class="mr-2 text--primary">{{ indexChar }}.</span>
@@ -64,11 +64,11 @@ export default {
     },
   },
   computed: {
-    inputProps() {
+    answerInputProps() {
       const baseText = "Your answer is ";
       if (this.answerState == 0) {
         return {
-          "success-messages": `${baseText} correct`,
+          messages: `${baseText} correct`,
         };
       }
 

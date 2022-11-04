@@ -1,18 +1,19 @@
-import { Notification } from "@/store/notification";
-import Vue, { PluginObject } from "vue";
+import useNotificationStore, { Notification } from "@/store/notification";
+import { Plugin } from "vue";
 
 export default {
-  install() {
-    Vue.prototype.showNotification = function (
-      notification: Partial<Notification>
+  install(app, options) {
+    app.config.globalProperties.showNotification = function (
+      notification: Notification
     ) {
-      this.$store.commit("setNotification", notification);
+      const store = useNotificationStore();
+      store.notification = notification;
     };
   },
-} as PluginObject<void>;
+} as Plugin;
 
-declare module "vue/types/vue" {
-  interface Vue {
-    showNotification(notification: Partial<Notification>): void;
+declare module "vue" {
+  interface NotificationPluginProperties {
+    showNotification(notification: Notification): void;
   }
 }

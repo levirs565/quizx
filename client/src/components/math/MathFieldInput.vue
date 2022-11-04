@@ -1,34 +1,46 @@
+<template>
+  <v-input>
+    <v-field v-bind="$attrs">
+      <math-field
+        ref="mathLive"
+        class="math-field-input px-4 py-2"
+        @input="$emit('update:modelValue', $refs.mathLive.value)"
+        v-bind="mathFieldAttrs"
+      />
+    </v-field>
+  </v-input>
+</template>
 <script>
-import { VTextField } from "vuetify/lib";
-
 export default {
-  extends: VTextField,
-  methods: {
-    // Adapted from VTextField implementation
-    genInput() {
-      const listeners = Object.assign({}, this.listeners$);
-      delete listeners.change;
-      return [
-        this.$createElement("math-field", {
-          staticClass: "math-field-input text--primary",
-          domProps: {
-            value: this.lazyValue,
-          },
-          attrs: {
-            ...this.$attrs,
-            "read-only": this.isReadonly,
-            disabled: this.isDisabled,
-            id: this.computedId,
-          },
-          on: Object.assign(listeners, {
-            focus: this.onFocus,
-            keydown: this.onKeyDown,
-            blur: this.onBlur,
-            input: this.onInput,
-          }),
-          ref: "input",
-        }),
-      ];
+  props: {
+    modelValue: String,
+    virtualKeyboardContainer: HTMLElement,
+  },
+  emits: ["update:modelValue"],
+  mounted() {
+    this.$nextTick(() => {
+      this.$refs.mathLive.setOptions({
+        virtualKeyboardContainer: this.virtualKeyboardContainer
+          ? this.virtualKeyboardContainer
+          : document.body,
+      });
+      this.$refs.mathLive.value = this.modelValue;
+    });
+  },
+  computed: {
+    mathFieldAttrs() {
+      const { readonly, ...attrs } = this.$attrs;
+
+      if (readonly) attrs["read-only"] = "";
+
+      return attrs;
+    },
+  },
+  watch: {
+    modelValue(value) {
+      if (value == this.$refs.mathLive.value) return;
+
+      this.$refs.mathLive.value = value;
     },
   },
 };

@@ -9,27 +9,31 @@
       </v-tabs>
     </v-card-text>
     <v-card-text>
-      <v-tabs-items v-model="activeTab">
-        <v-tab-item>
-          <v-text-field filled label="Title" v-model="title"></v-text-field>
-        </v-tab-item>
-        <v-tab-item>
+      <v-window v-model="activeTab">
+        <v-window-item>
+          <v-text-field
+            variant="filled"
+            label="Title"
+            v-model="title"
+          ></v-text-field>
+        </v-window-item>
+        <v-window-item>
           <v-textarea filled label="JSON" v-model="json"></v-textarea>
-        </v-tab-item>
-        <v-tab-item>
+        </v-window-item>
+        <v-window-item>
           <base-file-input
             label="Markdown File"
             accept=".md"
             icon="mdi-file-document"
             v-model="markdownFile"
           />
-        </v-tab-item>
-      </v-tabs-items>
+        </v-window-item>
+      </v-window>
     </v-card-text>
     <v-card-actions>
       <v-spacer></v-spacer>
-      <v-btn text @click="$emit('close')">Cancel</v-btn>
-      <v-btn color="primary" text @click="submit">Create</v-btn>
+      <v-btn variant="text" @click="$emit('close')">Cancel</v-btn>
+      <v-btn color="primary" variant="text" @click="submit">Create</v-btn>
     </v-card-actions>
   </v-card>
 </template>

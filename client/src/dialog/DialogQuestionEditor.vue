@@ -1,13 +1,13 @@
 <template>
   <v-card>
-    <v-toolbar color="white" class="toolbar" ref="toolbar">
+    <v-toolbar color="white" class="toolbar" ref="toolbar" elevation="4">
       <v-toolbar-title>{{
         isNewQuestion ? "New Question " : `Question ${index + 1}`
       }}</v-toolbar-title>
       <v-spacer />
       <v-toolbar-items>
-        <v-btn text @click="$emit('cancel')">Cancel</v-btn>
-        <v-btn text @click="$emit('apply')">Apply</v-btn>
+        <v-btn variant="text" @click="$emit('cancel')">Cancel</v-btn>
+        <v-btn variant="text" @click="$emit('apply')">Apply</v-btn>
       </v-toolbar-items>
     </v-toolbar>
     <v-card-text ref="body">
@@ -26,11 +26,11 @@
       <v-row no-gutters>
         <v-spacer />
         <v-select
-          :value="question.type"
+          :modelValue="question.type"
           :items="questionTypes"
           item-value="value"
-          item-text="name"
-          @input="changeType"
+          item-title="name"
+          @update:modelValue="changeType"
           filled
           class="my-2"
         />
@@ -38,14 +38,15 @@
 
       <question-answer
         :question="question"
-        :selectedAnswer.sync="question.answer"
+        v-model:selectedAnswer="question.answer"
         editable
+        :mathVirtualKeyboardContainer="$el"
       >
         <template v-slot:afterChoice="{ choice, index, indexChar }">
           <span class="mr-2 text--primary">{{ indexChar }}.</span>
           <text-editor
-            :value="choice"
-            @input="onChoiceInput(index, $event)"
+            :modelValue="choice"
+            @update:modelValue="onChoiceInput(index, $event)"
             class="flex-grow-1 mb-2"
             @editorFocus="onEditorFocus"
             @editorBlur="oneEditorBlur"
@@ -102,7 +103,10 @@ export default {
     };
   },
   mounted() {
-    this.toolbarTop = parseInt(this.$refs.toolbar.$el.style.height) + 16 + "px";
+    this.$nextTick(() => {
+      this.toolbarTop =
+        this.$refs.toolbar.$el.getBoundingClientRect().height + 16 + "px";
+    });
   },
   methods: {
     onEditorFocus(editor) {
@@ -121,10 +125,10 @@ export default {
       this.question.choices.push("");
     },
     removeChoice(index) {
-      this.$delete(this.question.choices, index);
+      this.question.choices.splice(index, 1);
     },
     onChoiceInput(index, value) {
-      this.$set(this.question.choices, index, value);
+      this.question.choices[index] = value;
     },
     changeType(type) {
       let newQuestion = {

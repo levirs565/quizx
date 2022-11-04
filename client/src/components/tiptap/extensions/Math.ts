@@ -5,11 +5,11 @@ import {
   RawCommands,
   CommandProps,
 } from "@tiptap/core";
-import { VueNodeViewRenderer } from "@tiptap/vue-2";
+import { VueNodeViewRenderer } from "@tiptap/vue-3";
 import { NodeType } from "prosemirror-model";
 import { Selection, Transaction } from "prosemirror-state";
 import { ReplaceStep, ReplaceAroundStep } from "prosemirror-transform";
-import { VueConstructor } from "vue";
+import { Component } from "vue";
 import MathNodeView from "./MathNodeView.vue";
 
 // source: https://github.com/ProseMirror/prosemirror-state/blob/master/src/selection.js#L466
@@ -111,7 +111,7 @@ export const MathBlock = Node.create({
 
   addNodeView() {
     // I do not know why this needed
-    return VueNodeViewRenderer(MathNodeView as unknown as VueConstructor);
+    return VueNodeViewRenderer(MathNodeView);
   },
 
   addInputRules() {
@@ -168,7 +168,7 @@ export const MathInline = Node.create({
   },
 
   addNodeView() {
-    return VueNodeViewRenderer(MathNodeView as unknown as VueConstructor);
+    return VueNodeViewRenderer(MathNodeView);
   },
 
   addInputRules() {

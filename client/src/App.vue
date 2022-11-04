@@ -5,12 +5,17 @@
 </template>
 
 <script>
+import useAuthStore from "@/store/auth";
+import { mapActions } from "pinia";
+
 export default {
   mounted() {
-    this.$store.dispatch("updateUser");
+    this.updateUser();
+  },
+  methods: {
+    ...mapActions(useAuthStore, ["updateUser"]),
   },
 };
 </script>
 
-<style>
-</style>
+<style></style>

@@ -1,25 +1,25 @@
 <template>
   <node-view-wrapper :class="node.isInline ? 'inline-math-wrapper' : 'block'">
-    <math-field
+    <math-field-base
       class="math-field"
       v-model="src"
       ref="mathField"
       :default-mode="defaultMode"
-      @move-out.native="mathMoveOut"
-      @focus-out.native.prevent="mathMoveOut"
-      @keystroke.native="mathKeyStroke"
+      @move-out="mathMoveOut"
+      @focus-out.prevent="mathMoveOut"
+      @keystroke="mathKeyStroke"
       virtual-keyboard-mode="manual"
     />
   </node-view-wrapper>
 </template>
 <script>
-import MathField from "@/components/math/MathField.vue";
-import { NodeViewWrapper, nodeViewProps } from "@tiptap/vue-2";
+import MathFieldBase from "@/components/math/MathFieldBase.vue";
+import { NodeViewWrapper, nodeViewProps } from "@tiptap/vue-3";
 import { Selection } from "prosemirror-state";
 import { getPrevCursorPos } from "./CursorTracker";
 
 export default {
-  components: { NodeViewWrapper, MathField },
+  components: { NodeViewWrapper, MathFieldBase },
   props: nodeViewProps,
   data() {
     let defaultMode = "math";
@@ -57,6 +57,7 @@ export default {
   watch: {
     selected(value) {
       if (value) {
+        if (!this.$refs.mathField) return;
         const nodePos = this.getPos();
         const prevPos = getPrevCursorPos(this.editor.state);
         const mathField = this.$refs.mathField.$el;

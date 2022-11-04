@@ -4,9 +4,14 @@
     <v-progress-linear
       :active="isLoading"
       :indeterminate="isLoading"
+      v-show="isLoading"
       absolute
       bottom
     ></v-progress-linear>
+
+    <template v-slot:append>
+      <slot name="append" />
+    </template>
   </v-app-bar>
 </template>
 <script>

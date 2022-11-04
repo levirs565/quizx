@@ -1,3 +1,5 @@
+import { ref } from "vue";
+
 export function isAnswerEmpty(answer: string | number | null) {
   if (answer == null) return true;
 
@@ -24,7 +26,59 @@ export function formatSecondTime(time: number): string {
     second.toString().padStart(2, "0")
   );
 }
+export function selectOneUpper(value: string) {
+  return value.charAt(0).toUpperCase();
+}
 
+export function useCountDownTimer() {
+  const text = ref("");
+  const started = ref(false);
+  let interval: any;
+  let endTime: number | undefined;
+  let onEnd: Function | undefined;
+
+  const tick = () => {
+    const left = calculateTimeLeftSecond(endTime!!);
+    if (left <= 0) {
+      let callback = onEnd;
+      stop();
+      callback!!();
+      return;
+    }
+    text.value = formatSecondTime(left);
+  };
+
+  const start = (timerEnd: number, endCallback: Function) => {
+    stop();
+
+    endTime = timerEnd;
+    onEnd = endCallback;
+    interval = setInterval(tick, 1000);
+    tick();
+    started.value = true;
+  };
+
+  const stop = () => {
+    if (interval) {
+      clearInterval(interval);
+      interval = undefined;
+    }
+
+    onEnd = undefined;
+
+    if (started) {
+      started.value = false;
+      text.value = formatSecondTime(0);
+    }
+  };
+
+  return {
+    start,
+    stop,
+    text,
+    started,
+  };
+}
 export class CounDownTimer {
   enabled: boolean;
   text: string;

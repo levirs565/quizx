@@ -6,8 +6,8 @@
     @finish="$emit('finish')"
   >
     <template v-slot:sidebar>
-      <v-card-text class="text-center text--primary pb-0" v-if="timer.enabled">
-        <span class="text-h5">{{ timer.text }}</span>
+      <v-card-text class="text-center text--primary pb-0" v-if="timer.started">
+        <span class="text-h5">{{ timer.text.value }}</span>
       </v-card-text>
     </template>
 
@@ -30,9 +30,11 @@
   </base-game-board>
 </template>
 <script>
-import { CounDownTimer, isAnswerEmpty } from "@/utils";
+import { useCountDownTimer, isAnswerEmpty } from "@/utils";
 import BaseGameBoard from "./BaseGameBoard.vue";
 import Question from "../question/Question.vue";
+import { useLayout } from "vuetify";
+
 export default {
   components: { Question, BaseGameBoard },
   props: {
@@ -40,18 +42,24 @@ export default {
   },
   data() {
     return {
-      timer: new CounDownTimer(() => {
-        this.$emit("finish");
-      }),
       jumperButtons: [],
+    };
+  },
+  setup() {
+    const { mainRect } = useLayout();
+    const timer = useCountDownTimer();
+
+    return {
+      mainRect,
+      timer,
     };
   },
   methods: {
     startTimer() {
-      this.timer.stop();
-
       if (this.game.data.maxFinishTime) {
-        this.timer.start(new Date(this.game.data.maxFinishTime).getTime());
+        this.timer.start(new Date(this.game.data.maxFinishTime).getTime(), () => {
+          this.$emit("finish")
+        });
       }
     },
     getElementTop(el) {
@@ -60,16 +68,13 @@ export default {
     },
     goToQuestion(index) {
       const element = this.$refs.questions[index].$el;
-      const top = this.getElementTop(element) - this.$vuetify.application.top;
+      const top = this.getElementTop(element) - this.mainRect.top;
       window.scrollTo(0, top);
     },
     putAnswer(data) {
       this.$emit("answerChanged", data);
-      this.$set(
-        this.jumperButtons,
-        data.index,
-        this.getQuestionColor(data.answer)
-      );
+
+      this.jumperButtons[data.index] = this.getQuestionColor(data.answer);
     },
     getQuestionColor(answer) {
       if (!isAnswerEmpty(answer)) return "primary";

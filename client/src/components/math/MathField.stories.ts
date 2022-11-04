@@ -1,4 +1,4 @@
-import MathField from "./MathField.vue";
+import MathField from "./MathFieldBase.vue";
 
 export default {
   title: "MathField",

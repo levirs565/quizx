@@ -11,17 +11,9 @@
     </v-row>
 
     <v-dialog max-width="600px" v-model="isCreateDialogShow">
-      <template v-slot:activator="{ on, attrs }">
+      <template v-slot:activator="{ props }">
         <v-fab-transition>
-          <v-btn
-            fixed
-            fab
-            bottom
-            right
-            color="primary"
-            v-bind="attrs"
-            v-on="on"
-          >
+          <v-btn fixed fab bottom right color="primary" v-bind="props">
             <v-icon>mdi-plus</v-icon>
           </v-btn>
         </v-fab-transition>

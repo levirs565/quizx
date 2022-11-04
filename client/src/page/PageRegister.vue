@@ -9,26 +9,36 @@
     </v-card-subtitle>
     <v-card-text class="card-content">
       <v-form>
-        <v-text-field type="text" v-model="userID" label="ID" filled />
-        <v-text-field type="text" v-model="userName" label="Name" filled />
+        <v-text-field
+          type="text"
+          v-model="userID"
+          label="ID"
+          variant="filled"
+        />
+        <v-text-field
+          type="text"
+          v-model="userName"
+          label="Name"
+          variant="filled"
+        />
         <v-text-field
           type="password"
           v-model="userPassword"
           label="Password"
-          filled
+          variant="filled"
         />
         <v-text-field
           type="password"
           v-model="userPassword2"
           label="Retry Password"
-          filled
+          variant="filled"
         />
       </v-form>
     </v-card-text>
 
     <v-card-actions>
       <v-spacer />
-      <v-btn text color="primary" :disabled="!valid" @click="register">
+      <v-btn variant="text" color="primary" :disabled="!valid" @click="register">
         Register
       </v-btn>
     </v-card-actions>

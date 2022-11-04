@@ -23,8 +23,8 @@
           <v-row class="my-4" justify="end" v-if="showButtons" no-gutters>
             <slot name="buttons" />
             <v-dialog v-model="isFinishDialogShow" max-width="350px">
-              <template v-slot:activator="{ on, attrs }">
-                <v-btn color="error" v-on="on" v-bind="attrs"> Finish </v-btn>
+              <template v-slot:activator="{ props }">
+                <v-btn color="error" v-bind="props"> Finish </v-btn>
               </template>
               <dialog-finish-game
                 @submit="$emit('finish')"
@@ -40,6 +40,8 @@
 <script>
 import DialogFinishGame from "@/dialog/DialogFinishGame.vue";
 import Jumper from "./Jumper.vue";
+import { useLayout } from "vuetify";
+
 export default {
   components: { DialogFinishGame, Jumper },
   props: {
@@ -50,6 +52,12 @@ export default {
       default: true,
     },
   },
+  setup() {
+    const { mainRect } = useLayout();
+    return {
+      mainRect,
+    };
+  },
   data() {
     return {
       isFinishDialogShow: false,
@@ -57,7 +65,7 @@ export default {
   },
   computed: {
     sidebarTop() {
-      return this.$vuetify.application.top + "px";
+      return this.mainRect.top + "px";
     },
   },
 };

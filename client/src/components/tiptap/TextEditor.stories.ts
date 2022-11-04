@@ -1,4 +1,4 @@
-import { Editor } from "@tiptap/vue-2";
+import { Editor } from "@tiptap/vue-3";
 import "@tiptap/extension-image";
 import Vue from "vue";
 import TextEditor from "./TextEditor.vue";

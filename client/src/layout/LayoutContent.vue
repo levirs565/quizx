@@ -4,38 +4,38 @@
       <v-list dense>
         <template v-if="user">
           <v-list-item>
-            <v-list-item-avatar color="green" size="64">
+            <v-avatar color="green" size="64">
               <span class="white--text text-h4">{{
-                user.id | selectOneUpper
+                selectOneUpper(user.id)
               }}</span>
-            </v-list-item-avatar>
+            </v-avatar>
           </v-list-item>
 
-          <v-list-group>
-            <template v-slot:activator>
-              <v-list-item-content>
+          <v-list-group value="Account">
+            <template v-slot:activator="{ props }">
+              <v-list-item v-bind="props">
                 <v-list-item-title class="text-subtitle-1">
                   {{ user.name }}
                 </v-list-item-title>
                 <v-list-item-subtitle class="text-subtitle-2">
                   {{ user.id }}
                 </v-list-item-subtitle>
-              </v-list-item-content>
+              </v-list-item>
             </template>
 
             <v-list-item link @click="logout">
-              <v-list-item-icon>
+              <template v-slot:prepend>
                 <v-icon>mdi-logout</v-icon>
-              </v-list-item-icon>
+              </template>
               <v-list-item-title>Logout</v-list-item-title>
             </v-list-item>
           </v-list-group>
         </template>
 
         <v-list-item v-else link to="/auth/login">
-          <v-list-item-icon>
+          <template v-slot:prepend>
             <v-icon>mdi-login</v-icon>
-          </v-list-item-icon>
+          </template>
           <v-list-item-title>Login</v-list-item-title>
         </v-list-item>
       </v-list>
@@ -47,22 +47,19 @@
           v-for="{ to, icon, label } in links"
           :key="to"
           link
+          exact
           :to="to"
         >
-          <v-list-item-icon>
+          <template v-slot:prepend>
             <v-icon>{{ icon }}</v-icon>
-          </v-list-item-icon>
+          </template>
 
-          <v-list-item-content>
-            <v-list-item-title>{{ label }}</v-list-item-title>
-          </v-list-item-content>
+          <v-list-item-title>{{ label }}</v-list-item-title>
         </v-list-item>
       </v-list>
     </v-navigation-drawer>
 
-    <notification-container
-      :notification="$store.state.notification.notification"
-    />
+    <notification-container :notification="notification" />
 
     <router-view></router-view>
   </v-app>
@@ -70,6 +67,11 @@
 
 <script>
 import NotificationContainer from "@/components/NotificationContainer.vue";
+import useNotificationStore from "@/store/notification";
+import { selectOneUpper } from "@/utils";
+import useAuthStore from "@/store/auth";
+import { mapState, mapActions } from "pinia";
+
 export default {
   components: { NotificationContainer },
   data() {
@@ -89,14 +91,12 @@ export default {
     };
   },
   methods: {
-    logout() {
-      this.$store.dispatch("logout");
-    },
+    ...mapActions(useAuthStore, ["logout"]),
+    selectOneUpper,
   },
   computed: {
-    user() {
-      return this.$store.state.auth.user;
-    },
+    ...mapState(useAuthStore, ["user"]),
+    ...mapState(useNotificationStore, ["notification"]),
   },
 };
 </script>

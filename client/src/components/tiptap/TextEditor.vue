@@ -4,7 +4,7 @@
   </v-card>
 </template>
 <script>
-import { Editor, EditorContent } from "@tiptap/vue-2";
+import { Editor, EditorContent } from "@tiptap/vue-3";
 import StarterKit from "@tiptap/starter-kit";
 import Table from "@tiptap/extension-table";
 import TableRow from "@tiptap/extension-table-row";
@@ -21,7 +21,7 @@ export default {
     EditorContent,
   },
   props: {
-    value: String,
+    modelValue: String,
     hasMenu: {
       type: Boolean,
       default: false,
@@ -48,7 +48,7 @@ export default {
       };
       this.editor = new Editor({
         editable: true,
-        content: this.value,
+        content: this.modelValue,
         extensions: [
           StarterKit,
           Table,
@@ -68,7 +68,7 @@ export default {
           },
         },
         onUpdate: () => {
-          this.$emit("input", this.editor.getHTML());
+          this.$emit("update:modelValue", this.editor.getHTML());
         },
         onFocus: ({ editor }) => {
           this.$emit("editorFocus", editor);
@@ -80,14 +80,15 @@ export default {
     });
   },
   watch: {
-    value(value) {
+    modelValue(value) {
       if (this.editor.getHTML() === value) return;
       this.editor.commands.setContent(value, false);
     },
   },
-  beforeDestroy() {
+  beforeUnmount() {
     this.editor.destroy();
   },
+  emits: ["update:modelValue", "editorFocus", "editorBlur"],
 };
 </script>
 <style scoped>

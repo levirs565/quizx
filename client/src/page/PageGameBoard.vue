@@ -63,7 +63,7 @@ export default {
         if (this.game.questionsState.length == index) {
           this.game.questionsState.push(result.state);
         } else {
-          this.$set(this.game.questionsState, index, result.state);
+          this.game.questionsState[index] = result.state;
         }
       });
     },

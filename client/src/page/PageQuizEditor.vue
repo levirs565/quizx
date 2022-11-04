@@ -3,12 +3,14 @@
     <template v-slot:toolbar>
       <v-toolbar-title>Quiz Editor</v-toolbar-title>
       <v-spacer />
+    </template>
+    <template #toolbarAppend>
       <v-btn icon @click="saveQuiz">
         <v-icon>mdi-content-save</v-icon>
       </v-btn>
       <v-dialog max-width="300px" v-model="isDeleteDialogShow">
-        <template v-slot:activator="{ on, attrs }">
-          <v-btn icon v-on="on" v-bind="attrs">
+        <template v-slot:activator="{ props }">
+          <v-btn icon v-bind="props">
             <v-icon>mdi-delete</v-icon>
           </v-btn>
         </template>
@@ -18,8 +20,12 @@
           <v-card-text>This action is permanent.</v-card-text>
           <v-card-actions>
             <v-spacer></v-spacer>
-            <v-btn text @click="isDeleteDialogShow = false">Cancel</v-btn>
-            <v-btn text color="error" @click="deleteQuiz">Delete</v-btn>
+            <v-btn variant="text" @click="isDeleteDialogShow = false"
+              >Cancel</v-btn
+            >
+            <v-btn variant="text" color="error" @click="deleteQuiz"
+              >Delete</v-btn
+            >
           </v-card-actions>
         </v-card>
       </v-dialog>
@@ -43,11 +49,15 @@
         >
           <v-card-actions>
             <v-spacer />
-            <v-btn outlined color="error" @click="deleteQuestion(index)">
+            <v-btn
+              variant="outlined"
+              color="error"
+              @click="deleteQuestion(index)"
+            >
               <v-icon left>mdi-delete</v-icon>
               Delete
             </v-btn>
-            <v-btn outlined @click="editQuestion(index)">
+            <v-btn variant="outlined" @click="editQuestion(index)">
               <v-icon left>mdi-pencil</v-icon>
               Edit
             </v-btn>
@@ -61,7 +71,7 @@
 
       <v-dialog fullscreen hide-overlay v-model="editDialogState.isShow">
         <dialog-question-editor
-          :question="editDialogState.question"
+          v-model:question="editDialogState.question"
           :index="editDialogState.questionIndex"
           :isNewQuestion="editDialogState.isNew"
           @cancel="cancelEditQuestion"
@@ -134,11 +144,8 @@ export default {
     applyEditQuestion() {
       this.editDialogState.isShow = false;
       if (!this.editDialogState.isNew)
-        this.$set(
-          this.quiz.questions,
-          this.editDialogState.questionIndex,
-          this.editDialogState.question
-        );
+        this.quiz.questions[this.editDialogState.questionIndex] =
+          this.editDialogState.question;
       else this.quiz.questions.push(this.editDialogState.question);
     },
     newQuestion() {
@@ -175,7 +182,7 @@ export default {
       }
     },
     async deleteQuestion(index) {
-      this.$delete(this.quiz.questions, index);
+      this.quiz.questions.splice(index, 1);
     },
   },
   watch: {

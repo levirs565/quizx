@@ -1,8 +1,8 @@
 <template>
   <v-app>
     <v-main>
-      <v-container fluid fill-height>
-        <v-row align="center" justify="center">
+      <v-container fluid class="fill-height">
+        <v-row align="center" justify="center" class="fill-height">
           <router-view class="auth-form" />
         </v-row>
       </v-container>
