@@ -23,11 +23,13 @@
       title="Multi Editor"
       :init-state="initMultiEditorState"
       auto-props-disabled
+      :source="disabledSource"
     >
       <template #default="{ state }">
         <text-editor-toolbar
           :editor="state.editor"
           @addImage="selectImage(state)"
+          ref="toolbar"
         />
         <text-editor
           v-model="state.text_1"
@@ -71,10 +73,10 @@ const text = `
 <h5>Heading 5</h5>
 <h6>Heading 6</h6>
 
-<p>This is <strong>bold</strong> and <i>italic</i> text <math src="x^2+y^2=r^2"></math></p>
+<p>This is <strong>bold</strong> and <i>italic</i> text <math-inline src="x^2+y^2=r^2"></math-inline></p>
 <math-block src="x^2+y^2=r^2"></math-block>
 
-<p>This is inline math: <math src="\\sum_{i=0}^n \\frac{a_i}{1+x}"></math></p>
+<p>This is inline math: <math-inline src="\\sum_{i=0}^n \\frac{a_i}{1+x}"></math-inline></p>
 
 <p>Below is block math.</p>
 <math-block src="\\sum_{i=0}^n \\frac{a_i}{1+x}"></math-block>
