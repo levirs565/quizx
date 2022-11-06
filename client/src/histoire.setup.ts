@@ -1,6 +1,7 @@
 import { defineSetupVue3 } from "@histoire/plugin-vue";
 
 // Styles
+import "@/style.scss";
 import "@mdi/font/css/materialdesignicons.css";
 import "vuetify/styles";
 

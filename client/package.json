@@ -14,7 +14,6 @@
   "dependencies": {
     "@fontsource/roboto": "^4.5.7",
     "@mdi/font": "^6.7.96",
-    "@tiptap/core": "^2.0.0-beta.202",
     "@tiptap/extension-image": "^2.0.0-beta.202",
     "@tiptap/extension-subscript": "^2.0.0-beta.202",
     "@tiptap/extension-superscript": "^2.0.0-beta.202",

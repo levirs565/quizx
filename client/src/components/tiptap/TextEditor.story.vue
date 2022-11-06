@@ -1,6 +1,11 @@
 <template>
   <Story>
-    <Variant title="Single Editor" :init-state="initSingleEditorState">
+    <Variant
+      title="Single Editor"
+      :init-state="initSingleEditorState"
+      auto-props-disabled
+      :source="disabledSource"
+    >
       <template #default="{ state }">
         <text-editor-toolbar
           :editor="state.editor"
@@ -8,14 +13,19 @@
         />
         <text-editor v-model="state.text" @editorFocus="state.editor = $event">
         </text-editor>
-        <pre><code>{{ text }}</code></pre>
+      </template>
+      <template #controls="{ state }">
+        <HstTextarea v-model="state.text" title="Text" />
       </template>
     </Variant>
 
-    <Variant title="Multi Editor" :init-state="initMultiEditorState">
+    <Variant
+      title="Multi Editor"
+      :init-state="initMultiEditorState"
+      auto-props-disabled
+    >
       <template #default="{ state }">
         <text-editor-toolbar
-          ref="toolbar"
           :editor="state.editor"
           @addImage="selectImage(state)"
         />
@@ -50,6 +60,8 @@ import TextEditorToolbar from "./TextEditorToolbar.vue";
 import TextViewer from "./TextViewer.vue";
 import "@tiptap/extension-image";
 import { ref } from "vue";
+
+const disabledSource = "Disabled. Because this can slow down performance";
 
 const text = `
 <h1>Heading 1</h1>
