@@ -1345,7 +1345,7 @@ __metadata:
     axios: ^0.21.1
     histoire: ^0.11.6
     just-clone: ^6.1.1
-    mathlive: ^0.73.6
+    mathlive: ^0.84.0
     pinia: ^2.0.23
     sass: ^1.56.0
     typescript: ~4.1.5
@@ -7387,10 +7387,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"mathlive@npm:^0.73.6":
-  version: 0.73.6
-  resolution: "mathlive@npm:0.73.6"
-  checksum: 8d91b72be26b27d46f11bc7d43e4bec7671e750f317314a729ac44ace5a0a656d4180ec1ae7491c4edc0efea06b8e6a55f5e89d470136d2de3dc8ad4c70b3f76
+"mathlive@npm:^0.84.0":
+  version: 0.84.0
+  resolution: "mathlive@npm:0.84.0"
+  checksum: bf14f3d12e65bee4766b4faf274acab761731210e84dd352a0e2a8fe448ba61775cf21ccacf5b7e37741028a7997d01cb848a042ac06c38002e8fcddec82bcd0
   languageName: node
   linkType: hard
 

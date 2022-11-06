@@ -2,7 +2,16 @@
   <Story title="MathField">
     <Variant title="Input Field" :init-state="initState">
       <template #default="{ state }">
-        <MathFieldInput v-model="state.text" />
+        <MathFieldInput v-model="state.text" virtual-keyboard-mode="manual" />
+      </template>
+      <template #controls="{ state }">
+        <HstText v-model="state.text" title="LaTeX" />
+      </template>
+    </Variant>
+
+    <Variant title="Readonly Input Field" :init-state="initState">
+      <template #default="{ state }">
+        <MathFieldInput v-model="state.text" :readonly="true" />
       </template>
       <template #controls="{ state }">
         <HstText v-model="state.text" title="LaTeX" />
