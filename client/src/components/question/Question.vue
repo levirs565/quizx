@@ -5,7 +5,7 @@
         >Question {{ index + 1 }}</v-card-title
       >
       <v-card-text>
-        <text-viewer :value="question.question" />
+        <text-viewer :model-value="question.question" />
 
         <question-answer
           :question="question"
@@ -15,7 +15,7 @@
         >
           <template v-slot:choice="{ choice, indexChar }">
             <span class="mr-2 text--primary">{{ indexChar }}.</span>
-            <text-viewer :value="choice" />
+            <text-viewer :model-value="choice" />
           </template>
         </question-answer>
 
