@@ -46,7 +46,7 @@
 </template>
 
 <script>
-import { User } from "@/api";
+import { userApi } from "@/api";
 
 export default {
   data() {
@@ -71,7 +71,7 @@ export default {
   methods: {
     register() {
       console.log("aaa");
-      User.signup(this.userID, this.userName, this.userPassword).then(() => {
+      userApi.signup(this.userID, this.userName, this.userPassword).then(() => {
         this.$router.push("/auth/login");
       });
     },

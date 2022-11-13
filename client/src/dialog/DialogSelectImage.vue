@@ -30,7 +30,7 @@
   </v-card>
 </template>
 <script>
-import { Media } from "@/api";
+import { mediaApi } from "@/api";
 import BaseFileInput from "@/components/BaseFileInput.vue";
 
 export default {
@@ -53,7 +53,7 @@ export default {
       if (this.activeTab === 0) {
         if (!this.file) return;
         try {
-          const uploadResult = await Media.upload(this.quizId, this.file);
+          const uploadResult = await mediaApi.upload(this.quizId, this.file);
           result.src = uploadResult.path;
         } catch (e) {
           this.showNotification({

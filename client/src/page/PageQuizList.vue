@@ -29,7 +29,7 @@
 </template>
 
 <script>
-import { Quiz } from "@/api";
+import { quizApi } from "@/api";
 import QuizSummaryCard from "@/components/quiz/QuizSummaryCard.vue";
 import DialogCreateQuiz from "@/dialog/DialogCreateQuiz.vue";
 import ResourceWrapper, {
@@ -68,15 +68,15 @@ export default {
       }
     },
     async createQuiz(quiz) {
-      await this.baseCreateQuiz(async () => Quiz.createQuiz(quiz));
+      await this.baseCreateQuiz(async () => quizApi.createQuiz(quiz));
     },
     async importMarkdown(file) {
-      await this.baseCreateQuiz(async () => Quiz.importMarkdown(file));
+      await this.baseCreateQuiz(async () => quizApi.importMarkdown(file));
     },
     loadList() {
       // TODO: Only show current user quiz
       updateResourceStateByPromise(
-        Quiz.getQuizList().then((val) => {
+        quizApi.getQuizList().then((val) => {
           this.quizList = val.list;
         }),
         (state) => {

@@ -34,7 +34,7 @@
 </template>
 
 <script>
-import { User } from "@/api";
+import { userApi } from "@/api";
 import useAuthStore from "@/store/auth";
 import { mapActions } from "pinia";
 
@@ -52,7 +52,7 @@ export default {
   },
   methods: {
     login() {
-      User.login(this.userID, this.userPassword).then(() => {
+      userApi.login(this.userID, this.userPassword).then(() => {
         this.updateUser();
         this.$router.push("/");
       });

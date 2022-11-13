@@ -57,7 +57,7 @@
 
 <script>
 import Question from "@/components/question/Question.vue";
-import { Quiz, Game } from "@/api";
+import { quizApi, gameApi } from "@/api";
 import QuizSummary from "@/components/quiz/QuizSummary.vue";
 import DialogPlayQuiz from "@/dialog/DialogPlayQuiz.vue";
 import { isAnswerEmpty as isAnswerEmptyImpl } from "@/utils";
@@ -96,7 +96,7 @@ export default {
   methods: {
     updateQuiz() {
       updateResourceStateByPromise(
-        Quiz.getQuiz(this.quiz_id).then((quiz) => {
+        quizApi.getQuiz(this.quiz_id).then((quiz) => {
           this.quiz = quiz;
         }),
         (val) => {
@@ -105,7 +105,7 @@ export default {
       );
     },
     checkAnswer(questionId, answer) {
-      Quiz.checkQuestionAnswer(this.quiz_id, questionId, answer).then((val) => {
+      quizApi.checkQuestionAnswer(this.quiz_id, questionId, answer).then((val) => {
         let state = 1;
         if (val.correct) state = 0;
         this.answerResults[questionId] = state;
@@ -115,7 +115,7 @@ export default {
       this.isPlayDialogShow = true;
     },
     playGame(preference) {
-      Game.playGame(this.quiz.id, preference).then((game) => {
+      gameApi.playGame(this.quiz.id, preference).then((game) => {
         this.$router.push(`/game/${game.id}/board`);
       });
     },

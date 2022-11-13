@@ -1,14 +1,49 @@
-import axios from "axios";
+import axios, { AxiosResponse } from "axios";
+import {
+  AnswerQuestionRequestBody,
+  AnswerQuestionResult,
+  ErrorResponse,
+  QuestionAnswer,
+  Quiz,
+  QuizSummary,
+  CreateQuizResult,
+  CreateQuizParameters,
+  SaveQuizResult,
+  ActionSuccessResponse,
+  SignupRequestBody,
+  LoginRequestBody,
+  UserState,
+  PlayGameRequestBody,
+  GameSummary,
+  GamePreference,
+  GameAnswerResult,
+  UploadMediaResponse,
+  Game,
+} from "@quizx/shared";
+import {
+  plainToInstance,
+  instanceToPlain,
+  ClassConstructor,
+} from "class-transformer";
 
-function throwError(res: any) {
-  const data = res.data;
+function isError(data: any): data is ErrorResponse {
+  return Object.hasOwn(data, "error");
+}
 
-  if (data.error) {
-    console.log(data.error);
-    throw data.error;
-  } else {
-    return data;
-  }
+function responseToClass<T>(
+  c: ClassConstructor<T>,
+  response: AxiosResponse<T>
+): T {
+  return plainToInstance(c, response.data);
+}
+
+function responseToClassList<T>(
+  c: ClassConstructor<T>,
+  response: AxiosResponse<{
+    list: T[];
+  }>
+): T[] {
+  return response.data.list.map((v) => plainToInstance(c, v));
 }
 
 const baseURL = "/";
@@ -17,130 +52,166 @@ const instance = axios.create({
   withCredentials: true,
 });
 
+instance.interceptors.response.use(
+  (res: AxiosResponse<ErrorResponse | any>) => {
+    if (isError(res.data)) {
+      throw res.data.error;
+    }
+    return res;
+  }
+);
+
+class UserApi {
+  path = "/api/user";
+
+  async signup(id: string, name: string, password: string) {
+    const body = new SignupRequestBody(id, password, name);
+    return (
+      await instance.post<ActionSuccessResponse>(
+        `${this.path}/signup`,
+        instanceToPlain(body)
+      )
+    ).data;
+  }
+  async login(id: string, password: string) {
+    const body = new LoginRequestBody(id, password);
+    return (
+      await instance.post<ActionSuccessResponse>(
+        `${this.path}/login`,
+        instanceToPlain(body)
+      )
+    ).data;
+  }
+  async logout() {
+    return (await instance.post<ActionSuccessResponse>(`${this.path}/logout`))
+      .data;
+  }
+  async state() {
+    return (await instance.get<UserState>(`${this.path}/state`)).data;
+  }
+}
+
+export const userApi = new UserApi();
 class QuizApi {
   path = "/api/quiz";
 
   async getQuizList() {
-    const res = await instance.get(this.path);
-    return throwError(res);
+    return responseToClassList(QuizSummary, await instance.get(this.path));
   }
   async getQuiz(id: string) {
-    const res = await instance.get(`${this.path}/${id}`);
-    return throwError(res);
+    return responseToClass(Quiz, await instance.get(`${this.path}/${id}`));
   }
   async checkQuestionAnswer(
     quizId: string,
     questionId: string,
-    answer: string | number | null
+    answer: QuestionAnswer | null
   ) {
-    const res = await instance.post(
-      `${this.path}/${quizId}/${questionId}/check`,
-      {
-        answer,
-      }
-    );
-    return throwError(res);
+    const body: AnswerQuestionRequestBody = {
+      answer,
+    };
+    return (
+      await instance.post<AnswerQuestionResult>(
+        `${this.path}/${quizId}/${questionId}/check`,
+        body
+      )
+    ).data;
   }
-  async createQuiz(data: any) {
-    const res = await instance.post(this.path, data);
-    return throwError(res);
+  async createQuiz(data: CreateQuizParameters) {
+    return (
+      await instance.post<CreateQuizResult>(this.path, instanceToPlain(data))
+    ).data;
   }
   async importMarkdown(file: Blob) {
     const form = new FormData();
     form.append("file", file);
-    return throwError(
-      await instance.post(`${this.path}/import_markdown`, form, {
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
-      })
-    );
+    return (
+      await instance.post<CreateQuizResult>(
+        `${this.path}/import_markdown`,
+        form,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      )
+    ).data;
   }
   async getQuizForEditor(id: string) {
-    const res = await instance.get(`${this.path}/${id}/edit`);
-    return throwError(res);
+    return responseToClass(Quiz, await instance.get(`${this.path}/${id}/edit`));
   }
   async saveQuiz(id: string, quiz: any) {
-    const res = await instance.put(`${this.path}/${id}/edit`, quiz);
-    return throwError(res);
+    return (await instance.put<SaveQuizResult>(`${this.path}/${id}/edit`, quiz))
+      .data;
   }
   async deleteQuiz(id: string) {
-    const res = await instance.delete(`${this.path}/${id}`);
-    return throwError(res);
+    return (await instance.delete<ActionSuccessResponse>(`${this.path}/${id}`))
+      .data;
   }
 }
-export const Quiz = new QuizApi();
 
-export const User = {
-  async signup(id: string, name: string, password: string) {
-    const res = await instance.post("/api/user/signup", { id, name, password });
-    return throwError(res);
-  },
-  async login(id: string, password: string) {
-    const res = await instance.post("/api/user/login", { id, password });
-    return throwError(res);
-  },
-  async logout() {
-    const res = await instance.post("/api/user/logout");
-    return throwError(res);
-  },
-  async state() {
-    const res = await instance.get("/api/user/state");
-    return throwError(res);
-  },
-};
-
-export const Game = {
-  async playGame(quizId: string, preference: any) {
-    const res = await instance.post("/api/game/play", {
-      quizId,
-      preference,
-    });
-    return throwError(res);
-  },
+export const quizApi = new QuizApi();
+class GameApi {
+  path = "/api/game";
+  async playGame(quizId: string, preference: GamePreference) {
+    const body = new PlayGameRequestBody();
+    body.quizId = quizId;
+    body.preference = preference;
+    return responseToClass(
+      GameSummary,
+      await instance.post(`${this.path}/play`, instanceToPlain(body))
+    );
+  }
   async getGame(id: string) {
-    const res = await instance.get(`/api/game/${id}`);
-    return throwError(res);
-  },
+    return responseToClass(Game, await instance.get(`${this.path}/${id}`));
+  }
   async putAnswer(
     gameId: string,
     questionIndex: string,
-    answer: string | number | null
+    answer: QuestionAnswer | null
   ) {
-    const res = await instance.put(
-      `/api/game/${gameId}/question/${questionIndex}`,
-      { answer }
-    );
-    return throwError(res);
-  },
+    const body: AnswerQuestionRequestBody = {
+      answer,
+    };
+    return (
+      await instance.put<ActionSuccessResponse>(
+        `${this.path}/${gameId}/question/${questionIndex}`,
+        body
+      )
+    ).data;
+  }
   async submitAnswer(gameId: string, questionId: string) {
-    const res = await instance.post(
-      `/api/game/${gameId}/question/${questionId}`
-    );
-    return throwError(res);
-  },
+    return (
+      await instance.post<GameAnswerResult>(
+        `${this.path}/${gameId}/question/${questionId}`
+      )
+    ).data;
+  }
   async finishGame(gameId: string) {
-    const res = await instance.post(`/api/game/${gameId}/finish`);
-    return throwError(res);
-  },
-};
+    return (
+      await instance.post<ActionSuccessResponse>(
+        `${this.path}/${gameId}/finish`
+      )
+    ).data;
+  }
+}
 
-export class MediaApi {
+export const gameApi = new GameApi();
+
+class MediaApi {
   path = "/media";
 
   async upload(id: string, file: Blob) {
     const rootPath = `${this.path}/quiz/${id}`;
     const formData = new FormData();
     formData.append("file", file);
-    const res = throwError(
-      await instance.post(rootPath, formData, {
+    return (
+      await instance.post<UploadMediaResponse>(rootPath, formData, {
         headers: {
           "Content-Type": "multipart/form-data",
         },
       })
-    );
-    return res;
+    ).data;
   }
 }
 
-export const Media = new MediaApi();
+export const mediaApi = new MediaApi();

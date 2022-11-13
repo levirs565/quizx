@@ -1,4 +1,4 @@
-import { User } from "@/api";
+import { userApi } from "@/api";
 import { defineStore } from "pinia";
 
 interface State {
@@ -11,12 +11,12 @@ export default defineStore("auth", {
   }),
   actions: {
     updateUser() {
-      return User.state().then((result) => {
+      return userApi.state().then((result) => {
         this.user = result.user;
       });
     },
     logout() {
-      User.logout().then(() => {
+      userApi.logout().then(() => {
         this.updateUser();
       });
     },

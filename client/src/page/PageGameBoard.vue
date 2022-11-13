@@ -22,7 +22,7 @@
 </template>
 
 <script>
-import { Game } from "@/api";
+import { gameApi } from "@/api";
 import { updateResourceStateByPromise } from "@/components/resource/ResourceWrapper.vue";
 import BaseAppBar from "@/components/BaseAppBar.vue";
 import ResourceMainContainer from "@/components/resource/ResourceMainContainer.vue";
@@ -51,10 +51,10 @@ export default {
       let answer = data.answer;
       if (answer == "") answer = null;
       let id = data.question.id;
-      Game.putAnswer(this.game_id, id, answer);
+      gameApi.putAnswer(this.game_id, id, answer);
     },
     submitAnswer(index, id) {
-      Game.submitAnswer(this.game_id, id).then((result) => {
+      gameApi.submitAnswer(this.game_id, id).then((result) => {
         this.game.data.currentQuestionIndex = result.currentQuestionIndex;
         this.game.data.currentQuestionRetryCount =
           result.currentQuestionRetryCount;
@@ -69,7 +69,7 @@ export default {
     },
     updateState() {
       updateResourceStateByPromise(
-        Game.getGame(this.game_id).then((val) => {
+        gameApi.getGame(this.game_id).then((val) => {
           this.game = val;
           this.type = val.data.type;
 
@@ -81,7 +81,7 @@ export default {
       );
     },
     finish() {
-      Game.finishGame(this.game_id).then(() => {
+      gameApi.finishGame(this.game_id).then(() => {
         this.$router.replace(`/game/${this.game_id}/`);
       });
     },

@@ -58,7 +58,7 @@
 </template>
 
 <script>
-import { Game } from "@/api";
+import { gameApi } from "@/api";
 import Question from "@/components/question/Question.vue";
 import MathFieldBase from "@/components/math/MathFieldBase.vue";
 import { getChoiceIndex } from "@/utils";
@@ -98,7 +98,7 @@ export default {
   methods: {
     loadGame() {
       updateResourceStateByPromise(
-        Game.getGame(this.game_id).then((game) => {
+        gameApi.getGame(this.game_id).then((game) => {
           this.game = game;
           this.results.correct.value = game.result.correct;
           this.results.wrong.value = game.result.wrong;

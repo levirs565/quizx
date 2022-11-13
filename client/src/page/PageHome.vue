@@ -12,7 +12,7 @@
 </template>
 
 <script>
-import { Quiz } from "@/api";
+import { quizApi } from "@/api";
 import QuizSummaryCard from "@/components/quiz/QuizSummaryCard.vue";
 import ResourceWrapper, {
   updateResourceStateByPromise,
@@ -32,7 +32,7 @@ export default {
   methods: {
     loadList() {
       updateResourceStateByPromise(
-        Quiz.getQuizList().then((val) => {
+        quizApi.getQuizList().then((val) => {
           this.quizList = val.list;
         }),
         (state) => {

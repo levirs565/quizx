@@ -83,7 +83,7 @@
 </template>
 
 <script>
-import { Quiz } from "@/api";
+import { quizApi } from "@/api";
 import QuizSummary from "@/components/quiz/QuizSummary.vue";
 import ResourceWrapper, {
   updateResourceStateByPromise,
@@ -119,7 +119,7 @@ export default {
   methods: {
     refresh() {
       updateResourceStateByPromise(
-        Quiz.getQuizForEditor(this.quiz_id).then((quiz) => {
+        quizApi.getQuizForEditor(this.quiz_id).then((quiz) => {
           if (quiz) this.quiz = quiz;
         }),
         (val) => {
@@ -128,7 +128,7 @@ export default {
       );
     },
     deleteQuiz() {
-      Quiz.deleteQuiz(this.quiz_id).then(() => {
+      quizApi.deleteQuiz(this.quiz_id).then(() => {
         this.$router.replace("/quiz");
       });
     },
@@ -162,7 +162,7 @@ export default {
     },
     async saveQuiz() {
       try {
-        const result = await Quiz.saveQuiz(this.quiz_id, this.quiz);
+        const result = await quizApi.saveQuiz(this.quiz_id, this.quiz);
         const newIdsMap = result.newQuestionsId;
         for (const question of this.quiz.questions) {
           if (question.id in newIdsMap) {
