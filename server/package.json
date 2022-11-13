@@ -21,7 +21,7 @@
     "@automapper/classes": "^8.7.7",
     "@automapper/core": "^8.7.7",
     "@automapper/nestjs": "^8.7.7",
-    "@cortex-js/compute-engine": "^0.6.0",
+    "@cortex-js/compute-engine": "^0.8.0",
     "@nestjs/common": "^9.2.0",
     "@nestjs/config": "^2.2.0",
     "@nestjs/core": "^9.2.0",

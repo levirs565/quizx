@@ -601,13 +601,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@cortex-js/compute-engine@npm:^0.6.0":
-  version: 0.6.0
-  resolution: "@cortex-js/compute-engine@npm:0.6.0"
+"@cortex-js/compute-engine@npm:^0.8.0":
+  version: 0.8.0
+  resolution: "@cortex-js/compute-engine@npm:0.8.0"
   dependencies:
-    complex.js: ^2.1.0
-    decimal.js: ^10.3.1
-  checksum: 4bd2f201420b2c0ff4322d3a4a1a6b97aa626b865b76266ebea799cd7eb95c1da1304c179de57c51718047297697eeeeac50b18219550322cd6b6e96c577db8d
+    complex.js: ^2.1.1
+    decimal.js: ^10.4.0
+  checksum: 15252e50e0688d7f07532a7ae92ca6ac068492ad9aa9dac343d390c82ef37cf471ef5dbede7460acbcc24d461c39db3f0eebc0b1f22c43e9fcce1f183c9d31ab
   languageName: node
   linkType: hard
 
@@ -1395,7 +1395,7 @@ __metadata:
     "@automapper/classes": ^8.7.7
     "@automapper/core": ^8.7.7
     "@automapper/nestjs": ^8.7.7
-    "@cortex-js/compute-engine": ^0.6.0
+    "@cortex-js/compute-engine": ^0.8.0
     "@nestjs/cli": ^9.1.5
     "@nestjs/common": ^9.2.0
     "@nestjs/config": ^2.2.0
@@ -3803,7 +3803,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"complex.js@npm:^2.1.0":
+"complex.js@npm:^2.1.1":
   version: 2.1.1
   resolution: "complex.js@npm:2.1.1"
   checksum: a0802cc3f0eb7703088edfc3fe209ae7be5ce93c0e710a0f288be2e29ee31b3530a8c0d3330d7c2a668410dfe4293a4038554d66c7f1f1165997941bdc1092aa
@@ -4091,10 +4091,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"decimal.js@npm:^10.3.1":
-  version: 10.3.1
-  resolution: "decimal.js@npm:10.3.1"
-  checksum: 0351ac9f05fe050f23227aa6a4573bee2d58fa7378fcf28d969a8c789525032effb488a90320fd3fe86a66e17b4bc507d811b15eada5b7f0e7ec5d2af4c24a59
+"decimal.js@npm:^10.4.0":
+  version: 10.4.2
+  resolution: "decimal.js@npm:10.4.2"
+  checksum: 536cd6816a3197f2e1aa3da4860856cb5a2db73f6fafe8cb3b924ccc63f9b7d78296acc13dccbd419bd958ccc6357921fb15467f883b37cab04bfba7044cada2
   languageName: node
   linkType: hard
 
