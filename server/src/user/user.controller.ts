@@ -1,7 +1,7 @@
 import { Body, Controller, Get, Post, Session, UseInterceptors } from '@nestjs/common';
-import { ActionInterceptor } from '../common/action.interceptor';
-import { UserService } from './user.service';
-import SessionType from '../types/session';
+import { ActionInterceptor } from '../common/action.interceptor.js';
+import { UserService } from './user.service.js';
+import SessionType from '../types/session.js';
 import { SignupRequestBody, LoginRequestBody } from '@quizx/shared';
 
 @Controller()

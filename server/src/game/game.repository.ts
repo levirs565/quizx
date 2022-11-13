@@ -1,8 +1,8 @@
 import { NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { instanceToPlain } from 'class-transformer';
-import { GameModelName } from 'schemas/game.schema';
-import { BaseModel } from 'schemas/helper';
+import { GameModelName } from '../schemas/game.schema.js';
+import { BaseModel } from '../schemas/helper.js';
 import {
   FlashCardGameData,
   Game,

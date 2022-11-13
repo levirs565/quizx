@@ -1,6 +1,6 @@
-import Session from 'types/session';
+import Session from '../types/session.js';
 import { MathQuestion, Question } from '@quizx/shared';
-import { ComputeEngine } from '@cortex-js/compute-engine';
+import ComputeEngine from '@cortex-js/compute-engine';
 import { ForbiddenException, UnauthorizedException } from '@nestjs/common';
 
 export function validateUserLoggedIn(session: Session) {
@@ -30,7 +30,7 @@ export function checkQuestionAnswer(
   userAnswer: string | number | null
 ): boolean {
   if (question instanceof MathQuestion) {
-    const ce = new ComputeEngine();
+    const ce = new ComputeEngine.ComputeEngine();
     const correctMath = ce.parse(correctAnswer as string).canonical;
     const userMath = ce.parse(userAnswer as string).canonical;
     if (!correctMath || !userMath) {

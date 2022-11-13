@@ -12,9 +12,9 @@ import { markdownItFancyListPlugin } from 'markdown-it-fancy-lists';
 import markdownItSub from 'markdown-it-sub';
 import markdownItSup from 'markdown-it-sup';
 import dollarmathPlugin from 'markdown-it-dollarmath';
-import Token from 'markdown-it/lib/token';
-import { RenderRule } from 'markdown-it/lib/renderer';
-import { escapeHtml } from 'markdown-it/lib/common/utils';
+import Token from 'markdown-it/lib/token.js';
+import { RenderRule } from 'markdown-it/lib/renderer.js';
+import { escapeHtml } from 'markdown-it/lib/common/utils.js';
 
 @Injectable()
 export class QuizImporterService {

@@ -1,4 +1,4 @@
-import Session from '../types/session';
+import Session from '../types/session.js';
 import {
   GameSummary,
   GamePreference,
@@ -19,14 +19,14 @@ import {
   validateQuestionAnswerDataType,
   checkQuestionAnswer,
   addSecondToDate,
-} from '../common/service.helper';
+} from '../common/service.helper.js';
 import shuffle from 'just-shuffle';
 import { Injectable, NotFoundException } from '@nestjs/common';
-import { CommonServiceException } from 'common/common-service.exception';
+import { CommonServiceException } from '../common/common-service.exception.js';
 import { InjectMapper } from '@automapper/nestjs';
 import { Mapper } from '@automapper/core';
-import { GameRepository } from './game.repository';
-import { QuizRepository } from 'quiz/quiz.repository';
+import { GameRepository } from './game.repository.js';
+import { QuizRepository } from '../quiz/quiz.repository.js';
 
 @Injectable()
 export class GameService {

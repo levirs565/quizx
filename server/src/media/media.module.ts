@@ -1,10 +1,10 @@
 import { Module } from '@nestjs/common';
 import { MulterModule } from '@nestjs/platform-express';
-import { AppConfigModule } from 'app.config.module';
-import { MediaController } from './media.controller';
-import { MediaMulterConfig } from './media.multer.config';
-import { MediaService } from './media.service';
-import { QuizModule } from 'quiz/quiz.module';
+import { AppConfigModule } from '../app.config.module.js';
+import { MediaController } from './media.controller.js';
+import { MediaMulterConfig } from './media.multer.config.js';
+import { MediaService } from './media.service.js';
+import { QuizModule } from '../quiz/quiz.module.js';
 
 @Module({
   imports: [

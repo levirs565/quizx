@@ -8,25 +8,26 @@ import {
 } from '@nestjs/common';
 import { HttpAdapterHost, RouterModule } from '@nestjs/core';
 import { ServeStaticModule } from '@nestjs/serve-static';
-import { GameModule } from './game/game.module';
-import { MediaModule } from './media/media.module';
-import { QuizModule } from './quiz/quiz.module';
-import { UserModule } from './user/user.module';
-import { AppConfigModule } from './app.config.module';
+import { GameModule } from './game/game.module.js';
+import { MediaModule } from './media/media.module.js';
+import { QuizModule } from './quiz/quiz.module.js';
+import { UserModule } from './user/user.module.js';
+import { AppConfigModule } from './app.config.module.js';
 import { InjectConnection, MongooseModule } from '@nestjs/mongoose';
-import { AppConfigService } from './app.config.service';
-import { Connection } from 'mongoose';
+import { AppConfigService } from './app.config.service.js';
+import Mongoose from 'mongoose';
 import session from 'express-session';
 import MongoStore from 'connect-mongo';
 import { AutomapperModule } from '@automapper/nestjs';
 import { classes } from '@automapper/classes';
 import path from 'path';
 import express from 'express';
+import { fileURLToPath } from 'url';
 
 @Module({
   imports: [
     ServeStaticModule.forRoot({
-      rootPath: path.join(__dirname, '../../client/dist'),
+      rootPath: path.join(path.dirname(fileURLToPath(import.meta.url)), '../../client/dist'),
       exclude: ['/api/*', '/media/*'],
     }),
     AppConfigModule,
@@ -70,7 +71,7 @@ import express from 'express';
 })
 export class AppModule implements NestModule, OnModuleInit {
   constructor(
-    @InjectConnection() private readonly connection: Connection,
+    @InjectConnection() private readonly connection: Mongoose.Connection,
     private readonly appConfig: AppConfigService,
     private readonly httpAdapterHost: HttpAdapterHost
   ) {}

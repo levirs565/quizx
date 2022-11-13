@@ -3,8 +3,8 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectMapper } from '@automapper/nestjs';
 import { Mapper } from '@automapper/core';
-import { QuizModelName } from 'schemas/quiz.schema';
-import { BaseModel } from 'schemas/helper';
+import { QuizModelName } from '../schemas/quiz.schema.js';
+import { BaseModel } from '../schemas/helper.js';
 import { Quiz, QuizSummary } from '@quizx/shared';
 import { instanceToPlain } from 'class-transformer';
 

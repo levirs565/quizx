@@ -6,15 +6,15 @@ import {
   SaveQuizResult,
   CreateQuizParameters,
 } from '@quizx/shared';
-import Session from '../types/session';
+import Session from '../types/session.js';
 import {
   checkQuestionAnswer,
   validateQuestionAnswerDataType,
   validateUserId,
   validateUserLoggedIn,
-} from '../common/service.helper';
+} from '../common/service.helper.js';
 import { Injectable, NotFoundException } from '@nestjs/common';
-import { QuizRepository } from './quiz.repository';
+import { QuizRepository } from './quiz.repository.js';
 
 @Injectable()
 export class QuizService {

@@ -3,8 +3,8 @@ import crypto from 'crypto';
 import fs from 'fs-extra';
 import { UploadMediaResponse } from '@quizx/shared';
 import { Injectable } from '@nestjs/common';
-import { AppConfigService } from '../app.config.service';
-import { CommonServiceException } from 'common/common-service.exception';
+import { AppConfigService } from '../app.config.service.js';
+import { CommonServiceException } from '../common/common-service.exception.js';
 
 @Injectable()
 export class MediaService {

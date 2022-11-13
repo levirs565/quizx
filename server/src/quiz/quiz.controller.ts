@@ -1,7 +1,7 @@
 import { AnswerQuestionRequestBody, CreateQuizParameters, Quiz } from '@quizx/shared';
-import { QuizService } from './quiz.service';
-import SessionType from '../types/session';
-import { ActionInterceptor } from '../common/action.interceptor';
+import { QuizService } from './quiz.service.js';
+import SessionType from '../types/session.js';
+import { ActionInterceptor } from '../common/action.interceptor.js';
 import {
   Body,
   Controller,
@@ -15,8 +15,8 @@ import {
   UseInterceptors,
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
-import { QuizImporterService } from './quiz.importer.service';
-import { CommonServiceException } from 'common/common-service.exception';
+import { QuizImporterService } from './quiz.importer.service.js';
+import { CommonServiceException } from '../common/common-service.exception.js';
 import { memoryStorage } from 'multer';
 
 @Controller()

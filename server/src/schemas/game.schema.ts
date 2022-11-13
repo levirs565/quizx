@@ -1,6 +1,6 @@
 import { Schema, model } from 'mongoose';
-import { configureQuestionDiscriminators, createQuestionSchema } from './question.schema';
-import { BaseModelSchema, configureBaseModelSchema } from './helper';
+import { configureQuestionDiscriminators, createQuestionSchema } from './question.schema.js';
+import { BaseModelSchema, configureBaseModelSchema } from './helper.js';
 import { ExamGameData, FlashCardGameData, Game, GameType, QuestionState } from '@quizx/shared';
 
 const BaseGamePreferenceSchema = {

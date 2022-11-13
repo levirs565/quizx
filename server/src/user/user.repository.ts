@@ -1,9 +1,9 @@
 import { InjectModel } from '@nestjs/mongoose';
 import { instanceToPlain } from 'class-transformer';
-import { CommonServiceException } from 'common/common-service.exception';
-import { BaseModel } from 'schemas/helper';
+import { CommonServiceException } from '../common/common-service.exception.js';
+import { BaseModel } from '../schemas/helper.js';
 import { User } from '@quizx/shared';
-import { UserModelName } from '../schemas/user.schema';
+import { UserModelName } from '../schemas/user.schema.js';
 
 export class UserRepository {
   constructor(@InjectModel(UserModelName) private readonly userModel: BaseModel<User>) {}

@@ -1,8 +1,8 @@
 import { NestFactory, Reflector } from '@nestjs/core';
-import { AppModule } from './app.module';
-import { AppConfigService } from './app.config.service';
-import { ValidationPipe } from 'common/validation.pipe';
-import { AllExceptionsFilter } from 'common/exception.filter';
+import { AppModule } from './app.module.js';
+import { AppConfigService } from './app.config.service.js';
+import { ValidationPipe } from './common/validation.pipe.js';
+import { AllExceptionsFilter } from './common/exception.filter.js';
 import { ClassSerializerInterceptor } from '@nestjs/common';
 
 async function bootstrap() {

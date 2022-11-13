@@ -1,5 +1,5 @@
 import { Request } from 'express';
-import { MediaService } from './media.service';
+import { MediaService } from './media.service.js';
 import { Controller, Post, Req, UploadedFile, UseInterceptors } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
 

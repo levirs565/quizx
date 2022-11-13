@@ -1,9 +1,9 @@
 import { Injectable } from '@nestjs/common';
 import { MulterOptionsFactory } from '@nestjs/platform-express';
-import { MulterOptions } from '@nestjs/platform-express/multer/interfaces/multer-options.interface';
+import { MulterOptions } from '@nestjs/platform-express/multer/interfaces/multer-options.interface.js';
 import multer from 'multer';
-import { MediaService } from './media.service';
-import { QuizService } from 'quiz/quiz.service';
+import { MediaService } from './media.service.js';
+import { QuizService } from '../quiz/quiz.service.js';
 
 @Injectable()
 export class MediaMulterConfig implements MulterOptionsFactory {

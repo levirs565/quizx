@@ -1,10 +1,10 @@
 import { genSalt, hash as _hash, compare } from 'bcrypt';
-import Session from '../types/session';
-import { validateUserLoggedIn } from '../common/service.helper';
+import Session from '../types/session.js';
+import { validateUserLoggedIn } from '../common/service.helper.js';
 import { User, UserState } from '@quizx/shared';
 import { Injectable } from '@nestjs/common';
-import { CommonServiceException } from 'common/common-service.exception';
-import { UserRepository } from './user.repository';
+import { CommonServiceException } from '../common/common-service.exception.js';
+import { UserRepository } from './user.repository.js';
 
 const saltRounds = 10;
 

@@ -1,7 +1,7 @@
 import { PlayGameRequestBody, AnswerQuestionRequestBody } from '@quizx/shared';
-import { GameService } from './game.service';
-import SessionType from '../types/session';
-import { ActionInterceptor } from '../common/action.interceptor';
+import { GameService } from './game.service.js';
+import SessionType from '../types/session.js';
+import { ActionInterceptor } from '../common/action.interceptor.js';
 import { Body, Controller, Get, Param, Post, Put, Session, UseInterceptors } from '@nestjs/common';
 
 @Controller()

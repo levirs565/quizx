@@ -1,5 +1,5 @@
 import { Schema } from 'mongoose';
-import { configureSchemaIdSetter } from './helper';
+import { configureSchemaIdSetter } from './helper.js';
 
 interface QuestionSchemaContainer {
   readonly root: Schema<any, any, any>;
