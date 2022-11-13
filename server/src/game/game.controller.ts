@@ -1,5 +1,4 @@
-import { PlayGameRequestBody } from '../types/game';
-import { AnswerQuestionRequestBody } from '../types/quiz';
+import { PlayGameRequestBody, AnswerQuestionRequestBody } from '@quizx/shared';
 import { GameService } from './game.service';
 import SessionType from '../types/session';
 import { ActionInterceptor } from '../common/action.interceptor';

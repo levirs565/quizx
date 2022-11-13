@@ -1,5 +1,5 @@
-import Session from '../types/session';
-import { MathQuestion, Question } from '../types/quiz';
+import Session from 'types/session';
+import { MathQuestion, Question } from '@quizx/shared';
 import { ComputeEngine } from '@cortex-js/compute-engine';
 import { ForbiddenException, UnauthorizedException } from '@nestjs/common';
 

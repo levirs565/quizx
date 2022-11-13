@@ -1,6 +1,6 @@
 import { CallHandler, ExecutionContext, Injectable, NestInterceptor } from '@nestjs/common';
 import { map, Observable } from 'rxjs';
-import { ActionSuccessResponse } from '../types/base';
+import { ActionSuccessResponse } from '@quizx/shared';
 
 @Injectable()
 export class ActionInterceptor implements NestInterceptor {

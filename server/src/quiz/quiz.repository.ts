@@ -5,7 +5,7 @@ import { InjectMapper } from '@automapper/nestjs';
 import { Mapper } from '@automapper/core';
 import { QuizModelName } from 'schemas/quiz.schema';
 import { BaseModel } from 'schemas/helper';
-import { Quiz, QuizSummary } from 'types/quiz';
+import { Quiz, QuizSummary } from '@quizx/shared';
 import { instanceToPlain } from 'class-transformer';
 
 @Injectable()

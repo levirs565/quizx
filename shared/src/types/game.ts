@@ -1,5 +1,5 @@
-import { AutoMap } from '@automapper/classes';
-import { Type } from 'class-transformer';
+import { AutoMap } from "@automapper/classes";
+import { Type } from "class-transformer";
 import {
   IsBoolean,
   IsDefined,
@@ -9,8 +9,8 @@ import {
   IsString,
   Min,
   ValidateNested,
-} from 'class-validator';
-import { Question, QuestionAnswer, questionDiscriminator } from './quiz';
+} from "class-validator";
+import { Question, QuestionAnswer, questionDiscriminator } from "./quiz";
 
 export abstract class GamePreference {
   @IsBoolean()
@@ -35,8 +35,8 @@ export class ExamGamePreference extends GamePreference {
 }
 
 export enum GameType {
-  Exam = 'exam',
-  FlashCard = 'flash-card',
+  Exam = "exam",
+  FlashCard = "flash-card",
 }
 
 export class PlayGameRequestBody {
@@ -46,7 +46,7 @@ export class PlayGameRequestBody {
   @ValidateNested({ always: true })
   @Type(() => GamePreference, {
     discriminator: {
-      property: 'type',
+      property: "type",
       subTypes: [
         {
           name: GameType.FlashCard,
@@ -118,7 +118,7 @@ export class Game extends GameSummary {
   correctAnswers?: Array<QuestionAnswer>;
   @Type(() => GameData, {
     discriminator: {
-      property: 'type',
+      property: "type",
       subTypes: [
         {
           name: GameType.Exam,

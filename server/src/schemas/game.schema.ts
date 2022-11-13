@@ -1,7 +1,7 @@
 import { Schema, model } from 'mongoose';
 import { configureQuestionDiscriminators, createQuestionSchema } from './question.schema';
-import { BaseModel, BaseModelSchema, configureBaseModelSchema } from './helper';
-import { ExamGameData, FlashCardGameData, Game, GameType, QuestionState } from '../types/game';
+import { BaseModelSchema, configureBaseModelSchema } from './helper';
+import { ExamGameData, FlashCardGameData, Game, GameType, QuestionState } from '@quizx/shared';
 
 const BaseGamePreferenceSchema = {
   shuffleQuestions: {

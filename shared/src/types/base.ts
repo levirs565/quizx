@@ -1,5 +1,3 @@
-import { ErrorObject } from 'ajv';
-
 export interface ActionSuccessResponse {
   success: true;
 }

@@ -1,4 +1,4 @@
-import { UserData } from './user';
+import { UserData } from '@quizx/shared';
 
 declare module 'express-session' {
   interface SessionData {

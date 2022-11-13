@@ -1,9 +1,4 @@
-import {
-  AnswerQuestionRequestBody,
-  CreateQuizParameters,
-  Quiz,
-  QuestionValidationGroupWithoutId,
-} from '../types/quiz';
+import { AnswerQuestionRequestBody, CreateQuizParameters, Quiz } from '@quizx/shared';
 import { QuizService } from './quiz.service';
 import SessionType from '../types/session';
 import { ActionInterceptor } from '../common/action.interceptor';
@@ -19,7 +14,6 @@ import {
   UploadedFile,
   UseInterceptors,
 } from '@nestjs/common';
-import session from 'express-session';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { QuizImporterService } from './quiz.importer.service';
 import { CommonServiceException } from 'common/common-service.exception';

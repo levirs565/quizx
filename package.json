@@ -3,7 +3,8 @@
   "name": "quizx",
   "workspaces": [
     "client",
-    "server"
+    "server",
+    "shared"
   ],
   "scripts": {
     "dev-server": "yarn workspace @quizx/server dev",

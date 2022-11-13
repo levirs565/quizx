@@ -7,7 +7,7 @@ import {
   Logger,
 } from '@nestjs/common';
 import { Response } from 'express';
-import { ErrorResponse } from 'types/base';
+import { ErrorResponse } from '@quizx/shared';
 
 @Catch()
 export class AllExceptionsFilter implements ExceptionFilter {

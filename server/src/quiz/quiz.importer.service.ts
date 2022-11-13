@@ -6,7 +6,7 @@ import {
   NumberQuestion,
   Question,
   ShortTextQuestion,
-} from 'types/quiz';
+} from '@quizx/shared';
 import markdownIt, { PluginWithOptions } from 'markdown-it';
 import { markdownItFancyListPlugin } from 'markdown-it-fancy-lists';
 import markdownItSub from 'markdown-it-sub';

@@ -5,7 +5,7 @@ import {
   QuizSummary,
   SaveQuizResult,
   CreateQuizParameters,
-} from '../types/quiz';
+} from '@quizx/shared';
 import Session from '../types/session';
 import {
   checkQuestionAnswer,

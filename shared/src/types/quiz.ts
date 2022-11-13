@@ -1,5 +1,5 @@
-import { AutoMap } from '@automapper/classes';
-import { DiscriminatorDescriptor, Expose, Type } from 'class-transformer';
+import { AutoMap } from "@automapper/classes";
+import { DiscriminatorDescriptor, Expose, Type } from "class-transformer";
 import {
   ArrayUnique,
   Equals,
@@ -10,10 +10,10 @@ import {
   IsOptional,
   IsString,
   ValidateNested,
-} from 'class-validator';
-import { ValidationGroups } from 'common/validation-groups.decorator';
+} from "class-validator";
+import { ValidationGroups } from "../decorator/validation-groups";
 
-export const QuestionValidationGroupWithoutId = 'WithoutId';
+export const QuestionValidationGroupWithoutId = "WithoutId";
 
 export type QuestionAnswer = string | number;
 
@@ -54,23 +54,23 @@ export class MathQuestion extends Question {
 }
 
 export const questionDiscriminator: DiscriminatorDescriptor = {
-  property: 'type',
+  property: "type",
   subTypes: [
     {
       value: MultipleChoiceQuestion,
-      name: 'multiple-choice',
+      name: "multiple-choice",
     },
     {
       value: ShortTextQuestion,
-      name: 'short-text',
+      name: "short-text",
     },
     {
       value: NumberQuestion,
-      name: 'number',
+      name: "number",
     },
     {
       value: MathQuestion,
-      name: 'math',
+      name: "math",
     },
   ],
 };

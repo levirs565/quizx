@@ -1,6 +1,6 @@
-import { Schema, model } from 'mongoose';
-import { User } from 'types/user';
-import { BaseModelSchema, BaseModel, configureBaseModelSchema } from './helper';
+import { Schema } from 'mongoose';
+import { User } from '@quizx/shared';
+import { BaseModelSchema, configureBaseModelSchema } from './helper';
 
 // TODO: Rename id to _id
 

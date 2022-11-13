@@ -1,11 +1,16 @@
 import { NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { Types } from 'mongoose';
 import { instanceToPlain } from 'class-transformer';
 import { GameModelName } from 'schemas/game.schema';
-import { BaseModel, BaseModelMethods } from 'schemas/helper';
-import { FlashCardGameData, Game, GameResult, GameType, QuestionState } from 'types/game';
-import { QuestionAnswer } from 'types/quiz';
+import { BaseModel } from 'schemas/helper';
+import {
+  FlashCardGameData,
+  Game,
+  GameResult,
+  GameType,
+  QuestionState,
+  QuestionAnswer,
+} from '@quizx/shared';
 
 export class GameRepository {
   constructor(@InjectModel(GameModelName) private readonly gameModel: BaseModel<Game>) {}

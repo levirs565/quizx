@@ -4,7 +4,7 @@ import {
   MultipleChoiceQuestion,
   NumberQuestion,
   ShortTextQuestion,
-} from 'types/quiz';
+} from '@quizx/shared';
 import { QuizImporterService } from './quiz.importer.service';
 
 describe('QuizImportService', () => {

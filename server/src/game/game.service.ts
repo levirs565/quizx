@@ -10,8 +10,9 @@ import {
   FlashCardGameData,
   FlashCardGamePreference,
   GameAnswerResult,
-} from '../types/game';
-import { Question, QuestionAnswer } from '../types/quiz';
+  Question,
+  QuestionAnswer,
+} from '@quizx/shared';
 import {
   validateUserLoggedIn,
   validateUserId,

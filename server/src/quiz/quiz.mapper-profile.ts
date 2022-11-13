@@ -1,7 +1,7 @@
 import { mapFrom, Mapper, MappingProfile } from '@automapper/core';
 import { AutomapperProfile, InjectMapper } from '@automapper/nestjs';
 import { Injectable } from '@nestjs/common';
-import { Quiz, QuizSummary } from 'types/quiz';
+import { Quiz, QuizSummary } from '@quizx/shared';
 
 @Injectable()
 export class QuizMapperProfile extends AutomapperProfile {

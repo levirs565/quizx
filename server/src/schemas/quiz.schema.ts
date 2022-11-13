@@ -1,7 +1,7 @@
-import { Schema, model } from 'mongoose';
+import { Schema } from 'mongoose';
 import { configureQuestionDiscriminators, createQuestionSchema } from './question.schema';
-import { Quiz } from '../types/quiz';
-import { BaseModel, BaseModelSchema, configureBaseModelSchema } from './helper';
+import { Quiz } from '@quizx/shared';
+import { BaseModelSchema, configureBaseModelSchema } from './helper';
 
 const questionSchema = createQuestionSchema(true);
 export const QuizSchema: BaseModelSchema<Quiz> = new Schema(

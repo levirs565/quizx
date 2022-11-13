@@ -2,7 +2,7 @@ import { Body, Controller, Get, Post, Session, UseInterceptors } from '@nestjs/c
 import { ActionInterceptor } from '../common/action.interceptor';
 import { UserService } from './user.service';
 import SessionType from '../types/session';
-import { SignupRequestBody, LoginRequestBody } from '../types/user';
+import { SignupRequestBody, LoginRequestBody } from '@quizx/shared';
 
 @Controller()
 export class UserController {
