@@ -1,4 +1,4 @@
-import { Mapper, MappingProfile } from '@automapper/core';
+import { createMap, Mapper, MappingProfile } from '@automapper/core';
 import { AutomapperProfile, InjectMapper } from '@automapper/nestjs';
 import { Injectable } from '@nestjs/common';
 import { Game, GameSummary } from '@quizx/shared';
@@ -9,9 +9,9 @@ export class GameMapperProfile extends AutomapperProfile {
     super(mapper);
   }
 
-  mapProfile(): MappingProfile {
+  get profile(): MappingProfile {
     return (mapper) => {
-      mapper.createMap(Game, GameSummary);
+      createMap(mapper, Game, GameSummary);
     };
   }
 }

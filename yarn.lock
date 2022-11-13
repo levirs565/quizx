@@ -76,29 +76,31 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@automapper/classes@npm:^7.3.14":
-  version: 7.3.14
-  resolution: "@automapper/classes@npm:7.3.14"
+"@automapper/classes@npm:^8.7.7":
+  version: 8.7.7
+  resolution: "@automapper/classes@npm:8.7.7"
   peerDependencies:
+    "@automapper/core": 8.7.7
     reflect-metadata: ~0.1.13
-  checksum: 042331ddaf521ca5c952b3ce88b72c88778ce4140a04e79be5e1aa5d366528f4e3d671edba9f5920629d7f99fdd28deba0d1dd7365eaef129af6309091d40891
+  checksum: ce33a2b8fe2c5f585e5a3d0d3e7b2fb7c0e753047c5a31f2bd34f0cafc97730eaf81da1948e69de5fcf97718b5b5d18c10012f3e72f0addbb94fac59e4f9113c
   languageName: node
   linkType: hard
 
-"@automapper/core@npm:^7.3.14":
-  version: 7.3.14
-  resolution: "@automapper/core@npm:7.3.14"
-  checksum: 299d5d959e610ea1c1bb070a9adc199699e1a9fef86afb20f5366076bb50579a53e23c8963ac7a8a250978d89bc41385924a047d0d4648ad5b4cd54d6150533a
+"@automapper/core@npm:^8.7.7":
+  version: 8.7.7
+  resolution: "@automapper/core@npm:8.7.7"
+  checksum: fe815c672746397facc18252fea389b8042cee5c26f0e65bdeb109b68f3ca7a2fe031156d279c589e4cb708d930ccf59853034c2a035b2cae67876c0e2eca1d8
   languageName: node
   linkType: hard
 
-"@automapper/nestjs@npm:^7.3.14":
-  version: 7.3.14
-  resolution: "@automapper/nestjs@npm:7.3.14"
+"@automapper/nestjs@npm:^8.7.7":
+  version: 8.7.7
+  resolution: "@automapper/nestjs@npm:8.7.7"
   peerDependencies:
-    "@nestjs/common": ^7.0.0 || ^8.0.0
-    "@nestjs/core": ^7.0.0 || ^8.0.0
-  checksum: c857f8cb8b387a7a2cb883d26543d57df6ade0881a004a3e4b2c3aaa3dea91e726f3eaf9512677d20ea9070e28033e09bf76539e734d064f62bf7e03be225ad2
+    "@automapper/core": 8.7.7
+    "@nestjs/common": ^7.0.0 || ^8.0.0 || ^9.0.0
+    "@nestjs/core": ^7.0.0 || ^8.0.0  || ^9.0.0
+  checksum: eda5ffa560fc76a179aa89a3965d5245776c70130a3228247781882c5f6226cdbf171bf0800f0a6116b0189ea2a4ace34a5e84369e0da40b9f6ce6fb077b58ef
   languageName: node
   linkType: hard
 
@@ -1362,9 +1364,9 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@quizx/server@workspace:server"
   dependencies:
-    "@automapper/classes": ^7.3.14
-    "@automapper/core": ^7.3.14
-    "@automapper/nestjs": ^7.3.14
+    "@automapper/classes": ^8.7.7
+    "@automapper/core": ^8.7.7
+    "@automapper/nestjs": ^8.7.7
     "@cortex-js/compute-engine": ^0.6.0
     "@nestjs/cli": ^8.2.6
     "@nestjs/common": ^8.4.5
@@ -1422,7 +1424,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@quizx/shared@workspace:shared"
   dependencies:
-    "@automapper/classes": ^7.3.14
+    "@automapper/classes": ^8.7.7
     "@nestjs/common": ^8.4.5
     class-transformer: ^0.5.1
     class-validator: ^0.13.2

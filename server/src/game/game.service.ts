@@ -92,7 +92,7 @@ export class GameService {
     }
 
     await this.repository.createOne(game);
-    return this.mapper.map(game, GameSummary, Game);
+    return this.mapper.map(game, Game, GameSummary);
   }
 
   async getGame(id: string): Promise<GameSummary> {

@@ -18,7 +18,7 @@ export class QuizRepository {
   async getSummaryList(): Promise<QuizSummary[]> {
     const list = await this.model.find();
 
-    return list.map((val) => this.mapper.map(val.toClass(), QuizSummary, Quiz));
+    return list.map((val) => this.mapper.map(val.toClass(), Quiz, QuizSummary));
   }
 
   async getById(id: string): Promise<Quiz> {

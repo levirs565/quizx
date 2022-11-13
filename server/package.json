@@ -18,9 +18,9 @@
     "test:e2e": "jest --config ./test/jest-e2e.json"
   },
   "dependencies": {
-    "@automapper/classes": "^7.3.14",
-    "@automapper/core": "^7.3.14",
-    "@automapper/nestjs": "^7.3.14",
+    "@automapper/classes": "^8.7.7",
+    "@automapper/core": "^8.7.7",
+    "@automapper/nestjs": "^8.7.7",
     "@cortex-js/compute-engine": "^0.6.0",
     "@nestjs/common": "^8.4.5",
     "@nestjs/config": "^2.0.1",

@@ -38,10 +38,7 @@ import express from 'express';
       }),
       inject: [AppConfigService],
     }),
-    AutomapperModule.forRoot({
-      options: [{ name: 'mapper', pluginInitializer: classes }],
-      singular: true,
-    }),
+    AutomapperModule.forRoot({ strategyInitializer: classes() }),
     RouterModule.register([
       {
         path: 'api',

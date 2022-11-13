@@ -1,4 +1,4 @@
-import { mapFrom, Mapper, MappingProfile } from '@automapper/core';
+import { createMap, forMember, mapFrom, Mapper, MappingProfile } from '@automapper/core';
 import { AutomapperProfile, InjectMapper } from '@automapper/nestjs';
 import { Injectable } from '@nestjs/common';
 import { Quiz, QuizSummary } from '@quizx/shared';
@@ -9,11 +9,16 @@ export class QuizMapperProfile extends AutomapperProfile {
     super(mapper);
   }
 
-  mapProfile(): MappingProfile {
+  get profile(): MappingProfile {
     return (mapper) => {
-      mapper.createMap(Quiz, QuizSummary).forMember(
-        (destination) => destination.questionCount,
-        mapFrom((source) => source.questions.length)
+      createMap(
+        mapper,
+        Quiz,
+        QuizSummary,
+        forMember(
+          (destination) => destination.questionCount,
+          mapFrom((source) => source.questions.length)
+        )
       );
     };
   }
