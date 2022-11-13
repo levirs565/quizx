@@ -35,7 +35,7 @@
     "connect-mongo": "^4.6.0",
     "express-session": "^1.17.3",
     "fs-extra": "^10.1.0",
-    "just-shuffle": "^4.0.1",
+    "just-shuffle": "^4.1.1",
     "markdown-it": "^13.0.1",
     "markdown-it-dollarmath": "^0.4.2",
     "markdown-it-fancy-lists": "^1.1.3",
