@@ -10,7 +10,7 @@ import {
   Min,
   ValidateNested,
 } from "class-validator";
-import { Question, QuestionAnswer, questionDiscriminator } from "./quiz";
+import { Question, QuestionAnswer, questionDiscriminator } from "./quiz.js";
 
 export abstract class GamePreference {
   @IsBoolean()

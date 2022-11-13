@@ -11,7 +11,7 @@ import {
   IsString,
   ValidateNested,
 } from "class-validator";
-import { ValidationGroups } from "../decorator/validation-groups";
+import { ValidationGroups } from "../decorator/validation-groups.js";
 
 export const QuestionValidationGroupWithoutId = "WithoutId";
 
