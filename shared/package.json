@@ -8,7 +8,7 @@
     "build": "tsc"
   },
   "devDependencies": {
-    "typescript": "^4.3.5"
+    "typescript": "^4.8.4"
   },
   "dependencies": {
     "@automapper/classes": "^8.7.7",
