@@ -18,7 +18,7 @@ import { defineComponent } from "vue";
 import BaseAppBar from "@/components/BaseAppBar.vue";
 import ResourceMainContainer from "./ResourceMainContainer.vue";
 
-interface ResourceState {
+export interface ResourceState {
   isLoading: Boolean;
   isError: Boolean;
 }
