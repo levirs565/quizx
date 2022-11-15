@@ -33,33 +33,32 @@
   </v-card>
 </template>
 
-<script>
+<script lang="ts" setup>
 import { userApi } from "@/api";
 import useAuthStore from "@/store/auth";
-import { mapActions } from "pinia";
+import { notifiableFunction } from "@/store/notification";
+import { ref, computed } from "vue";
+import { useRouter } from "vue-router";
 
-export default {
-  data() {
-    return {
-      userID: "",
-      userPassword: "",
-    };
+const authStore = useAuthStore();
+const router = useRouter();
+
+const userID = ref("");
+const userPassword = ref("");
+
+const valid = computed(
+  () => userID.value.length > 0 && userPassword.value.length > 0
+);
+
+const login = notifiableFunction(
+  async () => {
+    await userApi.login(userID.value, userPassword.value);
+    authStore.updateUser();
+    router.push("/");
   },
-  computed: {
-    valid() {
-      return this.userID.length > 0 && this.userPassword.length > 0;
-    },
-  },
-  methods: {
-    login() {
-      userApi.login(this.userID, this.userPassword).then(() => {
-        this.updateUser();
-        this.$router.push("/");
-      });
-    },
-    ...mapActions(useAuthStore, ["updateUser"]),
-  },
-};
+  null,
+  "Login failed"
+);
 </script>
 
 <style></style>

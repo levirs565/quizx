@@ -38,45 +38,49 @@
 
     <v-card-actions>
       <v-spacer />
-      <v-btn variant="text" color="primary" :disabled="!valid" @click="register">
+      <v-btn
+        variant="text"
+        color="primary"
+        :disabled="!valid"
+        @click="register"
+      >
         Register
       </v-btn>
     </v-card-actions>
   </v-card>
 </template>
 
-<script>
+<script lang="ts" setup>
 import { userApi } from "@/api";
+import { notifiableFunction } from "@/store/notification";
+import { ref, computed } from "vue";
+import { useRouter } from "vue-router";
 
-export default {
-  data() {
-    return {
-      userID: "",
-      userName: "",
-      userPassword: "",
-      userPassword2: "",
-    };
+const router = useRouter();
+
+const userID = ref("");
+const userName = ref("");
+const userPassword = ref("");
+const userPassword2 = ref("");
+
+const valid = computed(() => {
+  if (userID.value.length == 0) {
+    return false;
+  }
+  if (userName.value.length == 0) return false;
+  if (userPassword.value.length == 0) return false;
+  if (userPassword.value != userPassword2.value) return false;
+  return true;
+});
+
+const register = notifiableFunction(
+  async () => {
+    await userApi.signup(userID.value, userName.value, userPassword.value);
+    router.push("/auth/login");
   },
-  computed: {
-    valid() {
-      if (this.userID.length == 0) {
-        return false;
-      }
-      if (this.userName.length == 0) return false;
-      if (this.userPassword.length == 0) return false;
-      if (this.userPassword != this.userPassword2) return false;
-      return true;
-    },
-  },
-  methods: {
-    register() {
-      console.log("aaa");
-      userApi.signup(this.userID, this.userName, this.userPassword).then(() => {
-        this.$router.push("/auth/login");
-      });
-    },
-  },
-};
+  null,
+  "Register failed"
+);
 </script>
 
 <style></style>

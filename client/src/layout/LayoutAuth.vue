@@ -1,5 +1,6 @@
 <template>
   <v-app>
+    <NotificationContainer />
     <v-main>
       <v-container fluid class="fill-height">
         <v-row align="center" justify="center" class="fill-height">
@@ -10,8 +11,8 @@
   </v-app>
 </template>
 
-<script>
-export default {};
+<script lang="ts" setup>
+import NotificationContainer from "@/components/NotificationContainer.vue";
 </script>
 <style scoped>
 .auth-form {
