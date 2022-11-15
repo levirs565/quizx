@@ -59,7 +59,7 @@
       </v-list>
     </v-navigation-drawer>
 
-    <notification-container :notification="notification" />
+    <notification-container />
 
     <router-view></router-view>
   </v-app>
@@ -67,7 +67,6 @@
 
 <script>
 import NotificationContainer from "@/components/NotificationContainer.vue";
-import useNotificationStore from "@/store/notification";
 import { selectOneUpper } from "@/utils";
 import useAuthStore from "@/store/auth";
 import { mapState, mapActions } from "pinia";
@@ -96,7 +95,6 @@ export default {
   },
   computed: {
     ...mapState(useAuthStore, ["user"]),
-    ...mapState(useNotificationStore, ["notification"]),
   },
 };
 </script>

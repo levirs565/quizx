@@ -11,6 +11,9 @@ import "mathlive/dist/mathlive-fonts.css";
 // Vuetify
 import { createVuetify } from "vuetify";
 
+import { createPinia } from "pinia";
+
 export const setupVue3 = defineSetupVue3(({ app }) => {
+  app.use(createPinia());
   app.use(createVuetify());
 });

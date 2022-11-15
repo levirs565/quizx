@@ -1,70 +1,44 @@
 <template>
   <v-snackbar
     v-model="isSnackbarShow"
-    :color="currentNotification ? currentNotification.color : ''"
+    :color="showedNotification ? showedNotification.color : ''"
+    :timeout="-1"
   >
     <template v-slot:actions>
       <v-btn variant="text" @click="isSnackbarShow = false"> Close </v-btn>
     </template>
 
-    {{ currentNotification ? currentNotification.text : "" }}
+    {{ showedNotification ? showedNotification.text : "" }}
   </v-snackbar>
 </template>
-<script lang="ts">
-import { defineComponent } from "vue";
-import { Notification } from "@/store/notification";
+<script lang="ts" setup>
+import {
+  useNotificationStore,
+  Notification,
+  notificationDelayDuration,
+} from "@/store/notification";
+import { timeStamp } from "console";
+import { ref } from "vue";
 
-export default defineComponent({
-  props: {
-    notification: Object,
-  },
-  data() {
-    return {
-      currentNotification: undefined,
-      isSnackbarShow: false,
-      notificationQueue: [],
-      timeoutId: 0,
-    } as {
-      currentNotification?: Notification;
-      isSnackbarShow: Boolean;
-      notificationQueue: Notification[];
-      timeoutId: Number;
-    };
-  },
-  methods: {
-    showNextNotification() {
-      if (this.notificationQueue.length == 0)
-        console.error("Notification queue is blank");
+const notificationStore = useNotificationStore();
 
-      this.currentNotification = this.notificationQueue.shift();
-      this.isSnackbarShow = true;
+let currentNotification: Notification | undefined = undefined;
+const showedNotification = ref<Notification>();
+const isSnackbarShow = ref(false);
 
-      if (this.notificationQueue.length >= 1) {
-        this.queueNextNotification();
-      }
-    },
-    queueNextNotification() {
-      this.timeoutId = setTimeout(() => {
-        this.isSnackbarShow = false;
-        this.timeoutId = setTimeout(() => {
-          this.timeoutId = 0;
-          this.showNextNotification();
-        }, 250);
-      }, 1000);
-    },
-  },
-  watch: {
-    notification(val: Notification) {
-      this.notificationQueue.push(val);
-      if (this.timeoutId == 0 && !this.isSnackbarShow) {
-        this.showNextNotification();
-        return;
-      }
+notificationStore.$subscribe((_, state) => {
+  if (state.currentNotification?.id == currentNotification?.id) return;
 
-      if (this.timeoutId == 0) {
-        this.queueNextNotification();
-      }
-    },
-  },
+  isSnackbarShow.value = false;
+  currentNotification = state.currentNotification;
+
+  if (state.currentNotification) {
+    setTimeout(() => {
+      showedNotification.value = currentNotification;
+      isSnackbarShow.value = true;
+    }, notificationDelayDuration);
+  } else {
+    showedNotification.value = undefined;
+  }
 });
 </script>
