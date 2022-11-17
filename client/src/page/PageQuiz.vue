@@ -5,7 +5,7 @@
     </template>
     <template #toolbarAppend>
       <v-btn
-        v-if="user && user.id == quiz.userId"
+        v-if="user && user.id == quiz?.userId"
         icon
         :to="`/quiz/${quiz_id}/edit`"
       >
@@ -33,18 +33,17 @@
     <v-row dense>
       <v-col
         cols="12"
-        v-for="(question, index) in quiz.questions"
+        v-for="(question, index) in quiz?.questions"
         :key="question.id"
       >
         <question
           :index="index"
           :question="question"
-          v-slot="{ component }"
-          :answerState="answerResults[question.id]"
+          :answerState="answerResults[question.id!]"
         >
-          <v-card-actions v-if="!isAnswerEmpty(component.answer)">
+          <v-card-actions v-if="!isAnswerEmpty(question.answer)">
             <v-btn
-              @click="checkAnswer(question.id, component.answer)"
+              @click="checkAnswer(question.id!, question.answer!)"
               color="primary"
               >Check Answer
             </v-btn>
@@ -55,78 +54,69 @@
   </resource-wrapper>
 </template>
 
-<script>
+<script lang="ts" setup>
 import Question from "@/components/question/Question.vue";
 import { quizApi, gameApi } from "@/api";
 import QuizSummary from "@/components/quiz/QuizSummary.vue";
 import DialogPlayQuiz from "@/dialog/DialogPlayQuiz.vue";
-import { isAnswerEmpty as isAnswerEmptyImpl } from "@/utils";
+import { isAnswerEmpty } from "@/utils";
 import ResourceWrapper, {
+  ResourceState,
   updateResourceStateByPromise,
 } from "@/components/resource/ResourceWrapper.vue";
 import useAuthStore from "@/store/auth";
-import { mapState } from "pinia";
+import {
+  GamePreference,
+  QuestionAnswer,
+  QuestionState,
+  Quiz,
+} from "@quizx/shared";
+import { onMounted, ref, watch } from "vue";
+import { useRouter } from "vue-router";
 
-export default {
-  components: {
-    Question,
-    QuizSummary,
-    DialogPlayQuiz,
-    ResourceWrapper,
-  },
-  props: {
-    quiz_id: String,
-  },
-  data() {
-    return {
-      quiz: {},
-      isPlayDialogShow: false,
-      state: null,
-      answerResults: {},
-    };
-  },
-  mounted() {
-    this.updateQuiz();
-  },
-  watch: {
-    quiz_id() {
-      this.updateQuiz();
-    },
-  },
-  methods: {
-    updateQuiz() {
-      updateResourceStateByPromise(
-        quizApi.getQuiz(this.quiz_id).then((quiz) => {
-          this.quiz = quiz;
-        }),
-        (val) => {
-          this.state = val;
-        }
-      );
-    },
-    checkAnswer(questionId, answer) {
-      quizApi.checkQuestionAnswer(this.quiz_id, questionId, answer).then((val) => {
-        let state = 1;
-        if (val.correct) state = 0;
-        this.answerResults[questionId] = state;
-      });
-    },
-    showPlayDialog() {
-      this.isPlayDialogShow = true;
-    },
-    playGame(preference) {
-      gameApi.playGame(this.quiz.id, preference).then((game) => {
-        this.$router.push(`/game/${game.id}/board`);
-      });
-    },
-    isAnswerEmpty(answer) {
-      return isAnswerEmptyImpl(answer);
-    },
-  },
-  computed: {
-    ...mapState(useAuthStore, ["user"]),
-  },
+export interface Props {
+  quiz_id: string;
+}
+
+const props = defineProps<Props>();
+
+const { user } = useAuthStore();
+const router = useRouter();
+
+const quiz = ref<Quiz>();
+const isPlayDialogShow = ref(false);
+const state = ref<ResourceState>();
+const answerResults = ref<Record<string, QuestionState>>({});
+
+const updateQuiz = () => {
+  updateResourceStateByPromise(
+    quizApi.getQuiz(props.quiz_id).then((newQuiz) => {
+      quiz.value = newQuiz;
+    }),
+    (newState) => {
+      state.value = newState;
+    }
+  );
 };
+
+const checkAnswer = async (questionId: string, answer: QuestionAnswer) => {
+  const result = await quizApi.checkQuestionAnswer(
+    props.quiz_id,
+    questionId,
+    answer
+  );
+  answerResults.value[questionId] = result.correct
+    ? QuestionState.Correct
+    : QuestionState.Incorrect;
+};
+const playGame = async (preference: GamePreference) => {
+  const game = await gameApi.playGame(props.quiz_id, preference);
+  router.push(`/game/${game.id}/board`);
+};
+
+onMounted(updateQuiz);
+
+watch(() => props.quiz_id, updateQuiz);
 </script>
 
 <style></style>

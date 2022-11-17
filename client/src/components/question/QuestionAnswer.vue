@@ -1,9 +1,11 @@
 <template>
   <v-radio-group
-    v-if="question.type === 'multiple-choice'"
-    v-model="lazyAnswer"
+    v-if="question instanceof MultipleChoiceQuestion"
     :readonly="!editable"
-    v-bind="inputProps"
+    :model-value="selectedAnswer"
+    :messages="message?.text"
+    :error-messages="message?.error"
+    @update:model-value="answerChanged"
   >
     <v-row
       v-for="(entry, choiceIndex) in question.choices"
@@ -35,62 +37,70 @@
     </v-row>
   </v-radio-group>
   <v-text-field
-    v-else-if="question.type == 'short-text'"
-    v-model="lazyAnswer"
+    v-else-if="question instanceof ShortTextQuestion"
+    :model-value="selectedAnswer"
+    :messages="message?.text"
+    :error-messages="message?.error"
+    @update:model-value="answerChanged"
     type="text"
     variant="outlined"
     :readonly="!editable"
-    v-bind="inputProps"
   />
   <v-text-field
-    v-else-if="question.type == 'number'"
+    v-else-if="question instanceof NumberQuestion"
+    :model-value="selectedAnswer"
+    :messages="message?.text"
+    :error-messages="message?.error"
+    @update:model-value="answerChanged(parseInt($event))"
     type="number"
-    v-model.number="lazyAnswer"
     variant="outlined"
     :readonly="!editable"
-    v-bind="inputProps"
   />
   <math-field-input
-    v-else-if="question.type == 'math'"
+    v-else-if="question instanceof MathQuestion"
+    :model-value="selectedAnswer"
+    :messages="message?.text"
+    :error-messages="message?.error"
+    @update:model-value="answerChanged"
     variant="outlined"
-    v-model="lazyAnswer"
     virtual-keyboard-mode="manual"
     :readonly="!editable"
-    v-bind="inputProps"
     :virtualKeyboardContainer="mathVirtualKeyboardContainer"
   />
 </template>
-<script>
+<script lang="ts" setup>
 import { getChoiceIndex } from "@/utils";
 import MathFieldInput from "@/components/math/MathFieldInput.vue";
+import {
+  MathQuestion,
+  MultipleChoiceQuestion,
+  NumberQuestion,
+  Question,
+  QuestionAnswer,
+  QuestionState,
+  ShortTextQuestion,
+} from "@quizx/shared";
 
-export default {
-  components: {
-    MathFieldInput,
-  },
-  props: {
-    question: Object,
-    selectedAnswer: [Number, String],
-    editable: Boolean,
-    inputProps: Object,
-    mathVirtualKeyboardContainer: HTMLElement,
-  },
-  data() {
-    return {
-      lazyAnswer: this.selectedAnswer,
-    };
-  },
-  watch: {
-    lazyAnswer(value) {
-      this.$emit("update:selectedAnswer", value);
-    },
-    selectedAnswer(value) {
-      this.lazyAnswer = value;
-    },
-  },
-  methods: {
-    getChoiceIndex,
-  },
+export interface Message {
+  text?: string;
+  error?: string;
+}
+
+export interface Props {
+  question: Question;
+  selectedAnswer?: QuestionAnswer;
+  editable: boolean;
+  mathVirtualKeyboardContainer?: HTMLElement;
+  message?: Message;
+}
+
+const props = defineProps<Props>();
+const emit = defineEmits<{
+  (e: "update:selectedAnswer", value: QuestionAnswer): void;
+}>();
+
+const answerChanged = (value: QuestionAnswer) => {
+  emit("update:selectedAnswer", value);
 };
 </script>
 <style scoped>
