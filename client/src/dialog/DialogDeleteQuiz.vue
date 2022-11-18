@@ -1,22 +1,22 @@
 <template>
   <v-card>
-    <v-card-title>Finish Game?</v-card-title>
-    <v-card-text>Make sure all questions are answered correctly.</v-card-text>
+    <v-card-title>Delete Quiz?</v-card-title>
+    <v-card-text>This action is permanent.</v-card-text>
     <v-card-actions>
-      <v-spacer />
+      <v-spacer></v-spacer>
       <v-btn variant="text" @click="emit('close')">Cancel</v-btn>
-      <v-btn variant="text" color="error" @click="submit">Finish</v-btn>
+      <v-btn variant="text" color="error" @click="submit">Delete</v-btn>
     </v-card-actions>
   </v-card>
 </template>
 <script lang="ts" setup>
 const emit = defineEmits<{
   (e: "close"): void;
-  (e: "submit"): void;
+  (e: "delete"): void;
 }>();
 
 const submit = () => {
+  emit("delete");
   emit("close");
-  emit("submit");
 };
 </script>

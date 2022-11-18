@@ -8,26 +8,19 @@
       <v-btn icon @click="saveQuiz">
         <v-icon>mdi-content-save</v-icon>
       </v-btn>
-      <v-dialog max-width="300px" v-model="isDeleteDialogShow">
+      <v-dialog max-width="300px">
         <template v-slot:activator="{ props }">
           <v-btn icon v-bind="props">
             <v-icon>mdi-delete</v-icon>
           </v-btn>
         </template>
 
-        <v-card>
-          <v-card-title>Delete Quiz?</v-card-title>
-          <v-card-text>This action is permanent.</v-card-text>
-          <v-card-actions>
-            <v-spacer></v-spacer>
-            <v-btn variant="text" @click="isDeleteDialogShow = false"
-              >Cancel</v-btn
-            >
-            <v-btn variant="text" color="error" @click="deleteQuiz"
-              >Delete</v-btn
-            >
-          </v-card-actions>
-        </v-card>
+        <template v-slot:default="{ isActive }">
+          <dialog-delete-quiz
+            @close="isActive.value = false"
+            @delete="deleteQuiz"
+          />
+        </template>
       </v-dialog>
     </template>
 
@@ -86,6 +79,7 @@ import ResourceWrapper, {
 } from "@/components/resource/ResourceWrapper.vue";
 import QuestionView from "@/components/question/Question.vue";
 import DialogQuestionEditor from "@/dialog/DialogQuestionEditor.vue";
+import DialogDeleteQuiz from "@/dialog/DialogDeleteQuiz.vue";
 import clone from "just-clone";
 import { onMounted, ref, watch } from "vue";
 import {
@@ -107,7 +101,6 @@ const notification = useNotificationStore();
 const props = defineProps<Props>();
 
 const quiz = ref<Quiz>();
-const isDeleteDialogShow = ref(false);
 const editDialogState = ref({
   isShow: false,
   isNew: false,

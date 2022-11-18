@@ -49,7 +49,7 @@
     </v-card-text>
     <v-card-actions>
       <v-spacer />
-      <v-btn variant="text" @click="$emit('close')">Cancel</v-btn>
+      <v-btn variant="text" @click="emit('close')">Cancel</v-btn>
       <v-btn color="primary" @click="submit">Play Now</v-btn>
     </v-card-actions>
   </v-card>
@@ -61,6 +61,7 @@ import { ref } from "vue";
 
 const emit = defineEmits<{
   (e: "play", preference: ExamGamePreference): void;
+  (e: "close"): void;
 }>();
 
 const modeList = [
@@ -121,6 +122,7 @@ const submit = () => {
       preference.questionTimeSecond = flashCard.value.questionTimeLimit.second;
     }
   }
+  emit("close");
   emit("play", preference);
 };
 </script>

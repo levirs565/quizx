@@ -22,14 +22,16 @@
         <transition name="fade">
           <v-row class="my-4" justify="end" v-if="showButtons" no-gutters>
             <slot name="buttons" />
-            <v-dialog v-model="isFinishDialogShow" max-width="350px">
+            <v-dialog max-width="350px">
               <template v-slot:activator="{ props }">
                 <v-btn color="error" v-bind="props"> Finish </v-btn>
               </template>
-              <dialog-finish-game
-                @submit="$emit('finish')"
-                @close="isFinishDialogShow = false"
-              />
+              <template v-slot:default="{ isActive }">
+                <dialog-finish-game
+                  @submit="$emit('finish')"
+                  @close="isActive.value = false"
+                />
+              </template>
             </v-dialog>
           </v-row>
         </transition>
@@ -56,7 +58,6 @@ const props = withDefaults(defineProps<Props>(), {
 
 const { mainRect } = useLayout();
 
-const isFinishDialogShow = ref(false);
 const sidebarTop = computed(() => mainRect.value.top + "px");
 </script>
 <style>
