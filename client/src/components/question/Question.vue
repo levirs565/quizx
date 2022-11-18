@@ -36,7 +36,7 @@ export interface Props {
   question: Question;
   index: number;
   editable?: boolean;
-  answerState: QuestionState;
+  answerState?: QuestionState;
 }
 
 const props = withDefaults(defineProps<Props>(), {

@@ -26,11 +26,10 @@
       <v-row no-gutters>
         <v-spacer />
         <v-select
-          :modelValue="question.type"
           :items="questionTypes"
+          :model-value="question.constructor.name"
           item-value="value"
           item-title="name"
-          @update:modelValue="changeType"
           filled
           class="my-2"
         />
@@ -59,7 +58,7 @@
       </question-answer>
 
       <div
-        v-if="question.type == 'multiple-choice'"
+        v-if="question instanceof MultipleChoiceQuestion"
         @click="addChoice"
         class="d-flex justify-end"
       >
@@ -68,100 +67,108 @@
     </v-card-text>
   </v-card>
 </template>
-<script>
+<script lang="ts" setup>
 import TextEditor from "@/components/tiptap/TextEditor.vue";
 import QuestionAnswer from "@/components/question/QuestionAnswer.vue";
 import TextEditorToolbar from "@/components/tiptap/TextEditorToolbar.vue";
+import {
+  MathQuestion,
+  MultipleChoiceQuestion,
+  NumberQuestion,
+  Question,
+  ShortTextQuestion,
+} from "@quizx/shared";
+import { Editor } from "@tiptap/vue-3";
+import { nextTick, onMounted, ref } from "vue";
+import { VToolbar } from "vuetify/components/VToolbar";
 
-export default {
-  props: {
-    isNewQuestion: Boolean,
-    question: Object,
-    index: Number,
-  },
-  components: {
-    TextEditor,
-    QuestionAnswer,
-    TextEditorToolbar,
-  },
-  data() {
-    return {
-      activeEditor: null,
-      questionTypes: [
-        {
-          value: "multiple-choice",
-          name: "Multiple Choice",
-        },
-        {
-          value: "short-text",
-          name: "Short Text",
-        },
-        { value: "number", name: "Number" },
-        { value: "math", name: "Math" },
-      ],
-      toolbarTop: "0px",
-    };
-  },
-  mounted() {
-    this.$nextTick(() => {
-      this.toolbarTop =
-        this.$refs.toolbar.$el.getBoundingClientRect().height + 16 + "px";
-    });
-  },
-  methods: {
-    onEditorFocus(editor) {
-      this.activeEditor = editor;
-    },
-    oneEditorBlur(editor, event) {
-      const relatedElement = event.relatedTarget;
-      if (relatedElement) {
-        const toolbar = this.$refs.editorToolbar.$el;
-        if (relatedElement.parentElement == toolbar) return;
-      }
+export interface Props {
+  isNewQuestion: boolean;
+  question: Question;
+  index: number;
+}
 
-      if (this.activeEditor == editor) this.activeEditor = null;
-    },
-    addChoice() {
-      this.question.choices.push("");
-    },
-    removeChoice(index) {
-      this.question.choices.splice(index, 1);
-    },
-    onChoiceInput(index, value) {
-      this.question.choices[index] = value;
-    },
-    changeType(type) {
-      let newQuestion = {
-        id: this.question.id,
-        question: this.question.question,
-        type,
-      };
-      if (type == "multiple-choice") {
-        newQuestion = {
-          ...newQuestion,
-          choices: ["", "", "", ""],
-          answer: 0,
-        };
-      } else if (type == "short-text") {
-        newQuestion = {
-          ...newQuestion,
-          answer: "",
-        };
-      } else if (type == "number") {
-        newQuestion = {
-          ...newQuestion,
-          answer: 0,
-        };
-      } else if (type == "math") {
-        newQuestion = {
-          ...newQuestion,
-          answer: "",
-        };
-      }
-      this.$emit("update:question", newQuestion);
-    },
+const props = defineProps<Props>();
+
+const questionTypes = [
+  {
+    type: MultipleChoiceQuestion,
+    name: "Multiple Choice",
   },
+  {
+    type: ShortTextQuestion,
+    name: "Short Text",
+  },
+  { type: NumberQuestion, name: "Number" },
+  { type: MathQuestion, name: "Math" },
+].map((item) => ({
+  value: item.type.name,
+  ...item,
+}));
+
+const activeEditor = ref<Editor>();
+const toolbarTop = ref("0px");
+const toolbar = ref<InstanceType<typeof VToolbar>>();
+const editorToolbar = ref<InstanceType<typeof TextEditorToolbar>>();
+
+onMounted(() => {
+  nextTick(() => {
+    toolbarTop.value =
+      toolbar.value!.$el.getBoundingClientRect().height + 16 + "px";
+  });
+});
+
+const onEditorFocus = (editor: Editor) => {
+  activeEditor.value = editor;
 };
+const oneEditorBlur = (editor: Editor, event: FocusEvent) => {
+  const relatedElement = event.relatedTarget as HTMLElement | null;
+  if (relatedElement) {
+    const toolbar = editorToolbar.value!.$el;
+    if (relatedElement.parentElement == toolbar) return;
+  }
+
+  if (activeEditor.value == editor) activeEditor.value = undefined;
+};
+const addChoice = () => {
+  (props.question as MultipleChoiceQuestion).choices.push("");
+};
+const removeChoice = (index: number) => {
+  (props.question as MultipleChoiceQuestion).choices.splice(index, 1);
+};
+const onChoiceInput = (index: number, value: string) => {
+  (props.question as MultipleChoiceQuestion).choices[index] = value;
+};
+// const changeType = (type) {
+//   let newQuestion = {
+//     id: this.question.id,
+//     question: this.question.question,
+//     type,
+//   };
+//   if (type == "multiple-choice") {
+//     newQuestion = {
+//       ...newQuestion,
+//       choices: ["", "", "", ""],
+//       answer: 0,
+//     };
+//   } else if (type == "short-text") {
+//     newQuestion = {
+//       ...newQuestion,
+//       answer: "",
+//     };
+//   } else if (type == "number") {
+//     newQuestion = {
+//       ...newQuestion,
+//       answer: 0,
+//     };
+//   } else if (type == "math") {
+//     newQuestion = {
+//       ...newQuestion,
+//       answer: "",
+//     };
+//   }
+//   this.$emit("update:question", newQuestion);
+// }
 </script>
 
 <style scoped>

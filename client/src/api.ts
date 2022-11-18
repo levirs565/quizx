@@ -139,9 +139,13 @@ class QuizApi {
   async getQuizForEditor(id: string) {
     return responseToClass(Quiz, await instance.get(`${this.path}/${id}/edit`));
   }
-  async saveQuiz(id: string, quiz: any) {
-    return (await instance.put<SaveQuizResult>(`${this.path}/${id}/edit`, quiz))
-      .data;
+  async saveQuiz(id: string, quiz: Quiz) {
+    return (
+      await instance.put<SaveQuizResult>(
+        `${this.path}/${id}/edit`,
+        instanceToPlain(quiz)
+      )
+    ).data;
   }
   async deleteQuiz(id: string) {
     return (await instance.delete<ActionSuccessResponse>(`${this.path}/${id}`))

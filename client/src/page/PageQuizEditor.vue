@@ -38,15 +38,10 @@
     <v-row>
       <v-col
         cols="12"
-        v-for="(question, index) in quiz.questions"
+        v-for="(question, index) in quiz?.questions"
         :key="question.id"
       >
-        <question
-          :index="index"
-          :question="question"
-          :initialAnswer="question.answer"
-          :editable="false"
-        >
+        <question-view :index="index" :question="question" :editable="false">
           <v-card-actions>
             <v-spacer />
             <v-btn
@@ -62,7 +57,7 @@
               Edit
             </v-btn>
           </v-card-actions>
-        </question>
+        </question-view>
       </v-col>
 
       <v-col>
@@ -82,121 +77,111 @@
   </resource-wrapper>
 </template>
 
-<script>
+<script lang="ts" setup>
 import { quizApi } from "@/api";
 import QuizSummary from "@/components/quiz/QuizSummary.vue";
 import ResourceWrapper, {
+  ResourceState,
   updateResourceStateByPromise,
 } from "@/components/resource/ResourceWrapper.vue";
-import Question from "@/components/question/Question.vue";
+import QuestionView from "@/components/question/Question.vue";
 import DialogQuestionEditor from "@/dialog/DialogQuestionEditor.vue";
 import clone from "just-clone";
+import { onMounted, ref, watch } from "vue";
+import {
+  MultipleChoiceQuestion,
+  NumberQuestion,
+  Question,
+  Quiz,
+} from "@quizx/shared";
+import { useRouter } from "vue-router";
+import { useNotificationStore } from "@/store/notification";
 
-export default {
-  props: {
-    quiz_id: String,
-  },
-  components: {
-    QuizSummary,
-    ResourceWrapper,
-    Question,
-    DialogQuestionEditor,
-  },
-  data() {
-    return {
-      quiz: {},
-      isDeleteDialogShow: false,
-      editDialogState: {
-        isShow: false,
-        isNew: false,
-        question: null,
-        questionIndex: 0,
-      },
-      state: null,
-      activeEditor: null,
-    };
-  },
-  methods: {
-    refresh() {
-      updateResourceStateByPromise(
-        quizApi.getQuizForEditor(this.quiz_id).then((quiz) => {
-          if (quiz) this.quiz = quiz;
-        }),
-        (val) => {
-          this.state = val;
-        }
-      );
-    },
-    deleteQuiz() {
-      quizApi.deleteQuiz(this.quiz_id).then(() => {
-        this.$router.replace("/quiz");
-      });
-    },
-    editQuestion(index) {
-      this.editDialogState.isNew = false;
-      this.editDialogState.questionIndex = index;
-      this.editDialogState.question = clone(this.quiz.questions[index]);
-      this.editDialogState.isShow = true;
-    },
-    cancelEditQuestion() {
-      this.editDialogState.isShow = false;
-    },
-    applyEditQuestion() {
-      this.editDialogState.isShow = false;
-      if (!this.editDialogState.isNew)
-        this.quiz.questions[this.editDialogState.questionIndex] =
-          this.editDialogState.question;
-      else this.quiz.questions.push(this.editDialogState.question);
-    },
-    newQuestion() {
-      this.editDialogState.isNew = true;
-      this.editDialogState.questionIndex = 0;
-      this.editDialogState.question = {
-        id: "new-" + Math.random().toString(36).substr(2),
-        type: "multiple-choice",
-        question: "",
-        choices: ["", "", "", ""],
-        answer: 0,
-      };
-      this.editDialogState.isShow = true;
-    },
-    async saveQuiz() {
-      try {
-        const result = await quizApi.saveQuiz(this.quiz_id, this.quiz);
-        const newIdsMap = result.newQuestionsId;
-        for (const question of this.quiz.questions) {
-          if (question.id in newIdsMap) {
-            question.id = newIdsMap[question.id];
-          }
-        }
-        this.showNotification({
-          text: "Quiz saved",
-          color: "success",
-        });
-      } catch (e) {
-        console.error(e);
-        this.showNotification({
-          text: "Cannot save quiz",
-          color: "error",
-        });
-      }
-    },
-    async deleteQuestion(index) {
-      this.quiz.questions.splice(index, 1);
-    },
-  },
-  watch: {
-    quiz_id() {
-      this.refresh();
-    },
-  },
-  computed: {
-    toolbarTop() {
-      return this.$vuetify.application.top + "px";
-    },
-  },
-  mounted() {
-    this.refresh();
-  },
+export interface Props {
+  quiz_id: string;
+}
+
+const router = useRouter();
+const notification = useNotificationStore();
+
+const props = defineProps<Props>();
+
+const quiz = ref<Quiz>();
+const isDeleteDialogShow = ref(false);
+const editDialogState = ref({
+  isShow: false,
+  isNew: false,
+  question: undefined as Question | undefined,
+  questionIndex: 0,
+});
+const state = ref<ResourceState>();
+
+const refresh = () => {
+  updateResourceStateByPromise(
+    quizApi.getQuizForEditor(props.quiz_id).then((newQuiz) => {
+      quiz.value = newQuiz;
+    }),
+    (newState) => {
+      state.value = newState;
+    }
+  );
 };
+const deleteQuiz = () => {
+  quizApi.deleteQuiz(props.quiz_id).then(() => {
+    router.replace("/quiz");
+  });
+};
+const editQuestion = (index: number) => {
+  const question = quiz.value!.questions[index];
+  editDialogState.value.isNew = false;
+  editDialogState.value.questionIndex = index;
+  editDialogState.value.question = Object.assign(
+    Object.create(Object.getPrototypeOf(question)),
+    clone(question)
+  );
+  editDialogState.value.isShow = true;
+};
+const cancelEditQuestion = () => {
+  editDialogState.value.isShow = false;
+};
+const applyEditQuestion = () => {
+  editDialogState.value.isShow = false;
+  const question = editDialogState.value.question;
+  if (!editDialogState.value.isNew)
+    quiz.value!.questions[editDialogState.value.questionIndex] = question!;
+  else quiz.value!.questions.push(question!);
+};
+const newQuestion = () => {
+  const question = new MultipleChoiceQuestion();
+  (question.id = "new-" + Math.random().toString(36).substring(2)),
+    (question.question = "");
+  question.choices = ["", "", "", ""];
+  question.answer = 0;
+
+  editDialogState.value.isNew = true;
+  editDialogState.value.questionIndex = 0;
+  editDialogState.value.question = question;
+  editDialogState.value.isShow = true;
+};
+const saveQuiz = async () => {
+  try {
+    const result = await quizApi.saveQuiz(props.quiz_id, quiz.value!);
+    const newIdsMap = result.newQuestionsId;
+    for (const question of quiz.value!.questions) {
+      if (question.id! in newIdsMap) {
+        question.id = newIdsMap[question.id!];
+      }
+    }
+    notification.addNotification("Quiz saved", "success");
+  } catch (e) {
+    console.error(e);
+    notification.addNotification("Cannot save quiz", "error");
+  }
+};
+const deleteQuestion = (index: number) => {
+  quiz.value!.questions.splice(index, 1);
+};
+
+onMounted(refresh);
+watch(() => props.quiz_id, refresh);
 </script>
