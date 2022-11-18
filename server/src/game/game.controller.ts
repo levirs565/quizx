@@ -19,6 +19,7 @@ export class GameController {
   }
 
   @Put('/:gameId/question/:questionId')
+  @UseInterceptors(ActionInterceptor)
   putAnswer(
     @Session() session: SessionType,
     @Param('gameId') gameId: string,
