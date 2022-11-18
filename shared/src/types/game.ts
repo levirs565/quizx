@@ -87,8 +87,10 @@ export class GameSummary {
   isPlaying!: boolean;
   @AutoMap()
   result?: GameResult;
+  @Type(() => Date)
   @AutoMap()
   startTime!: Date;
+  @Type(() => Date)
   @AutoMap()
   finishTime?: Date;
 }
@@ -100,12 +102,14 @@ export abstract class GameData {
 export class FlashCardGameData extends GameData {
   preference!: FlashCardGamePreference;
   currentQuestionIndex!: number;
+  @Type(() => Date)
   currentQuestionMaxTime?: Date;
   currentQuestionRetryCount?: number;
 }
 
 export class ExamGameData extends GameData {
   preference!: ExamGamePreference;
+  @Type(() => Date)
   maxFinishTime?: Date;
 }
 
@@ -134,9 +138,10 @@ export class Game extends GameSummary {
   data!: GameData;
 }
 
-export interface GameAnswerResult {
-  state: QuestionState;
-  currentQuestionIndex: number;
+export class GameAnswerResult {
+  state!: QuestionState;
+  currentQuestionIndex!: number;
   currentQuestionRetryCount?: number;
+  @Type(() => Date)
   currentQuestionMaxTime?: Date;
 }

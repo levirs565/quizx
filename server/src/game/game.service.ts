@@ -223,12 +223,13 @@ export class GameService {
 
     await this.repository.updateFlashCard(game.id, data, mustNext ? state : undefined);
 
-    return {
-      currentQuestionIndex: data.currentQuestionIndex,
-      currentQuestionRetryCount: data.currentQuestionRetryCount,
-      currentQuestionMaxTime: data.currentQuestionMaxTime,
-      state,
-    };
+    const result = new GameAnswerResult();
+    result.currentQuestionIndex = data.currentQuestionIndex;
+    result.currentQuestionRetryCount = data.currentQuestionRetryCount;
+    result.currentQuestionMaxTime = data.currentQuestionMaxTime;
+    result.state = state;
+
+    return result;
   }
 
   async finishGame(session: Session, gameId: string) {
