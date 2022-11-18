@@ -15,15 +15,17 @@
 
     <quiz-summary :quiz="quiz">
       <v-card-actions>
-        <v-dialog v-model="isPlayDialogShow" v-if="user" max-width="400px">
+        <v-dialog v-if="user" max-width="400px">
           <template v-slot:activator="{ props }">
             <v-btn variant="text" color="primary" v-bind="props"> Play </v-btn>
           </template>
 
-          <dialog-play-quiz
-            @close="isPlayDialogShow = false"
-            @play="playGame"
-          ></dialog-play-quiz>
+          <template v-slot="{ isActive }">
+            <dialog-play-quiz
+              @close="isActive.value = false"
+              @play="playGame"
+            ></dialog-play-quiz>
+          </template>
         </v-dialog>
       </v-card-actions>
     </quiz-summary>
@@ -84,7 +86,6 @@ const { user } = useAuthStore();
 const router = useRouter();
 
 const quiz = ref<Quiz>();
-const isPlayDialogShow = ref(false);
 const state = ref<ResourceState>();
 const answerResults = ref<Record<string, QuestionState>>({});
 

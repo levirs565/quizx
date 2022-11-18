@@ -3,19 +3,19 @@
     <v-card-title>Play Game</v-card-title>
     <v-card-text>
       <v-switch
-        v-model="preference.shuffleQuestions"
+        v-model="basePreference.shuffleQuestions"
         label="Shuffle Questions"
       />
       <v-select
         v-model="mode"
         :items="modeList"
-        item-value="type"
+        item-value="index"
         item-title="text"
         label="Mode"
         variant="outlined"
         hide-details
       />
-      <template v-if="mode == 'exam'">
+      <template v-if="mode == 0">
         <v-switch label="Limit Exam Time" v-model="exam.timeLimit.enabled" />
         <duration-input
           label="Exam Time Limit"
@@ -23,7 +23,7 @@
           v-model="exam.timeLimit.second"
         />
       </template>
-      <template v-if="mode == 'flash-card'">
+      <template v-if="mode == 1">
         <v-switch
           label="Limit Question Time"
           v-model="flashCard.questionTimeLimit.enabled"
@@ -54,66 +54,73 @@
     </v-card-actions>
   </v-card>
 </template>
-<script>
+<script lang="ts" setup>
 import DurationInput from "@/components/DurationInput.vue";
-export default {
-  components: { DurationInput },
-  data() {
-    return {
-      mode: "exam",
-      modeList: [
-        {
-          type: "exam",
-          text: "Exam",
-        },
-        {
-          type: "flash-card",
-          text: "Flash Card",
-        },
-      ],
-      exam: {
-        timeLimit: {
-          enabled: false,
-          second: 20 * 60,
-        },
-      },
-      flashCard: {
-        retryCountLimit: {
-          enabled: false,
-          count: 5,
-        },
-        questionTimeLimit: {
-          enabled: false,
-          second: 1 * 60,
-        },
-      },
-      preference: {
-        shuffleQuestions: false,
-      },
-    };
-  },
-  methods: {
-    submit() {
-      const preference = {
-        type: this.mode,
-        ...this.preference,
-      };
-      if (this.mode == "exam") {
-        if (this.exam.timeLimit.enabled) {
-          preference.examTimeSecond = this.exam.timeLimit.second;
-        }
-      } else if (this.mode == "flash-card") {
-        if (this.flashCard.retryCountLimit.enabled) {
-          preference.retryCount = this.flashCard.retryCountLimit.count;
-        }
+import { ExamGamePreference, FlashCardGamePreference } from "@quizx/shared";
+import { ref } from "vue";
 
-        if (this.flashCard.questionTimeLimit.enabled) {
-          preference.questionTimeSecond =
-            this.flashCard.questionTimeLimit.second;
-        }
-      }
-      this.$emit("play", preference);
-    },
+const emit = defineEmits<{
+  (e: "play", preference: ExamGamePreference): void;
+}>();
+
+const modeList = [
+  {
+    type: ExamGamePreference,
+    text: "Exam",
   },
+  {
+    type: FlashCardGamePreference,
+    text: "Flash Card",
+  },
+].map((item, index) => ({
+  index,
+  ...item,
+}));
+
+const mode = ref(0);
+const exam = ref({
+  timeLimit: {
+    enabled: false,
+    second: 20 * 60,
+  },
+});
+
+const flashCard = ref({
+  retryCountLimit: {
+    enabled: false,
+    count: 5,
+  },
+  questionTimeLimit: {
+    enabled: false,
+    second: 1 * 60,
+  },
+});
+
+const basePreference = ref({
+  shuffleQuestions: false,
+});
+
+const createPreferenceObject = () => {
+  const type = modeList[mode.value].type;
+  return new type();
+};
+
+const submit = () => {
+  const preference = createPreferenceObject();
+  preference.shuffleQuestions = basePreference.value.shuffleQuestions;
+  if (preference instanceof ExamGamePreference) {
+    if (exam.value.timeLimit.enabled) {
+      preference.examTimeSecond = exam.value.timeLimit.second;
+    }
+  } else if (preference instanceof FlashCardGamePreference) {
+    if (flashCard.value.retryCountLimit.enabled) {
+      preference.retryCount = flashCard.value.retryCountLimit.count;
+    }
+
+    if (flashCard.value.questionTimeLimit.enabled) {
+      preference.questionTimeSecond = flashCard.value.questionTimeLimit.second;
+    }
+  }
+  emit("play", preference);
 };
 </script>
