@@ -28,8 +28,8 @@
 </template>
 <script lang="ts" setup>
 import TextViewer from "@/components/tiptap/TextViewer.vue";
-import { Question, QuestionState } from "@quizx/shared";
-import { computed } from "vue";
+import { Question, QuestionAnswer, QuestionState } from "@quizx/shared";
+import { computed, watch } from "vue";
 import QuestionAnswerView, { Message } from "./QuestionAnswer.vue";
 
 export interface Props {
@@ -39,9 +39,18 @@ export interface Props {
   answerState?: QuestionState;
 }
 
+export interface AnswerChangedEvent {
+  index: number;
+  id: string;
+  answer: QuestionAnswer;
+}
+
 const props = withDefaults(defineProps<Props>(), {
   editable: true,
 });
+const emit = defineEmits<{
+  (e: "answerChanged", event: AnswerChangedEvent): void;
+}>();
 
 const message = computed<Message>(() => {
   const baseText = "Your answer is ";
@@ -63,6 +72,17 @@ const message = computed<Message>(() => {
       return {};
   }
 });
+
+watch(
+  () => props.question.answer,
+  (value) => {
+    emit("answerChanged", {
+      index: props.index,
+      id: props.question.id!,
+      answer: value!,
+    });
+  }
+);
 </script>
 
 <style scoped></style>

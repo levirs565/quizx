@@ -3,7 +3,7 @@
     :game="game"
     :jumperButtons="jumperButtons"
     @jumperClick="goToQuestion"
-    @finish="$emit('finish')"
+    @finish="emit('finish')"
   >
     <template v-slot:sidebar>
       <v-card-text class="text-center text--primary pb-0" v-if="timer.started">
@@ -17,83 +17,81 @@
         v-for="(question, index) in game.questions"
         :key="question.id"
       >
-        <question
+        <question-view
           :index="index"
           :question="question"
-          :initialAnswer="question.answer"
-          @answerChanged="putAnswer"
           ref="questions"
+          @answerChanged="putAnswer"
         >
-        </question>
+        </question-view>
       </v-col>
     </v-row>
   </base-game-board>
 </template>
-<script>
+<script lang="ts" setup>
 import { useCountDownTimer, isAnswerEmpty } from "@/utils";
 import BaseGameBoard from "./BaseGameBoard.vue";
-import Question from "../question/Question.vue";
+import QuestionView, { AnswerChangedEvent } from "../question/Question.vue";
 import { useLayout } from "vuetify";
+import { ExamGameData, Game, QuestionAnswer } from "@quizx/shared";
+import { onBeforeUnmount, ref, watch } from "vue";
 
-export default {
-  components: { Question, BaseGameBoard },
-  props: {
-    game: Object,
-  },
-  data() {
-    return {
-      jumperButtons: [],
-    };
-  },
-  setup() {
-    const { mainRect } = useLayout();
-    const timer = useCountDownTimer();
+interface Props {
+  game: Game;
+}
 
-    return {
-      mainRect,
-      timer,
-    };
-  },
-  methods: {
-    startTimer() {
-      if (this.game.data.maxFinishTime) {
-        this.timer.start(new Date(this.game.data.maxFinishTime).getTime(), () => {
-          this.$emit("finish")
-        });
-      }
-    },
-    getElementTop(el) {
-      const scrollY = window.pageYOffset || document.documentElement.scrollTop;
-      return el.getBoundingClientRect().top + scrollY;
-    },
-    goToQuestion(index) {
-      const element = this.$refs.questions[index].$el;
-      const top = this.getElementTop(element) - this.mainRect.top;
-      window.scrollTo(0, top);
-    },
-    putAnswer(data) {
-      this.$emit("answerChanged", data);
+const props = defineProps<Props>();
+const { game } = props;
+const emit = defineEmits<{
+  (e: "finish"): void;
+  (e: "answerChanged", event: AnswerChangedEvent): void;
+}>();
 
-      this.jumperButtons[data.index] = this.getQuestionColor(data.answer);
-    },
-    getQuestionColor(answer) {
-      if (!isAnswerEmpty(answer)) return "primary";
-      return "";
-    },
-  },
-  watch: {
-    game: {
-      immediate: true,
-      handler(val) {
-        this.startTimer();
-        this.jumperButtons = val.questions.map((question) =>
-          this.getQuestionColor(question.answer)
-        );
-      },
-    },
-  },
-  beforeDestroy() {
-    this.timer.stop();
-  },
+const { mainRect } = useLayout();
+const timer = useCountDownTimer();
+
+const jumperButtons = ref<string[]>([]);
+const questions = ref<InstanceType<typeof QuestionView>[]>();
+
+const startTimer = () => {
+  const data = game.data as ExamGameData;
+  if (data.maxFinishTime) {
+    timer.start(data.maxFinishTime.getTime(), () => {
+      emit("finish");
+    });
+  }
 };
+const getElementTop = (el: HTMLElement) => {
+  const scrollY = window.pageYOffset || document.documentElement.scrollTop;
+  return el.getBoundingClientRect().top + scrollY;
+};
+const goToQuestion = (index: number) => {
+  const element = questions.value![index].$el;
+  const top = getElementTop(element) - mainRect.value.top;
+  window.scrollTo(0, top);
+};
+const putAnswer = (event: AnswerChangedEvent) => {
+  emit("answerChanged", event);
+
+  jumperButtons.value[event.index] = getQuestionColor(event.answer);
+};
+const getQuestionColor = (answer: QuestionAnswer | undefined) => {
+  if (!isAnswerEmpty(answer)) return "primary";
+  return "";
+};
+watch(
+  () => props.game,
+  () => {
+    startTimer();
+    jumperButtons.value = game.questions.map((question) =>
+      getQuestionColor(question.answer)
+    );
+  },
+  {
+    immediate: true,
+  }
+);
+onBeforeUnmount(() => {
+  timer.stop();
+});
 </script>

@@ -51,7 +51,7 @@
     :model-value="selectedAnswer"
     :messages="message?.text"
     :error-messages="message?.error"
-    @update:model-value="answerChanged(parseInt($event))"
+    @update:model-value="answerChanged($event ? parseInt($event) : null)"
     type="number"
     variant="outlined"
     :readonly="!editable"

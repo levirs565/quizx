@@ -3,26 +3,25 @@
     :game="game"
     :jumperButtons="jumperButtons"
     :showButtons="showButtons"
-    @finish="$emit('finish')"
+    @finish="emit('finish')"
   >
     <transition name="fade">
       <div v-if="showQuestion">
         <v-row no-gutters>
-          <p v-if="game.data.preference.retryCount">
-            Retry count: {{ game.data.currentQuestionRetryCount }}. Max retry
+          <p v-if="gameData.preference.retryCount">
+            Retry count: {{ gameData.currentQuestionRetryCount }}. Max retry
             count:
-            {{ game.data.preference.retryCount }}
+            {{ gameData.preference.retryCount }}
           </p>
           <v-spacer />
-          <p v-if="game.data.preference.questionTimeSecond">
+          <p v-if="gameData.preference.questionTimeSecond">
             Time left: {{ timer.text.value }}
           </p>
         </v-row>
-        <question
+        <question-view
           :index="currentQuestionIndex"
-          :question="currentQuestion"
-          :initialAnswer="currentQuestion.answer"
-          @answerChanged="$emit('answerChanged', $event)"
+          :question="currentQuestion!"
+          @answerChanged="emit('answerChanged', $event)"
         />
       </div>
       <p v-else-if="currentQuestionIndex == -1">
@@ -40,78 +39,80 @@
     </template>
   </base-game-board>
 </template>
-<script>
+<script lang="ts" setup>
 import { useCountDownTimer } from "@/utils";
 import BaseGameBoard from "./BaseGameBoard.vue";
-import Question from "../question/Question.vue";
-export default {
-  components: { BaseGameBoard, Question },
-  props: {
-    game: Object,
-  },
-  setup() {
-    const timer = useCountDownTimer();
-    return {
-      timer,
-    };
-  },
-  data() {
-    return {
-      currentQuestion: {},
-      showQuestion: false,
-      showButtons: false,
-    };
-  },
-  methods: {
-    submitCurrentAnswer() {
-      this.$emit(
-        "submitAnswer",
-        this.currentQuestionIndex,
-        this.currentQuestion.id
-      );
-    },
-  },
-  watch: {
-    currentQuestionIndex: {
-      immediate: true,
-      handler(val) {
-        this.showQuestion = false;
-        if (val > -1) {
-          this.showButtons = false;
-          setTimeout(() => {
-            this.currentQuestion = this.game.questions[val];
-            this.showQuestion = true;
-            this.showButtons = true;
-          }, 500);
-        } else {
-          this.showButtons = true;
-        }
-      },
-    },
-    "game.data.currentQuestionMaxTime": {
-      immediate: true,
-      handler(val) {
-        this.timer.start(new Date(val).getTime(), () =>
-          this.submitCurrentAnswer()
-        );
-      },
-    },
-  },
-  computed: {
-    currentQuestionIndex() {
-      return this.game.data.currentQuestionIndex;
-    },
-    jumperButtons() {
-      return this.game.questions.map((val, index) => {
-        const state = this.game.questionsState[index];
-        if (state == 0) return "success";
-        else if (state == 1) return "error";
-        else if (state == 2) return "warning";
-      });
-    },
-    showTryAgain() {
-      return this.game.data.currentQuestionRetryCount > 0;
-    },
-  },
+import QuestionView, { AnswerChangedEvent } from "../question/Question.vue";
+import {
+  FlashCardGameData,
+  Game,
+  Question,
+  QuestionState,
+} from "@quizx/shared";
+import { computed, ref, watch, watchEffect } from "vue";
+
+export interface Props {
+  game: Game;
+}
+
+const props = defineProps<Props>();
+const emit = defineEmits<{
+  (e: "finish"): void;
+  (e: "submitAnswer", index: number, id: string): void;
+  (e: "answerChanged", event: AnswerChangedEvent): void;
+}>();
+
+const timer = useCountDownTimer();
+const currentQuestion = ref<Question>();
+const showQuestion = ref(false);
+const showButtons = ref(false);
+
+const gameData = computed(() => props.game.data as FlashCardGameData);
+
+const currentQuestionIndex = computed(
+  () => gameData.value.currentQuestionIndex
+);
+
+const jumperButtons = computed(() =>
+  props.game.questions.map((val, index) => {
+    const state = props.game.questionsState![index];
+    if (state == QuestionState.Correct) return "success";
+    else if (state == QuestionState.Incorrect) return "error";
+    else if (state == QuestionState.Unanswered) return "warning";
+  })
+);
+const showTryAgain = computed(() =>
+  gameData.value.currentQuestionRetryCount
+    ? gameData.value.currentQuestionRetryCount > 0
+    : false
+);
+
+const submitCurrentAnswer = () => {
+  emit("submitAnswer", currentQuestionIndex.value, currentQuestion.value!.id!);
 };
+
+watch(
+  currentQuestionIndex,
+  (val) => {
+    showQuestion.value = false;
+    if (val > -1) {
+      showButtons.value = false;
+      setTimeout(() => {
+        currentQuestion.value = props.game.questions[val];
+        showQuestion.value = true;
+        showButtons.value = true;
+      }, 500);
+    } else {
+      showButtons.value = true;
+    }
+  },
+  {
+    immediate: true,
+  }
+);
+
+watchEffect(() => {
+  const maxTime = gameData.value.currentQuestionMaxTime;
+  if (maxTime) timer.start(maxTime.getTime(), submitCurrentAnswer);
+});
 </script>

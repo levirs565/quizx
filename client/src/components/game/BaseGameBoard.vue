@@ -37,38 +37,27 @@
     </v-row>
   </v-container>
 </template>
-<script>
+<script lang="ts" setup>
 import DialogFinishGame from "@/dialog/DialogFinishGame.vue";
 import Jumper from "./Jumper.vue";
 import { useLayout } from "vuetify";
+import { Game } from "@quizx/shared";
+import { computed, ref } from "vue";
 
-export default {
-  components: { DialogFinishGame, Jumper },
-  props: {
-    game: Object,
-    jumperButtons: Array,
-    showButtons: {
-      type: Boolean,
-      default: true,
-    },
-  },
-  setup() {
-    const { mainRect } = useLayout();
-    return {
-      mainRect,
-    };
-  },
-  data() {
-    return {
-      isFinishDialogShow: false,
-    };
-  },
-  computed: {
-    sidebarTop() {
-      return this.mainRect.top + "px";
-    },
-  },
-};
+export interface Props {
+  game: Game;
+  jumperButtons: string[];
+  showButtons?: boolean;
+}
+
+const props = withDefaults(defineProps<Props>(), {
+  showButtons: true,
+});
+
+const { mainRect } = useLayout();
+
+const isFinishDialogShow = ref(false);
+const sidebarTop = computed(() => mainRect.value.top + "px");
 </script>
 <style>
 .fade-enter-active,

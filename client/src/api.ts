@@ -184,11 +184,12 @@ class GameApi {
     ).data;
   }
   async submitAnswer(gameId: string, questionId: string) {
-    return (
+    return responseToClass(
+      GameAnswerResult,
       await instance.post<GameAnswerResult>(
         `${this.path}/${gameId}/question/${questionId}`
       )
-    ).data;
+    );
   }
   async finishGame(gameId: string) {
     return (
