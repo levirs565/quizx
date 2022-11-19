@@ -28,7 +28,7 @@ import { fileURLToPath } from 'url';
   imports: [
     ServeStaticModule.forRoot({
       rootPath: path.join(path.dirname(fileURLToPath(import.meta.url)), '../../client/dist'),
-      exclude: ['/api/*', '/media/*'],
+      exclude: ['/api/(.*)', '/media/(.*)'],
     }),
     AppConfigModule,
     MongooseModule.forRootAsync({
