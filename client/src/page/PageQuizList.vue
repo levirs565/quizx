@@ -10,7 +10,7 @@
       </v-col>
     </v-row>
 
-    <v-dialog max-width="600px" v-model="isCreateDialogShow">
+    <v-dialog max-width="600px">
       <template v-slot:activator="{ props }">
         <v-fab-transition>
           <v-btn fixed fab bottom right color="primary" v-bind="props">
@@ -19,76 +19,48 @@
         </v-fab-transition>
       </template>
 
-      <dialog-create-quiz
-        @close="isCreateDialogShow = false"
-        @create="createQuiz"
-        @importMarkdown="importMarkdown"
-      />
+      <template v-slot:default="{ isActive }">
+        <dialog-create-quiz
+          @close="isActive.value = false"
+          @created="quizCreated"
+        />
+      </template>
     </v-dialog>
   </resource-wrapper>
 </template>
 
-<script>
+<script lang="ts" setup>
 import { quizApi } from "@/api";
 import QuizSummaryCard from "@/components/quiz/QuizSummaryCard.vue";
 import DialogCreateQuiz from "@/dialog/DialogCreateQuiz.vue";
 import ResourceWrapper, {
+  ResourceState,
   updateResourceStateByPromise,
 } from "@/components/resource/ResourceWrapper.vue";
+import { CreateQuizResult, QuizSummary } from "@quizx/shared";
+import { onMounted, ref } from "vue";
+import { useRouter } from "vue-router";
 
-export default {
-  components: {
-    QuizSummaryCard,
-    DialogCreateQuiz,
-    ResourceWrapper,
-  },
-  data() {
-    return {
-      quizList: [],
-      isCreateDialogShow: false,
-      state: null,
-    };
-  },
-  methods: {
-    showCreateQuiz() {
-      this.isCreateDialogShow = true;
-    },
-    async baseCreateQuiz(factory) {
-      try {
-        const quizResult = await factory();
-        this.$router.push(`/quiz/${quizResult.id}`);
-      } catch (e) {
-        console.error(e);
-        let message = "Cannot create Quiz: ";
-        if (e.message) message += " " + e.message;
-        this.showNotification({
-          text: message,
-          color: "error",
-        });
-      }
-    },
-    async createQuiz(quiz) {
-      await this.baseCreateQuiz(async () => quizApi.createQuiz(quiz));
-    },
-    async importMarkdown(file) {
-      await this.baseCreateQuiz(async () => quizApi.importMarkdown(file));
-    },
-    loadList() {
-      // TODO: Only show current user quiz
-      updateResourceStateByPromise(
-        quizApi.getQuizList().then((val) => {
-          this.quizList = val.list;
-        }),
-        (state) => {
-          this.state = state;
-        }
-      );
-    },
-  },
-  mounted() {
-    this.loadList();
-  },
+const router = useRouter();
+
+const quizList = ref<QuizSummary[]>();
+const state = ref<ResourceState>();
+
+const quizCreated = (quizResult: CreateQuizResult) => {
+  router.push(`/quiz/${quizResult.id}`);
 };
+const loadList = () => {
+  // TODO: Only show current user quiz
+  updateResourceStateByPromise(
+    quizApi.getQuizList().then((newList) => {
+      quizList.value = newList;
+    }),
+    (newState) => {
+      state.value = newState;
+    }
+  );
+};
+onMounted(loadList);
 </script>
 
 <style></style>
