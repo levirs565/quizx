@@ -1,13 +1,13 @@
 <template>
-  <v-card>
+  <v-card v-if="question">
     <v-toolbar color="white" class="toolbar" ref="toolbar" elevation="4">
       <v-toolbar-title>{{
-        isNewQuestion ? "New Question " : `Question ${index + 1}`
+        isNewQuestion ? "New Question " : `Question ${index! + 1}`
       }}</v-toolbar-title>
       <v-spacer />
       <v-toolbar-items>
-        <v-btn variant="text" @click="$emit('cancel')">Cancel</v-btn>
-        <v-btn variant="text" @click="$emit('apply')">Apply</v-btn>
+        <v-btn variant="text" @click="emit('close')">Cancel</v-btn>
+        <v-btn variant="text" @click="apply">Apply</v-btn>
       </v-toolbar-items>
     </v-toolbar>
     <v-card-text ref="body">
@@ -18,7 +18,7 @@
       ></text-editor-toolbar>
 
       <text-editor
-        v-model="question.question"
+        v-model="question!.question"
         @editorFocus="onEditorFocus"
         @editorBlur="oneEditorBlur"
         :mathVirtualKeyboardContainer="$el"
@@ -27,7 +27,8 @@
         <v-spacer />
         <v-select
           :items="questionTypes"
-          :model-value="question.constructor.name"
+          :model-value="question!.constructor.name"
+          @update:model-value="changeType"
           item-value="value"
           item-title="name"
           filled
@@ -36,8 +37,8 @@
       </v-row>
 
       <question-answer
-        :question="question"
-        v-model:selectedAnswer="question.answer"
+        :question="question!"
+        v-model:selectedAnswer="question!.answer"
         editable
         :mathVirtualKeyboardContainer="$el"
       >
@@ -79,16 +80,42 @@ import {
   ShortTextQuestion,
 } from "@quizx/shared";
 import { Editor } from "@tiptap/vue-3";
-import { nextTick, onMounted, ref } from "vue";
+import { computed, nextTick, onMounted, ref } from "vue";
 import { VToolbar } from "vuetify/components/VToolbar";
 
-export interface Props {
-  isNewQuestion: boolean;
-  question: Question;
-  index: number;
-}
+const emit = defineEmits<{
+  (e: "close"): void;
+  (
+    e: "apply",
+    index: number | undefined,
+    isNew: boolean,
+    question: Question
+  ): void;
+}>();
 
-const props = defineProps<Props>();
+const question = ref<Question>();
+const index = ref<number>();
+const isNewQuestion = ref(false);
+
+const activeEditor = ref<Editor>();
+const toolbar = ref<InstanceType<typeof VToolbar>>();
+const editorToolbar = ref<InstanceType<typeof TextEditorToolbar>>();
+
+const toolbarTop = computed(() =>
+  toolbar.value
+    ? toolbar.value.$el.getBoundingClientRect().height + 16 + "px"
+    : "0px"
+);
+
+const changeState = (
+  newIndex: number | undefined,
+  newIsNew: boolean,
+  newQuestion: Question
+) => {
+  question.value = newQuestion;
+  index.value = newIndex ? newIndex : 0;
+  isNewQuestion.value = newIsNew;
+};
 
 const questionTypes = [
   {
@@ -106,17 +133,10 @@ const questionTypes = [
   ...item,
 }));
 
-const activeEditor = ref<Editor>();
-const toolbarTop = ref("0px");
-const toolbar = ref<InstanceType<typeof VToolbar>>();
-const editorToolbar = ref<InstanceType<typeof TextEditorToolbar>>();
-
-onMounted(() => {
-  nextTick(() => {
-    toolbarTop.value =
-      toolbar.value!.$el.getBoundingClientRect().height + 16 + "px";
-  });
-});
+const apply = () => {
+  emit("apply", index.value, isNewQuestion.value, question.value!);
+  emit("close");
+};
 
 const onEditorFocus = (editor: Editor) => {
   activeEditor.value = editor;
@@ -130,45 +150,42 @@ const oneEditorBlur = (editor: Editor, event: FocusEvent) => {
 
   if (activeEditor.value == editor) activeEditor.value = undefined;
 };
+
+const getMultipleChoiceQuestion = () =>
+  question.value as MultipleChoiceQuestion;
 const addChoice = () => {
-  (props.question as MultipleChoiceQuestion).choices.push("");
+  getMultipleChoiceQuestion().choices.push("");
 };
 const removeChoice = (index: number) => {
-  (props.question as MultipleChoiceQuestion).choices.splice(index, 1);
+  getMultipleChoiceQuestion().choices.splice(index, 1);
 };
 const onChoiceInput = (index: number, value: string) => {
-  (props.question as MultipleChoiceQuestion).choices[index] = value;
+  getMultipleChoiceQuestion().choices[index] = value;
 };
-// const changeType = (type) {
-//   let newQuestion = {
-//     id: this.question.id,
-//     question: this.question.question,
-//     type,
-//   };
-//   if (type == "multiple-choice") {
-//     newQuestion = {
-//       ...newQuestion,
-//       choices: ["", "", "", ""],
-//       answer: 0,
-//     };
-//   } else if (type == "short-text") {
-//     newQuestion = {
-//       ...newQuestion,
-//       answer: "",
-//     };
-//   } else if (type == "number") {
-//     newQuestion = {
-//       ...newQuestion,
-//       answer: 0,
-//     };
-//   } else if (type == "math") {
-//     newQuestion = {
-//       ...newQuestion,
-//       answer: "",
-//     };
-//   }
-//   this.$emit("update:question", newQuestion);
-// }
+const changeType = (type: string) => {
+  const typeIndex = questionTypes.findIndex((item) => item.value == type);
+  const typeConstructor = questionTypes[typeIndex].type;
+
+  const newQuestion: Question = new typeConstructor();
+  newQuestion.id = question.value!.id;
+  newQuestion.question = question.value!.question;
+
+  if (newQuestion instanceof MultipleChoiceQuestion) {
+    newQuestion.choices = ["", "", "", ""];
+    newQuestion.answer = 0;
+  } else if (newQuestion instanceof ShortTextQuestion) {
+    newQuestion.answer = "";
+  } else if (newQuestion instanceof NumberQuestion) {
+    newQuestion.answer = 0;
+  } else if (newQuestion instanceof MathQuestion) {
+    newQuestion.answer = "";
+  }
+  question.value = newQuestion;
+};
+
+defineExpose({
+  changeState,
+});
 </script>
 
 <style scoped>

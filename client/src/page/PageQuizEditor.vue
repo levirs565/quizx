@@ -58,12 +58,10 @@
         <v-btn color="primary" @click="newQuestion"> Add Question </v-btn>
       </v-col>
 
-      <v-dialog fullscreen hide-overlay v-model="editDialogState.isShow">
+      <v-dialog fullscreen hide-overlay v-model="isEditDialogShow">
         <dialog-question-editor
-          v-model:question="editDialogState.question"
-          :index="editDialogState.questionIndex"
-          :isNewQuestion="editDialogState.isNew"
-          @cancel="cancelEditQuestion"
+          ref="questionEditor"
+          @close="isEditDialogShow = false"
           @apply="applyEditQuestion"
         ></dialog-question-editor>
       </v-dialog>
@@ -82,7 +80,7 @@ import QuestionView from "@/components/question/Question.vue";
 import DialogQuestionEditor from "@/dialog/DialogQuestionEditor.vue";
 import DialogDeleteQuiz from "@/dialog/DialogDeleteQuiz.vue";
 import clone from "just-clone";
-import { onMounted, ref, watch } from "vue";
+import { nextTick, onMounted, ref, watch } from "vue";
 import {
   MultipleChoiceQuestion,
   NumberQuestion,
@@ -102,13 +100,9 @@ const notification = useNotificationStore();
 const props = defineProps<Props>();
 
 const quiz = ref<Quiz>();
-const editDialogState = ref({
-  isShow: false,
-  isNew: false,
-  question: undefined as Question | undefined,
-  questionIndex: 0,
-});
+const isEditDialogShow = ref(false);
 const state = ref<ResourceState>();
+const questionEditor = ref<InstanceType<typeof DialogQuestionEditor>>();
 
 const refresh = () => {
   updateResourceStateByPromise(
@@ -120,28 +114,26 @@ const refresh = () => {
     }
   );
 };
-const deleteFunction = () => quizApi.deleteQuiz(props.quiz_id)
+const deleteFunction = () => quizApi.deleteQuiz(props.quiz_id);
 const deleted = () => {
   router.replace("/quiz");
 };
 const editQuestion = (index: number) => {
   const question = quiz.value!.questions[index];
-  editDialogState.value.isNew = false;
-  editDialogState.value.questionIndex = index;
-  editDialogState.value.question = Object.assign(
+  const editableQuestion = Object.assign(
     Object.create(Object.getPrototypeOf(question)),
     clone(question)
   );
-  editDialogState.value.isShow = true;
+
+  isEditDialogShow.value = true;
+  nextTick(() => questionEditor.value!.changeState(index, false, editableQuestion));
 };
-const cancelEditQuestion = () => {
-  editDialogState.value.isShow = false;
-};
-const applyEditQuestion = () => {
-  editDialogState.value.isShow = false;
-  const question = editDialogState.value.question;
-  if (!editDialogState.value.isNew)
-    quiz.value!.questions[editDialogState.value.questionIndex] = question!;
+const applyEditQuestion = (
+  index: number | undefined,
+  isNew: boolean,
+  question: Question
+) => {
+  if (!isNew) quiz.value!.questions[index!] = question!;
   else quiz.value!.questions.push(question!);
 };
 const newQuestion = () => {
@@ -151,10 +143,8 @@ const newQuestion = () => {
   question.choices = ["", "", "", ""];
   question.answer = 0;
 
-  editDialogState.value.isNew = true;
-  editDialogState.value.questionIndex = 0;
-  editDialogState.value.question = question;
-  editDialogState.value.isShow = true;
+  isEditDialogShow.value = true;
+  nextTick(() => questionEditor.value!.changeState(undefined, true, question));
 };
 const saveQuiz = async () => {
   try {
