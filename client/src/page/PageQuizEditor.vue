@@ -70,7 +70,7 @@
 </template>
 
 <script lang="ts" setup>
-import { quizApi } from "@/api";
+import { mediaApi, quizApi } from "@/api";
 import QuizSummary from "@/components/quiz/QuizSummary.vue";
 import ResourceWrapper, {
   ResourceState,
@@ -80,7 +80,7 @@ import QuestionView from "@/components/question/Question.vue";
 import DialogQuestionEditor from "@/dialog/DialogQuestionEditor.vue";
 import DialogDeleteQuiz from "@/dialog/DialogDeleteQuiz.vue";
 import clone from "just-clone";
-import { nextTick, onMounted, ref, watch } from "vue";
+import { nextTick, onMounted, provide, ref, watch } from "vue";
 import {
   MultipleChoiceQuestion,
   NumberQuestion,
@@ -89,6 +89,7 @@ import {
 } from "@quizx/shared";
 import { useRouter } from "vue-router";
 import { useNotificationStore } from "@/store/notification";
+import { uploadFunctionInjectionKey } from "@/dialog/DialogSelectImage.vue";
 
 export interface Props {
   quiz_id: string;
@@ -126,7 +127,9 @@ const editQuestion = (index: number) => {
   );
 
   isEditDialogShow.value = true;
-  nextTick(() => questionEditor.value!.changeState(index, false, editableQuestion));
+  nextTick(() =>
+    questionEditor.value!.changeState(index, false, editableQuestion)
+  );
 };
 const applyEditQuestion = (
   index: number | undefined,
@@ -164,6 +167,10 @@ const saveQuiz = async () => {
 const deleteQuestion = (index: number) => {
   quiz.value!.questions.splice(index, 1);
 };
+provide(
+  uploadFunctionInjectionKey,
+  async (file: File) => await (await mediaApi.upload(props.quiz_id, file)).path
+);
 
 onMounted(refresh);
 watch(() => props.quiz_id, refresh);

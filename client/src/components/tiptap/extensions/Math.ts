@@ -195,3 +195,12 @@ export const MathInline = Node.create({
     } as Partial<RawCommands>;
   },
 });
+
+declare module "@tiptap/core" {
+  interface Commands<ReturnType> {
+    math: {
+      addMathInline: () => ReturnType;
+      addMathBlock: () => ReturnType;
+    };
+  }
+}

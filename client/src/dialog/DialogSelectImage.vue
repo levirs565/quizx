@@ -8,70 +8,77 @@
       </v-tabs>
     </v-card-text>
     <v-card-text>
-      <v-tabs-items v-model="activeTab">
-        <v-tab-item>
+      <v-window v-model="activeTab">
+        <v-window-item>
           <base-file-input
             accept="image/*"
             icon="mdi-image"
             label="Image File"
             v-model="file"
           />
-        </v-tab-item>
-        <v-tab-item>
+        </v-window-item>
+        <v-window-item>
           <v-text-field variant="filled" v-model="url" label="URL" />
-        </v-tab-item>
-      </v-tabs-items>
+        </v-window-item>
+      </v-window>
     </v-card-text>
     <v-card-actions>
       <v-spacer />
-      <v-btn variant="text" @click="$emit('cancel')">Cancel</v-btn>
+      <v-btn variant="text" @click="emit('close')">Cancel</v-btn>
       <v-btn variant="text" color="primary" @click="submit">Add</v-btn>
     </v-card-actions>
   </v-card>
 </template>
-<script>
-import { mediaApi } from "@/api";
+<script lang="ts">
+export const uploadFunctionInjectionKey = Symbol("uploadFunctionKey");
+</script>
+<script lang="ts" setup>
 import BaseFileInput from "@/components/BaseFileInput.vue";
+import { useNotificationStore } from "@/store/notification";
+import { inject, ref } from "vue";
 
-export default {
-  components: { BaseFileInput },
-  props: {
-    quizId: String,
-  },
-  data() {
-    return {
-      url: "",
-      file: null,
-      activeTab: "upload",
-    };
-  },
-  methods: {
-    async submit() {
-      const result = {
-        src: null,
-      };
-      if (this.activeTab === 0) {
-        if (!this.file) return;
-        try {
-          const uploadResult = await mediaApi.upload(this.quizId, this.file);
-          result.src = uploadResult.path;
-        } catch (e) {
-          this.showNotification({
-            color: "error",
-            text: `Cannot upload file: ${e.message}`,
-          });
-          return;
-        }
-      } else {
-        if (this.url.trim().length == 0) return;
-        result.src = this.url;
-      }
+export interface ImageResult {
+  src: string;
+}
 
-      this.$emit("imageSelected", result);
+const emit = defineEmits<{
+  (e: "close"): void;
+  (e: "submit", result: ImageResult): void;
+}>();
 
-      this.file = null;
-      this.url = "";
-    },
-  },
+const notification = useNotificationStore();
+
+const url = ref("");
+const file = ref<File>();
+const activeTab = ref(0);
+
+const uploadFunction = inject<(file: File) => Promise<string>>(
+  uploadFunctionInjectionKey
+);
+
+const submit = async () => {
+  if (activeTab.value === 0) {
+    if (!file.value) return;
+    try {
+      const path = await uploadFunction!(file.value);
+      emit("close");
+      emit("submit", {
+        src: path,
+      });
+    } catch (e: any) {
+      notification.addNotification(`Cannot upload file: ${e.message}`, "error");
+      return;
+    }
+  } else {
+    const urlTrim = url.value.trim();
+    if (urlTrim.length == 0) return;
+    emit("close");
+    emit("submit", {
+      src: urlTrim,
+    });
+  }
+
+  file.value = undefined;
+  url.value = "";
 };
 </script>

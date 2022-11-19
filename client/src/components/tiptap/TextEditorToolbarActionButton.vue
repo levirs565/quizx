@@ -2,7 +2,7 @@
   <v-tooltip bottom>
     <template v-slot:activator="{ props }">
       <v-btn
-        @click="$emit('click')"
+        @click="$emit('click', $event)"
         v-bind="props"
         icon
         :color="active ? 'primary' : ''"
@@ -15,8 +15,10 @@
     <span>{{ title }}</span>
   </v-tooltip>
 </template>
-<script>
-export default {
+<script lang="ts">
+import { defineComponent } from "vue";
+
+export default defineComponent({
   props: {
     icon: String,
     disabled: {
@@ -29,5 +31,5 @@ export default {
       default: false,
     },
   },
-};
+});
 </script>

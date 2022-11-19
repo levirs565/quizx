@@ -16,12 +16,22 @@
           .run()
       "
     />
-    <action-button
-      icon="mdi-image-plus"
-      title="Add Image"
-      :disabled="!editor"
-      @click="$emit('addImage')"
-    />
+    <v-dialog>
+      <template v-slot:activator="{ props }">
+        <action-button
+          icon="mdi-image-plus"
+          title="Add Image"
+          :disabled="!editor"
+          v-bind="props"
+        />
+      </template>
+      <template v-slot:default="{ isActive }">
+        <dialog-select-image
+          @close="isActive.value = false"
+          @submit="editor.chain().focus().setImage($event).run()"
+        />
+      </template>
+    </v-dialog>
     <action-button
       icon="mdi-math-integral"
       title="Add Inline Math"
@@ -197,18 +207,24 @@
     />
   </v-sheet>
 </template>
-<script>
-import TextEditorToolbarActionButton from "./TextEditorToolbarActionButton.vue";
-export default {
-  components: { ActionButton: TextEditorToolbarActionButton },
-  props: {
-    editor: Object,
-    stickyTop: {
-      type: String,
-      default: "0",
-    },
-  },
-};
+<script lang="ts" setup>
+import { Editor } from "@tiptap/vue-3";
+import ActionButton from "./TextEditorToolbarActionButton.vue";
+import DialogSelectImage from "@/dialog/DialogSelectImage.vue";
+import "@tiptap/starter-kit";
+import "@tiptap/extension-superscript";
+import "@tiptap/extension-subscript";
+import "@tiptap/extension-table";
+import "./extensions/Math";
+
+export interface Props {
+  editor: Editor;
+  stickyTop?: string;
+}
+
+const props = withDefaults(defineProps<Props>(), {
+  stickyTop: "0",
+});
 </script>
 <style scoped>
 .text-editor-toolbar {
