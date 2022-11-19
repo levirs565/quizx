@@ -3,7 +3,7 @@
     :game="game"
     :jumperButtons="jumperButtons"
     :showButtons="showButtons"
-    @finish="emit('finish')"
+    @finished="emit('finished')"
   >
     <transition name="fade">
       <div v-if="showQuestion">
@@ -57,7 +57,7 @@ export interface Props {
 
 const props = defineProps<Props>();
 const emit = defineEmits<{
-  (e: "finish"): void;
+  (e: "finished"): void;
   (e: "submitAnswer", index: number, id: string): void;
   (e: "answerChanged", event: AnswerChangedEvent): void;
 }>();
@@ -79,6 +79,7 @@ const jumperButtons = computed(() =>
     if (state == QuestionState.Correct) return "success";
     else if (state == QuestionState.Incorrect) return "error";
     else if (state == QuestionState.Unanswered) return "warning";
+    return "";
   })
 );
 const showTryAgain = computed(() =>

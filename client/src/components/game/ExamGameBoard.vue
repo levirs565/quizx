@@ -3,7 +3,7 @@
     :game="game"
     :jumperButtons="jumperButtons"
     @jumperClick="goToQuestion"
-    @finish="emit('finish')"
+    @finished="emit('finished')"
   >
     <template v-slot:sidebar>
       <v-card-text class="text-center text--primary pb-0" v-if="timer.started">
@@ -34,7 +34,8 @@ import BaseGameBoard from "./BaseGameBoard.vue";
 import QuestionView, { AnswerChangedEvent } from "../question/Question.vue";
 import { useLayout } from "vuetify";
 import { ExamGameData, Game, QuestionAnswer } from "@quizx/shared";
-import { onBeforeUnmount, ref, watch } from "vue";
+import { inject, onBeforeUnmount, ref, watch } from "vue";
+import { finishFunctionInjectionKey } from "@/dialog/DialogFinishGame.vue";
 
 interface Props {
   game: Game;
@@ -43,7 +44,7 @@ interface Props {
 const props = defineProps<Props>();
 const { game } = props;
 const emit = defineEmits<{
-  (e: "finish"): void;
+  (e: "finished"): void;
   (e: "answerChanged", event: AnswerChangedEvent): void;
 }>();
 
@@ -52,12 +53,14 @@ const timer = useCountDownTimer();
 
 const jumperButtons = ref<string[]>([]);
 const questions = ref<InstanceType<typeof QuestionView>[]>();
+const finishFunction = inject<() => Promise<any>>(finishFunctionInjectionKey);
 
 const startTimer = () => {
   const data = game.data as ExamGameData;
   if (data.maxFinishTime) {
-    timer.start(data.maxFinishTime.getTime(), () => {
-      emit("finish");
+    timer.start(data.maxFinishTime.getTime(), async () => {
+      await finishFunction!();
+      emit("finished");
     });
   }
 };

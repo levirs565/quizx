@@ -41,10 +41,15 @@
 import BaseFileInput from "@/components/BaseFileInput.vue";
 import { CreateQuizParameters, CreateQuizResult } from "@quizx/shared";
 import { ref } from "vue";
-import { quizApi } from "@/api";
 import { useNotificationStore } from "@/store/notification";
-import { create } from "domain";
 import { plainToInstance } from "class-transformer";
+
+export interface Props {
+  create: (param: CreateQuizParameters) => Promise<CreateQuizResult>;
+  importMarkdown: (file: File) => Promise<CreateQuizResult>;
+}
+
+const props = defineProps<Props>();
 
 const emit = defineEmits<{
   (e: "close"): void;
@@ -74,7 +79,7 @@ const submit = () => {
   if (activeTab.value === 0) {
     const param = new CreateQuizParameters();
     param.title = title.value;
-    createQuiz(() => quizApi.createQuiz(param));
+    createQuiz(() => props.create(param));
   } else if (activeTab.value === 1) {
     let param: CreateQuizParameters;
     try {
@@ -83,10 +88,10 @@ const submit = () => {
       notification.addNotification(`Cannot parse JSON: ${e.message}`, "error");
       return;
     }
-    createQuiz(() => quizApi.createQuiz(param));
+    createQuiz(() => props.create(param));
   } else if (activeTab.value === 2) {
     const file = markdownFile.value!;
-    if (file) createQuiz(() => quizApi.importMarkdown(file));
+    if (file) createQuiz(() => props.importMarkdown(file));
   }
 };
 </script>

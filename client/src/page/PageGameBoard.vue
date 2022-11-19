@@ -8,12 +8,13 @@
         v-if="game?.data instanceof ExamGameData"
         :game="game"
         @finish="finish"
+        @finished="finished"
         @answerChanged="answerChanged"
       />
       <flash-card-game-board
         v-else-if="game?.data instanceof FlashCardGameData"
         :game="game"
-        @finish="finish"
+        @finished="finished"
         @answerChanged="answerChanged"
         @submitAnswer="submitAnswer"
       />
@@ -37,9 +38,10 @@ import {
   Game,
   QuestionAnswer,
 } from "@quizx/shared";
-import { onMounted, ref } from "vue";
+import { onMounted, provide, ref } from "vue";
 import { useRouter } from "vue-router";
 import { AnswerChangedEvent } from "@/components/question/Question.vue";
+import { finishFunctionInjectionKey } from "@/dialog/DialogFinishGame.vue";
 
 export interface Props {
   game_id: string;
@@ -83,10 +85,17 @@ const updateState = () => {
     }
   );
 };
-const finish = () => {
-  gameApi.finishGame(props.game_id).then(() => {
-    router.replace(`/game/${props.game_id}/`);
-  });
+
+const _finish = () => gameApi.finishGame(props.game_id);
+
+const finish = async () => {
+  await _finish();
+  finished();
+};
+
+provide(finishFunctionInjectionKey, _finish);
+const finished = () => {
+  router.replace(`/game/${props.game_id}/`);
 };
 
 onMounted(updateState);

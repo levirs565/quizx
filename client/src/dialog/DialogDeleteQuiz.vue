@@ -10,13 +10,20 @@
   </v-card>
 </template>
 <script lang="ts" setup>
+export interface Props {
+  deleteFunction: () => Promise<any>;
+}
+
+const props = defineProps<Props>();
+
 const emit = defineEmits<{
   (e: "close"): void;
-  (e: "delete"): void;
+  (e: "deleted"): void;
 }>();
 
-const submit = () => {
-  emit("delete");
+const submit = async () => {
+  await props.deleteFunction();
   emit("close");
+  emit("deleted");
 };
 </script>

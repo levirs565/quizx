@@ -55,13 +55,25 @@
   </v-card>
 </template>
 <script lang="ts" setup>
+import { gameApi } from "@/api";
 import DurationInput from "@/components/DurationInput.vue";
-import { ExamGamePreference, FlashCardGamePreference } from "@quizx/shared";
+import {
+  ExamGamePreference,
+  FlashCardGamePreference,
+  GamePreference,
+  GameSummary,
+} from "@quizx/shared";
 import { ref } from "vue";
 
+export interface Props {
+  playFunction: (preference: GamePreference) => Promise<GameSummary>;
+}
+
+const props = defineProps<Props>();
+
 const emit = defineEmits<{
-  (e: "play", preference: ExamGamePreference): void;
   (e: "close"): void;
+  (e: "played", game: GameSummary): void;
 }>();
 
 const modeList = [
@@ -106,7 +118,7 @@ const createPreferenceObject = () => {
   return new type();
 };
 
-const submit = () => {
+const submit = async () => {
   const preference = createPreferenceObject();
   preference.shuffleQuestions = basePreference.value.shuffleQuestions;
   if (preference instanceof ExamGamePreference) {
@@ -122,7 +134,8 @@ const submit = () => {
       preference.questionTimeSecond = flashCard.value.questionTimeLimit.second;
     }
   }
+  const game = await props.playFunction(preference);
   emit("close");
-  emit("play", preference);
+  emit("played", game);
 };
 </script>

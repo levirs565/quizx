@@ -10,7 +10,7 @@
           <slot name="sidebar" />
           <jumper
             :buttons="jumperButtons"
-            @click="$emit('jumperClick', $event)"
+            @click="emit('jumperClick', $event)"
           ></jumper>
         </v-card>
       </v-col>
@@ -28,7 +28,7 @@
               </template>
               <template v-slot:default="{ isActive }">
                 <dialog-finish-game
-                  @submit="$emit('finish')"
+                  @finished="emit('finished')"
                   @close="isActive.value = false"
                 />
               </template>
@@ -55,6 +55,11 @@ export interface Props {
 const props = withDefaults(defineProps<Props>(), {
   showButtons: true,
 });
+
+const emit = defineEmits<{
+  (e: "jumperClick", index: number): void;
+  (e: "finished"): void;
+}>();
 
 const { mainRect } = useLayout();
 

@@ -9,14 +9,22 @@
     </v-card-actions>
   </v-card>
 </template>
+<script lang="ts">
+export const finishFunctionInjectionKey = Symbol("finishFunctionKey");
+</script>
 <script lang="ts" setup>
+import { inject } from "vue";
+
 const emit = defineEmits<{
   (e: "close"): void;
-  (e: "submit"): void;
+  (e: "finished"): void;
 }>();
+const finishFunction = inject<() => Promise<any>>(finishFunctionInjectionKey);
 
-const submit = () => {
+const submit = async () => {
+  await finishFunction!();
+
   emit("close");
-  emit("submit");
+  emit("finished");
 };
 </script>

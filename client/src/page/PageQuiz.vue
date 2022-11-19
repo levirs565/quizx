@@ -22,8 +22,9 @@
 
           <template v-slot="{ isActive }">
             <dialog-play-quiz
+              :play-function="play"
               @close="isActive.value = false"
-              @play="playGame"
+              @played="played"
             ></dialog-play-quiz>
           </template>
         </v-dialog>
@@ -69,6 +70,7 @@ import ResourceWrapper, {
 import useAuthStore from "@/store/auth";
 import {
   GamePreference,
+  GameSummary,
   QuestionAnswer,
   QuestionState,
   Quiz,
@@ -110,8 +112,10 @@ const checkAnswer = async (questionId: string, answer: QuestionAnswer) => {
     ? QuestionState.Correct
     : QuestionState.Incorrect;
 };
-const playGame = async (preference: GamePreference) => {
-  const game = await gameApi.playGame(props.quiz_id, preference);
+
+const play = (preference: GamePreference) =>
+  gameApi.playGame(props.quiz_id, preference);
+const played = (game: GameSummary) => {
   router.push(`/game/${game.id}/board`);
 };
 

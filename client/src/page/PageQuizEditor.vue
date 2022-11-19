@@ -17,8 +17,9 @@
 
         <template v-slot:default="{ isActive }">
           <dialog-delete-quiz
+            :delete-function="deleteFunction"
             @close="isActive.value = false"
-            @delete="deleteQuiz"
+            @deleted="deleted"
           />
         </template>
       </v-dialog>
@@ -119,10 +120,9 @@ const refresh = () => {
     }
   );
 };
-const deleteQuiz = () => {
-  quizApi.deleteQuiz(props.quiz_id).then(() => {
-    router.replace("/quiz");
-  });
+const deleteFunction = () => quizApi.deleteQuiz(props.quiz_id)
+const deleted = () => {
+  router.replace("/quiz");
 };
 const editQuestion = (index: number) => {
   const question = quiz.value!.questions[index];
