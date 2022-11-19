@@ -56,21 +56,19 @@
     variant="outlined"
     :readonly="!editable"
   />
-  <math-field-input
+  <v-math-live-input
     v-else-if="question instanceof MathQuestion"
-    :model-value="selectedAnswer"
+    :model-value="selectedAnswer as string"
     :messages="message?.text"
     :error-messages="message?.error"
     @update:model-value="answerChanged"
     variant="outlined"
-    virtual-keyboard-mode="manual"
     :readonly="!editable"
-    :virtualKeyboardContainer="mathVirtualKeyboardContainer"
   />
 </template>
 <script lang="ts" setup>
 import { getChoiceIndex } from "@/utils";
-import MathFieldInput from "@/components/math/MathFieldInput.vue";
+import VMathLiveInput from "@/components/math/VMathLiveField.vue";
 import {
   MathQuestion,
   MultipleChoiceQuestion,
@@ -90,7 +88,6 @@ export interface Props {
   question: Question;
   selectedAnswer?: QuestionAnswer;
   editable: boolean;
-  mathVirtualKeyboardContainer?: HTMLElement;
   message?: Message;
 }
 

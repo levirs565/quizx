@@ -61,7 +61,8 @@ import TextEditor from "./TextEditor.vue";
 import TextEditorToolbar from "./TextEditorToolbar.vue";
 import TextViewer from "./TextViewer.vue";
 import "@tiptap/extension-image";
-import { ref } from "vue";
+import { provide, ref } from "vue";
+
 
 const disabledSource = "Disabled. Because this can slow down performance";
 

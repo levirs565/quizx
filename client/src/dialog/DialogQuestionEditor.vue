@@ -1,5 +1,5 @@
 <template>
-  <v-card v-if="question">
+  <v-card v-if="question" ref="root">
     <v-toolbar color="white" class="toolbar" ref="toolbar" elevation="4">
       <v-toolbar-title>{{
         isNewQuestion ? "New Question " : `Question ${index! + 1}`
@@ -21,7 +21,6 @@
         v-model="question!.question"
         @editorFocus="onEditorFocus"
         @editorBlur="oneEditorBlur"
-        :mathVirtualKeyboardContainer="$el"
       />
       <v-row no-gutters>
         <v-spacer />
@@ -40,7 +39,6 @@
         :question="question!"
         v-model:selectedAnswer="question!.answer"
         editable
-        :mathVirtualKeyboardContainer="$el"
       >
         <template v-slot:afterChoice="{ choice, index, indexChar }">
           <span class="mr-2 text--primary">{{ indexChar }}.</span>
@@ -50,7 +48,6 @@
             class="flex-grow-1 mb-2"
             @editorFocus="onEditorFocus"
             @editorBlur="oneEditorBlur"
-            :mathVirtualKeyboardContainer="$el"
           />
           <v-btn icon class="ml-2" @click="removeChoice(index)">
             <v-icon>mdi-close</v-icon>
@@ -80,8 +77,10 @@ import {
   ShortTextQuestion,
 } from "@quizx/shared";
 import { Editor } from "@tiptap/vue-3";
-import { computed, nextTick, onMounted, ref } from "vue";
+import { computed, inject, nextTick, onMounted, provide, ref } from "vue";
 import { VToolbar } from "vuetify/components/VToolbar";
+import { mathKeyboardContainerInjectionKey } from "@/components/math/key";
+import { VCard } from "vuetify/components/VCard";
 
 const emit = defineEmits<{
   (e: "close"): void;
@@ -98,8 +97,14 @@ const index = ref<number>();
 const isNewQuestion = ref(false);
 
 const activeEditor = ref<Editor>();
+const root = ref<InstanceType<typeof VCard>>();
 const toolbar = ref<InstanceType<typeof VToolbar>>();
 const editorToolbar = ref<InstanceType<typeof TextEditorToolbar>>();
+
+provide(
+  mathKeyboardContainerInjectionKey,
+  computed(() => root.value?.$el)
+);
 
 const toolbarTop = computed(() =>
   toolbar.value

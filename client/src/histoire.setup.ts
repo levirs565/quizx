@@ -13,7 +13,10 @@ import { createVuetify } from "vuetify";
 
 import { createPinia } from "pinia";
 
+import { mathKeyboardContainerInjectionKey } from "./components/math/key";
+
 export const setupVue3 = defineSetupVue3(({ app }) => {
   app.use(createPinia());
   app.use(createVuetify());
+  app.provide(mathKeyboardContainerInjectionKey, document.body);
 });

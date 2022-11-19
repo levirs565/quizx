@@ -27,7 +27,6 @@ export default {
       default: false,
     },
     selectImageFunction: Function,
-    mathVirtualKeyboardContainer: HTMLElement,
   },
   data() {
     return {
@@ -37,15 +36,6 @@ export default {
   mounted() {
     this.$nextTick(() => {
       let editorClass = "text-body-1 text--primary";
-      const mathNodeSetting = {
-        addOptions: () => {
-          return {
-            virtualKeyboardContainer: this.mathVirtualKeyboardContainer
-              ? this.mathVirtualKeyboardContainer
-              : document.body,
-          };
-        },
-      };
       this.editor = new Editor({
         editable: true,
         content: this.modelValue,
@@ -59,8 +49,8 @@ export default {
           Superscript,
           Subscript,
           CursorTracker,
-          MathBlock.extend(mathNodeSetting),
-          MathInline.extend(mathNodeSetting),
+          MathBlock,
+          MathInline,
         ],
         editorProps: {
           attributes: {

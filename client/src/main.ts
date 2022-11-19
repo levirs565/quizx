@@ -12,6 +12,7 @@ import "@fontsource/roboto/700.css";
 import "@fontsource/roboto/900.css";
 import vuetify from "./plugins/vuetify";
 import notification from "./plugins/notification";
+import { mathKeyboardContainerInjectionKey } from "./components/math/key";
 
 // Vue.config.productionTip = false;
 
@@ -22,5 +23,6 @@ app.use(router);
 app.use(vuetify);
 app.use(pinia);
 app.use(notification);
+app.provide(mathKeyboardContainerInjectionKey, document.body);
 
 app.mount("#app");
