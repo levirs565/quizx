@@ -25,7 +25,7 @@
       </v-dialog>
     </template>
 
-    <quiz-summary :quiz="quiz" editor> </quiz-summary>
+    <quiz-summary :quiz="quiz!" editor> </quiz-summary>
 
     <p class="text-h6 my-4">Questions</p>
 

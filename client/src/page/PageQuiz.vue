@@ -13,7 +13,7 @@
       </v-btn>
     </template>
 
-    <quiz-summary :quiz="quiz">
+    <quiz-summary :quiz="quiz!">
       <v-card-actions>
         <v-dialog v-if="user" max-width="400px">
           <template v-slot:activator="{ props }">

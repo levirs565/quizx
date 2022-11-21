@@ -8,7 +8,7 @@ export interface Notification {
 interface State {
   notificationQueue: Notification[];
   currentNotification?: Notification;
-  timeoutId: number;
+  timeoutId: ReturnType<typeof setTimeout>;
   idCounter: number;
 }
 
@@ -19,7 +19,7 @@ export const useNotificationStore = defineStore("notification", {
   state: (): State => ({
     currentNotification: undefined,
     notificationQueue: [],
-    timeoutId: 0,
+    timeoutId: 0 as unknown as ReturnType<typeof setTimeout>,
     idCounter: 0,
   }),
   actions: {
@@ -42,7 +42,7 @@ export const useNotificationStore = defineStore("notification", {
 
       this.timeoutId = setTimeout(() => {
         this.showNextNotification();
-      }, notificationDuration + notificationDelayDuration) as unknown as number;
+      }, notificationDuration + notificationDelayDuration);
     },
   },
 });
@@ -53,7 +53,7 @@ export function notifiableFunction(
   errorPrefix: string | null
 ) {
   return async () => {
-    const store = useNotificationStore()
+    const store = useNotificationStore();
     try {
       await fn();
       if (success) store.addNotification(success, "success");

@@ -13,13 +13,13 @@
   </div>
 </template>
 <script lang="ts" setup>
-import { computed } from "@vue/reactivity";
+import { computed } from "vue";
 
 export interface Props {
   accept: string;
   icon: string;
   label: string;
-  modelValue: File;
+  modelValue?: File;
 }
 
 const props = defineProps<Props>();

@@ -84,7 +84,7 @@ export class CounDownTimer {
   enabled: boolean;
   text: string;
   endTime?: number;
-  interval?: number;
+  interval?: ReturnType<typeof setTimeout>;
   onEnd: () => void;
 
   constructor(onEnd: () => void) {

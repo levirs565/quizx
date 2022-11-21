@@ -9,11 +9,10 @@ import { VueNodeViewRenderer } from "@tiptap/vue-3";
 import { NodeType } from "prosemirror-model";
 import { Selection, Transaction } from "prosemirror-state";
 import { ReplaceStep, ReplaceAroundStep } from "prosemirror-transform";
-import { Component } from "vue";
 import MathNodeView from "./MathNodeView.vue";
 
 // source: https://github.com/ProseMirror/prosemirror-state/blob/master/src/selection.js#L466
-export default function selectionToMathStart(tr: Transaction<any>) {
+export default function selectionToMathStart(tr: Transaction) {
   /* We must use mapping because replaceRangeWith when used for math block have 2 diffrent options
     When current line is blank, this will replace line by math
     Otherwise, this will insert math after end of line
