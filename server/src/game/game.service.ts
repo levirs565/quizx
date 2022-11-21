@@ -127,7 +127,7 @@ export class GameService {
     session: Session,
     gameId: string,
     questionId: string,
-    questionAnswer: number | string | null
+    questionAnswer: QuestionAnswer | undefined
   ) {
     const game = await this.repository.getById(gameId);
 
@@ -191,11 +191,7 @@ export class GameService {
     }
 
     const question = game.questions[questionMeta.index];
-    const state = this.generateQuestionState(
-      question,
-      question.answer ?? null,
-      questionMeta.correctAnswer
-    );
+    const state = this.generateQuestionState(question, question.answer, questionMeta.correctAnswer);
     if (state == QuestionState.Correct) {
       mustNext = true;
     }
@@ -242,10 +238,10 @@ export class GameService {
 
   private generateQuestionState(
     question: Question,
-    userAnswer: QuestionAnswer | null,
+    userAnswer: QuestionAnswer | undefined,
     actualAnswer: QuestionAnswer
   ): QuestionState {
-    if (userAnswer === null) {
+    if (userAnswer === undefined) {
       return QuestionState.Unanswered;
     } else if (checkQuestionAnswer(question, actualAnswer, userAnswer)) {
       return QuestionState.Correct;

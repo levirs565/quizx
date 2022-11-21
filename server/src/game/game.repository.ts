@@ -35,18 +35,32 @@ export class GameRepository {
     game.id = gameDb.id;
   }
 
-  async updateQuestionAnswer(id: string, index: number, answer: QuestionAnswer | null) {
-    await this.gameModel.updateOne(
-      { _id: id },
-      {
-        $set: {
-          [`questions.${index}.answer`]: answer,
+  async updateQuestionAnswer(id: string, index: number, answer: QuestionAnswer | undefined) {
+    const key = `questions.${index}.answer`;
+    if (answer === undefined)
+      await this.gameModel.updateOne(
+        { _id: id },
+        {
+          $unset: {
+            [key]: '',
+          },
         },
-      },
-      {
-        strict: false,
-      }
-    );
+        {
+          strict: false,
+        }
+      );
+    else
+      await this.gameModel.updateOne(
+        { _id: id },
+        {
+          $set: {
+            [key]: answer,
+          },
+        },
+        {
+          strict: false,
+        }
+      );
   }
 
   async updateFlashCard(id: string, data: FlashCardGameData, stateToPush?: QuestionState) {

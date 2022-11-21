@@ -1,5 +1,5 @@
 import Session from '../types/session.js';
-import { MathQuestion, Question } from '@quizx/shared';
+import { MathQuestion, Question, QuestionAnswer } from '@quizx/shared';
 import ComputeEngine from '@cortex-js/compute-engine';
 import { ForbiddenException, UnauthorizedException } from '@nestjs/common';
 
@@ -15,10 +15,10 @@ export function validateUserId(session: Session, id: string) {
 }
 
 export function validateQuestionAnswerDataType(
-  actual: string | number,
-  answer: string | number | null
+  actual: QuestionAnswer,
+  answer: QuestionAnswer | undefined
 ) {
-  if (answer == null) return;
+  if (answer == undefined) return;
   if (typeof answer !== typeof actual) {
     throw new Error('Question answer data type is not match');
   }
@@ -26,8 +26,8 @@ export function validateQuestionAnswerDataType(
 
 export function checkQuestionAnswer(
   question: Question,
-  correctAnswer: string | number,
-  userAnswer: string | number | null
+  correctAnswer: QuestionAnswer,
+  userAnswer: QuestionAnswer | undefined
 ): boolean {
   if (question instanceof MathQuestion) {
     const ce = new ComputeEngine.ComputeEngine();

@@ -5,6 +5,7 @@ import {
   QuizSummary,
   SaveQuizResult,
   CreateQuizParameters,
+  QuestionAnswer,
 } from '@quizx/shared';
 import Session from '../types/session.js';
 import {
@@ -44,7 +45,7 @@ export class QuizService {
   async answerQuestion(
     quizId: string,
     questionId: string,
-    answer: number | string | null
+    answer: QuestionAnswer | undefined
   ): Promise<AnswerQuestionResult> {
     const item = await this.getQuestionDocument(quizId, questionId);
     validateQuestionAnswerDataType(item.answer!, answer);

@@ -116,7 +116,7 @@ export interface AnswerQuestionResult {
 }
 
 export interface AnswerQuestionRequestBody {
-  answer: QuestionAnswer | null;
+  answer: QuestionAnswer | undefined;
 }
 
 @ValidationGroups([QuestionValidationGroupWithoutId])
