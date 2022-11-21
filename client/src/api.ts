@@ -104,7 +104,7 @@ class QuizApi {
   async checkQuestionAnswer(
     quizId: string,
     questionId: string,
-    answer: QuestionAnswer | null
+    answer: QuestionAnswer | undefined
   ) {
     const body: AnswerQuestionRequestBody = {
       answer,
@@ -171,7 +171,7 @@ class GameApi {
   async putAnswer(
     gameId: string,
     questionIndex: string,
-    answer: QuestionAnswer | null
+    answer: QuestionAnswer | undefined
   ) {
     const body: AnswerQuestionRequestBody = {
       answer,
