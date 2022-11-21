@@ -37,7 +37,9 @@ notificationStore.$subscribe((_, state) => {
       isSnackbarShow.value = true;
     }, notificationDelayDuration);
   } else {
-    showedNotification.value = undefined;
+    setTimeout(() => {
+      showedNotification.value = undefined;
+    }, notificationDelayDuration);
   }
 });
 </script>
