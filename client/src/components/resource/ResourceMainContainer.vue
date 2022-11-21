@@ -7,17 +7,13 @@
     />
   </v-main>
 </template>
-<script>
+<script lang="ts" setup>
 import ResourceErrorView from "@/components/resource/ResourceErrorView.vue";
+import { ResourceState } from "./ResourceWrapper.vue";
 
-export default {
-  components: {
-    ResourceErrorView,
-  },
-  props: {
-    state: {
-      type: Object,
-    },
-  },
-};
+export interface Props {
+  state: ResourceState;
+}
+
+const props = defineProps<Props>();
 </script>

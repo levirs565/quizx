@@ -27,20 +27,18 @@
     <slot></slot>
   </v-card>
 </template>
-<script>
+<script lang="ts" setup>
 import QuizInformation from "@/components/quiz/QuizInformation.vue";
+import { Quiz } from "@quizx/shared";
 
-export default {
-  components: {
-    QuizInformation,
-  },
-  props: {
-    quiz: Object,
-    editor: {
-      type: Boolean,
-      default: false,
-    },
-  },
-};
+export interface Props {
+  quiz: Quiz;
+  editor?: boolean;
+}
+
+const props = withDefaults(defineProps<Props>(), {
+  editor: false,
+});
+
 </script>
 <style scoped></style>

@@ -6,7 +6,7 @@
         <slot name="toolbarAppend" />
       </template>
     </base-app-bar>
-    <resource-main-container @reload="$emit('reload')" :state="state">
+    <resource-main-container @reload="emit('reload')" :state="state">
       <v-container>
         <slot />
       </v-container>
@@ -14,15 +14,6 @@
   </div>
 </template>
 <script lang="ts">
-import { defineComponent } from "vue";
-import BaseAppBar from "@/components/BaseAppBar.vue";
-import ResourceMainContainer from "./ResourceMainContainer.vue";
-
-export interface ResourceState {
-  isLoading: Boolean;
-  isError: Boolean;
-}
-
 export function createResourceState(
   isLoading: Boolean,
   isError: Boolean
@@ -47,16 +38,22 @@ export function updateResourceStateByPromise<T>(
       updater(createResourceState(false, true));
     });
 }
+</script>
+<script lang="ts" setup>
+import BaseAppBar from "@/components/BaseAppBar.vue";
+import ResourceMainContainer from "./ResourceMainContainer.vue";
 
-export default defineComponent({
-  components: {
-    BaseAppBar,
-    ResourceMainContainer,
-  },
-  props: {
-    state: {
-      type: Object,
-    },
-  },
-});
+export interface ResourceState {
+  isLoading: boolean;
+  isError: boolean;
+}
+
+export interface Props {
+  state: ResourceState;
+}
+
+const props = defineProps<Props>();
+const emit = defineEmits<{
+  (e: "reload"): void;
+}>();
 </script>

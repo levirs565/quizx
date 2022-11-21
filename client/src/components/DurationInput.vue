@@ -26,42 +26,38 @@
     </v-col>
   </v-row>
 </template>
-<script>
-export default {
-  props: {
-    modelValue: {
-      type: Number,
-    },
-    label: {
-      type: String,
-    },
-  },
-  data() {
-    return {
-      minute: 0,
-      second: 0,
-    };
-  },
-  methods: {
-    updateValue() {
-      const time = this.minute * 60 + this.second;
-      this.$emit("update:modelValue", time);
-    },
-  },
-  watch: {
-    minute() {
-      this.updateValue();
-    },
-    second() {
-      this.updateValue();
-    },
-    modelValue: {
-      immediate: true,
-      handler(value) {
-        this.minute = Math.floor(value / 60);
-        this.second = Math.floor(value % 60);
-      },
-    },
-  },
+<script lang="ts" setup>
+import { ref, watch } from "vue";
+
+export interface Props {
+  modelValue: number;
+  label: string;
+}
+
+const props = defineProps<Props>();
+const emit = defineEmits<{
+  (e: "update:modelValue", value: number): void;
+}>();
+
+const minute = ref(0);
+const second = ref(0);
+
+const updateValue = () => {
+  const time = minute.value * 60 + second.value;
+  emit("update:modelValue", time);
 };
+
+watch(minute, updateValue);
+watch(second, updateValue);
+
+watch(
+  () => props.modelValue,
+  (value) => {
+    minute.value = Math.floor(value / 60);
+    second.value = Math.floor(value % 60);
+  },
+  {
+    immediate: true,
+  }
+);
 </script>

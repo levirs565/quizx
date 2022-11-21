@@ -17,7 +17,6 @@ import {
   Notification,
   notificationDelayDuration,
 } from "@/store/notification";
-import { timeStamp } from "console";
 import { ref } from "vue";
 
 const notificationStore = useNotificationStore();

@@ -12,32 +12,35 @@
     />
   </div>
 </template>
-<script>
-export default {
-  props: {
-    accept: String,
-    icon: String,
-    label: String,
-    modelValue: File,
-  },
-  computed: {
-    files: {
-      get() {
-        const result = [];
-        if (this.modelValue) result.push(this.modelValue);
-        return result;
-      },
-      set(val) {
-        this.$emit("update:modelValue", val[0]);
-      },
-    },
-  },
-  methods: {
-    addDropFile(event) {
-      const file = event.dataTransfer.files[0];
+<script lang="ts" setup>
+import { computed } from "@vue/reactivity";
 
-      if (file) this.$emit("update:modelValue", file);
-    },
+export interface Props {
+  accept: string;
+  icon: string;
+  label: string;
+  modelValue: File;
+}
+
+const props = defineProps<Props>();
+const emit = defineEmits<{
+  (e: "update:modelValue", value: File): void;
+}>();
+
+const files = computed({
+  get: () => {
+    const result = [];
+    if (props.modelValue) result.push(props.modelValue);
+    return result;
   },
+  set: (val: File[]) => {
+    emit("update:modelValue", val[0]);
+  },
+});
+
+const addDropFile = (event: DragEvent) => {
+  const file = event.dataTransfer?.files[0];
+
+  if (file) emit("update:modelValue", file);
 };
 </script>

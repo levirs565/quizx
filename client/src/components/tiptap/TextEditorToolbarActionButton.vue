@@ -15,21 +15,17 @@
     <span>{{ title }}</span>
   </v-tooltip>
 </template>
-<script lang="ts">
-import { defineComponent } from "vue";
+<script lang="ts" setup>
 
-export default defineComponent({
-  props: {
-    icon: String,
-    disabled: {
-      type: Boolean,
-      default: false,
-    },
-    title: String,
-    active: {
-      type: Boolean,
-      default: false,
-    },
-  },
-});
+export interface Props {
+  icon: string
+  disabled?: boolean
+  title: string
+  active?: boolean
+}
+
+const props = withDefaults(defineProps<Props>(), {
+  disabled: false,
+  active: false
+})
 </script>

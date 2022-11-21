@@ -3,8 +3,8 @@
     <editor-content class="text-editor-card" :editor="editor" />
   </v-card>
 </template>
-<script>
-import { Editor, EditorContent } from "@tiptap/vue-3";
+<script lang="ts" setup>
+import { Editor, EditorContent, useEditor } from "@tiptap/vue-3";
 import StarterKit from "@tiptap/starter-kit";
 import Table from "@tiptap/extension-table";
 import TableRow from "@tiptap/extension-table-row";
@@ -15,71 +15,59 @@ import Superscript from "@tiptap/extension-superscript";
 import Subscript from "@tiptap/extension-subscript";
 import { MathBlock, MathInline } from "./extensions/Math";
 import { CursorTracker } from "./extensions/CursorTracker";
+import { watch } from "vue";
 
-export default {
-  components: {
-    EditorContent,
-  },
-  props: {
-    modelValue: String,
-    hasMenu: {
-      type: Boolean,
-      default: false,
-    },
-    selectImageFunction: Function,
-  },
-  data() {
-    return {
-      editor: null,
-    };
-  },
-  mounted() {
-    this.$nextTick(() => {
-      let editorClass = "text-body-1 text--primary";
-      this.editor = new Editor({
-        editable: true,
-        content: this.modelValue,
-        extensions: [
-          StarterKit,
-          Table,
-          TableRow,
-          TableHeader,
-          TableCell,
-          Image,
-          Superscript,
-          Subscript,
-          CursorTracker,
-          MathBlock,
-          MathInline,
-        ],
-        editorProps: {
-          attributes: {
-            class: editorClass,
-          },
-        },
-        onUpdate: () => {
-          this.$emit("update:modelValue", this.editor.getHTML());
-        },
-        onFocus: ({ editor }) => {
-          this.$emit("editorFocus", editor);
-        },
-        onBlur: ({ editor, event }) => {
-          this.$emit("editorBlur", editor, event);
-        },
-      });
-    });
-  },
-  watch: {
-    modelValue(value) {
-      if (this.editor.getHTML() === value) return;
-      this.editor.commands.setContent(value, false);
+export interface Props {
+  modelValue: string;
+}
+
+const props = defineProps<Props>();
+const emit = defineEmits<{
+  (e: "update:modelValue", value: string): void;
+  (e: "editorFocus", editor: Editor): void;
+  (e: "editorBlur", editor: Editor, event: FocusEvent): void;
+}>();
+
+const editorClass = "text-body-1 text--primary";
+const editor = useEditor({
+  editable: true,
+  content: props.modelValue,
+  extensions: [
+    StarterKit,
+    Table,
+    TableRow,
+    TableHeader,
+    TableCell,
+    Image,
+    Superscript,
+    Subscript,
+    CursorTracker,
+    MathBlock,
+    MathInline,
+  ],
+  editorProps: {
+    attributes: {
+      class: editorClass,
     },
   },
-  beforeUnmount() {
-    this.editor.destroy();
+  onUpdate: () => {
+    emit("update:modelValue", editor.value!.getHTML());
   },
-  emits: ["update:modelValue", "editorFocus", "editorBlur"],
-};
+  onFocus: ({ editor }) => {
+    emit("editorFocus", editor as Editor);
+  },
+  onBlur: ({ editor, event }) => {
+    emit("editorBlur", editor as Editor, event);
+  },
+});
+
+watch(
+  () => props.modelValue,
+  (value) => {
+    if (editor.value!.getHTML() === value) return;
+    editor.value!.commands.setContent(value, false);
+  }
+);
 </script>
 <style scoped>
 .text-editor-card >>> .ProseMirror {

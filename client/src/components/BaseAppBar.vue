@@ -14,13 +14,12 @@
     </template>
   </v-app-bar>
 </template>
-<script>
-export default {
-  props: {
-    isLoading: {
-      type: Boolean,
-      default: false,
-    },
-  },
-};
+<script lang="ts" setup>
+export interface Props {
+  isLoading?: boolean;
+}
+
+const props = withDefaults(defineProps<Props>(), {
+  isLoading: false,
+});
 </script>

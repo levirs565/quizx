@@ -4,18 +4,11 @@
   </transition>
 </template>
 
-<script>
+<script lang="ts" setup>
+import { onMounted } from "vue";
 import useAuthStore from "@/store/auth";
-import { mapActions } from "pinia";
 
-export default {
-  mounted() {
-    this.updateUser();
-  },
-  methods: {
-    ...mapActions(useAuthStore, ["updateUser"]),
-  },
-};
+const authStore = useAuthStore();
+onMounted(() => authStore.updateUser());
 </script>
-
 <style></style>

@@ -10,12 +10,11 @@
     </v-chip>
   </div>
 </template>
-<script>
-export default {
-  props: {
-    userId: String,
-    questionCount: Number,
-  },
-};
+<script lang="ts" setup>
+export interface Props {
+  userId: string;
+  questionCount: number;
+}
+const props = defineProps<Props>();
 </script>
 <style scoped></style>

@@ -14,15 +14,18 @@
   </v-card-text>
 </template>
 
-<script>
-export default {
-  props: ["buttons"],
-  methods: {
-    jumpClick(id) {
-      this.$emit("click", id);
-    },
-  },
-  emits: ["click"],
+<script lang="ts" setup>
+export interface Props {
+  buttons: string[];
+}
+
+const props = defineProps<Props>();
+const emit = defineEmits<{
+  (e: "click", index: number): void;
+}>();
+
+const jumpClick = (index: number) => {
+  emit("click", index);
 };
 </script>
 

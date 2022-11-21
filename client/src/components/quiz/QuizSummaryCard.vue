@@ -14,13 +14,14 @@
   </v-card>
 </template>
 
-<script>
+<script lang="ts" setup>
+import { QuizSummary } from "@quizx/shared";
 import QuizInformation from "../quiz/QuizInformation.vue";
-export default {
-  components: { QuizInformation },
-  props: {
-    quiz: Object,
-    to: String,
-  },
-};
+
+export interface Props {
+  quiz: QuizSummary;
+  to: string;
+}
+
+const props = defineProps<Props>();
 </script>

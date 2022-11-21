@@ -2,11 +2,11 @@
   <v-app id="quizx">
     <v-navigation-drawer app>
       <v-list dense>
-        <template v-if="user">
+        <template v-if="auth.user">
           <v-list-item>
             <v-avatar color="green" size="64">
               <span class="white--text text-h4">{{
-                selectOneUpper(user.id)
+                selectOneUpper(auth.user.id)
               }}</span>
             </v-avatar>
           </v-list-item>
@@ -15,15 +15,15 @@
             <template v-slot:activator="{ props }">
               <v-list-item v-bind="props">
                 <v-list-item-title class="text-subtitle-1">
-                  {{ user.name }}
+                  {{ auth.user.name }}
                 </v-list-item-title>
                 <v-list-item-subtitle class="text-subtitle-2">
-                  {{ user.id }}
+                  {{ auth.user.id }}
                 </v-list-item-subtitle>
               </v-list-item>
             </template>
 
-            <v-list-item link @click="logout">
+            <v-list-item link @click="auth.logout">
               <template v-slot:prepend>
                 <v-icon>mdi-logout</v-icon>
               </template>
@@ -65,38 +65,25 @@
   </v-app>
 </template>
 
-<script>
+<script lang="ts" setup>
 import NotificationContainer from "@/components/NotificationContainer.vue";
 import { selectOneUpper } from "@/utils";
 import useAuthStore from "@/store/auth";
-import { mapState, mapActions } from "pinia";
 
-export default {
-  components: { NotificationContainer },
-  data() {
-    return {
-      links: [
-        {
-          to: "/",
-          icon: "mdi-home",
-          label: "Home",
-        },
-        {
-          to: "/quiz",
-          icon: "mdi-file-document",
-          label: "Quiz",
-        },
-      ],
-    };
+const auth = useAuthStore();
+
+const links = [
+  {
+    to: "/",
+    icon: "mdi-home",
+    label: "Home",
   },
-  methods: {
-    ...mapActions(useAuthStore, ["logout"]),
-    selectOneUpper,
+  {
+    to: "/quiz",
+    icon: "mdi-file-document",
+    label: "Quiz",
   },
-  computed: {
-    ...mapState(useAuthStore, ["user"]),
-  },
-};
+];
 </script>
 
 <style></style>
