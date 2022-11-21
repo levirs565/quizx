@@ -77,7 +77,7 @@ import {
   ShortTextQuestion,
 } from "@quizx/shared";
 import { Editor } from "@tiptap/vue-3";
-import { computed, inject, nextTick, onMounted, provide, ref } from "vue";
+import { computed, provide, ref, watch } from "vue";
 import { VToolbar } from "vuetify/components/VToolbar";
 import { mathKeyboardContainerInjectionKey } from "@/components/math/key";
 import { VCard } from "vuetify/components/VCard";
@@ -178,12 +178,8 @@ const changeType = (type: string) => {
   if (newQuestion instanceof MultipleChoiceQuestion) {
     newQuestion.choices = ["", "", "", ""];
     newQuestion.answer = 0;
-  } else if (newQuestion instanceof ShortTextQuestion) {
-    newQuestion.answer = "";
   } else if (newQuestion instanceof NumberQuestion) {
     newQuestion.answer = 0;
-  } else if (newQuestion instanceof MathQuestion) {
-    newQuestion.answer = "";
   }
   question.value = newQuestion;
 };

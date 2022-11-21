@@ -55,9 +55,7 @@ const game = ref<Game>();
 const state = ref<ResourceState>();
 
 const answerChanged = (event: AnswerChangedEvent) => {
-  let answer: QuestionAnswer | null = event.answer;
-  if (answer == "") answer = null;
-  gameApi.putAnswer(props.game_id, event.id, answer);
+  gameApi.putAnswer(props.game_id, event.id, event.answer);
 };
 const submitAnswer = (index: number, questionId: string) => {
   gameApi.submitAnswer(props.game_id, questionId).then((result) => {

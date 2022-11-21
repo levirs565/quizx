@@ -1,8 +1,8 @@
 import { QuestionAnswer } from "@quizx/shared";
 import { ref } from "vue";
 
-export function isAnswerEmpty(answer: QuestionAnswer | undefined | null) {
-  if (answer == undefined || answer == null) return true;
+export function isAnswerEmpty(answer: QuestionAnswer | undefined) {
+  if (answer == undefined) return true;
 
   if (typeof answer == "string" && answer.length == 0) return true;
 

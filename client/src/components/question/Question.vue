@@ -29,7 +29,7 @@
 <script lang="ts" setup>
 import TextViewer from "@/components/tiptap/TextViewer.vue";
 import { Question, QuestionAnswer, QuestionState } from "@quizx/shared";
-import { computed, watch } from "vue";
+import { computed, onMounted, watch } from "vue";
 import QuestionAnswerView, { Message } from "./QuestionAnswer.vue";
 
 export interface Props {
@@ -42,7 +42,7 @@ export interface Props {
 export interface AnswerChangedEvent {
   index: number;
   id: string;
-  answer: QuestionAnswer;
+  answer?: QuestionAnswer;
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -79,7 +79,7 @@ watch(
     emit("answerChanged", {
       index: props.index,
       id: props.question.id!,
-      answer: value!,
+      answer: value,
     });
   }
 );

@@ -41,7 +41,7 @@
     :model-value="selectedAnswer"
     :messages="message?.text"
     :error-messages="message?.error"
-    @update:model-value="answerChanged"
+    @update:model-value="answerChanged($event ? $event : undefined)"
     type="text"
     variant="outlined"
     :readonly="!editable"
@@ -51,7 +51,7 @@
     :model-value="selectedAnswer"
     :messages="message?.text"
     :error-messages="message?.error"
-    @update:model-value="answerChanged($event ? parseInt($event) : null)"
+    @update:model-value="answerChanged($event ? parseInt($event) : undefined)"
     type="number"
     variant="outlined"
     :readonly="!editable"
@@ -61,7 +61,7 @@
     :model-value="selectedAnswer as string"
     :messages="message?.text"
     :error-messages="message?.error"
-    @update:model-value="answerChanged"
+    @update:model-value="answerChanged($event ? $event : undefined)"
     variant="outlined"
     :readonly="!editable"
   />
@@ -93,10 +93,10 @@ export interface Props {
 
 const props = defineProps<Props>();
 const emit = defineEmits<{
-  (e: "update:selectedAnswer", value: QuestionAnswer): void;
+  (e: "update:selectedAnswer", value: QuestionAnswer | undefined): void;
 }>();
 
-const answerChanged = (value: QuestionAnswer) => {
+const answerChanged = (value: QuestionAnswer | undefined) => {
   emit("update:selectedAnswer", value);
 };
 </script>

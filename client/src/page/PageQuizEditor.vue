@@ -83,7 +83,6 @@ import clone from "just-clone";
 import { nextTick, onMounted, provide, ref, watch } from "vue";
 import {
   MultipleChoiceQuestion,
-  NumberQuestion,
   Question,
   Quiz,
 } from "@quizx/shared";
