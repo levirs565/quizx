@@ -5,8 +5,8 @@
     </template>
 
     <v-card>
-      <v-card-title class="title">
-        {{ game.quizTitle }}
+      <v-card-title>
+        {{ game!.quizTitle }}
       </v-card-title>
 
       <v-card-text>
@@ -26,7 +26,7 @@
 
     <v-row dense>
       <v-col
-        v-for="(question, index) in game.questions"
+        v-for="(question, index) in game!.questions"
         :key="question.id"
         cols="12"
       >
@@ -34,18 +34,21 @@
           :index="index"
           :question="question"
           :editable="false"
-          :initialAnswer="question.answer"
-          :answerState="game.questionsState[index]"
+          :answerState="game!.questionsState![index]"
         >
           <template v-slot:content>
             <p class="text-body-1 text--primary my-2">
               Correct answer:
-              <math-field-base
-                class="d-inline-block ml-2"
-                v-if="question.type === 'math'"
-                read-only
-                :modelValue="game.correctAnswers[index]"
-              />
+              <span
+                v-if="question instanceof MathQuestion"
+                class="ml-2 d-inline-block"
+              >
+                <math-live-field
+                  class="d-inline"
+                  readonly
+                  :modelValue="game!.correctAnswers![index] as string"
+                />
+              </span>
               <span class="ml-2" v-else>
                 {{ getQuestionCorrectAnswerText(index) }}
               </span>
@@ -57,88 +60,67 @@
   </resource-wrapper>
 </template>
 
-<script>
+<script lang="ts" setup>
 import { gameApi } from "@/api";
 import Question from "@/components/question/Question.vue";
-import MathFieldBase from "@/components/math/MathFieldBase.vue";
+import MathLiveField from "@/components/math/MathLiveField.vue";
 import { getChoiceIndex } from "@/utils";
 import ResourceWrapper, {
+  ResourceState,
   updateResourceStateByPromise,
 } from "@/components/resource/ResourceWrapper.vue";
+import { Game, MultipleChoiceQuestion, MathQuestion } from "@quizx/shared";
+import { onMounted, ref } from "vue";
 
-export default {
-  components: { Question, MathFieldBase, ResourceWrapper },
-  props: {
-    game_id: String,
-  },
-  data() {
-    return {
-      game: {},
-      state: null,
-      results: {
-        score: {
-          name: "Score",
-          value: "N/A",
-        },
-        correct: {
-          name: "Correct",
-        },
-        wrong: {
-          name: "Wrong",
-        },
-        unanswered: {
-          name: "Unanswered",
-        },
-      },
-    };
-  },
-  mounted() {
-    this.loadGame();
-  },
-  methods: {
-    loadGame() {
-      updateResourceStateByPromise(
-        gameApi.getGame(this.game_id).then((game) => {
-          this.game = game;
-          this.results.correct.value = game.result.correct;
-          this.results.wrong.value = game.result.wrong;
-          this.results.unanswered.value = game.result.unanswered;
-        }),
-        (val) => {
-          this.state = val;
-        }
-      );
-    },
-    getQuestionCorrectAnswerText(index) {
-      const answer = this.game.correctAnswers[index];
-      if (this.game.questions[index].type === "multiple-choice") {
-        return getChoiceIndex(answer);
-      }
+export interface Props {
+  game_id: string;
+}
 
-      return answer;
-    },
+const props = defineProps<Props>();
+
+const game = ref<Game>();
+const state = ref<ResourceState>();
+const results = ref({
+  score: {
+    name: "Score",
+    value: "N/A",
   },
+  correct: {
+    name: "Correct",
+    value: 0,
+  },
+  wrong: {
+    name: "Wrong",
+    value: 0,
+  },
+  unanswered: {
+    name: "Unanswered",
+    value: 0,
+  },
+});
+
+const loadGame = () => {
+  updateResourceStateByPromise(
+    gameApi.getGame(props.game_id).then((newGame) => {
+      game.value = newGame;
+      results.value.correct.value = newGame.result!.correct;
+      results.value.wrong.value = newGame.result!.wrong;
+      results.value.unanswered.value = newGame.result!.unanswered;
+    }),
+    (newState) => {
+      state.value = newState;
+    }
+  );
 };
+const getQuestionCorrectAnswerText = (index: number) => {
+  const answer = game.value!.correctAnswers![index];
+  if (game.value!.questions[index] instanceof MultipleChoiceQuestion) {
+    return getChoiceIndex(answer as number);
+  }
+
+  return answer;
+};
+onMounted(loadGame);
 </script>
 
-<style scoped>
-.game-result-table >>> tr > td {
-  border: 0;
-  padding-top: 0;
-  padding-bottom: 0;
-}
-
-.game-result-table >>> tr > td:first-child {
-  padding-left: 0;
-}
-
-.question-state {
-  flex-basis: auto;
-  flex-grow: 0;
-}
-
-.question-correct-answer {
-  justify-content: start;
-  align-items: baseline;
-}
-</style>
+<style scoped></style>
