@@ -63,20 +63,17 @@ import { quizApi, gameApi } from "@/api";
 import QuizSummary from "@/components/quiz/QuizSummary.vue";
 import DialogPlayQuiz from "@/dialog/DialogPlayQuiz.vue";
 import { isAnswerEmpty } from "@/utils";
-import ResourceWrapper, {
-  ResourceState,
-  updateResourceStateByPromise,
-} from "@/components/resource/ResourceWrapper.vue";
+import ResourceWrapper from "@/components/resource/ResourceWrapper.vue";
 import useAuthStore from "@/store/auth";
 import {
   GamePreference,
   GameSummary,
   QuestionAnswer,
   QuestionState,
-  Quiz,
 } from "@quizx/shared";
 import { onMounted, ref, watch } from "vue";
 import { useRouter } from "vue-router";
+import { useResourceState } from "@/components/resource/helper";
 
 export interface Props {
   quiz_id: string;
@@ -87,20 +84,12 @@ const props = defineProps<Props>();
 const { user } = useAuthStore();
 const router = useRouter();
 
-const quiz = ref<Quiz>();
-const state = ref<ResourceState>();
+const {
+  resource: quiz,
+  load: updateQuiz,
+  state,
+} = useResourceState(() => quizApi.getQuiz(props.quiz_id));
 const answerResults = ref<Record<string, QuestionState>>({});
-
-const updateQuiz = () => {
-  updateResourceStateByPromise(
-    quizApi.getQuiz(props.quiz_id).then((newQuiz) => {
-      quiz.value = newQuiz;
-    }),
-    (newState) => {
-      state.value = newState;
-    }
-  );
-};
 
 const checkAnswer = async (questionId: string, answer: QuestionAnswer) => {
   const result = await quizApi.checkQuestionAnswer(

@@ -72,23 +72,17 @@
 <script lang="ts" setup>
 import { mediaApi, quizApi } from "@/api";
 import QuizSummary from "@/components/quiz/QuizSummary.vue";
-import ResourceWrapper, {
-  ResourceState,
-  updateResourceStateByPromise,
-} from "@/components/resource/ResourceWrapper.vue";
+import ResourceWrapper from "@/components/resource/ResourceWrapper.vue";
 import QuestionView from "@/components/question/Question.vue";
 import DialogQuestionEditor from "@/dialog/DialogQuestionEditor.vue";
 import DialogDeleteQuiz from "@/dialog/DialogDeleteQuiz.vue";
 import clone from "just-clone";
 import { nextTick, onMounted, provide, ref, watch } from "vue";
-import {
-  MultipleChoiceQuestion,
-  Question,
-  Quiz,
-} from "@quizx/shared";
+import { MultipleChoiceQuestion, Question, Quiz } from "@quizx/shared";
 import { useRouter } from "vue-router";
 import { useNotificationStore } from "@/store/notification";
 import { uploadFunctionInjectionKey } from "@/dialog/DialogSelectImage.vue";
+import { useResourceState } from "@/components/resource/helper";
 
 export interface Props {
   quiz_id: string;
@@ -99,21 +93,14 @@ const notification = useNotificationStore();
 
 const props = defineProps<Props>();
 
-const quiz = ref<Quiz>();
+const {
+  resource: quiz,
+  load: refresh,
+  state,
+} = useResourceState(() => quizApi.getQuizForEditor(props.quiz_id));
 const isEditDialogShow = ref(false);
-const state = ref<ResourceState>();
 const questionEditor = ref<InstanceType<typeof DialogQuestionEditor>>();
 
-const refresh = () => {
-  updateResourceStateByPromise(
-    quizApi.getQuizForEditor(props.quiz_id).then((newQuiz) => {
-      quiz.value = newQuiz;
-    }),
-    (newState) => {
-      state.value = newState;
-    }
-  );
-};
 const deleteFunction = () => quizApi.deleteQuiz(props.quiz_id);
 const deleted = () => {
   router.replace("/quiz");

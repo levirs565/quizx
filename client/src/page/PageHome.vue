@@ -14,30 +14,19 @@
 <script lang="ts" setup>
 import { quizApi } from "@/api";
 import QuizSummaryCard from "@/components/quiz/QuizSummaryCard.vue";
-import ResourceWrapper, {
-  updateResourceStateByPromise,
-  ResourceState,
-} from "@/components/resource/ResourceWrapper.vue";
-import { QuizSummary } from "@quizx/shared";
-import { onMounted, ref } from "vue";
+import { useResourceState } from "@/components/resource/helper";
+import ResourceWrapper from "@/components/resource/ResourceWrapper.vue";
+import { onMounted } from "vue";
 
-const list = ref<QuizSummary[]>([]);
-const state = ref<ResourceState>();
-
-const loadList = () => {
-  updateResourceStateByPromise(
-    quizApi.getQuizList().then((newList) => {
-      list.value = newList;
-    }),
-    (newState) => {
-      state.value = newState;
-    }
-  );
-};
+const {
+  resource: list,
+  load: loadList,
+  state,
+} = useResourceState(() => quizApi.getQuizList());
 
 onMounted(() => {
-  loadList()
-})
+  loadList();
+});
 </script>
 
 <style></style>

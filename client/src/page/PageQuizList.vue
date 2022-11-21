@@ -35,10 +35,7 @@
 import { quizApi } from "@/api";
 import QuizSummaryCard from "@/components/quiz/QuizSummaryCard.vue";
 import DialogCreateQuiz from "@/dialog/DialogCreateQuiz.vue";
-import ResourceWrapper, {
-  ResourceState,
-  updateResourceStateByPromise,
-} from "@/components/resource/ResourceWrapper.vue";
+import ResourceWrapper from "@/components/resource/ResourceWrapper.vue";
 import {
   CreateQuizParameters,
   CreateQuizResult,
@@ -46,27 +43,20 @@ import {
 } from "@quizx/shared";
 import { onMounted, ref } from "vue";
 import { useRouter } from "vue-router";
+import { useResourceState } from "@/components/resource/helper";
 
 const router = useRouter();
 
-const quizList = ref<QuizSummary[]>();
-const state = ref<ResourceState>();
+const {
+  load: loadList,
+  resource: quizList,
+  state,
+} = useResourceState(() => quizApi.getQuizList());
 
 const create = (param: CreateQuizParameters) => quizApi.createQuiz(param);
 const importMarkdown = (file: File) => quizApi.importMarkdown(file);
 const created = (quizResult: CreateQuizResult) => {
   router.push(`/quiz/${quizResult.id}`);
-};
-const loadList = () => {
-  // TODO: Only show current user quiz
-  updateResourceStateByPromise(
-    quizApi.getQuizList().then((newList) => {
-      quizList.value = newList;
-    }),
-    (newState) => {
-      state.value = newState;
-    }
-  );
 };
 onMounted(loadList);
 </script>

@@ -24,24 +24,16 @@
 
 <script lang="ts" setup>
 import { gameApi } from "@/api";
-import {
-  ResourceState,
-  updateResourceStateByPromise,
-} from "@/components/resource/ResourceWrapper.vue";
 import BaseAppBar from "@/components/BaseAppBar.vue";
 import ResourceMainContainer from "@/components/resource/ResourceMainContainer.vue";
 import ExamGameBoard from "@/components/game/ExamGameBoard.vue";
 import FlashCardGameBoard from "@/components/game/FlashCardGameBoard.vue";
-import {
-  ExamGameData,
-  FlashCardGameData,
-  Game,
-  QuestionAnswer,
-} from "@quizx/shared";
-import { onMounted, provide, ref } from "vue";
+import { ExamGameData, FlashCardGameData } from "@quizx/shared";
+import { onMounted, provide } from "vue";
 import { useRouter } from "vue-router";
 import { AnswerChangedEvent } from "@/components/question/Question.vue";
 import { finishFunctionInjectionKey } from "@/dialog/DialogFinishGame.vue";
+import { useResourceState } from "@/components/resource/helper";
 
 export interface Props {
   game_id: string;
@@ -51,8 +43,11 @@ const props = defineProps<Props>();
 
 const router = useRouter();
 
-const game = ref<Game>();
-const state = ref<ResourceState>();
+const {
+  resource: game,
+  load: updateState,
+  state,
+} = useResourceState(() => gameApi.getGame(props.game_id));
 
 const answerChanged = (event: AnswerChangedEvent) => {
   gameApi.putAnswer(props.game_id, event.id, event.answer);
@@ -72,16 +67,6 @@ const submitAnswer = (index: number, questionId: string) => {
       game.value!.questionsState![index] = result.state;
     }
   });
-};
-const updateState = () => {
-  updateResourceStateByPromise(
-    gameApi.getGame(props.game_id).then((newGame) => {
-      game.value = newGame;
-    }),
-    (newState) => {
-      state.value = newState;
-    }
-  );
 };
 
 const _finish = () => gameApi.finishGame(props.game_id);

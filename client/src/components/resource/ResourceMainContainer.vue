@@ -9,7 +9,7 @@
 </template>
 <script lang="ts" setup>
 import ResourceErrorView from "@/components/resource/ResourceErrorView.vue";
-import { ResourceState } from "./ResourceWrapper.vue";
+import { ResourceState } from "./helper";
 
 export interface Props {
   state: ResourceState;

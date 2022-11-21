@@ -65,12 +65,10 @@ import { gameApi } from "@/api";
 import Question from "@/components/question/Question.vue";
 import MathLiveField from "@/components/math/MathLiveField.vue";
 import { getChoiceIndex } from "@/utils";
-import ResourceWrapper, {
-  ResourceState,
-  updateResourceStateByPromise,
-} from "@/components/resource/ResourceWrapper.vue";
-import { Game, MultipleChoiceQuestion, MathQuestion } from "@quizx/shared";
-import { onMounted, ref } from "vue";
+import ResourceWrapper from "@/components/resource/ResourceWrapper.vue";
+import { MultipleChoiceQuestion, MathQuestion } from "@quizx/shared";
+import { computed, onMounted } from "vue";
+import { useResourceState } from "@/components/resource/helper";
 
 export interface Props {
   game_id: string;
@@ -78,40 +76,34 @@ export interface Props {
 
 const props = defineProps<Props>();
 
-const game = ref<Game>();
-const state = ref<ResourceState>();
-const results = ref({
-  score: {
-    name: "Score",
-    value: "N/A",
-  },
-  correct: {
-    name: "Correct",
-    value: 0,
-  },
-  wrong: {
-    name: "Wrong",
-    value: 0,
-  },
-  unanswered: {
-    name: "Unanswered",
-    value: 0,
-  },
+const {
+  resource: game,
+  load: loadGame,
+  state,
+} = useResourceState(() => gameApi.getGame(props.game_id));
+
+const results = computed(() => {
+  const gameResult = game.value?.result;
+  return {
+    score: {
+      name: "Score",
+      value: "N/A",
+    },
+    correct: {
+      name: "Correct",
+      value: gameResult?.correct ?? 0,
+    },
+    wrong: {
+      name: "Wrong",
+      value: gameResult?.wrong ?? 0,
+    },
+    unanswered: {
+      name: "Unanswered",
+      value: gameResult?.unanswered ?? 0,
+    },
+  };
 });
 
-const loadGame = () => {
-  updateResourceStateByPromise(
-    gameApi.getGame(props.game_id).then((newGame) => {
-      game.value = newGame;
-      results.value.correct.value = newGame.result!.correct;
-      results.value.wrong.value = newGame.result!.wrong;
-      results.value.unanswered.value = newGame.result!.unanswered;
-    }),
-    (newState) => {
-      state.value = newState;
-    }
-  );
-};
 const getQuestionCorrectAnswerText = (index: number) => {
   const answer = game.value!.correctAnswers![index];
   if (game.value!.questions[index] instanceof MultipleChoiceQuestion) {
