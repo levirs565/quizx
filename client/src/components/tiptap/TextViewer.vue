@@ -10,11 +10,9 @@ const props = defineProps({
   modelValue: String,
 });
 
-const { modelValue } = toRefs(props);
-
 const renderedHTML = computed(() => {
   const element = document.createElement("div");
-  element.innerHTML = modelValue?.value ? modelValue?.value : "";
+  element.innerHTML = props.modelValue ? props.modelValue : "";
 
   // TODO: <math> is deprecated
   element.querySelectorAll("math-inline,math,math-block").forEach((element) => {

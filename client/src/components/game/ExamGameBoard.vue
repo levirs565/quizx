@@ -42,7 +42,6 @@ interface Props {
 }
 
 const props = defineProps<Props>();
-const { game } = props;
 const emit = defineEmits<{
   (e: "finished"): void;
   (e: "answerChanged", event: AnswerChangedEvent): void;
@@ -56,7 +55,7 @@ const questions = ref<InstanceType<typeof QuestionView>[]>();
 const finishFunction = inject<() => Promise<any>>(finishFunctionInjectionKey);
 
 const startTimer = () => {
-  const data = game.data as ExamGameData;
+  const data = props.game.data as ExamGameData;
   if (data.maxFinishTime) {
     timer.start(data.maxFinishTime.getTime(), async () => {
       await finishFunction!();
@@ -86,7 +85,7 @@ watch(
   () => props.game,
   () => {
     startTimer();
-    jumperButtons.value = game.questions.map((question) =>
+    jumperButtons.value = props.game.questions.map((question) =>
       getQuestionColor(question.answer)
     );
   },
