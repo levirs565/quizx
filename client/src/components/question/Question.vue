@@ -5,7 +5,7 @@
         >Question {{ index + 1 }}</v-card-title
       >
       <v-card-text>
-        <text-viewer :model-value="question.question" />
+        <text-viewer :model-value="question.question" class="mb-4" />
 
         <question-answer-view
           :question="question"
