@@ -1,5 +1,5 @@
 <template>
-  <Story>
+  <Story class="pa-4">
     <Variant
       title="Single Editor"
       :init-state="initSingleEditorState"
@@ -7,12 +7,21 @@
       :source="disabledSource"
     >
       <template #default="{ state }">
-        <text-editor-toolbar
-          :editor="state.editor"
-          @addImage="selectImage(state)"
-        />
-        <text-editor v-model="state.text" @editorFocus="state.editor = $event">
-        </text-editor>
+        <v-card position="sticky">
+          <v-card-title>
+            <text-editor-toolbar
+              :editor="state.editor"
+              @addImage="selectImage(state)"
+            />
+          </v-card-title>
+          <v-card-text>
+            <text-editor
+              v-model="state.text"
+              @editorFocus="state.editor = $event"
+            >
+            </text-editor>
+          </v-card-text>
+        </v-card>
       </template>
       <template #controls="{ state }">
         <HstTextarea v-model="state.text" title="Text" />
@@ -62,7 +71,6 @@ import TextEditorToolbar from "./TextEditorToolbar.vue";
 import TextViewer from "./TextViewer.vue";
 import "@tiptap/extension-image";
 import { provide, ref } from "vue";
-
 
 const disabledSource = "Disabled. Because this can slow down performance";
 

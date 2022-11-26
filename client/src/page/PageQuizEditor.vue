@@ -58,7 +58,7 @@
         <v-btn color="primary" @click="newQuestion"> Add Question </v-btn>
       </v-col>
 
-      <v-dialog fullscreen hide-overlay v-model="isEditDialogShow">
+      <v-dialog fullscreen hide-overlay v-model="isEditDialogShow" scrollable>
         <dialog-question-editor
           ref="questionEditor"
           @close="isEditDialogShow = false"

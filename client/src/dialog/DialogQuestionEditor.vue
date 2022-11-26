@@ -1,6 +1,13 @@
 <template>
   <v-card v-if="question" ref="root">
-    <v-toolbar color="white" class="toolbar" ref="toolbar" elevation="4">
+    <v-toolbar
+      color="white"
+      class="toolbar"
+      ref="toolbar"
+      elevation="4"
+      density="compact"
+      extension-height="96"
+    >
       <v-toolbar-title>{{
         isNewQuestion ? "New Question " : `Question ${index! + 1}`
       }}</v-toolbar-title>
@@ -9,14 +16,14 @@
         <v-btn variant="text" @click="emit('close')">Cancel</v-btn>
         <v-btn variant="text" @click="apply">Apply</v-btn>
       </v-toolbar-items>
+      <template v-slot:extension>
+        <text-editor-toolbar
+          :editor="activeEditor"
+          :stickyTop="toolbarTop"
+        ></text-editor-toolbar>
+      </template>
     </v-toolbar>
     <v-card-text ref="body">
-      <text-editor-toolbar
-        ref="editorToolbar"
-        :editor="activeEditor"
-        :stickyTop="toolbarTop"
-      ></text-editor-toolbar>
-
       <text-editor
         v-model="question!.question"
         @editorFocus="onEditorFocus"
@@ -99,7 +106,6 @@ const isNewQuestion = ref(false);
 const activeEditor = ref<Editor>();
 const root = ref<InstanceType<typeof VCard>>();
 const toolbar = ref<InstanceType<typeof VToolbar>>();
-const editorToolbar = ref<InstanceType<typeof TextEditorToolbar>>();
 
 provide(
   mathKeyboardContainerInjectionKey,
@@ -147,10 +153,12 @@ const onEditorFocus = (editor: Editor) => {
   activeEditor.value = editor;
 };
 const oneEditorBlur = (editor: Editor, event: FocusEvent) => {
+  console.log(event);
   const relatedElement = event.relatedTarget as HTMLElement | null;
   if (relatedElement) {
-    const toolbar = editorToolbar.value!.$el;
-    if (relatedElement.parentElement == toolbar) return;
+    const toolbarEl: HTMLElement = toolbar.value?.$el;
+    const editorToolbar = toolbarEl.lastElementChild;
+    if (editorToolbar?.contains(relatedElement)) return;
   }
 
   if (activeEditor.value == editor) activeEditor.value = undefined;
@@ -194,8 +202,11 @@ defineExpose({
   width: 100%;
 }
 .toolbar {
-  position: sticky;
-  top: 0px;
   z-index: 999;
+}
+.toolbar >>> .v-toolbar__extension {
+  flex-direction: column;
+  align-items: start;
+  padding-left: 8px;
 }
 </style>

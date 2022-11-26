@@ -59,6 +59,9 @@ const editor = useEditor({
   onBlur: ({ editor, event }) => {
     emit("editorBlur", editor as Editor, event);
   },
+  onSelectionUpdate: ({ editor: transaction }) => {
+    // console.log("Selection update event");
+  },
 });
 
 watch(
