@@ -14,7 +14,7 @@ describe('QuizImportService', () => {
     service = new QuizImporterService();
   });
 
-  it('should import markdown correctly', () => {
+  it('should import markdown correctly', async () => {
     const markdown = `
 # Example Quiz Title *Bold*
 
@@ -59,47 +59,44 @@ describe('QuizImportService', () => {
    d. Choice 4
 `;
     const expected = new CreateQuizParameters();
-    expected.title = 'Example Quiz Title *Bold*';
+    expected.title = 'Example Quiz Title Bold';
 
     const question1 = new MultipleChoiceQuestion();
     question1.question = `<p>First question</p>
-<p><img src=\"Yaya\" alt=\"Image Test\"></p>
-`;
+<p><img src=\"Yaya\" alt=\"Image Test\"></p>`;
     question1.choices = [
       `<p>Choice 1<br>
-Test
-Yaya</p>
-<p>Baga</p>
-`,
-      '<p>Choice 2</p>\n',
-      '<p>Choice 3</p>\n',
-      '<p>Choice 4</p>\n',
+Test Yaya</p>
+<p>Baga</p>`,
+      '<p>Choice 2</p>',
+      '<p>Choice 3</p>',
+      '<p>Choice 4</p>',
     ];
     question1.answer = 0;
 
     const question2 = new MultipleChoiceQuestion();
-    question2.question = '<p>Second question</p>\n';
+    question2.question = '<p>Second question</p>';
     question2.choices = ['Choice 1', 'Choice 2', 'Choice 3', 'Choice 4'];
     question2.answer = 3;
 
     const question3 = new NumberQuestion();
-    question3.question = '<p>Question with number answer</p>\n';
+    question3.question = '<p>Question with number answer</p>';
     question3.answer = 12.2;
 
     const question4 = new ShortTextQuestion();
-    question4.question = '<p>This question does not have answer</p>\n';
+    question4.question = '<p>This question does not have answer</p>';
     question4.answer = 'Empty answer';
 
     const question5 = new ShortTextQuestion();
-    question5.question = '<p>This question have text answer</p>\n';
+    question5.question = '<p>This question have text answer</p>';
     question5.answer = 'This is the answer';
 
     const question6 = new MathQuestion();
-    question6.question = '<p>Question with math answer</p>\n';
+    question6.question = '<p>Question with math answer</p>';
     question6.answer = 'a + a';
 
     const question7 = new MultipleChoiceQuestion();
-    question7.question = '<p>Multiple choice without answer</p>\n';
+    question7.question = '<p>Multiple choice without answer</p>';
     question7.choices = ['Choice 1', 'Choice 2', 'Choice 3', 'Choice 4'];
     question7.answer = 0;
 
@@ -113,12 +110,12 @@ Yaya</p>
       question7,
     ];
 
-    const quiz = service.markdownToQuiz(markdown);
+    const quiz = await service.markdownToQuiz(markdown);
 
     expect(quiz).toEqual(expected);
   });
 
-  it('should render math correctly', () => {
+  it('should render math correctly', async () => {
     const markdown = `
 # Math Test
 
@@ -139,35 +136,37 @@ Yaya</p>
 
     const question = new ShortTextQuestion();
     question.question = `<p>Block:</p>
-<math-block src=\"\\begin{align*}
-   x^2 + y^2 = r^2
-   \\end{align*}\"></math-block><p>Inline: <math src=\"x + y &gt; 0\"></math></p>
-`;
+<math-block src=\"
+\\begin{align*}
+x^2 + y^2 = r^2
+\\end{align*}
+\"></math-block>
+<p>Inline: <math-inline src=\"x + y &gt; 0\"></math-inline></p>`;
     question.answer = 'false';
 
     expected.questions = [question];
 
-    const quiz = service.markdownToQuiz(markdown);
+    const quiz = await service.markdownToQuiz(markdown);
     expect(quiz).toEqual(expected);
   });
 
-  it('should use default title when title not found', () => {
+  it('should use default title when title not found', async () => {
     const expected = new CreateQuizParameters();
     expected.title = 'Untitled Quiz';
     expected.questions = [];
-    const quiz = service.markdownToQuiz('');
+    const quiz = await service.markdownToQuiz('');
     expect(quiz).toEqual(expected);
   });
 
-  it('should use first heading for title', () => {
+  it('should use first heading for title', async () => {
     const expected = new CreateQuizParameters();
     expected.title = 'First Heading';
     expected.questions = [];
-    const quiz = service.markdownToQuiz('# First Heading\n\n# Second Heading');
+    const quiz = await service.markdownToQuiz('# First Heading\n\n# Second Heading');
     expect(quiz).toEqual(expected);
   });
 
-  it('should correcly parse subscript and superscript', () => {
+  it('should correcly parse subscript and superscript', async () => {
     const exptected = new CreateQuizParameters();
     exptected.title = 'Untitled Quiz';
 
@@ -177,7 +176,7 @@ Yaya</p>
 
     exptected.questions = [question];
 
-    const quiz = service.markdownToQuiz('1. Test: ~sub~ ^sup^');
+    const quiz = await service.markdownToQuiz('1. Test: ~sub~ ^sup^');
     expect(quiz).toEqual(exptected);
   });
 });

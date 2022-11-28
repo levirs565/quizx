@@ -49,7 +49,7 @@ export class QuizController {
 
   @Post('/')
   async createOne(@Session() session: SessionType, @Body() param: CreateQuizParameters) {
-    return this.quizService.createQuiz(session, () => param);
+    return this.quizService.createQuiz(session, () => Promise.resolve(param));
   }
 
   @Post('/import_markdown')
