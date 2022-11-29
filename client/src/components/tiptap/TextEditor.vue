@@ -38,7 +38,9 @@ const editor = useEditor({
     TableRow,
     TableHeader,
     TableCell,
-    Image,
+    Image.configure({
+      inline: true,
+    }),
     Superscript,
     Subscript,
     CursorTracker,
