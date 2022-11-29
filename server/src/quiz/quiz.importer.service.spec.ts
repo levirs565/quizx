@@ -179,4 +179,45 @@ x^2 + y^2 = r^2
     const quiz = await service.markdownToQuiz('1. Test: ~sub~ ^sup^');
     expect(quiz).toEqual(exptected);
   });
+
+  it('should correctly parse question with improper layout', async () => {
+    const markdown = `
+1. First question
+a. Choice 1
+b. Choice 2
+c. Choice 3
+d. Choice 4
+
+Answer:A
+
+2. Second question
+   a. Choice 1
+
+Yats  
+
+b. Choice 2  
+c. Choice 3  
+d. Choice 4
+
+Answer: D
+`;
+    const expected = new CreateQuizParameters();
+    expected.title = 'Untitled Quiz';
+
+    const question1 = new MultipleChoiceQuestion();
+    question1.question = 'First question';
+    question1.choices = ['Choice 1', 'Choice 2', 'Choice 3', 'Choice 4'];
+    question1.answer = 0;
+
+    const question2 = new MultipleChoiceQuestion();
+    question2.question = 'Second question\n';
+    question2.choices = ['Choice 1\n<p>Yats</p>', 'Choice 2', 'Choice 3', 'Choice 4'];
+    question2.answer = 3;
+
+    expected.questions = [question1, question2];
+
+    const quiz = await service.markdownToQuiz(markdown);
+
+    expect(quiz).toEqual(expected);
+  });
 });
