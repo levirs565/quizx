@@ -5,7 +5,12 @@ import {
   NumberQuestion,
   ShortTextQuestion,
 } from '@quizx/shared';
+import fs from 'fs-extra';
+import { dirname, resolve } from 'path';
+import { fileURLToPath } from 'url';
 import { QuizImporterService } from './quiz.importer.service';
+
+const dirName = dirname(fileURLToPath(import.meta.url));
 
 describe('QuizImportService', () => {
   let service: QuizImporterService;
@@ -217,6 +222,86 @@ Answer: D
     expected.questions = [question1, question2];
 
     const quiz = await service.markdownToQuiz(markdown);
+
+    expect(quiz).toEqual(expected);
+  });
+
+  it('should import docx correctly', async () => {
+    const expected = new CreateQuizParameters();
+    expected.title = 'Example DOCX Quiz';
+
+    const question1 = new MultipleChoiceQuestion();
+    question1.question = '<p>First question<br>\nMore line</p>';
+    question1.choices = [
+      '<p>Choice 1</p>',
+      '<p>Choice 2</p>',
+      '<p>Choice 3</p>',
+      '<p>Choice 4</p>',
+    ];
+    question1.answer = 0;
+
+    const question2 = new MultipleChoiceQuestion();
+    question2.question = '<p>Second question</p>\n<p>Has more text</p>';
+    question2.choices = [
+      '<p>Choice 1</p>\n\n<p>Has more text</p>',
+      '<p>Choice 2</p>',
+      '<p>Choice 3</p>',
+      '<p>Choice 4</p>',
+    ];
+    question2.answer = 3;
+
+    const question3 = new NumberQuestion();
+    question3.question = '<p>Question with number answer</p>';
+    question3.answer = 12.2;
+
+    const question4 = new ShortTextQuestion();
+    question4.question = '<p>This question does not have answer</p>';
+    question4.answer = 'Empty answer';
+
+    const question5 = new ShortTextQuestion();
+    question5.question = '<p>This question have text answer</p>';
+    question5.answer = 'This is the answer';
+
+    const question6 = new MathQuestion();
+    question6.question = '<p>This question have math answer</p>';
+    question6.answer = 'x^{2} + y^{2} = 4';
+
+    expected.questions = [question1, question2, question3, question4, question5, question6];
+
+    const buffer = await fs.readFile(resolve(dirName, '../../test_files/proper.docx'));
+    const quiz = await service.docxToQuiz(buffer);
+
+    expect(quiz).toEqual(expected);
+  });
+
+  it('should correctly import docx with inproper layout', async () => {
+    const expected = new CreateQuizParameters();
+    expected.title = 'Untitled Quiz';
+
+    const question1 = new MultipleChoiceQuestion();
+    question1.question = '<p>First question</p>';
+    question1.choices = [
+      '<p>Choice 1</p>',
+      '<p>Choice 2</p>',
+      '<p>Choice 3</p>',
+      '<p>Choice 4</p>',
+    ];
+    question1.answer = 0;
+
+    const question2 = new MultipleChoiceQuestion();
+    question2.question = '<p>Second question</p>';
+    question2.choices = [
+      '<p>Choice 1</p>\n\n<p>Yats</p>',
+      '<p>Choice 2</p>',
+      '<p>Choice 3</p>',
+      '<p>Choice 4</p>',
+    ];
+    question2.answer = 3;
+
+    expected.questions = [question1, question2];
+
+    const buffer = await fs.readFile(resolve(dirName, '../../test_files/inproper.docx'));
+    const quiz = await service.docxToQuiz(buffer);
 
     expect(quiz).toEqual(expected);
   });

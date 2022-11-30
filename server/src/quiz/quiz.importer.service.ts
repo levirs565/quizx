@@ -17,6 +17,8 @@ import {
   getChildren,
   getElementsByTagName,
   removeElement,
+  append,
+  getElements,
 } from 'domutils';
 import render from 'dom-serializer';
 
@@ -41,10 +43,40 @@ export class QuizImporterService {
     }
   }
 
+  private removeBlockquotes(node: ChildNode[]) {
+    getElements(
+      {
+        tag_name: 'blockquote',
+      },
+      node,
+      true
+    ).forEach((rawNode) => {
+      const node = rawNode as Element;
+      while (node.children.length > 0) {
+        append(node, node.firstChild!);
+      }
+      removeElement(node);
+    });
+  }
+
+  private isNodeBlankText(node: ChildNode) {
+    return isText(node) && node.data.trim().length == 0;
+  }
+
+  private isNodeHardBreak(node: ChildNode) {
+    return isTag(node) && node.tagName == 'br';
+  }
+
   private trimElement(element: Element): Element {
-    if (element.lastChild && isText(element.lastChild) && element.lastChild.data.trim().length == 0)
-      removeElement(element.lastChild);
-    if (element.lastChild && isTag(element.lastChild!) && element.lastChild.tagName == 'br')
+    while (
+      element.firstChild &&
+      (this.isNodeBlankText(element.firstChild) || this.isNodeHardBreak(element.firstChild))
+    )
+      removeElement(element.firstChild);
+    while (
+      element.lastChild &&
+      (this.isNodeBlankText(element.lastChild) || this.isNodeHardBreak(element.lastChild))
+    )
       removeElement(element.lastChild);
     return element;
   }
@@ -53,7 +85,7 @@ export class QuizImporterService {
     const result: Element[] = [];
     list.children.forEach((ch) => {
       if (isTag(ch)) result.push(ch);
-      else if (isText(ch) && ch.data.trim().length == 0) return;
+      else if (this.isNodeBlankText(ch)) return;
       else throw new CommonServiceException('List children must element. ');
     });
     return result;
@@ -135,7 +167,7 @@ export class QuizImporterService {
         ['a', 'A'].includes(child.attribs.type)
       ) {
         enterChoice = true;
-        choiceElements.push(...this.extractListItems(child))
+        choiceElements.push(...this.extractListItems(child));
         removeElement(child);
       } else if (enterChoice) {
         appendChild(choiceElements[choiceElements.length - 1], child);
@@ -152,14 +184,7 @@ export class QuizImporterService {
     return node.children.map((child) => render(child)).join('');
   }
 
-  async markdownToQuiz(text: string): Promise<CreateQuizParameters> {
-    const htmlOutput = await this.runPandoc(
-      ['-f', 'markdown-raw_tex-implicit_figures', '-t', 'html', '--katex'],
-      text
-    );
-    const dom = parseDocument(htmlOutput);
-
-    this.convertMathTag(dom.children);
+  private convertDOMToQuiz(dom: Document) {
     const { title, questionNodeList } = this.analyzeDocument(dom);
 
     const questions = questionNodeList.map((node) => {
@@ -198,16 +223,38 @@ export class QuizImporterService {
     if (title) quiz.title = title;
     else quiz.title = 'Untitled Quiz';
     quiz.questions = questions;
-
     return quiz;
   }
 
-  runPandoc(args: string[], input: string): Promise<string> {
+  async markdownToQuiz(text: string): Promise<CreateQuizParameters> {
+    const htmlOutput = await this.runPandoc(
+      ['-f', 'markdown-raw_tex-implicit_figures', '-t', 'html', '--katex'],
+      text,
+      'utf8'
+    );
+    const dom = parseDocument(htmlOutput);
+    this.convertMathTag(dom.children);
+    return this.convertDOMToQuiz(dom);
+  }
+
+  async docxToQuiz(buffer: Buffer): Promise<CreateQuizParameters> {
+    const htmlOutput = await this.runPandoc(
+      ['-f', 'docx', '-t', 'html', '--katex'],
+      buffer,
+      'binary'
+    );
+    const dom = parseDocument(htmlOutput);
+    this.convertMathTag(dom.children);
+    this.removeBlockquotes(dom.children);
+    return this.convertDOMToQuiz(dom);
+  }
+
+  runPandoc(args: string[], input: any, encoding: BufferEncoding): Promise<string> {
     return new Promise((resolve, reject) => {
       let result = '';
 
       const pandocProcess = spawn('pandoc', args);
-      pandocProcess.stdin.end(input, 'utf-8');
+      pandocProcess.stdin.end(input, encoding);
 
       pandocProcess.stdout.on('data', (data) => {
         result += String(data);

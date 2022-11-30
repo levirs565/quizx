@@ -8,6 +8,7 @@ import {
   Delete,
   Get,
   Param,
+  ParseFilePipeBuilder,
   Post,
   Put,
   Session,
@@ -18,6 +19,9 @@ import { FileInterceptor } from '@nestjs/platform-express';
 import { QuizImporterService } from './quiz.importer.service.js';
 import { CommonServiceException } from '../common/common-service.exception.js';
 import { memoryStorage } from 'multer';
+
+const markdownMime = 'text/markdown';
+const docxMime = 'application/vnd.openxmlformats-officedocument.wordprocessingml.document';
 
 @Controller()
 export class QuizController {
@@ -52,24 +56,39 @@ export class QuizController {
     return this.quizService.createQuiz(session, () => Promise.resolve(param));
   }
 
-  @Post('/import_markdown')
+  @Post('/import_document')
   @UseInterceptors(
     FileInterceptor('file', {
       storage: memoryStorage(),
-      fileFilter(_, file, cb) {
-        cb(null, file.originalname.endsWith('.md'));
-      },
     })
   )
-  async importMarkdown(
+  async importDocument(
     @Session() session: SessionType,
-    @UploadedFile() file?: Express.Multer.File
+    @UploadedFile(
+      new ParseFilePipeBuilder()
+        .addFileTypeValidator({
+          fileType: new RegExp(
+            [markdownMime, docxMime]
+              .map((x) => x.replace(/\//g, '\\/').replace(/\./g, '\\.'))
+              .map((x) => `(${x})`)
+              .join('|')
+          ),
+        })
+        .addMaxSizeValidator({
+          maxSize: 1000 * 1000, // 1 mb
+        })
+        .build({
+          fileIsRequired: true,
+          exceptionFactory: (error) => new CommonServiceException(error),
+        })
+    )
+    file: Express.Multer.File
   ) {
-    if (!file) throw new CommonServiceException('File is not accepted');
-
     return this.quizService.createQuiz(session, () => {
-      const markdownText = file.buffer.toString();
-      return this.quizImporterService.markdownToQuiz(markdownText);
+      if (file.mimetype == markdownMime)
+        return this.quizImporterService.markdownToQuiz(file.buffer.toString());
+      else if (file.mimetype == docxMime) return this.quizImporterService.docxToQuiz(file.buffer);
+      else throw new CommonServiceException('Unknown document mime');
     });
   }
 
