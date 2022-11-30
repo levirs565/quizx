@@ -121,12 +121,12 @@ class QuizApi {
       await instance.post<CreateQuizResult>(this.path, instanceToPlain(data))
     ).data;
   }
-  async importMarkdown(file: Blob) {
+  async importDocument(file: Blob) {
     const form = new FormData();
     form.append("file", file);
     return (
       await instance.post<CreateQuizResult>(
-        `${this.path}/import_markdown`,
+        `${this.path}/import_document`,
         form,
         {
           headers: {

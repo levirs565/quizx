@@ -22,7 +22,7 @@
       <template v-slot:default="{ isActive }">
         <dialog-create-quiz
           :create="create"
-          :import-markdown="importMarkdown"
+          :import-document="importMarkdown"
           @close="isActive.value = false"
           @created="created"
         />
@@ -36,12 +36,8 @@ import { quizApi } from "@/api";
 import QuizSummaryCard from "@/components/quiz/QuizSummaryCard.vue";
 import DialogCreateQuiz from "@/dialog/DialogCreateQuiz.vue";
 import ResourceWrapper from "@/components/resource/ResourceWrapper.vue";
-import {
-  CreateQuizParameters,
-  CreateQuizResult,
-  QuizSummary,
-} from "@quizx/shared";
-import { onMounted, ref } from "vue";
+import { CreateQuizParameters, CreateQuizResult } from "@quizx/shared";
+import { onMounted } from "vue";
 import { useRouter } from "vue-router";
 import { useResourceState } from "@/components/resource/helper";
 
@@ -54,7 +50,7 @@ const {
 } = useResourceState(() => quizApi.getQuizList());
 
 const create = (param: CreateQuizParameters) => quizApi.createQuiz(param);
-const importMarkdown = (file: File) => quizApi.importMarkdown(file);
+const importMarkdown = (file: File) => quizApi.importDocument(file);
 const created = (quizResult: CreateQuizResult) => {
   router.push(`/quiz/${quizResult.id}`);
 };

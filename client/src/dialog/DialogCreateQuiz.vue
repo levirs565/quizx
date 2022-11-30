@@ -5,7 +5,7 @@
       <v-tabs v-model="activeTab">
         <v-tab>Title</v-tab>
         <v-tab>Import JSON</v-tab>
-        <v-tab>Import Markdown</v-tab>
+        <v-tab>Import Document</v-tab>
       </v-tabs>
     </v-card-text>
     <v-card-text>
@@ -21,11 +21,12 @@
           <v-textarea filled label="JSON" v-model="json"></v-textarea>
         </v-window-item>
         <v-window-item>
+          <p>You can import Mardown and Office Word file</p>
           <base-file-input
-            label="Markdown File"
-            accept=".md"
+            label="Document File"
+            accept="text/markdown,application/vnd.openxmlformats-officedocument.wordprocessingml.document"
             icon="mdi-file-document"
-            v-model="markdownFile"
+            v-model="documentFile"
           />
         </v-window-item>
       </v-window>
@@ -46,7 +47,7 @@ import { plainToInstance } from "class-transformer";
 
 export interface Props {
   create: (param: CreateQuizParameters) => Promise<CreateQuizResult>;
-  importMarkdown: (file: File) => Promise<CreateQuizResult>;
+  importDocument: (file: File) => Promise<CreateQuizResult>;
 }
 
 const props = defineProps<Props>();
@@ -72,7 +73,7 @@ const createQuiz = async (factory: () => Promise<CreateQuizResult>) => {
 };
 const title = ref("");
 const json = ref("");
-const markdownFile = ref<File>();
+const documentFile = ref<File>();
 const activeTab = ref(0);
 
 const submit = () => {
@@ -90,8 +91,8 @@ const submit = () => {
     }
     createQuiz(() => props.create(param));
   } else if (activeTab.value === 2) {
-    const file = markdownFile.value!;
-    if (file) createQuiz(() => props.importMarkdown(file));
+    const file = documentFile.value!;
+    if (file) createQuiz(() => props.importDocument(file));
   }
 };
 </script>
