@@ -1,23 +1,45 @@
 import path from 'path';
 import crypto from 'crypto';
-import fs from 'fs-extra';
-import { UploadMediaResponse } from '../types/base';
 import { Injectable } from '@nestjs/common';
 import { AppConfigService } from '../app.config.service';
-import { CommonServiceException } from 'common/common-service.exception';
+import { FileStorage, PathNormalizerV1 } from '@flystorage/file-storage';
+import { S3Client } from '@aws-sdk/client-s3';
+import { AwsS3StorageAdapter } from '@flystorage/aws-s3';
+
+type UploadTarget =
+  | {
+      type: 'local';
+      rootPath: string;
+    }
+  | {
+      type: 'flystorage';
+      storage: FileStorage;
+    };
 
 @Injectable()
 export class MediaService {
-  uploadRoot: string;
+  uploadTarget: UploadTarget;
 
   constructor(private readonly appConfig: AppConfigService) {
-    this.uploadRoot = path.join(this.appConfig.storagePath, 'quiz');
-  }
-
-  getUploadDirectory(quizId: string) {
-    const dir = path.join(this.uploadRoot, quizId);
-    fs.ensureDirSync(dir);
-    return dir;
+    if (this.appConfig.storagePath) {
+      this.uploadTarget = {
+        type: 'local',
+        rootPath: path.join(this.appConfig.storagePath, 'quiz'),
+      };
+    } else if (this.appConfig.s3Bucket) {
+      const client = new S3Client();
+      const adapter = new AwsS3StorageAdapter(client, {
+        bucket: this.appConfig.s3Bucket,
+        prefix: path.posix.join(this.appConfig.s3Prefix ?? '', 'quiz')
+      });
+      const storage = new FileStorage(adapter);
+      this.uploadTarget = {
+        type: 'flystorage',
+        storage,
+      };
+    } else {
+      throw new Error('Please provide S3 Config or STORAGE_PATH');
+    }
   }
 
   getUploadFilename(originalName: string) {
@@ -25,21 +47,7 @@ export class MediaService {
     return crypto.randomUUID() + extension;
   }
 
-  getFilePath(quizId: string, name: string) {
-    const filePath = path.join(this.uploadRoot, quizId, name);
-    if (fs.existsSync(filePath)) return filePath;
-    return undefined;
-  }
-
   canUploadByMime(mime: string) {
     return mime.startsWith('image/');
-  }
-
-  getUploadResult(uploadPath: string, fileName?: string): UploadMediaResponse {
-    if (!fileName) throw new CommonServiceException('File is not accepted');
-
-    return {
-      path: path.posix.join(uploadPath, fileName),
-    };
   }
 }

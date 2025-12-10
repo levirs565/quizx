@@ -17,7 +17,13 @@ export class AppConfigService {
   get sessionSecret(): string {
     return this.configService.get('SESSION_SECRET')!;
   }
-  get storagePath(): string {
-    return this.configService.get('STORAGE_PATH')!;
+  get storagePath(): string | undefined {
+    return this.configService.get('STORAGE_PATH');
+  }
+  get s3Bucket(): string | undefined {
+    return this.configService.get('S3_BUCKET');
+  }
+  get s3Prefix(): string | undefined {
+    return this.configService.get('S3_PREFIX');
   }
 }

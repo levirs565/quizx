@@ -71,19 +71,12 @@ import express from 'express';
     MediaModule,
   ],
 })
-export class AppModule implements NestModule, OnModuleInit {
+export class AppModule implements NestModule {
   constructor(
     @InjectConnection() private readonly connection: Connection,
     private readonly appConfig: AppConfigService,
     private readonly httpAdapterHost: HttpAdapterHost
   ) {}
-
-  onModuleInit() {
-    const app: express.Application = this.httpAdapterHost.httpAdapter.getInstance();
-    app.use('/media', express.static(this.appConfig.storagePath), () => {
-      throw new NotFoundException('Media not found');
-    });
-  }
 
   configure(consumer: MiddlewareConsumer) {
     consumer

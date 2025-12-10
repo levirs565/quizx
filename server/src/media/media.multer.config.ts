@@ -4,6 +4,9 @@ import { MulterOptions } from '@nestjs/platform-express/multer/interfaces/multer
 import multer from 'multer';
 import { MediaService } from './media.service';
 import { QuizService } from 'quiz/quiz.service';
+import { FlystorageMulterStorageEngine } from '@flystorage/multer-storage';
+import path from 'path';
+import fs from 'fs-extra';
 
 @Injectable()
 export class MediaMulterConfig implements MulterOptionsFactory {
@@ -12,17 +15,34 @@ export class MediaMulterConfig implements MulterOptionsFactory {
     private readonly quizService: QuizService
   ) {}
 
+  private createStorage() {
+    const mediaService = this.mediaService;
+    const uploadTarget = this.mediaService.uploadTarget;
+    if (uploadTarget.type == 'local') {
+      return multer.diskStorage({
+        destination(req, file, cb) {
+          const dir = path.join(uploadTarget.rootPath, req.params.id);
+          fs.ensureDirSync(dir);
+          cb(null, dir);
+        },
+        filename(req, file, cb) {
+          cb(null, mediaService.getUploadFilename(file.originalname));
+        },
+      });
+    }
+
+    return new FlystorageMulterStorageEngine(uploadTarget.storage, async (action, req, file) => {
+      return path.posix.join(
+        req.params.id,
+        mediaService.getUploadFilename(file.originalname)
+      );
+    });
+  }
+
   createMulterOptions(): MulterOptions | Promise<MulterOptions> {
     const mediaService = this.mediaService;
     const quizService = this.quizService;
-    const storage = multer.diskStorage({
-      destination(req, file, cb) {
-        cb(null, mediaService.getUploadDirectory(req.params.id));
-      },
-      filename(req, file, cb) {
-        cb(null, mediaService.getUploadFilename(file.originalname));
-      },
-    });
+    const storage = this.createStorage();
     return {
       storage,
       fileFilter(req, file, cb) {
